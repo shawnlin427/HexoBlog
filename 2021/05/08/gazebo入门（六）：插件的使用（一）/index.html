@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="插件，Plugin，实际上类似于Python中的包。简单地说，插件通过调用Gazebo的接口来完成对Gazebo仿真各个方面的操控，并且可以分享给其他使用者，其他使用者可以方便地在系统中插入插件。插件使用C++语言。 插件有六类，代表着它们能够影响的六种组成Gazebo仿真世界的部分：  world model sensor system visual GUI  如果想要调整世界的一些参数，比如物">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gazebo入门（六）：插件的使用（一）">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/08/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="插件，Plugin，实际上类似于Python中的包。简单地说，插件通过调用Gazebo的接口来完成对Gazebo仿真各个方面的操控，并且可以分享给其他使用者，其他使用者可以方便地在系统中插入插件。插件使用C++语言。 插件有六类，代表着它们能够影响的六种组成Gazebo仿真世界的部分：  world model sensor system visual GUI  如果想要调整世界的一些参数，比如物">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-36-1024x628.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-37-1024x543.png">
+<meta property="article:published_time" content="2021-05-08T13:27:15.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.517Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-36-1024x628.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/08/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Gazebo入门（六）：插件的使用（一） | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/08/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Gazebo入门（六）：插件的使用（一）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:27:15" itemprop="dateCreated datePublished" datetime="2021-05-08T21:27:15+08:00">2021-05-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>插件，Plugin，实际上类似于Python中的包。简单地说，插件通过调用Gazebo的接口来完成对Gazebo仿真各个方面的操控，并且可以分享给其他使用者，其他使用者可以方便地在系统中插入插件。插件使用C++语言。</p>
+<p>插件有六类，代表着它们能够影响的六种组成Gazebo仿真世界的部分：</p>
+<ul>
+<li>world</li>
+<li>model</li>
+<li>sensor</li>
+<li>system</li>
+<li>visual</li>
+<li>GUI</li>
+</ul>
+<p>如果想要调整世界的一些参数，比如物理效果、光照等，就需要world plugin；如果要调整模型的参数，比如模型运动状态、关节的运动状态，就需要model plugin；如果要获取传感器数据或者改变传感器的参数，就需要sensor plugin。</p>
+<h2 id="第一个Plugin"><a href="#第一个Plugin" class="headerlink" title="第一个Plugin"></a>第一个Plugin</h2><p>创建一个hello_world.cc文件：</p>
+<p>#include &lt;gazebo&#x2F;gazebo.hh&gt;</p>
+<p>namespace gazebo<br>{<br>    class WorldPluginTutorial : public WorldPlugin<br>    {<br>        public: WorldPluginTutorial() : WorldPlugin()<br>        {<br>            printf(“Hello World!\n”);<br>        }</p>
+<pre><code>    public: void Load(physics::WorldPtr \_world, sdf::ElementPtr \_sdf)
+    &#123;
+    &#125;
+&#125;;
+GZ\_REGISTER\_WORLD\_PLUGIN(WorldPluginTutorial)
+</code></pre>
+<p>}</p>
+<p>首先导入了gazebo&#x2F;gazebo.hh包，这个包包含了gazebo的核心功能，不过不包括具体的物理、传感器功能，后者需要根据情况额外导入<code>gazebo/physics/physics.hh</code>, <code>gazebo/rendering/rendering.hh</code>, or <code>gazebo/sensors/sensors.hh</code>。所有的插件都必须是以gazebo作为namespace的。</p>
+<p>所有的插件都必须从上面说的六种插件类型中选择一个集成，这个例子中是WorldPlugin。</p>
+<p>Load函数的功能：插件要实现的功能写在里面，需要与sdf进行交互。这个插件没有任何功能，也不load任何sdf，只是打印一条hello world。</p>
+<p>最后要将这个插件注册，变量名称就是插件名。一共有六种注册类型：<code>GZ_REGISTER_WORLD_PLUGIN</code>,<code>GZ_REGISTER_MODEL_PLUGIN</code>, <code>GZ_REGISTER_SENSOR_PLUGIN</code>, <code>GZ_REGISTER_GUI_PLUGIN</code>, <code>GZ_REGISTER_SYSTEM_PLUGIN</code> and <code>GZ_REGISTER_VISUAL_PLUGIN</code>.</p>
+<h3 id="编译插件"><a href="#编译插件" class="headerlink" title="编译插件"></a>编译插件</h3><p>新建一个CMakeLists.txt:</p>
+<p>cmake_minimum_required(VERSION 2.8 FATAL_ERROR)</p>
+<p>find_package(gazebo REQUIRED)<br>include_directories(${GAZEBO_INCLUDE_DIRS})<br>link_directories(${GAZEBO_LIBRARY_DIRS})<br>list(APPEND CMAKE_CXX_FLAGS “${GAZEBO_CXX_FLAGS}”)</p>
+<p>add_library(hello_world SHARED hello_world.cc)<br>target_link_libraries(hello_world ${GAZEBO_LIBRARIES})</p>
+<p>这个脚本里只有命名需要改变。</p>
+<p>然后在当前目录新建一个build文件夹，进入，编译：</p>
+<p>cmake ..&#x2F;<br>make</p>
+<p>在build下生成了libhello_world.so这个库。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-36-1024x628.png"></p>
+<p>将当前路径设为<code>GAZEBO_PLUGIN_PATH</code>环境变量，这样Gazebo能够根据插件名找到这个插件。这个命令只在当前shell下有效。</p>
+<p>export GAZEBO_PLUGIN_PATH&#x3D;${GAZEBO_PLUGIN_PATH}:~&#x2F;gazebo_plugin_tutorial&#x2F;build</p>
+<h3 id="使用插件"><a href="#使用插件" class="headerlink" title="使用插件"></a>使用插件</h3><p>新建一个world：</p>
+<?xml version="1.0"?>
+<sdf version="1.4">
+  <world name="default">
+    <plugin name="hello\_world" filename="libhello\_world.so"/>
+  </world>
+</sdf>
+
+<p>用gzserver运行：</p>
+<p>gzserver hello.world –verbose</p>
+<p>输出：</p>
+<p>[Msg] Waiting for master.<br>[Msg] Connected to gazebo master @ <a target="_blank" rel="noopener" href="http://127.0.0.1:11345/">http://127.0.0.1:11345</a><br>[Msg] Publicized address: 183.172.23.231<br>[Msg] Loading world file [&#x2F;home&#x2F;shaw&#x2F;Desktop&#x2F;gazebo&#x2F;gazebo_plugin&#x2F;hello.world]<br>Hello World!</p>
+<h2 id="模型插件Model-Plugin"><a href="#模型插件Model-Plugin" class="headerlink" title="模型插件Model Plugin"></a>模型插件Model Plugin</h2><p>Model Plugin可以用来控制模型，比如小车的运行、碰撞体积等。下面来做一个控制速度的插件，将这个插件插入一个model后，就可以用来控制model的速度。</p>
+<h3 id="插件编写"><a href="#插件编写" class="headerlink" title="插件编写"></a>插件编写</h3><p>#include <functional><br>#include &lt;gazebo&#x2F;gazebo.hh&gt;<br>#include &lt;gazebo&#x2F;physics&#x2F;physics.hh&gt;<br>#include &lt;gazebo&#x2F;common&#x2F;common.hh&gt;<br>#include &lt;ignition&#x2F;math&#x2F;Vector3.hh&gt;</p>
+<p>namespace gazebo<br>{<br>    class ModelPush : public ModelPlugin<br>    {<br>        public: void Load(physics::ModelPtr _parent, sdf::ElementPtr)<br>        {<br>            this-&gt;model &#x3D; _parent;<br>            this-&gt;updateConnection &#x3D; event::Events::ConnectWorldUpdateBegin(<br>                std::bind(&amp;ModelPush::OnUpdate, this)<br>            );<br>        }</p>
+<pre><code>    public: void OnUpdate()
+    &#123;
+        this-&gt;model-&gt;SetLinearVel(ignition::math::Vector3d(.3, 0, 0));
+    &#125;
+
+    private: physics::ModelPtr model;
+    private: event::ConnectionPtr updateConnection;
+&#125;;
+GZ\_REGISTER\_MODEL\_PLUGIN(ModelPush)
+</code></pre>
+<p>}</p>
+<p>CMakeLists.txt和前面一样，直接加在后面。</p>
+<p>add_library(model_push SHARED model_push.cc)<br>target_link_libraries(model_push ${GAZEBO_LIBRARIES})</p>
+<p>在world文件里加入一个盒子：</p>
+<?xml version="1.0"?><sdf version="1.4">
+  <world name="default">
+
+<pre><code>&lt;!-- Ground Plane --&gt;
+&lt;include&gt;
+  &lt;uri&gt;model://ground\_plane&lt;/uri&gt;
+&lt;/include&gt;
+
+&lt;include&gt;
+  &lt;uri&gt;model://sun&lt;/uri&gt;
+&lt;/include&gt;
+
+&lt;model name=&quot;box&quot;&gt;
+  &lt;pose&gt;0 0 0.5 0 0 0&lt;/pose&gt;
+  &lt;link name=&quot;link&quot;&gt;
+    &lt;collision name=&quot;collision&quot;&gt;
+      &lt;geometry&gt;
+        &lt;box&gt;
+          &lt;size&gt;1 1 1&lt;/size&gt;
+        &lt;/box&gt;
+      &lt;/geometry&gt;
+    &lt;/collision&gt;
+
+    &lt;visual name=&quot;visual&quot;&gt;
+      &lt;geometry&gt;
+        &lt;box&gt;
+          &lt;size&gt;1 1 1&lt;/size&gt;
+        &lt;/box&gt;
+      &lt;/geometry&gt;
+    &lt;/visual&gt;
+  &lt;/link&gt;
+
+  &lt;plugin name=&quot;model\_push&quot; filename=&quot;libmodel\_push.so&quot;/&gt;
+&lt;/model&gt;        
+</code></pre>
+  </world>
+</sdf>
+
+<p>插件加在model里，比如</model>的前面一行。用Gazebo运行这个world文件，能看到一个运动的盒子：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-37-1024x543.png"></p>
+<p>在下一节继续学习Plugin。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/05/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E8%BD%BD%E5%85%A5revit%E6%A8%A1%E5%9E%8B/" rel="prev" title="Gazebo入门（五）：载入Revit模型">
+      <i class="fa fa-chevron-left"></i> Gazebo入门（五）：载入Revit模型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/12/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="next" title="Gazebo入门（七）：插件的使用（二）">
+      Gazebo入门（七）：插件的使用（二） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%B8%AAPlugin"><span class="nav-number">1.</span> <span class="nav-text">第一个Plugin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%8F%92%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">编译插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8F%92%E4%BB%B6"><span class="nav-number">1.2.</span> <span class="nav-text">使用插件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%8F%92%E4%BB%B6Model-Plugin"><span class="nav-number">2.</span> <span class="nav-text">模型插件Model Plugin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%BC%96%E5%86%99"><span class="nav-number">2.1.</span> <span class="nav-text">插件编写</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="仅根据单个点往往无法判断其属性（噪声、边缘），因此要考虑其领域。滤波器，或者说卷积核往往用来进行领域运算。在深度学习中，这个滤波器的参数是由学习得到的；而在传统图像处理中，卷积模板一般是人工设定的。那么根据不同的目标应当如何设计卷积模板呢？ 滤波器可以笼统地分为两类：  平滑&#x2F;锐化 线性&#x2F;非线性  平滑滤波器线性平滑滤波器具体地，常用的平滑滤波器（以下都默认为3x3的卷积核）有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="空域滤波器">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/05/%E7%A9%BA%E5%9F%9F%E6%BB%A4%E6%B3%A2%E5%99%A8/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="仅根据单个点往往无法判断其属性（噪声、边缘），因此要考虑其领域。滤波器，或者说卷积核往往用来进行领域运算。在深度学习中，这个滤波器的参数是由学习得到的；而在传统图像处理中，卷积模板一般是人工设定的。那么根据不同的目标应当如何设计卷积模板呢？ 滤波器可以笼统地分为两类：  平滑&#x2F;锐化 线性&#x2F;非线性  平滑滤波器线性平滑滤波器具体地，常用的平滑滤波器（以下都默认为3x3的卷积核）有">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-05T03:27:02.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.601Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/05/%E7%A9%BA%E5%9F%9F%E6%BB%A4%E6%B3%A2%E5%99%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>空域滤波器 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/05/%E7%A9%BA%E5%9F%9F%E6%BB%A4%E6%B3%A2%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          空域滤波器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-05 11:27:02" itemprop="dateCreated datePublished" datetime="2021-10-05T11:27:02+08:00">2021-10-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>仅根据单个点往往无法判断其属性（噪声、边缘），因此要考虑其领域。滤波器，或者说卷积核往往用来进行领域运算。在深度学习中，这个滤波器的参数是由学习得到的；而在传统图像处理中，卷积模板一般是人工设定的。那么根据不同的目标应当如何设计卷积模板呢？</p>
+<p>滤波器可以笼统地分为两类：</p>
+<ol>
+<li>平滑&#x2F;锐化</li>
+<li>线性&#x2F;非线性</li>
+</ol>
+<h1 id="平滑滤波器"><a href="#平滑滤波器" class="headerlink" title="平滑滤波器"></a>平滑滤波器</h1><h2 id="线性平滑滤波器"><a href="#线性平滑滤波器" class="headerlink" title="线性平滑滤波器"></a>线性平滑滤波器</h2><p>具体地，常用的平滑滤波器（以下都默认为3x3的卷积核）有：</p>
+<ol>
+<li>领域平均（平滑滤波器），所有系数大于0</li>
+<li>加权平均（平滑滤波器），所有系数大于0<ol>
+<li>特别的，高斯滤波器，距离像素点越近，系数越大。在平滑的同时，对图像模糊的程度较小。</li>
+</ol>
+</li>
+<li>几何均值滤波器</li>
+</ol>
+<h3 id="影响线性平滑滤波器的因素"><a href="#影响线性平滑滤波器的因素" class="headerlink" title="影响线性平滑滤波器的因素"></a>影响线性平滑滤波器的因素</h3><ol>
+<li>模板的形状<ol>
+<li>方形：计算量大</li>
+<li>其他形状：十字、X、空洞卷积、JRPG移动范围形……</li>
+</ol>
+</li>
+<li>模板的尺寸，尺寸越大，丢失细节越多</li>
+<li>模板的参数</li>
+</ol>
+<h3 id="平滑滤波器的问题"><a href="#平滑滤波器的问题" class="headerlink" title="平滑滤波器的问题"></a>平滑滤波器的问题</h3><ol>
+<li>去除噪音的同时也钝化了边缘和尖锐的细节</li>
+</ol>
+<h2 id="非线性平滑滤波器"><a href="#非线性平滑滤波器" class="headerlink" title="非线性平滑滤波器"></a>非线性平滑滤波器</h2><ol>
+<li>中值滤波：用卷积核内的中值作为结果值。处理空间密度很大的椒盐噪声时效果不好。<ol>
+<li>改进：如果不太可能是椒盐噪声的，就保留当前中心点的像素值</li>
+</ol>
+</li>
+<li>自适应中值滤波器：选择中值的时候可以适应，模板大小可以自适应</li>
+<li>统计排序滤波器</li>
+<li>最大值&#x2F;最小值&#x2F;中点&#x2F;百分比滤波器</li>
+<li>自适应、局部噪声消除滤波器</li>
+</ol>
+<h2 id="双边滤波器"><a href="#双边滤波器" class="headerlink" title="双边滤波器"></a>双边滤波器</h2><h1 id="锐化滤波器"><a href="#锐化滤波器" class="headerlink" title="锐化滤波器"></a>锐化滤波器</h1><p>积分——钝化 微分——锐化</p>
+<p>Sobel梯度算子：一阶微分用的最多的算子，对噪声有抑制作用，特征保持更好</p>
+<p>Robert梯度算子</p>
+<p>锐化后与源图像叠加，解决亮度丢失问题，同时增强边缘</p>
+<p>拉普拉斯算子：二阶算子，更突出边缘</p>
+<hr>
+<h1 id="混合空间增强方法"><a href="#混合空间增强方法" class="headerlink" title="混合空间增强方法"></a>混合空间增强方法</h1><p>混合的基于空域变换的增强图片的方法</p>
+<p>拉普拉斯算子锐化时不光增强边界，还增强了噪声区域：</p>
+<p>再叠加一次sobel算子，去除噪声，然后与拉普拉斯算子处理的图像进行一次<strong>相乘</strong></p>
+<p>最后整体偏暗，则进行直方图变换。</p>
+<h2 id="边界处理"><a href="#边界处理" class="headerlink" title="边界处理"></a>边界处理</h2><ol>
+<li>补0：方便，但是会使得边缘变暗</li>
+<li>拷贝：对边缘的卷积不起作用</li>
+<li>镜像：对梯度求解效果更好</li>
+</ol>
+<p>空域滤波的所有方法都是可迭代的——嵌套，大卷积核不如多个小卷积核的组合</p>
+<p>卷积时用新值还是旧值？</p>
+<ul>
+<li>新值：节省空间，加快迭代；但是处理不平衡</li>
+<li>旧值：效果更好</li>
+</ul>
+<p>医学等领域限制使用非线性滤波器（不能改变原来像素的分布）</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/04/%E5%9C%A8jetson-nano-raspberry-pi%E4%B8%8A%E6%90%AD%E5%BB%BAros2/" rel="prev" title="在Jetson nano/Raspberry Pi上搭建ROS2">
+      <i class="fa fa-chevron-left"></i> 在Jetson nano/Raspberry Pi上搭建ROS2
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/05/ros2%E4%B8%AD%E7%9A%84tf2%EF%BC%9A%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" rel="next" title="ROS2中的tf2：基本使用">
+      ROS2中的tf2：基本使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B9%B3%E6%BB%91%E6%BB%A4%E6%B3%A2%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">平滑滤波器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%B9%B3%E6%BB%91%E6%BB%A4%E6%B3%A2%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">线性平滑滤波器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%B1%E5%93%8D%E7%BA%BF%E6%80%A7%E5%B9%B3%E6%BB%91%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E5%9B%A0%E7%B4%A0"><span class="nav-number">1.1.1.</span> <span class="nav-text">影响线性平滑滤波器的因素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B3%E6%BB%91%E6%BB%A4%E6%B3%A2%E5%99%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">平滑滤波器的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%B9%B3%E6%BB%91%E6%BB%A4%E6%B3%A2%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">非线性平滑滤波器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8C%E8%BE%B9%E6%BB%A4%E6%B3%A2%E5%99%A8"><span class="nav-number">1.3.</span> <span class="nav-text">双边滤波器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%90%E5%8C%96%E6%BB%A4%E6%B3%A2%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">锐化滤波器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E7%A9%BA%E9%97%B4%E5%A2%9E%E5%BC%BA%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">混合空间增强方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%B9%E7%95%8C%E5%A4%84%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">边界处理</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

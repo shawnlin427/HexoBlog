@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Hermit简介（以下来自百度翻译）  HermiT是使用Web本体语言（OWL）编写本体的推理机。给定一个OWL文件，HermiT可以确定本体是否一致，识别类之间的包容关系，等等。HermiT是第一个公开的OWL推理机，它基于一个新的“hypertableau”演算，提供了比任何已知算法更有效的推理。以前需要几分钟或几小时来分类的本体通常可以在几秒钟内被HermiT分类，而HermiT是第一个能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Protege中推理引擎的测试使用">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/protege%E4%B8%AD%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%E7%9A%84%E6%B5%8B%E8%AF%95%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="Hermit简介（以下来自百度翻译）  HermiT是使用Web本体语言（OWL）编写本体的推理机。给定一个OWL文件，HermiT可以确定本体是否一致，识别类之间的包容关系，等等。HermiT是第一个公开的OWL推理机，它基于一个新的“hypertableau”演算，提供了比任何已知算法更有效的推理。以前需要几分钟或几小时来分类的本体通常可以在几秒钟内被HermiT分类，而HermiT是第一个能">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210205230031604-2045046453-1024x687.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206110931283-1723409561-1024x576.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206111715881-395938940-1024x792.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206111924837-2100724845-1024x551.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206111933016-1796700196-1024x551.png">
+<meta property="article:published_time" content="2021-04-09T05:25:27.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.446Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210205230031604-2045046453-1024x687.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/protege%E4%B8%AD%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%E7%9A%84%E6%B5%8B%E8%AF%95%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Protege中推理引擎的测试使用 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/protege%E4%B8%AD%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%E7%9A%84%E6%B5%8B%E8%AF%95%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Protege中推理引擎的测试使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 13:25:27" itemprop="dateCreated datePublished" datetime="2021-04-09T13:25:27+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/" itemprop="url" rel="index"><span itemprop="name">bim</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/%E6%9C%AC%E4%BD%93/" itemprop="url" rel="index"><span itemprop="name">本体</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Hermit简介"><a href="#Hermit简介" class="headerlink" title="Hermit简介"></a>Hermit简介</h2><p>（以下来自百度翻译）</p>
+<blockquote>
+<p>HermiT是使用Web本体语言（OWL）编写本体的推理机。给定一个OWL文件，HermiT可以确定本体是否一致，识别类之间的包容关系，等等。<br>HermiT是第一个公开的OWL推理机，它基于一个新的“hypertableau”演算，提供了比任何已知算法更有效的推理。以前需要几分钟或几小时来分类的本体通常可以在几秒钟内被HermiT分类，而HermiT是第一个能够对许多本体进行分类的推理者，这些本体以前被证明过于复杂，任何可用的系统都无法处理。<br>HermiT使用直接语义，并通过了所有owl2对直接语义推理器的一致性测试。</p>
+</blockquote>
+<p>HermiT是由牛津大学计算机科学数据与知识研究组开发的一款基于OWL的本体推理机。官网位于<a target="_blank" rel="noopener" href="http://www.hermit-reasoner.com/">http://www.hermit-reasoner.com/</a>。你可以通过Protege使用HermiT，这是最简单的方式；也可以使用HermiT提供的Java API来开发你自己的程序。这里主要展示如何在Protege中简单地使用HermiT进行推理。</p>
+<h2 id="安装HermiT"><a href="#安装HermiT" class="headerlink" title="安装HermiT"></a>安装HermiT</h2><p>在最新版本的Protege中，HermiT是随Protege安装的，不需要手动安装。</p>
+<h2 id="创建一个本体"><a href="#创建一个本体" class="headerlink" title="创建一个本体"></a>创建一个本体</h2><p>在测试集中，我建立了一个简单的亲属关系本体来进行测试。这个本体描述了几个人之间的亲属关系，以及年龄属性。我希望HermiT能基于规则（Rule）做到：</p>
+<ol>
+<li>推断并填补关系（Object properties），例如B是A的弟弟，A是C的母亲，则B是C的舅舅；</li>
+<li>推断并赋予属性（Data properties），例如B的年龄是43（40-55），则B的年龄段是中年；<br>这个本体的视图如下：</li>
+</ol>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210205230031604-2045046453-1024x687.png"></p>
+<h2 id="SWRL"><a href="#SWRL" class="headerlink" title="SWRL"></a>SWRL</h2><p>SWRL（Semantic Web Rule Language）是由以语义的方式呈现规则的一种语言，SWRL的规则部分概念是由RuleML所演变而来，再结合OWL本体论形成。SWRL已经是W3C规范中的一员。SWRL相关的内容在中文网上比较难找到，最完善的学习资料是w3c自己在2004年发布的<a target="_blank" rel="noopener" href="https://www.w3.org/Submission/SWRL/">SWRL语言指导</a>。一段SWRL语言通过简单的“IF-THEN”语句来定义一串规则，其中IF和THEN都是通过Atom组成的，Atom描述了最为简单的一种假设，例如“XX是XX”、“XX的YY是ZZ”等。SWRL提供了七种Atom，分别是：</p>
+<ol>
+<li>描述，对应class；description ‘(‘ i-object ‘)’</li>
+<li>数据，dataRange ‘(‘ d-object ‘)’</li>
+<li>实体关系，对应Object properties；individualvaluedPropertyID ‘(‘ i-object i-object ‘)’</li>
+<li>数据属性，对应Data properties；datavaluedPropertyID ‘(‘ i-object d-object ‘)’</li>
+<li>相同，sameAs ‘(‘ i-object i-object ‘)’</li>
+<li>相异，differentFrom ‘(‘ i-object i-object ‘)’</li>
+<li>其他内建功能，builtIn ‘(‘ builtinID { d-object } ‘)’<br>内建功能提供了一些针对数字、字符串、日期的基础操作，在SWRL文档的8.1节有详细描述，这里不再赘述。（注意！HermiT不支持builtIn SWRL，所以虽然前面说了用HermiT，其实使用的是Drools一般推理引擎，前面懒得再修改了）</li>
+</ol>
+<p>SWRL的格式遵从<code>rule ::= &#39;Implies(&#39; [ URIreference ] &#123; annotation &#125; antecedent consequent &#39;)&#39;</code>的格式，其中atom之间通过‘&amp;’连接，antecedent和consequent之间用‘-&gt;’连接。一个例子如下：<br><code>hasParent(?x1,?x2) ∧ hasBrother(?x2,?x3) ⇒ hasUncle(?x1,?x3)</code><br>他描述了x1有x2作为家长，并且x2有x3作为兄弟，则x1有x3作为uncle（国外的uncle可以代表伯叔舅丈）。</p>
+<h2 id="SWRL在Protege中的使用"><a href="#SWRL在Protege中的使用" class="headerlink" title="SWRL在Protege中的使用"></a>SWRL在Protege中的使用</h2><p>Protege内建了SWRLtab页面，在window-tab-swrltab中打开即可。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206110931283-1723409561-1024x576.png"></p>
+<p>选择new新建一个规则（年龄在40-55之间的年龄段为中年）：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206111715881-395938940-1024x792.png"></p>
+<p>依次点击OWL+SRWL-&gt;Doorls，Run Doorls，Drools-&gt;OWL。分别执行了解析SRWL语言、推断和将知识保存到原来的知识图谱中。在知识图谱中，可以看到成功推断出王德法的年龄段是中年，作为男人也是人，龙傲天是小明的舅舅（同时也是亲属）等等。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206111924837-2100724845-1024x551.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206111933016-1796700196-1024x551.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/09/java%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB%E7%BC%96%E5%86%99/" rel="prev" title="Java网络爬虫编写">
+      <i class="fa fa-chevron-left"></i> Java网络爬虫编写
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/09/ifc%E8%BD%AC%E6%8D%A2%E4%B8%BArdf%E5%B9%B6%E5%9C%A8protege%E4%B8%AD%E6%9F%A5%E7%9C%8B/" rel="next" title="IFC转换为RDF并在Protege中查看">
+      IFC转换为RDF并在Protege中查看 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hermit%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Hermit简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85HermiT"><span class="nav-number">2.</span> <span class="nav-text">安装HermiT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%9C%AC%E4%BD%93"><span class="nav-number">3.</span> <span class="nav-text">创建一个本体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SWRL"><span class="nav-number">4.</span> <span class="nav-text">SWRL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SWRL%E5%9C%A8Protege%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">SWRL在Protege中的使用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

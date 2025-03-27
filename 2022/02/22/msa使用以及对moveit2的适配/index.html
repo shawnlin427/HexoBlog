@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="moveit2还没有完成对MSA的迁移，最近的信息是2021年8月份，我看到moveit团队还在讨论msa的迁移问题，预计是要对msa进行一次重构。 在此之前，要在moveit2下使用msa还得花些功夫，需要我们通过msa导出机器人信息后再对launch文件进行修改。因为moveit2的教程用的是pandas机械臂，因此我们可以对比一下moveit2 tutorial里的moveit config">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MSA使用以及对moveit2的适配">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/02/22/msa%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8A%E5%AF%B9moveit2%E7%9A%84%E9%80%82%E9%85%8D/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="moveit2还没有完成对MSA的迁移，最近的信息是2021年8月份，我看到moveit团队还在讨论msa的迁移问题，预计是要对msa进行一次重构。 在此之前，要在moveit2下使用msa还得花些功夫，需要我们通过msa导出机器人信息后再对launch文件进行修改。因为moveit2的教程用的是pandas机械臂，因此我们可以对比一下moveit2 tutorial里的moveit config">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-1-1024x604.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-2-1024x604.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-3-1024x604.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-4-1024x604.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-5-1024x636.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-6-1024x636.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-7-1024x636.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-9-1024x636.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-10-1024x636.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-12-1024x705.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-13-1024x572.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-14-1024x613.png">
+<meta property="article:published_time" content="2022-02-22T15:08:46.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.680Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.lxshaw.com/wp-content/uploads/2022/02/image-1-1024x604.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/02/22/msa%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8A%E5%AF%B9moveit2%E7%9A%84%E9%80%82%E9%85%8D/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MSA使用以及对moveit2的适配 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/02/22/msa%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8A%E5%AF%B9moveit2%E7%9A%84%E9%80%82%E9%85%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MSA使用以及对moveit2的适配
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-02-22 23:08:46" itemprop="dateCreated datePublished" datetime="2022-02-22T23:08:46+08:00">2022-02-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>moveit2还没有完成对MSA的迁移，最近的信息是2021年8月份，我看到moveit团队还在讨论msa的迁移问题，预计是要对msa进行一次重构。</p>
+<p>在此之前，要在moveit2下使用msa还得花些功夫，需要我们通过msa导出机器人信息后再对launch文件进行修改。因为moveit2的教程用的是pandas机械臂，因此我们可以对比一下moveit2 tutorial里的moveit config和msa直接导出的moveit config有什么区别。</p>
+<h2 id="MSA使用"><a href="#MSA使用" class="headerlink" title="MSA使用"></a>MSA使用</h2><p>使用moveit就需要moveit config，msa可以自动生成moveit config。此外msa还可以生成许多用于调试的launch文件。MSA目前只支持ROS1，所以我们在noetic下演示这个过程。</p>
+<p>roslaunch moveit_setup_assistant setup_assistant.launch</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-1.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-1-1024x604.png"></a></p>
+<p>我们首先要准备自己的urdf文件，不支持xacro。这里我们使用和moveit2 toturial中一样的pandas arm。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-2.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-2-1024x604.png"></a></p>
+<h3 id="自碰撞矩阵"><a href="#自碰撞矩阵" class="headerlink" title="自碰撞矩阵"></a>自碰撞矩阵</h3><p>碰撞矩阵用来表示哪些关节在运行中是不可能碰撞的，这样就不用在逆运动学结算中去考虑它们了，可以节省计算资源。实现的方法是拖动上面的滑条，拖到最大时，会随机采样10000个位姿，在这些位姿中都不曾碰撞的关节就被认为是不可能相撞的（非常的暴力）</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-3-1024x604.png"></a></p>
+<h3 id="Virtual-Joints虚拟关节"><a href="#Virtual-Joints虚拟关节" class="headerlink" title="Virtual Joints虚拟关节"></a>Virtual Joints虚拟关节</h3><p>虚拟关节用于创造机器人与世界中其他坐标系之间的链接。虚拟关节只支持三种类型，fixed，planar，float，实际上就对应机器人固定、机器人可以在平面上移动和机器人可以在空间中6个自由度上运动，比如无人机。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-4.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-4-1024x604.png"></a></p>
+<h3 id="Planning-Groups"><a href="#Planning-Groups" class="headerlink" title="Planning Groups"></a>Planning Groups</h3><p>在这里我们可以设置控制组。举个例子，对于机械臂本体以及其末端执行器，他们的职责是不同的，机械臂负责把末端执行器送到指定位置，末端执行器负责执行其他操作。对于机械臂本体，当然是要进行逆运动学结算等操作的， 末端执行器执行的操作就花样百出了。我们先来设置panda_arm：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-5-1024x636.png"></a></p>
+<p>Kinematic Solver就是逆运动学求解器，kdl求解器相对来说属于是moveit2默认的求解方式。OMPL则是防碰撞算法，这里可以先不设置，其他的保留原设置即可。完成后点击add_joints，将此控制组涉及到的关节都选中。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-6.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-6-1024x636.png"></a></p>
+<p>对于hand部分也进行类似的操作。注意到解释中说，如果选择的是link而不是joint，那么其parent joint也会被加入。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-7.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-7-1024x636.png"></a></p>
+<h3 id="Robot-Poses"><a href="#Robot-Poses" class="headerlink" title="Robot Poses"></a>Robot Poses</h3><p>这是最好理解的设置，也就是预先设计几个位姿，方便快速归位或者调试。这是一个检查你的URDF对关节限位设置是否正确的最好时机。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-9.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-9-1024x636.png"></a></p>
+<h3 id="End-Effectors"><a href="#End-Effectors" class="headerlink" title="End Effectors"></a>End Effectors</h3><p>这个页面用于设置末端执行器，我没有太明白这个设置的用处。设置也很简单。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-10.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-10-1024x636.png"></a></p>
+<h3 id="Passive-Joints"><a href="#Passive-Joints" class="headerlink" title="Passive Joints"></a>Passive Joints</h3><p>在被动关节中被选中的任何关节都不会被moveit2再控制，哪怕它之前被归为一个控制组。被动关节指那些没有动力的关节。由于pandas么有被动关节，所以跳过。</p>
+<h3 id="Controllers"><a href="#Controllers" class="headerlink" title="Controllers"></a>Controllers</h3><p>这是moveit和ros_control交互的重要设置界面。点击Add controller之后，选择<strong>position_controllers&#x2F;JointPositionController</strong>作为控制器类型。然后选择Add Group， 把panda_arm加入。</p>
+<h3 id="3D-Perception"><a href="#3D-Perception" class="headerlink" title="3D Perception"></a>3D Perception</h3><p>这个设置页面用于设置3D感知相关的内容，先跳过；</p>
+<h3 id="Simulation"><a href="#Simulation" class="headerlink" title="Simulation"></a>Simulation</h3><p>这个页面不是用于设置的，不过可以快速生成一个可以用于gazebo模拟的SDF文件。</p>
+<h3 id="Author-Information"><a href="#Author-Information" class="headerlink" title="Author Information"></a>Author Information</h3><p>作者信息设置，不多说。</p>
+<h3 id="Configuration-File"><a href="#Configuration-File" class="headerlink" title="Configuration File"></a>Configuration File</h3><p>这里我们可以看到MSA都生成了哪些文件，他们都有什么用。msa是这样组织launch文件的：许多launch文件只负责启动一个功能，用户可以根据自己的需要进行选择。demo.launch则是最主要的launch文件。我们catkin build之后launch这个文件就可以使用它了。最后我们要将其导出为一个包，根据ROS的命名规范，将包命名为项目名_moveit_config。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>导出完成后，使用catkin build建立项目，然后roslaunch panda_moveit_config demo.launch，不需要做其他任何改动：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-12.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-12-1024x705.png"></a></p>
+<p>出现以上界面，并且可以正常plan-execute，则说明导出正确。</p>
+<h2 id="MSA导出文件适配moveit2"><a href="#MSA导出文件适配moveit2" class="headerlink" title="MSA导出文件适配moveit2"></a>MSA导出文件适配moveit2</h2><h3 id="moveit和moveit2中的panda-arm对比"><a href="#moveit和moveit2中的panda-arm对比" class="headerlink" title="moveit和moveit2中的panda_arm对比"></a>moveit和moveit2中的panda_arm对比</h3><p>从moveit2的教程中我们可以启动一样的panda_arm：</p>
+<p>ros2 launch moveit2_tutorials demo.launch.py</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-13.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-13-1024x572.png"></a></p>
+<p>下面我们来查看moveit2中，一样的导出的demo.launch.py文件都涉及到哪些文件。以下文件被导入:</p>
+<ul>
+<li><strong>robot_description_config</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;panda.urdf.xacro</li>
+<li><strong>robot_description_semantic_config</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;panda.srdf</li>
+<li><strong>kinematics_yaml</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;kinematics.yaml</li>
+<li><strong>ompl_planning_yaml</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;ompl_planning.yaml</li>
+<li><strong>moveit_simple_controllers_yaml</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;panda_controllers.yaml</li>
+<li><strong>ros2_controllers_path</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;panda_ros_controllers.yaml</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-14.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-14-1024x613.png"></a></p>
+<p>在我们之前导出的config中间，除了xacro以外，都有对应的文件。其中，kinematcis_yaml、srdf文件是不需要修改的；<strong>ompl_planning_yaml</strong>需要修改为以下形式：</p>
+<p>planner_configs:<br>  AnytimePathShortening:<br>    type: geometric::AnytimePathShortening<br>    shortcut: true  # Attempt to shortcut all new solution paths<br>    hybridize: true  # Compute hybrid solution trajectories<br>    max_hybrid_paths: 24  # Number of hybrid paths generated per iteration<br>    num_planners: 4  # The number of default planners to use for planning<br>    planners: “”  # A comma-separated list of planner types (e.g., “PRM,EST,RRTConnect”Optionally, planner parameters can be passed to change the default:”PRM[max_nearest_neighbors&#x3D;5],EST[goal_bias&#x3D;.5],RRT[range&#x3D;10. goal_bias&#x3D;.1]“<br>  SBL:<br>    type: geometric::SBL<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>  EST:<br>    type: geometric::EST<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0 setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05<br>  LBKPIECE:<br>    type: geometric::LBKPIECE<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    border_fraction: 0.9  # Fraction of time focused on boarder default: 0.9<br>    min_valid_path_fraction: 0.5  # Accept partially valid moves above fraction. default: 0.5<br>  BKPIECE:<br>    type: geometric::BKPIECE<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    border_fraction: 0.9  # Fraction of time focused on boarder default: 0.9<br>    failed_expansion_score_factor: 0.5  # When extending motion fails, scale score by factor. default: 0.5<br>    min_valid_path_fraction: 0.5  # Accept partially valid moves above fraction. default: 0.5<br>  KPIECE:<br>    type: geometric::KPIECE<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05<br>    border_fraction: 0.9  # Fraction of time focused on boarder default: 0.9 (0.0,1.]<br>    failed_expansion_score_factor: 0.5  # When extending motion fails, scale score by factor. default: 0.5<br>    min_valid_path_fraction: 0.5  # Accept partially valid moves above fraction. default: 0.5<br>  RRT:<br>    type: geometric::RRT<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability? default: 0.05<br>  RRTConnect:<br>    type: geometric::RRTConnect<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>  RRTstar:<br>    type: geometric::RRTstar<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability? default: 0.05<br>    delay_collision_checking: 1  # Stop collision checking as soon as C-free parent found. default 1<br>  TRRT:<br>    type: geometric::TRRT<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability? default: 0.05<br>    max_states_failed: 10  # when to start increasing temp. default: 10<br>    temp_change_factor: 2.0  # how much to increase or decrease temp. default: 2.0<br>    min_temperature: 10e-10  # lower limit of temp change. default: 10e-10<br>    init_temperature: 10e-6  # initial temperature. default: 10e-6<br>    frountier_threshold: 0.0  # dist new state to nearest neighbor to disqualify as frontier. default: 0.0 set in setup()<br>    frountierNodeRatio: 0.1  # 1&#x2F;10, or 1 nonfrontier for every 10 frontier. default: 0.1<br>    k_constant: 0.0  # value used to normalize expresssion. default: 0.0 set in setup()<br>  PRM:<br>    type: geometric::PRM<br>    max_nearest_neighbors: 10  # use k nearest neighbors. default: 10<br>  PRMstar:<br>    type: geometric::PRMstar<br>  FMT:<br>    type: geometric::FMT<br>    num_samples: 1000  # number of states that the planner should sample. default: 1000<br>    radius_multiplier: 1.1  # multiplier used for the nearest neighbors search radius. default: 1.1<br>    nearest_k: 1  # use Knearest strategy. default: 1<br>    cache_cc: 1  # use collision checking cache. default: 1<br>    heuristics: 0  # activate cost to go heuristics. default: 0<br>    extended_fmt: 1  # activate the extended FMT*: adding new samples if planner does not finish successfully. default: 1<br>  BFMT:<br>    type: geometric::BFMT<br>    num_samples: 1000  # number of states that the planner should sample. default: 1000<br>    radius_multiplier: 1.0  # multiplier used for the nearest neighbors search radius. default: 1.0<br>    nearest_k: 1  # use the Knearest strategy. default: 1<br>    balanced: 0  # exploration strategy: balanced true expands one tree every iteration. False will select the tree with lowest maximum cost to go. default: 1<br>    optimality: 1  # termination strategy: optimality true finishes when the best possible path is found. Otherwise, the algorithm will finish when the first feasible path is found. default: 1<br>    heuristics: 1  # activates cost to go heuristics. default: 1<br>    cache_cc: 1  # use the collision checking cache. default: 1<br>    extended_fmt: 1  # Activates the extended FMT*: adding new samples if planner does not finish successfully. default: 1<br>  PDST:<br>    type: geometric::PDST<br>  STRIDE:<br>    type: geometric::STRIDE<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05<br>    use_projected_distance: 0  # whether nearest neighbors are computed based on distances in a projection of the state rather distances in the state space itself. default: 0<br>    degree: 16  # desired degree of a node in the Geometric Near-neightbor Access Tree (GNAT). default: 16<br>    max_degree: 18  # max degree of a node in the GNAT. default: 12<br>    min_degree: 12  # min degree of a node in the GNAT. default: 12<br>    max_pts_per_leaf: 6  # max points per leaf in the GNAT. default: 6<br>    estimated_dimension: 0.0  # estimated dimension of the free space. default: 0.0<br>    min_valid_path_fraction: 0.2  # Accept partially valid moves above fraction. default: 0.2<br>  BiTRRT:<br>    type: geometric::BiTRRT<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    temp_change_factor: 0.1  # how much to increase or decrease temp. default: 0.1<br>    init_temperature: 100  # initial temperature. default: 100<br>    frountier_threshold: 0.0  # dist new state to nearest neighbor to disqualify as frontier. default: 0.0 set in setup()<br>    frountier_node_ratio: 0.1  # 1&#x2F;10, or 1 nonfrontier for every 10 frontier. default: 0.1<br>    cost_threshold: 1e300  # the cost threshold. Any motion cost that is not better will not be expanded. default: inf<br>  LBTRRT:<br>    type: geometric::LBTRRT<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05<br>    epsilon: 0.4  # optimality approximation factor. default: 0.4<br>  BiEST:<br>    type: geometric::BiEST<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>  ProjEST:<br>    type: geometric::ProjEST<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05<br>  LazyPRM:<br>    type: geometric::LazyPRM<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>  LazyPRMstar:<br>    type: geometric::LazyPRMstar<br>  SPARS:<br>    type: geometric::SPARS<br>    stretch_factor: 3.0  # roadmap spanner stretch factor. multiplicative upper bound on path quality. It does not make sense to make this parameter more than 3. default: 3.0<br>    sparse_delta_fraction: 0.25  # delta fraction for connection distance. This value represents the visibility range of sparse samples. default: 0.25<br>    dense_delta_fraction: 0.001  # delta fraction for interface detection. default: 0.001<br>    max_failures: 1000  # maximum consecutive failure limit. default: 1000<br>  SPARStwo:<br>    type: geometric::SPARStwo<br>    stretch_factor: 3.0  # roadmap spanner stretch factor. multiplicative upper bound on path quality. It does not make sense to make this parameter more than 3. default: 3.0<br>    sparse_delta_fraction: 0.25  # delta fraction for connection distance. This value represents the visibility range of sparse samples. default: 0.25<br>    dense_delta_fraction: 0.001  # delta fraction for interface detection. default: 0.001<br>    max_failures: 5000  # maximum consecutive failure limit. default: 5000<br>arm:<br>  planner_configs:<br>    - AnytimePathShortening<br>    - SBL<br>    - EST<br>    - LBKPIECE<br>    - BKPIECE<br>    - KPIECE<br>    - RRT<br>    - RRTConnect<br>    - RRTstar<br>    - TRRT<br>    - PRM<br>    - PRMstar<br>    - FMT<br>    - BFMT<br>    - PDST<br>    - STRIDE<br>    - BiTRRT<br>    - LBTRRT<br>    - BiEST<br>    - ProjEST<br>    - LazyPRM<br>    - LazyPRMstar<br>    - SPARS<br>    - SPARStwo</p>
+<p>ros_controllers和simple_moveit_controllers.yaml里的controller_names要对应起来，其中simple_moveit_controllers.yaml最简单的情况下只包括一个position_trajectory_controller。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/19/ros2-control-moveit/" rel="prev" title="ros2_control moveit">
+      <i class="fa fa-chevron-left"></i> ros2_control moveit
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/17/moveit2%E5%A4%A7%E8%B5%B7%E5%BA%95/" rel="next" title="Moveit2架构">
+      Moveit2架构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MSA%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">MSA使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E7%A2%B0%E6%92%9E%E7%9F%A9%E9%98%B5"><span class="nav-number">1.1.</span> <span class="nav-text">自碰撞矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Virtual-Joints%E8%99%9A%E6%8B%9F%E5%85%B3%E8%8A%82"><span class="nav-number">1.2.</span> <span class="nav-text">Virtual Joints虚拟关节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Planning-Groups"><span class="nav-number">1.3.</span> <span class="nav-text">Planning Groups</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Robot-Poses"><span class="nav-number">1.4.</span> <span class="nav-text">Robot Poses</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#End-Effectors"><span class="nav-number">1.5.</span> <span class="nav-text">End Effectors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Passive-Joints"><span class="nav-number">1.6.</span> <span class="nav-text">Passive Joints</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Controllers"><span class="nav-number">1.7.</span> <span class="nav-text">Controllers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3D-Perception"><span class="nav-number">1.8.</span> <span class="nav-text">3D Perception</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Simulation"><span class="nav-number">1.9.</span> <span class="nav-text">Simulation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Author-Information"><span class="nav-number">1.10.</span> <span class="nav-text">Author Information</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Configuration-File"><span class="nav-number">1.11.</span> <span class="nav-text">Configuration File</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">1.12.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MSA%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6%E9%80%82%E9%85%8Dmoveit2"><span class="nav-number">2.</span> <span class="nav-text">MSA导出文件适配moveit2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#moveit%E5%92%8Cmoveit2%E4%B8%AD%E7%9A%84panda-arm%E5%AF%B9%E6%AF%94"><span class="nav-number">2.1.</span> <span class="nav-text">moveit和moveit2中的panda_arm对比</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

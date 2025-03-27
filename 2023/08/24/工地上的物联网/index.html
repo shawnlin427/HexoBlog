@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这是一篇偏常识科普类的文章，以快速区分工地上物联网应用的一些技术。首先，将会从物联网的架构出发。然后，本文将重点介绍工地物联网中的网络问题。工地的物联网应用中网络组织是一大难点，因为工地很少有足够的条件支持搭建无线网或有线网，这种限制可能是来自场地、电源、信号干扰等等。然而，应用物联网的需求又是真实的，搜一下有多少试图在工地上用传感器的研究就知道了。注意我们讨论的不是工地上网的问题——使用LTE、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="工地上的物联网">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2023/08/24/%E5%B7%A5%E5%9C%B0%E4%B8%8A%E7%9A%84%E7%89%A9%E8%81%94%E7%BD%91/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="这是一篇偏常识科普类的文章，以快速区分工地上物联网应用的一些技术。首先，将会从物联网的架构出发。然后，本文将重点介绍工地物联网中的网络问题。工地的物联网应用中网络组织是一大难点，因为工地很少有足够的条件支持搭建无线网或有线网，这种限制可能是来自场地、电源、信号干扰等等。然而，应用物联网的需求又是真实的，搜一下有多少试图在工地上用传感器的研究就知道了。注意我们讨论的不是工地上网的问题——使用LTE、">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-24T06:57:02.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.714Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2023/08/24/%E5%B7%A5%E5%9C%B0%E4%B8%8A%E7%9A%84%E7%89%A9%E8%81%94%E7%BD%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>工地上的物联网 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2023/08/24/%E5%B7%A5%E5%9C%B0%E4%B8%8A%E7%9A%84%E7%89%A9%E8%81%94%E7%BD%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          工地上的物联网
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-24 14:57:02" itemprop="dateCreated datePublished" datetime="2023-08-24T14:57:02+08:00">2023-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/embedded/" itemprop="url" rel="index"><span itemprop="name">embedded</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/embedded/%E6%A0%91%E8%8E%93%E6%B4%BE/" itemprop="url" rel="index"><span itemprop="name">树莓派</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这是一篇偏常识科普类的文章，以快速区分工地上物联网应用的一些技术。首先，将会从物联网的架构出发。然后，本文将重点介绍工地物联网中的网络问题。工地的物联网应用中网络组织是一大难点，因为工地很少有足够的条件支持搭建无线网或有线网，这种限制可能是来自场地、电源、信号干扰等等。然而，应用物联网的需求又是真实的，搜一下有多少试图在工地上用传感器的研究就知道了。注意我们讨论的不是工地上网的问题——使用LTE、卫星数据、或者市面上可见的LTE热点&#x2F;Wi-Fi都可以实现，也很方便；我们讨论的是将工地上各类有上网需求的设备通过某种方式联系到一起，从而实现数据的共享，这也是物联网的立意。从这一点出发我们将讨论我们可以使用哪些工具和协议，并且最适合工地环境的最佳实践可能是什么。</p>
+<h2 id="物联网的架构"><a href="#物联网的架构" class="headerlink" title="物联网的架构"></a>物联网的架构</h2><p>物联网分为感知层、网络层、平台层和应用层。感知层包括了各类传感器进行感知活动。网络层是这篇文章的重点，是数据采集和传输活动的基础。平台层和应用层主要对数据进行管理，建立统一的接口，然后在接口上面做引用。</p>
+<h2 id="我们熟知的网络架构"><a href="#我们熟知的网络架构" class="headerlink" title="我们熟知的网络架构"></a>我们熟知的网络架构</h2><p>我们每天都在用互联网，或者严谨一些，叫做万维网。这是我们熟知的接触网络的方式：我们连上wifi，打开一个网页，浏览上面的内容。这很好，非常直观——但是背后到底发生了什么？首先，需要用最简单明了但是完整的方式描述这一过程：</p>
+<p>我们首先连接上路由器，使得我们的终端和路由器之间建立起了基于Wi-Fi协议的链接，这种链接使得我们的终端和路由器之间可以进行数据传输。然后我们通过tcp&#x2F;ip协议链接目标服务器，然后用http协议向目标服务器发起网页内容的请求（或者说请求是包装在http协议中的），服务器接收后，同样通过http协议返回内容，而在http协议的下层是tcp&#x2F;ip管道在支撑终端和服务器之间传输数据。</p>
+<p>总结一下，从外行人的角度来看，Wi-Fi的本质是无线电波，这是数据传输的一种介质（和光纤是同类的）；tcp&#x2F;ip是一类底层协议，作用是在两者之间建立起数据通路；http是一类高级协议，能够传输更加丰富的数据。</p>
+<p>我们可以在这个网络架构上构建初级的物联网平台：传感器通过Wi-Fi传输数据，基于tcp&#x2F;ip和http协议将数据上传到服务器。其他终端应用，可以通过相同的方式访问服务器以获取传感器数据或这通过服务器转发控制命令。然而，是否有更好的方法呢？答案是肯定的。接下来就会从介质和协议两个方面介绍其他的物联网方案。</p>
+<h2 id="传输介质"><a href="#传输介质" class="headerlink" title="传输介质"></a>传输介质</h2><p>在物联网场景下，无线介质一般是主流，因为它能够拜托有线传输带来的额外场地需求和安装需求。除了Wi-Fi，其他在物联网中使用的传输介质包括LTE、Zigbee、蓝牙、LoRa、UWB。从原理上说，他们都是无线电波，但是是不同波段的，这赋予了他们不同的通信特性与能力。</p>
+<ul>
+<li>Wi-Fi：遵循IEEE 802.11标准，工作频率在2.4G和5G。优点是非常通行，传输速度可以很快。缺点是功耗大（相比而言，手机不都是wifi吗），覆盖范围有限，而且受到建筑物等物理障碍的影响更加明显</li>
+<li>蓝牙：遵循IEEE 802.15.1标注，工作频率在2.4G。注意蓝牙的通行协议并不是基于tcp&#x2F;ip的，这意味着蓝牙接入www并不是那么方便（并不是不行），所以一般用于组建局域网，通过网关将数据基于tcp&#x2F;ip上云。</li>
+<li>Zigbee：遵循IEEE 802.15.4标准，工作频率在2.4G。和蓝牙相似，也是短距通信技术，使用Zigbee的设备也要接入网关后才能上云。Zigbee很省电，但是传输速度低，协议很复杂。</li>
+<li>LoRa：LoRa属于一种私有协议，工作频段在433MHz、868MHz和915MHz等低频段。由于频段很低，所以波长很长，这意味着LoRa的绕障能力很强，传输距离很远，但也意味着传输速率很慢。此外LoRa因为属于私有协议，搭建LoRa网络的难度是比较高的。LoRa也需要通过网关（LoRaWAN）上云。</li>
+<li>UWB：UWB的工作频率在3.1 - 10.6GHz，远远高于以上任何无线介质。这意味着UWB的传输速度非常快；而且由于波长很小，可以穿墙；此外工作频段和其他介质不同，因此抗干扰能力也比较好。由于UWB是间歇性工作的，耗电量也比较低。但是如果把UWB用作数据传输的话，网上是众说纷纭，有人说功耗大，有人说功耗低，有人说穿透性好，有人说遮挡影响大，有人说传输距离小，有人说传输距离长。这是一个有很大争议的技术，暂时搁置不谈。</li>
+<li>LTE：LTE支撑了移动通信技术，只要终端具备LTE能力，在有LTE覆盖的范围内就可以进行通信。LTE一般基于TCP&#x2F;IP进行通信。</li>
+</ul>
+<p>如果要对上述介质进行分类的话，可以这么分：</p>
+<ul>
+<li>短距通信：蓝牙、Zigbee、UWB</li>
+<li>长距通信：Wi-Fi、LoRa</li>
+<li>无网关通信：LTE</li>
+</ul>
+<h2 id="传输协议（MQTT）"><a href="#传输协议（MQTT）" class="headerlink" title="传输协议（MQTT）"></a>传输协议（MQTT）</h2><p>除了TCP&#x2F;IP协议以外，另一个广为人知的协议是UDP。不过UDP更多应用在流式传输中，在物联网领域，一般还是数据和控制信号的准确性为有限，TCP的含义就是对数据传输的正确性进行评估，因此基于TCP&#x2F;IP的协议应用比较广。在这个基础上，我们就不再深究那些基于UDP的协议了，而是看看有哪些基于TCP&#x2F;IP的协议。此外，Zigbee、蓝牙、LoRa都有自己的协议，不过一般来说都会有一个网关将数据重新封装到TCP&#x2F;IP协议中。这里主要就介绍http和mqtt协议——事实上，为什么要介绍http协议呢？大家都很清楚http协议。我们就直接说mqtt协议吧。</p>
+<p>MQTT协议使用的是发布&#x2F;订阅机制，终端通过MQTT协议把数据发布到MQTT服务器的topic上，其他终端订阅该topic就可以获取实时数据。这种数据传输方式有一些像管道，一方往里灌水，另一方取水。是的，就这么简单。它相比http的优势在于实现简单，适用于不太可靠的网络环境下，因为发布者并不需要提前知道订阅者，所以可以实现不可靠网络环境下的端到端通信。相比服务-客户的CS结构，由于mqtt的协议复杂度比http低，所以速度也更快一些（也许吧）。这些因素让mqtt成为了物联网最常使用的（其实也不一定）的传输协议。</p>
+<h2 id="工地上的Best-Practice？"><a href="#工地上的Best-Practice？" class="headerlink" title="工地上的Best Practice？"></a>工地上的Best Practice？</h2><h3 id="传输介质-1"><a href="#传输介质-1" class="headerlink" title="传输介质"></a>传输介质</h3><p>首先我们看传输介质。目前而言LoRa在建筑工地中的传输应用兴趣很浓。Minglong Zhang等人在《A construction accident prevention system based on the Internet of Things (IoT)》中如此报道：</p>
+<blockquote>
+<p>连接到 LoRa 设备 LoRa 6103pro 的计算机作为服务器被放置在建筑物 A 的底层.然后将连接到RFID读取器的LoRa发射器放置在不同的位置， 包括建筑物A和室外建筑工地的不同楼层.</p>
+</blockquote>
+<p>似乎这说明LoRa具有良好的穿透性，这和一些结论并不符合。</p>
+<p>在J. Teizer等人的《Construction resource efficiency improvement by Long Range Wide Area Network tracking and monitoring》，一个LoRa网关被安装在10m的高架上，在目视环境下，能够采集大范围场地内的LoRa信号。LoRa在目视无遮挡的情况下，通信的距离是能够得到保障的，这也是LoRa公认的优势。</p>
+<p><a target="_blank" rel="noopener" href="https://link-springer-com.eproxy.lib.hku.hk/article/10.1007/s41693-021-00059-8#auth-Rushi-Dai-Aff1">Rushi Dai</a>等人在《Improving data communication on construction sites via LoRaWAN》测试了长视距下的数据传输。使用了LoRa网关，和树莓派4搭载LoRaWAN协议以和web通信并实现web应用。场景是在野外环境下进行的，在不足中，作者报告了在障碍物下较高的丢包率、LoRA终端无法自动重新加入LoRaWAN等情况。</p>
+<p>Linlin Zhao的文章《Development of Intelligent Prefabs Using IoT Technology to Improve the Performance of Prefabricated Construction Projects》在250m*150m的工地上测试了LoRa。特别的他们指出在中国LoRa是在470&#x2F;510MHz工作的，传输速度在0.37-46.9kbps。不过这篇文章也没有涉及到室内的应用。</p>
+<p>关于室内LoRa的效果我找到了<a target="_blank" rel="noopener" href="https://ieeexplore-ieee-org.eproxy.lib.hku.hk/author/37085725987">Jetmir Haxhibeqiri</a>的《LoRa indoor coverage and performance in an industrial environment: Case study》作为参考。报告称网关附近的节点在上行链路中平均可以发送2kibt&#x2F;s的数据——一个非常低的数据。研究是在真实的室内工业环境中的，结果指出大多数时候网关和终端之间的通信会被金属材质的运输车阻塞。这点不太乐观，因为建筑工地上的金属部件只会更多，比如临时支撑和脚手架。</p>
+<p>总结而言，LoRa在室外工地环境上的应用还是值得期许的，但是在室内环境下的效果不容乐观，但是也暂时没有确切的证据证明不行。Minglong Zhang的研究结果似乎指向了比较好的结果。此外，LoRa的数据传输速度也不容乐观。太小的带宽可能传输不了太多的信息，大多数情况下可能只能传输“必要”的信息。</p>
+<p>对于LTE的主要批判是价格太贵。关于这一点，国内电信的物联卡参考标准是10元&#x2F;月，可以使用1GB的流量。如果仅仅是发送数据的话，假设每次发送的数据量是5kb，那么大概能够支撑1个月内连续不断地分钟发送5次消息。此外，LTE可能在一些地方没有覆盖——这一点在中国大陆可能不太存在，喜马拉雅上山都有5G信号。相比之下，似乎在中国大陆使用LTE方案也是值得探究的。LoRa的带宽、干扰问题能够得到很好的解决，相比之下的成本，LoRa的单个模块要比LTE模块便宜，但是要额外的网关成本，半斤八两。如果设备量不大的话，可能LTE方案反而更加省钱。</p>
+<p>这里不提WiFi和短距离通信技术，因为我们的目标是整个建筑场地。根据之前已有的实践，WiFi一般需要配合网桥使用，对收发角度很有要求，才能覆盖大面积。一般这种方案会用在无线监控上。另外，短距离通信技术的应用过于受限了，很难组建覆盖整个工地的网络。</p>
+<h3 id="传输协议"><a href="#传输协议" class="headerlink" title="传输协议"></a>传输协议</h3><p>不管是使用LoRa还是LTE，都有两个协议可供选择：Http和MQTT。考虑到lora的带宽实在太低，MQTT更常用一些。如果是使用MQTT，则对边缘设备的处理要求可能更高，毕竟服务器只是消息中转。如果有大运算要求，则可能使用http会更合适。例如，如果要针对性地查询一些东西，就需要使用CS架构+http协议了。如果运算都在终端设备上，终端收集完信息后再做运算，mqtt协议会比较适合。这和实际的控制需求相关。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/14/steamdeck%E5%8F%8C%E7%B3%BB%E7%BB%9F%E6%8A%98%E8%85%BE%E6%8C%87%E5%8D%97/" rel="prev" title="SteamDeck双系统折腾指南">
+      <i class="fa fa-chevron-left"></i> SteamDeck双系统折腾指南
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/08/24/mqtt%E5%88%9D%E6%AD%A5%E5%B0%9D%E8%AF%95/" rel="next" title="MQTT初步尝试">
+      MQTT初步尝试 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E8%81%94%E7%BD%91%E7%9A%84%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">物联网的架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E4%BB%AC%E7%86%9F%E7%9F%A5%E7%9A%84%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">我们熟知的网络架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E4%BB%8B%E8%B4%A8"><span class="nav-number">3.</span> <span class="nav-text">传输介质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%EF%BC%88MQTT%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">传输协议（MQTT）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%9C%B0%E4%B8%8A%E7%9A%84Best-Practice%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">工地上的Best Practice？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E4%BB%8B%E8%B4%A8-1"><span class="nav-number">5.1.</span> <span class="nav-text">传输介质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.2.</span> <span class="nav-text">传输协议</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

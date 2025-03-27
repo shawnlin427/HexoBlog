@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="很久没更新了，因为最近都在打老头环。这次来更新一下，Moveit2的架构。 Moveit2是适配ROS2的运动规划包。重要性无需多言。这一篇主要讲的是Moveit2都做了些什么。 总览 此流程中列出的都是Moveit2默认的求解器或算法。由于Moveit2是开源的，这些求解器和算法也都是开源的。 Moveit2的接口Moveit2的核心是move_group，实际上是一个ROS Node。这个No">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Moveit2架构">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/03/17/moveit2%E5%A4%A7%E8%B5%B7%E5%BA%95/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="很久没更新了，因为最近都在打老头环。这次来更新一下，Moveit2的架构。 Moveit2是适配ROS2的运动规划包。重要性无需多言。这一篇主要讲的是Moveit2都做了些什么。 总览 此流程中列出的都是Moveit2默认的求解器或算法。由于Moveit2是开源的，这些求解器和算法也都是开源的。 Moveit2的接口Moveit2的核心是move_group，实际上是一个ROS Node。这个No">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/03/image-1024x312.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/03/image-1-1024x804.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/03/image-5-1024x732.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/03/image-3-1024x541.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/03/image-8-1024x370.png">
+<meta property="article:published_time" content="2022-03-17T08:54:24.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.682Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.lxshaw.com/wp-content/uploads/2022/03/image-1024x312.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/03/17/moveit2%E5%A4%A7%E8%B5%B7%E5%BA%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Moveit2架构 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/03/17/moveit2%E5%A4%A7%E8%B5%B7%E5%BA%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Moveit2架构
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-17 16:54:24" itemprop="dateCreated datePublished" datetime="2022-03-17T16:54:24+08:00">2022-03-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Moveit/" itemprop="url" rel="index"><span itemprop="name">Moveit</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Moveit/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>很久没更新了，因为最近都在打老头环。这次来更新一下，Moveit2的架构。</p>
+<p>Moveit2是适配ROS2的运动规划包。重要性无需多言。这一篇主要讲的是Moveit2都做了些什么。</p>
+<h2 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h2><p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/03/image.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/03/image-1024x312.png"></a></p>
+<p>此流程中列出的都是Moveit2默认的求解器或算法。由于Moveit2是开源的，这些求解器和算法也都是开源的。</p>
+<h2 id="Moveit2的接口"><a href="#Moveit2的接口" class="headerlink" title="Moveit2的接口"></a>Moveit2的接口</h2><p>Moveit2的核心是move_group，实际上是一个ROS Node。这个Node提供了用户与Moveit2交互的接口，以及场景数据储存。</p>
+<h3 id="交互接口"><a href="#交互接口" class="headerlink" title="交互接口"></a>交互接口</h3><p>Moveit2提供C++接口和Rviz可视化GUI接口。Python暂时不支持（大失败）</p>
+<h2 id="规划场景"><a href="#规划场景" class="headerlink" title="规划场景"></a>规划场景</h2><p>规划路径前要获得场景数据，例如人用手摘书上的苹果的时候，要知道手、苹果、数分别在哪里。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/03/image-1.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/03/image-1-1024x804.png"></a></p>
+<p>场景数据储存在ros topic中，可以分为三类：</p>
+<ol>
+<li>State Monitor：机器人的状态，以及与机器人附着的物体。</li>
+<li>Scene Monitor：静态的场景信息，一般提前输入。</li>
+<li>World Geometry Monitor，动态的场景信息，通过传感器获得。</li>
+</ol>
+<p>其中，前两者主要通过Mesh表示。动态的场景信息通过Occupancy Map表示，依赖于Octomap库，支持点云和深度图像。</p>
+<h2 id="碰撞检测"><a href="#碰撞检测" class="headerlink" title="碰撞检测"></a>碰撞检测</h2><p>碰撞检测默认使用FCL(Flexible Collision Library) 库，本质上任务比较简单。然而，碰撞检测可能会非常耗时，有时候会占用路径中90%的计算量。为了避免这个情况，有两个方法：</p>
+<ul>
+<li>简化碰撞模型。可视化模型可以非常精美，但是碰撞模型可以简化。例如使用Bounding Box替代碰撞模型（最极端的情况），或者使用低模。</li>
+<li>使用ACM（Allowed collision matrix）。在使用moveit_assistance的时候，有一项就是生成ACM，ACM会指出在检查碰撞时忽略哪两个link之间，比如机械臂上两个永远不会相碰的link或者两个永远会接触的link。</li>
+</ul>
+<h2 id="Motion-planning：全局规划"><a href="#Motion-planning：全局规划" class="headerlink" title="Motion planning：全局规划"></a>Motion planning：全局规划</h2><p>路径规划用于规划出一条末端执行器从当前位置到最终位置的路线，注意这里在规划的时候并不考虑整个机器人，仅考虑执行器的碰撞。</p>
+<p>Moveit2支持多个路径规划库，默认的是OMPL，一个开源的规划算法库。其他的库也可以关注一下，一般来说OMPL就可以满足需求：</p>
+<ul>
+<li>Pilz, 工业运动规划器，生成圆周运动和线性运动的轨迹</li>
+<li>STOMP, 基于优化的规划期</li>
+<li>SBPL, 基于搜索</li>
+<li>CHOMP, 基于梯度优化</li>
+</ul>
+<h3 id="几种常见的路径规划算法"><a href="#几种常见的路径规划算法" class="headerlink" title="几种常见的路径规划算法"></a>几种常见的路径规划算法</h3><p>以下是OMPL包含的部分算法，完整的列表在这里：<a target="_blank" rel="noopener" href="https://ompl.kavrakilab.org/planners.html">https://ompl.kavrakilab.org/planners.html</a></p>
+<ul>
+<li>多次查询规划器<ul>
+<li>PRM : 先随机采样，构建无碰撞的无向图，然后使用A*搜索路径</li>
+<li>无向图可以复用<ul>
+<li>变体：LazyPRM，PRM*，LazyPRM*</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>单次查询规划器<ul>
+<li>RRT，EST，FMT等<ul>
+<li>变体：双向RRT，LBTRRT，稀疏RRT，等等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>默认的路劲优化是寻找最短路径，但是也可以指定其他的优化目标，比如路径间隙、路径数量等等。这些优化目标可以在C++接口中设置。（不保证能达到最优）</p>
+<h2 id="局部规划与IK"><a href="#局部规划与IK" class="headerlink" title="局部规划与IK"></a>局部规划与IK</h2><p>局部规划（location plan）基于全局规划的路径，计算当前机器人状态下应当给出何种命令使得机器人向目标移动并避免碰撞。在此过程中，需要使用IK（Inverse Kinematics）。</p>
+<h3 id="Kinematics"><a href="#Kinematics" class="headerlink" title="Kinematics"></a>Kinematics</h3><p>运动学的解释如下：the branch of mechanics concerned with the motion of objects without reference to the forces which cause the motion.Compare with <a target="_blank" rel="noopener" href="https://cn.bing.com/search?q=define+dynamics">dynamics</a>.</p>
+<p>Moveit2支持的逆运动学求解器包括：</p>
+<ul>
+<li><strong>KDL Kinematics</strong>，默认的求解器<ul>
+<li>数值解</li>
+<li>速度慢，可能找不到解</li>
+</ul>
+</li>
+<li><strong>TRAC-IK</strong><ul>
+<li>同时运行两个 IK 实现**，**一种是对 KDL 基于牛顿的收敛算法的简单扩展，第二种是 SQP（顺序二次规划）非线性优化方法</li>
+<li>优于KDL，moveit2内置</li>
+</ul>
+</li>
+<li><strong>IKFAST</strong><ul>
+<li>经测试，效果最好，但是安装比较繁琐，可能不支持Moveit2</li>
+</ul>
+</li>
+</ul>
+<h3 id="局部规划"><a href="#局部规划" class="headerlink" title="局部规划"></a>局部规划</h3><p>局部规划试图在全局规划给出的两个相邻路径点之间进行规划。主要任务：</p>
+<ul>
+<li>Processes incoming global trajectory updates 参考全局规划轨迹点</li>
+<li>Solves the local planning problem based on robot state, world and reference trajectory 根据机器人当前状态计算局部规划问题</li>
+<li>Sends position&#x2F;velocity commands to the robot driver 发送命令给机器人</li>
+</ul>
+<p>下表是一个全局规划和局部规划的对比：</p>
+<p><strong>Global Planner</strong></p>
+<p><strong>Local Planner</strong></p>
+<p>•Solve global solution trajectory<br>•Optimize trajectory path (continuously)</p>
+<p>•Follow global reference trajectory<br>•Solve local problem constraints<br>•May process sensor input<br>•Optimize solution locally<br>•Compute controller commands</p>
+<p>•Complete<br>•No restricted  computation time<br>•Not real-time safe<br>•Not necessarily deterministic</p>
+<p>•Can get stuck in local minima<br>•Low computation time<br>•Realtime-safe (depends on solver) •Deterministic</p>
+<p>•OMPL planner<br>•STOMP<br>•TrajOpt<br>•Cartesian motion planner<br>•Pilz Industrial Motion Planner<br>•MTC</p>
+<p>•IK solver, Jacobian<br>•Potential field planner<br>•Trajectory optimization algorithm<br>•Model Predictive Control (MPC)<br>•Sensor-based Optimal Control</p>
+<p>局部规划器不仅能输出具体的关节命令，还可以根据用户设定的逻辑唤起事件。例如，在靠近障碍物的时候停止运行，然后重新规划，如下图。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/03/image-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/03/image-5-1024x732.png"></a></p>
+<p>结合全局规划和局部规划后，实际上就涉及到任务的时间序列，在下一章混合规划将会描述。</p>
+<h2 id="混合规划"><a href="#混合规划" class="headerlink" title="混合规划"></a>混合规划</h2><p>混合规划实际上就是全局规划+局部规划。基于混合规划可以实现在运动过程中持续优化全局路径，或者用于方案修复（例如在碰撞时停止并重新规划路径），以及自适应运动（例如贴合凹凸不平的物体表面进行运动，焊接机器人）</p>
+<p>对于混合规划，其组成如下图所示。1-5表示了一个最基础的请求是如何促使信息流在各组件内流动的（不包括重新规划的过程）</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/03/image-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/03/image-3-1024x541.png"></a></p>
+<h3 id="重新规划：以动态障碍物避障为例"><a href="#重新规划：以动态障碍物避障为例" class="headerlink" title="重新规划：以动态障碍物避障为例"></a>重新规划：以动态障碍物避障为例</h3><p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/03/image-8.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/03/image-8-1024x370.png"></a></p>
+<p>上图非常清楚。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是在moveit2中进行路径规划的主要组件和流程。下一篇会介绍moveit2的配置方法。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/22/msa%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8A%E5%AF%B9moveit2%E7%9A%84%E9%80%82%E9%85%8D/" rel="prev" title="MSA使用以及对moveit2的适配">
+      <i class="fa fa-chevron-left"></i> MSA使用以及对moveit2的适配
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/25/cp210x%E6%97%A0%E6%B3%95%E8%AF%86%E5%88%AB%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" rel="next" title="CP210x无法识别问题解决">
+      CP210x无法识别问题解决 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">总览</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Moveit2%E7%9A%84%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.</span> <span class="nav-text">Moveit2的接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%A4%E4%BA%92%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.1.</span> <span class="nav-text">交互接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%84%E5%88%92%E5%9C%BA%E6%99%AF"><span class="nav-number">3.</span> <span class="nav-text">规划场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A2%B0%E6%92%9E%E6%A3%80%E6%B5%8B"><span class="nav-number">4.</span> <span class="nav-text">碰撞检测</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Motion-planning%EF%BC%9A%E5%85%A8%E5%B1%80%E8%A7%84%E5%88%92"><span class="nav-number">5.</span> <span class="nav-text">Motion planning：全局规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%9A%84%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95"><span class="nav-number">5.1.</span> <span class="nav-text">几种常见的路径规划算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E8%A7%84%E5%88%92%E4%B8%8EIK"><span class="nav-number">6.</span> <span class="nav-text">局部规划与IK</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Kinematics"><span class="nav-number">6.1.</span> <span class="nav-text">Kinematics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E8%A7%84%E5%88%92"><span class="nav-number">6.2.</span> <span class="nav-text">局部规划</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E8%A7%84%E5%88%92"><span class="nav-number">7.</span> <span class="nav-text">混合规划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E8%A7%84%E5%88%92%EF%BC%9A%E4%BB%A5%E5%8A%A8%E6%80%81%E9%9A%9C%E7%A2%8D%E7%89%A9%E9%81%BF%E9%9A%9C%E4%B8%BA%E4%BE%8B"><span class="nav-number">7.1.</span> <span class="nav-text">重新规划：以动态障碍物避障为例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

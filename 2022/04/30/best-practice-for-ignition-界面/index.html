@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="我一度感觉Gazebo要生生地被它的开发组玩坏了，现在的Ignition更像是UE、Unity那样的游戏引擎，基本上是物理引擎+光照引擎，同时集成了一些和ROS的互动。所有的功能都以插件的形式呈现。 在Ignition Gazebo的插件中能找到许多官方的插件，其中有一个插件角Shutdown Button，是的，就是显示一个关闭按钮，点一下可以关闭窗口。这有什么意义？？更不要提各种奔溃和不稳定了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Best practice for Ignition: 界面">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/04/30/best-practice-for-ignition-%E7%95%8C%E9%9D%A2/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="我一度感觉Gazebo要生生地被它的开发组玩坏了，现在的Ignition更像是UE、Unity那样的游戏引擎，基本上是物理引擎+光照引擎，同时集成了一些和ROS的互动。所有的功能都以插件的形式呈现。 在Ignition Gazebo的插件中能找到许多官方的插件，其中有一个插件角Shutdown Button，是的，就是显示一个关闭按钮，点一下可以关闭窗口。这有什么意义？？更不要提各种奔溃和不稳定了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-1024x568.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-3-1024x675.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-10-1024x492.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-2-1024x675.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-6-1024x577.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-9-1024x577.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-11-1024x555.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-1-1024x539.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-4-1024x555.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-5-1024x555.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-7-1024x577.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-8-1024x577.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-12-1024x555.png">
+<meta property="article:published_time" content="2022-04-30T10:10:12.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.685Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-1024x568.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/04/30/best-practice-for-ignition-%E7%95%8C%E9%9D%A2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Best practice for Ignition: 界面 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/04/30/best-practice-for-ignition-%E7%95%8C%E9%9D%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Best practice for Ignition: 界面
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-30 18:10:12" itemprop="dateCreated datePublished" datetime="2022-04-30T18:10:12+08:00">2022-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我一度感觉Gazebo要生生地被它的开发组玩坏了，现在的Ignition更像是UE、Unity那样的游戏引擎，基本上是物理引擎+光照引擎，同时集成了一些和ROS的互动。所有的功能都以插件的形式呈现。</p>
+<p>在Ignition Gazebo的插件中能找到许多官方的插件，其中有一个插件角Shutdown Button，是的，就是显示一个关闭按钮，点一下可以关闭窗口。这有什么意义？？更不要提各种奔溃和不稳定了。总之现在的Ignition Gazebo完全让人不知道该如何去使用它，甚至都没有一个官方教程告诉用户怎么去使用它。</p>
+<p>使用Ignition的人少之又少。这里我就介绍一下如何使用Ignition，满足正常的仿真需求。</p>
+<h1 id="界面"><a href="#界面" class="headerlink" title="界面"></a>界面</h1><p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-1024x568.png"></a></p>
+<p>Ignition Gazebo的界面，左边为模拟界面，右边为工具栏。为了正常使用，优先开启Resource Spawner插件，这样就不用傻兮兮地在sdf文件中手动加模型了，直接拖拽即可。这样至少达到了Gazebo的使用要求。左上角为基础功能，添加一些基本性质、光照和基本变换，就像UE等游戏引擎那样。左下角为开启模拟功能。总体来看，你可以把它当做一个乞丐版的游戏引擎。</p>
+<h1 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h1><p>插件是Ignition Gazebo的“创新之处”，为了全面了解其功能，以下列出所有插件的功能：</p>
+<h2 id="默认打开或建议打开的插件功能"><a href="#默认打开或建议打开的插件功能" class="headerlink" title="默认打开或建议打开的插件功能"></a>默认打开或建议打开的插件功能</h2><h3 id="Scene-3D"><a href="#Scene-3D" class="headerlink" title="Scene 3D"></a>Scene 3D</h3><p>左边的3D显示区域。</p>
+<h3 id="Component-inspector"><a href="#Component-inspector" class="headerlink" title="Component inspector"></a>Component inspector</h3><p>这会显示所选模型的各类属性。例如名称、自碰撞属性、位姿、Wind Mode（不清楚是什么）、模型路径、父对象、是否静态等。</p>
+<p>大部分属性都是不能更改的，除了位姿。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-3-1024x675.png"></a></p>
+<h3 id="Copy-Paste"><a href="#Copy-Paste" class="headerlink" title="Copy&#x2F;Paste"></a>Copy&#x2F;Paste</h3><p>粘贴复制功能，这个插件默认开启，放置在左上角。</p>
+<h3 id="Entity-Context-Menu"><a href="#Entity-Context-Menu" class="headerlink" title="Entity Context Menu"></a>Entity Context Menu</h3><p>这个插件也是默认开启的，开启后，在3D界面中右键点击实体，可以进行一些快捷操作，比如查看碰撞、关节，跟随、转到等等。</p>
+<h3 id="Select-Entity"><a href="#Select-Entity" class="headerlink" title="Select Entity"></a>Select Entity</h3><p>没想到吧，连选择一个Entity都是通过插件实现的功能。</p>
+<h3 id="Entity-Tree"><a href="#Entity-Tree" class="headerlink" title="Entity Tree"></a>Entity Tree</h3><p>显示实体树，非常实用且重要的功能，推荐默认开启。</p>
+<h3 id="Grid-3D"><a href="#Grid-3D" class="headerlink" title="Grid 3D"></a>Grid 3D</h3><p>默认开启，显示网格坐标。</p>
+<h3 id="Transform-control"><a href="#Transform-control" class="headerlink" title="Transform control"></a>Transform control</h3><p>基础变换功能，默认开启，显示在左上角。</p>
+<h3 id="World-control"><a href="#World-control" class="headerlink" title="World control"></a>World control</h3><p>开启和终止仿真，默认打开，放在左下角。</p>
+<h3 id="Scene-Manager"><a href="#Scene-Manager" class="headerlink" title="Scene Manager"></a>Scene Manager</h3><p>默认打开的功能，应该是用于组织维护仿真数据库。</p>
+<h3 id="Resource-Spawner"><a href="#Resource-Spawner" class="headerlink" title="Resource Spawner"></a>Resource Spawner</h3><p>这功能就厉害了，可以导入本地的模型和Fuel中的模型。建议默认打开。但是链接Fuel服务器要花很长时间，而且没有搜索功能，只有点进模型贡献者的分类页面，才能按照名称搜索。openrobotics有很多的资源，可以取需(下载的模型太大会卡死…)。之后可能单开一篇讲讲怎么用Resource spawner。</p>
+<h3 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h3><p>截屏功能，默认在左上角。</p>
+<h3 id="Interactive-View-Control"><a href="#Interactive-View-Control" class="headerlink" title="Interactive View Control"></a>Interactive View Control</h3><p>应该是视角拖拽一类的功能。</p>
+<h3 id="Shapes"><a href="#Shapes" class="headerlink" title="Shapes"></a>Shapes</h3><p>放置基础形状，有立方体、球体、圆柱、胶囊体、扁球体五种。默认在左上角。</p>
+<h3 id="Spawn"><a href="#Spawn" class="headerlink" title="Spawn"></a>Spawn</h3><p>直接写插件描述：Adding spawn functionality to the 3D scene, via events and drag and drop.</p>
+<h3 id="Lights"><a href="#Lights" class="headerlink" title="Lights"></a>Lights</h3><p>放置灯光。</p>
+<h3 id="Visualization-capabilities"><a href="#Visualization-capabilities" class="headerlink" title="Visualization capabilities"></a>Visualization capabilities</h3><p>提供查看模型关节、布线、碰撞的功能。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-10.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-10-1024x492.png"></a></p>
+<h3 id="World-stats"><a href="#World-stats" class="headerlink" title="World stats"></a>World stats</h3><p>显示仿真时间与真实时间之间的比例。默认显示在3D视图的右下角。</p>
+<h2 id="显示类插件功能"><a href="#显示类插件功能" class="headerlink" title="显示类插件功能"></a>显示类插件功能</h2><h3 id="Visualize-contacts"><a href="#Visualize-contacts" class="headerlink" title="Visualize contacts"></a>Visualize contacts</h3><p>会显示模型之间的碰撞点。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-2.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-2-1024x675.png"></a></p>
+<h3 id="Topic-echo"><a href="#Topic-echo" class="headerlink" title="Topic echo"></a>Topic echo</h3><p>读取指定话题的信息，这里读取的是ign内部的topic。</p>
+<h3 id="Image-display"><a href="#Image-display" class="headerlink" title="Image display"></a>Image display</h3><p>如果有照相机传感器的话，可以在这里看到图像。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-6.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-6-1024x577.png"></a></p>
+<h3 id="Topic-Viewer"><a href="#Topic-Viewer" class="headerlink" title="Topic Viewer"></a>Topic Viewer</h3><p>可以看到各类Topic，以及Topic数据的格式。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-9.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-9-1024x577.png"></a></p>
+<h3 id="Transport-plotting"><a href="#Transport-plotting" class="headerlink" title="Transport plotting"></a>Transport plotting</h3><p>这看起来是一个可以绘制图表的插件，但是不知道如何指定绘制对象。从名字中我认为应该是 可以绘制时间序列的一些数据。</p>
+<h3 id="Video-Recoder"><a href="#Video-Recoder" class="headerlink" title="Video Recoder"></a>Video Recoder</h3><p>内置的录屏功能。这个倒是没有默认放在左上角，我倒觉得也可以默认放在左上角。</p>
+<h3 id="Navigation-satellite-map"><a href="#Navigation-satellite-map" class="headerlink" title="Navigation satellite map"></a>Navigation satellite map</h3><p>需要一个有Navsat信息的ignition topic，可以显示地图。</p>
+<h3 id="Visualize-lidar"><a href="#Visualize-lidar" class="headerlink" title="Visualize lidar"></a>Visualize lidar</h3><p>可以可视化显示激光雷达的激光线，并且标出有扫描到实体的线。</p>
+<h3 id="Plotting"><a href="#Plotting" class="headerlink" title="Plotting"></a>Plotting</h3><p>看起来，类似Transport plotting，或者说这两者应该是一致的。需要配合Topic viewer使用，Topic中可以绘图的数据将可以被拖拽到绘图窗口中，自动地绘制一条与时间相关的数据。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-11.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-11-1024x555.png"></a></p>
+<h2 id="没有卵用的插件功能"><a href="#没有卵用的插件功能" class="headerlink" title="没有卵用的插件功能"></a>没有卵用的插件功能</h2><h3 id="Banana-for-scale"><a href="#Banana-for-scale" class="headerlink" title="Banana for scale"></a>Banana for scale</h3><p>可以插入两个香蕉模型，一个大(1m)一个小。不知所谓的功能。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-1.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-1-1024x539.png"></a></p>
+<h3 id="Shutdown-Button"><a href="#Shutdown-Button" class="headerlink" title="Shutdown Button"></a>Shutdown Button</h3><p>提供一个 关闭窗口的按钮，和最右上角那个功能一样。我只能理解是开发组人的小消遣了，非常奇葩的功能。“嘿，我给我的电脑写了一个关机程序，只需要打开它然后按一下这个按钮就可以关机了，神奇吧？”</p>
+<h2 id="输入、交互、修改类功能"><a href="#输入、交互、修改类功能" class="headerlink" title="输入、交互、修改类功能"></a>输入、交互、修改类功能</h2><h3 id="Component-inspector-editor"><a href="#Component-inspector-editor" class="headerlink" title="Component inspector editor"></a>Component inspector editor</h3><p>打开它经常会让ignition奔溃退出。它和Component inspector的区别在于提供了一个“add link or light to the model”的选项，通过这个选项，可以向模型添加更多的子link，然后在上面添加传感器等。</p>
+<p>使用它经常会导致奔溃。</p>
+<h3 id="Publisher"><a href="#Publisher" class="headerlink" title="Publisher"></a>Publisher</h3><p>向特定话题以一定频率发布消息，用于测试。</p>
+<h3 id="Tape-measure"><a href="#Tape-measure" class="headerlink" title="Tape measure"></a>Tape measure</h3><p>可以通过点击两点测量一段距离，一般在俯视图下会比较准确，其他时候准确度堪忧。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-4.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-4-1024x555.png"></a></p>
+<h3 id="Grid-config"><a href="#Grid-config" class="headerlink" title="Grid config"></a>Grid config</h3><p>可以调整网格的属性，例如大小、数量、颜色。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-5-1024x555.png"></a></p>
+<h3 id="View-Angle"><a href="#View-Angle" class="headerlink" title="View Angle"></a>View Angle</h3><p>可以用这个插件快捷地调整到某一正视图，同时可以选择正交视角还是透视视角，正交视角的视角移动方式非常奇怪，也许是BUG。</p>
+<h3 id="Joint-position-controller"><a href="#Joint-position-controller" class="headerlink" title="Joint position controller"></a>Joint position controller</h3><p>可以控制有活动关节的模型。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-7.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-7-1024x577.png"></a></p>
+<h3 id="Teleop"><a href="#Teleop" class="headerlink" title="Teleop"></a>Teleop</h3><p>可以用于控制小车。提供数值控制、键盘控制、滚动条控制三种控制方法。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-8.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-8-1024x577.png"></a></p>
+<h3 id="Align-tool"><a href="#Align-tool" class="headerlink" title="Align tool"></a>Align tool</h3><p>对其工具，和gazebo classic中的对齐工具类似。也许是配合前面的编辑修改器使用的，从而能在Ignition中建造机器人模型。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-12.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-12-1024x555.png"></a></p>
+<h2 id="未知的功能"><a href="#未知的功能" class="headerlink" title="未知的功能"></a>未知的功能</h2><h3 id="Camera-tracking"><a href="#Camera-tracking" class="headerlink" title="Camera tracking"></a>Camera tracking</h3><p>未知功能，只显示空白。</p>
+<h3 id="Transport-scene-manager"><a href="#Transport-scene-manager" class="headerlink" title="Transport scene manager"></a>Transport scene manager</h3><p>这也是一个会经常导致奔溃的插件。它的作用不明，大部分情况下它只是保持空白，或者突然导致Ignition gazebo的奔溃。</p>
+<h3 id="Gz-scene-3D"><a href="#Gz-scene-3D" class="headerlink" title="Gz scene 3D"></a>Gz scene 3D</h3><p>又是一个，找不到任何功能描述，一打开就奔溃的插件。</p>
+<h3 id="Key-publisher"><a href="#Key-publisher" class="headerlink" title="Key publisher"></a>Key publisher</h3><p>不明。</p>
+<h3 id="Minimal-Scene"><a href="#Minimal-Scene" class="headerlink" title="Minimal Scene"></a>Minimal Scene</h3><p>我一打开这个插件，ignition gazebo就被橄榄了。报错如下：</p>
+<p>[GUI] [Err] [RenderEngineManager.cc:470] Failed to load plugin [] : couldn’t load library on path [&#x2F;usr&#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;].<br>[GUI] [Err] [MinimalScene.cc:525] Engine [] is not supported<br>[GUI] [Err] [MinimalScene.cc:666] Unable to initialize renderer</p>
+<h3 id="Marker-Manager"><a href="#Marker-Manager" class="headerlink" title="Marker Manager"></a>Marker Manager</h3><p>空描述，这种我一致认为是默认开启的基础功能。</p>
+<h3 id="3D-Plot"><a href="#3D-Plot" class="headerlink" title="3D Plot"></a>3D Plot</h3><p>意义不明。</p>
+<h3 id="Playback-Scrubber"><a href="#Playback-Scrubber" class="headerlink" title="Playback Scrubber"></a>Playback Scrubber</h3><p>意义不明，可能是可以看回放的插件，但是没搞懂是怎么运作的。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/25/cp210x%E6%97%A0%E6%B3%95%E8%AF%86%E5%88%AB%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" rel="prev" title="CP210x无法识别问题解决">
+      <i class="fa fa-chevron-left"></i> CP210x无法识别问题解决
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/05/%E4%BD%BF%E7%94%A8gazebo%E5%92%8Cros2%E4%BB%BF%E7%9C%9F%E9%97%AD%E7%8E%AF%E6%9C%BA%E5%99%A8%E4%BA%BA/" rel="next" title="使用Gazebo和ROS2仿真闭环机器人">
+      使用Gazebo和ROS2仿真闭环机器人 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%95%8C%E9%9D%A2"><span class="nav-number">1.</span> <span class="nav-text">界面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E6%89%93%E5%BC%80%E6%88%96%E5%BB%BA%E8%AE%AE%E6%89%93%E5%BC%80%E7%9A%84%E6%8F%92%E4%BB%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">2.1.</span> <span class="nav-text">默认打开或建议打开的插件功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Scene-3D"><span class="nav-number">2.1.1.</span> <span class="nav-text">Scene 3D</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Component-inspector"><span class="nav-number">2.1.2.</span> <span class="nav-text">Component inspector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Copy-Paste"><span class="nav-number">2.1.3.</span> <span class="nav-text">Copy&#x2F;Paste</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Entity-Context-Menu"><span class="nav-number">2.1.4.</span> <span class="nav-text">Entity Context Menu</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Select-Entity"><span class="nav-number">2.1.5.</span> <span class="nav-text">Select Entity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Entity-Tree"><span class="nav-number">2.1.6.</span> <span class="nav-text">Entity Tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Grid-3D"><span class="nav-number">2.1.7.</span> <span class="nav-text">Grid 3D</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transform-control"><span class="nav-number">2.1.8.</span> <span class="nav-text">Transform control</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#World-control"><span class="nav-number">2.1.9.</span> <span class="nav-text">World control</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scene-Manager"><span class="nav-number">2.1.10.</span> <span class="nav-text">Scene Manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Resource-Spawner"><span class="nav-number">2.1.11.</span> <span class="nav-text">Resource Spawner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Screenshot"><span class="nav-number">2.1.12.</span> <span class="nav-text">Screenshot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Interactive-View-Control"><span class="nav-number">2.1.13.</span> <span class="nav-text">Interactive View Control</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shapes"><span class="nav-number">2.1.14.</span> <span class="nav-text">Shapes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spawn"><span class="nav-number">2.1.15.</span> <span class="nav-text">Spawn</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lights"><span class="nav-number">2.1.16.</span> <span class="nav-text">Lights</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualization-capabilities"><span class="nav-number">2.1.17.</span> <span class="nav-text">Visualization capabilities</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#World-stats"><span class="nav-number">2.1.18.</span> <span class="nav-text">World stats</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E7%B1%BB%E6%8F%92%E4%BB%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">2.2.</span> <span class="nav-text">显示类插件功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualize-contacts"><span class="nav-number">2.2.1.</span> <span class="nav-text">Visualize contacts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Topic-echo"><span class="nav-number">2.2.2.</span> <span class="nav-text">Topic echo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Image-display"><span class="nav-number">2.2.3.</span> <span class="nav-text">Image display</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Topic-Viewer"><span class="nav-number">2.2.4.</span> <span class="nav-text">Topic Viewer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transport-plotting"><span class="nav-number">2.2.5.</span> <span class="nav-text">Transport plotting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Video-Recoder"><span class="nav-number">2.2.6.</span> <span class="nav-text">Video Recoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Navigation-satellite-map"><span class="nav-number">2.2.7.</span> <span class="nav-text">Navigation satellite map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visualize-lidar"><span class="nav-number">2.2.8.</span> <span class="nav-text">Visualize lidar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Plotting"><span class="nav-number">2.2.9.</span> <span class="nav-text">Plotting</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B2%A1%E6%9C%89%E5%8D%B5%E7%94%A8%E7%9A%84%E6%8F%92%E4%BB%B6%E5%8A%9F%E8%83%BD"><span class="nav-number">2.3.</span> <span class="nav-text">没有卵用的插件功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Banana-for-scale"><span class="nav-number">2.3.1.</span> <span class="nav-text">Banana for scale</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shutdown-Button"><span class="nav-number">2.3.2.</span> <span class="nav-text">Shutdown Button</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E3%80%81%E4%BA%A4%E4%BA%92%E3%80%81%E4%BF%AE%E6%94%B9%E7%B1%BB%E5%8A%9F%E8%83%BD"><span class="nav-number">2.4.</span> <span class="nav-text">输入、交互、修改类功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Component-inspector-editor"><span class="nav-number">2.4.1.</span> <span class="nav-text">Component inspector editor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Publisher"><span class="nav-number">2.4.2.</span> <span class="nav-text">Publisher</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tape-measure"><span class="nav-number">2.4.3.</span> <span class="nav-text">Tape measure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Grid-config"><span class="nav-number">2.4.4.</span> <span class="nav-text">Grid config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View-Angle"><span class="nav-number">2.4.5.</span> <span class="nav-text">View Angle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Joint-position-controller"><span class="nav-number">2.4.6.</span> <span class="nav-text">Joint position controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Teleop"><span class="nav-number">2.4.7.</span> <span class="nav-text">Teleop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Align-tool"><span class="nav-number">2.4.8.</span> <span class="nav-text">Align tool</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AA%E7%9F%A5%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="nav-number">2.5.</span> <span class="nav-text">未知的功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Camera-tracking"><span class="nav-number">2.5.1.</span> <span class="nav-text">Camera tracking</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transport-scene-manager"><span class="nav-number">2.5.2.</span> <span class="nav-text">Transport scene manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gz-scene-3D"><span class="nav-number">2.5.3.</span> <span class="nav-text">Gz scene 3D</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Key-publisher"><span class="nav-number">2.5.4.</span> <span class="nav-text">Key publisher</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Minimal-Scene"><span class="nav-number">2.5.5.</span> <span class="nav-text">Minimal Scene</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Marker-Manager"><span class="nav-number">2.5.6.</span> <span class="nav-text">Marker Manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3D-Plot"><span class="nav-number">2.5.7.</span> <span class="nav-text">3D Plot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Playback-Scrubber"><span class="nav-number">2.5.8.</span> <span class="nav-text">Playback Scrubber</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在Ignition里，插件和系统的意义逐渐靠拢。Ignition和Gazebo比起来，就好像中国空间站和国际空间站，前者模块化程度更高，即使是Ignition的核心功能，说白了也就是一个主要插件。比如加载一个默认世界的时候，Ignition会加载Physcis Engine插件，用来物理仿真；加载Rendering插件，用来渲染3D世界；加载GUI插件，用来可视化仿真。 这一章主要展示如何综合使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Igntion-Gazebo：插件的使用">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/13/igntion-gazebo%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="在Ignition里，插件和系统的意义逐渐靠拢。Ignition和Gazebo比起来，就好像中国空间站和国际空间站，前者模块化程度更高，即使是Ignition的核心功能，说白了也就是一个主要插件。比如加载一个默认世界的时候，Ignition会加载Physcis Engine插件，用来物理仿真；加载Rendering插件，用来渲染3D世界；加载GUI插件，用来可视化仿真。 这一章主要展示如何综合使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-07-13T15:58:59.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.562Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/13/igntion-gazebo%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Igntion-Gazebo：插件的使用 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/13/igntion-gazebo%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Igntion-Gazebo：插件的使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-13 23:58:59" itemprop="dateCreated datePublished" datetime="2021-07-13T23:58:59+08:00">2021-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在Ignition里，插件和系统的意义逐渐靠拢。Ignition和Gazebo比起来，就好像中国空间站和国际空间站，前者模块化程度更高，即使是Ignition的核心功能，说白了也就是一个主要插件。比如加载一个默认世界的时候，Ignition会加载Physcis Engine插件，用来物理仿真；加载Rendering插件，用来渲染3D世界；加载GUI插件，用来可视化仿真。</p>
+<p>这一章主要展示如何综合使用Ignition自定义的一些插件，可以直接参照<a target="_blank" rel="noopener" href="https://ignitionrobotics.org/api/gazebo/5.1/triggeredpublisher.html%E3%80%82">https://ignitionrobotics.org/api/gazebo/5.1/triggeredpublisher.html。</a></p>
+<p>范例中给出以下仿真功能：一个小车进入指定区域后，一个方块落下；前者落下后，后者也落下。主要使用了以下插件：</p>
+<ol>
+<li>DiffDrive，差速器系统，用来控制小车；</li>
+<li>TriggeredPublisher，触发发布系统，在从一个Topic获得一个指定命令后，向另一个Topic发布一条消息；</li>
+<li>TouchPlugin，触碰触发系统，添加在触碰传感器上，与指定model碰撞后，向一个特定Topic发布一条消息；</li>
+<li>DetachableJoint，解除链接系统，从一个指定Topic获得一个指定命令后，解除两个link之间的链接（如果有的话）。</li>
+</ol>
+<p>来看看整个SDF的代码：</p>
+<?xml version="1.0" ?>
+<!--
+Ignition Gazebo Trigger Publisher demo
+
+Send the command:
+  ign topic -t "/start" -m ignition.msgs.Empty -p " "
+
+The vehicle should start moving while the two boxes remain floating. When the
+vehicle crosses the line on the ground, the first box should start falling.
+Five simulation seconds after the box hits the ground, the second box should
+start falling.
+
+-->
+<sdf version="1.6">
+  <world name="triggered\_publisher">
+
+<pre><code>&lt;physics name=&quot;1ms&quot; type=&quot;ignored&quot;&gt;
+  &lt;max\_step\_size&gt;0.001&lt;/max\_step\_size&gt;
+  &lt;real\_time\_factor&gt;1.0&lt;/real\_time\_factor&gt;
+&lt;/physics&gt;
+&lt;plugin
+  filename=&quot;ignition-gazebo-physics-system&quot;
+  name=&quot;ignition::gazebo::systems::Physics&quot;&gt;
+&lt;/plugin&gt;
+&lt;plugin
+  filename=&quot;ignition-gazebo-contact-system&quot;
+  name=&quot;ignition::gazebo::systems::Contact&quot;&gt;
+&lt;/plugin&gt;
+&lt;plugin
+  filename=&quot;ignition-gazebo-user-commands-system&quot;
+  name=&quot;ignition::gazebo::systems::UserCommands&quot;&gt;
+&lt;/plugin&gt;
+&lt;plugin
+  filename=&quot;ignition-gazebo-scene-broadcaster-system&quot;
+  name=&quot;ignition::gazebo::systems::SceneBroadcaster&quot;&gt;
+&lt;/plugin&gt;
+&lt;plugin
+  filename=&quot;ignition-gazebo-altimeter-system&quot;
+  name=&quot;ignition::gazebo::systems::Altimeter&quot;&gt;
+&lt;/plugin&gt;
+
+&lt;gui fullscreen=&quot;0&quot;&gt;
+
+  &lt;!-- 3D scene --&gt;
+  &lt;plugin filename=&quot;GzScene3D&quot; name=&quot;3D View&quot;&gt;
+    &lt;ignition-gui&gt;
+      &lt;title&gt;3D View&lt;/title&gt;
+      &lt;property type=&quot;bool&quot; key=&quot;showTitleBar&quot;&gt;false&lt;/property&gt;
+      &lt;property type=&quot;string&quot; key=&quot;state&quot;&gt;docked&lt;/property&gt;
+    &lt;/ignition-gui&gt;
+
+    &lt;engine&gt;ogre2&lt;/engine&gt;
+    &lt;scene&gt;scene&lt;/scene&gt;
+    &lt;ambient\_light&gt;0.4 0.4 0.4&lt;/ambient\_light&gt;
+    &lt;background\_color&gt;0.8 0.8 0.8&lt;/background\_color&gt;
+    &lt;camera\_pose&gt;3 -9 9 0 0.6 1.3&lt;/camera\_pose&gt;
+  &lt;/plugin&gt;
+
+  &lt;!-- World control --&gt;
+  &lt;plugin filename=&quot;WorldControl&quot; name=&quot;World control&quot;&gt;
+    &lt;ignition-gui&gt;
+      &lt;title&gt;World control&lt;/title&gt;
+      &lt;property type=&quot;bool&quot; key=&quot;showTitleBar&quot;&gt;false&lt;/property&gt;
+      &lt;property type=&quot;bool&quot; key=&quot;resizable&quot;&gt;false&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;height&quot;&gt;72&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;width&quot;&gt;121&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;z&quot;&gt;1&lt;/property&gt;
+
+      &lt;property type=&quot;string&quot; key=&quot;state&quot;&gt;floating&lt;/property&gt;
+      &lt;anchors target=&quot;3D View&quot;&gt;
+        &lt;line own=&quot;left&quot; target=&quot;left&quot;/&gt;
+        &lt;line own=&quot;bottom&quot; target=&quot;bottom&quot;/&gt;
+      &lt;/anchors&gt;
+    &lt;/ignition-gui&gt;
+
+    &lt;play\_pause&gt;true&lt;/play\_pause&gt;
+    &lt;step&gt;true&lt;/step&gt;
+    &lt;start\_paused&gt;true&lt;/start\_paused&gt;
+
+  &lt;/plugin&gt;
+
+  &lt;!-- World statistics --&gt;
+  &lt;plugin filename=&quot;WorldStats&quot; name=&quot;World stats&quot;&gt;
+    &lt;ignition-gui&gt;
+      &lt;title&gt;World stats&lt;/title&gt;
+      &lt;property type=&quot;bool&quot; key=&quot;showTitleBar&quot;&gt;false&lt;/property&gt;
+      &lt;property type=&quot;bool&quot; key=&quot;resizable&quot;&gt;false&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;height&quot;&gt;110&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;width&quot;&gt;290&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;z&quot;&gt;1&lt;/property&gt;
+
+      &lt;property type=&quot;string&quot; key=&quot;state&quot;&gt;floating&lt;/property&gt;
+      &lt;anchors target=&quot;3D View&quot;&gt;
+        &lt;line own=&quot;right&quot; target=&quot;right&quot;/&gt;
+        &lt;line own=&quot;bottom&quot; target=&quot;bottom&quot;/&gt;
+      &lt;/anchors&gt;
+    &lt;/ignition-gui&gt;
+
+    &lt;sim\_time&gt;true&lt;/sim\_time&gt;
+    &lt;real\_time&gt;true&lt;/real\_time&gt;
+    &lt;real\_time\_factor&gt;true&lt;/real\_time\_factor&gt;
+    &lt;iterations&gt;true&lt;/iterations&gt;
+
+  &lt;/plugin&gt;
+
+&lt;/gui&gt;
+
+&lt;light type=&quot;directional&quot; name=&quot;sun&quot;&gt;
+  &lt;cast\_shadows&gt;true&lt;/cast\_shadows&gt;
+  &lt;pose&gt;0 0 10 0 0 0&lt;/pose&gt;
+  &lt;diffuse&gt;1 1 1 1&lt;/diffuse&gt;
+  &lt;specular&gt;0.5 0.5 0.5 1&lt;/specular&gt;
+  &lt;attenuation&gt;
+    &lt;range&gt;1000&lt;/range&gt;
+    &lt;constant&gt;0.9&lt;/constant&gt;
+    &lt;linear&gt;0.01&lt;/linear&gt;
+    &lt;quadratic&gt;0.001&lt;/quadratic&gt;
+  &lt;/attenuation&gt;
+  &lt;direction&gt;0.05 -0.1 -0.9&lt;/direction&gt;
+&lt;/light&gt;
+
+&lt;model name=&quot;ground\_plane&quot;&gt;
+ ......
+&lt;/model&gt;
+
+&lt;model name=&#39;vehicle\_blue&#39;&gt;
+ ......
+  &lt;plugin
+    filename=&quot;ignition-gazebo-diff-drive-system&quot;
+    name=&quot;ignition::gazebo::systems::DiffDrive&quot;&gt;
+    &lt;left\_joint&gt;front\_left\_wheel\_joint&lt;/left\_joint&gt;
+    &lt;left\_joint&gt;rear\_left\_wheel\_joint&lt;/left\_joint&gt;
+    &lt;right\_joint&gt;front\_right\_wheel\_joint&lt;/right\_joint&gt;
+    &lt;right\_joint&gt;rear\_right\_wheel\_joint&lt;/right\_joint&gt;
+    &lt;wheel\_separation&gt;1.25&lt;/wheel\_separation&gt;
+    &lt;wheel\_radius&gt;0.3&lt;/wheel\_radius&gt;
+    &lt;topic&gt;cmd\_vel&lt;/topic&gt;
+  &lt;/plugin&gt;
+&lt;/model&gt;
+
+&lt;model name=&quot;trigger&quot;&gt;
+  ......
+  &lt;plugin
+    filename=&quot;ignition-gazebo-touchplugin-system&quot;
+    name=&quot;ignition::gazebo::systems::TouchPlugin&quot;&gt;
+    &lt;target&gt;vehicle\_blue&lt;/target&gt;
+    &lt;namespace&gt;trigger&lt;/namespace&gt;
+    &lt;time&gt;0.001&lt;/time&gt;
+    &lt;enabled&gt;true&lt;/enabled&gt;
+  &lt;/plugin&gt;
+  &lt;plugin filename=&quot;ignition-gazebo-detachable-joint-system&quot; name=&quot;ignition::gazebo::systems::DetachableJoint&quot;&gt;
+    &lt;parent\_link&gt;body&lt;/parent\_link&gt;
+    &lt;child\_model&gt;box1&lt;/child\_model&gt;
+    &lt;child\_link&gt;box\_body&lt;/child\_link&gt;
+    &lt;topic&gt;/box1/detach&lt;/topic&gt;
+  &lt;/plugin&gt;
+  &lt;plugin filename=&quot;ignition-gazebo-detachable-joint-system&quot; name=&quot;ignition::gazebo::systems::DetachableJoint&quot;&gt;
+    &lt;parent\_link&gt;body&lt;/parent\_link&gt;
+    &lt;child\_model&gt;box2&lt;/child\_model&gt;
+    &lt;child\_link&gt;box\_body&lt;/child\_link&gt;
+    &lt;topic&gt;/box2/detach&lt;/topic&gt;
+  &lt;/plugin&gt;
+&lt;/model&gt;
+
+&lt;model name=&quot;box1&quot;&gt;
+  ......
+    &lt;sensor name=&quot;altimeter\_sensor&quot; type=&quot;altimeter&quot;&gt;
+      &lt;topic&gt;/altimeter&lt;/topic&gt;
+      &lt;always\_on&gt;1&lt;/always\_on&gt;
+      &lt;update\_rate&gt;30&lt;/update\_rate&gt;
+      &lt;visualize&gt;true&lt;/visualize&gt;
+    &lt;/sensor&gt;
+  &lt;/link&gt;
+&lt;/model&gt;
+
+&lt;model name=&quot;box2&quot;&gt;
+  ......
+&lt;/model&gt;
+
+&lt;plugin filename=&quot;ignition-gazebo-triggered-publisher-system&quot; name=&quot;ignition::gazebo::systems::TriggeredPublisher&quot;&gt;
+  &lt;input type=&quot;ignition.msgs.Empty&quot; topic=&quot;/start&quot;/&gt;
+  &lt;output type=&quot;ignition.msgs.Twist&quot; topic=&quot;/cmd\_vel&quot;&gt;
+      linear: &#123;x: 3&#125;
+  &lt;/output&gt;
+&lt;/plugin&gt;
+&lt;plugin filename=&quot;ignition-gazebo-triggered-publisher-system&quot; name=&quot;ignition::gazebo::systems::TriggeredPublisher&quot;&gt;
+  &lt;input type=&quot;ignition.msgs.Boolean&quot; topic=&quot;/trigger/touched&quot;&gt;
+    &lt;match&gt;data: true&lt;/match&gt;
+  &lt;/input&gt;
+  &lt;output type=&quot;ignition.msgs.Empty&quot; topic=&quot;/box1/detach&quot;/&gt;
+&lt;/plugin&gt;
+&lt;plugin filename=&quot;ignition-gazebo-triggered-publisher-system&quot; name=&quot;ignition::gazebo::systems::TriggeredPublisher&quot;&gt;
+  &lt;input type=&quot;ignition.msgs.Altimeter&quot; topic=&quot;/altimeter&quot;&gt;
+    &lt;match field=&quot;vertical\_position&quot; tol=&quot;0.2&quot;&gt;-7.5&lt;/match&gt;
+  &lt;/input&gt;
+  &lt;delay\_ms&gt;5000&lt;/delay\_ms&gt;
+  &lt;output type=&quot;ignition.msgs.Empty&quot; topic=&quot;/box2/detach&quot;/&gt;
+&lt;/plugin&gt;
+</code></pre>
+</world>
+</sdf>
+
+<p>我们需要关注的是：</p>
+<ol>
+<li>vehicle_blue下的DiffDrive插件。使用DiffDrive插件时，需要指定左右轮、左右轮间距、轮半径。该示例中，还修改了此插件subscribe的Topic，变为cmd_vel。向该话题发送消息则可以控制插件。</li>
+<li>trigger的touchplugin插件。使用时需要指定碰撞对象和namespace，示例中会在vehicle_blue碰撞时，向<strong>trigger&#x2F;touch</strong>发送一条消息。</li>
+<li>trigger的detachablejoint插件。使用时需要制定父link、子link以及子link所属的模型。同时还要制定subscribe的topic。示例中topic为&#x2F;box1&#x2F;detach，以及&#x2F;box2&#x2F;detach。</li>
+<li>放在world下的几个插件。Physics提供物理仿真功能。Usercommand提供命令行指令功能。Contact提供对contact sensor的支持。Altimeter提供对altimeter sensor的支持。</li>
+<li>TriggeredPubliser插件。TriggerPublisher需要指定input toipic，也就是subscribe的topic；output topic，也就是要publish的topic；match，也就是指定的触发消息；还可以指定delay，也就是收到触发消息多少时间后再publish消息。示例中一共有三个triggerpublisher：<ol>
+<li>input: &#x2F;start-&gt;empty; output:&#x2F;cmd_vel-&gt;linear: {x: 3}</li>
+<li>input:&#x2F;trigger&#x2F;touched-&gt;data: true; output:&#x2F;box1&#x2F;detach-&gt;empty</li>
+<li>input:&#x2F;altimeter-&gt;-7.5(field&#x3D;”vertical_position” tol&#x3D;”0.2”); output:&#x2F;box2&#x2F;detach-&gt;empty</li>
+</ol>
+</li>
+</ol>
+<p>所以其实可以把triggerpublisher当做一个if-do的工具。这三个triggerpublisher分别执行了：</p>
+<ol>
+<li>如果在&#x2F;start收到empty命令，则控制小车的速度为3；</li>
+<li>如果&#x2F;trigger&#x2F;touched收到true消息，则向&#x2F;box1&#x2F;detach发送empty命令；</li>
+<li>如果&#x2F;altimeter中数值达到-7.5，则向&#x2F;box2&#x2F;detach发送empty命令.</li>
+</ol>
+<p>结合其他插件的内键功能，则完成了示例文件中的功能。使用</p>
+<p>ign gazebo triggered_publisher.sdf</p>
+<p>开启模拟。新开一个终端，输入：</p>
+<p>ign topic -t “&#x2F;start” -m ignition.msgs.Empty -p “ “</p>
+<p>则小车开始运动。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/12/ignition-gazebo%EF%BC%881%EF%BC%89%E6%8F%92%E4%BB%B6/" rel="prev" title="Ignition-Gazebo（1）插件">
+      <i class="fa fa-chevron-left"></i> Ignition-Gazebo（1）插件
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/14/revit-freecad-ignition%E5%B7%A5%E4%BD%9C%E6%B5%81/" rel="next" title="Revit-FreeCAD-Ignition工作流">
+      Revit-FreeCAD-Ignition工作流 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

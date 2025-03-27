@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="# What is the Git? https:&#x2F;&#x2F;www.notion.so&#x2F;Introduction-to-Git-ac396a0697704709a12b6a0e545db049 Git is officially defined as a distributed version control system (VCS). It can be used by many people to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git in 15 minutes">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/06/git-in-15-minutes/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="# What is the Git? https:&#x2F;&#x2F;www.notion.so&#x2F;Introduction-to-Git-ac396a0697704709a12b6a0e545db049 Git is officially defined as a distributed version control system (VCS). It can be used by many people to">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-06T08:31:42.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.605Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/06/git-in-15-minutes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Git in 15 minutes | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/06/git-in-15-minutes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git in 15 minutes
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-06 16:31:42" itemprop="dateCreated datePublished" datetime="2021-10-06T16:31:42+08:00">2021-10-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p># What is the Git? <a target="_blank" rel="noopener" href="https://www.notion.so/Introduction-to-Git-ac396a0697704709a12b6a0e545db049">https://www.notion.so/Introduction-to-Git-ac396a0697704709a12b6a0e545db049</a> Git is officially defined as a distributed version control system (VCS). It can be used by many people to efficiently work together, in realistic, it is mainly used by programmer and software developers. Knowing how to use git is a requirement for any developer nowadays - it doesn’t means that you can’t cooperate with others without git, but it refer to a more efficient way to work together on a project. And thanks to some git repository server such as github, you may use git as a synchronize tool or a code share tool. An important note: though github is the most popular git repository server nowadays, it IS NOT git itself. Git can run without github, even without network. It is just a control system, nothing else. You can use git in 15 minutes, but to connect your local repository to github, it may take 10 more minutes.</p>
+<h2 id="1-Setup-instructions"><a href="#1-Setup-instructions" class="headerlink" title="1. Setup instructions"></a>1. Setup instructions</h2><p>Install the git: <code>sudo apt install git</code> Identify yourself with Git: NOTE: we have not talk about github, what your are identifying has nothing to do with your github account, so just set with your prefer. <code>git config --global user.name &quot;Your Name&quot; git config --global user.email &quot;your@email.com&quot;</code></p>
+<h2 id="2-Repositoreis"><a href="#2-Repositoreis" class="headerlink" title="2. Repositoreis"></a>2. Repositoreis</h2><p>When working with Git, it’s important to be familiar with the term repository. A Git repository is a container for a project that is tracked by Git. There are two major types of repositories:</p>
+<ol>
+<li>Local repositoreis: the repositories which stored on your own local computer. You can work on it derectly.</li>
+<li>Remote repositories: the repositories which stored on a remote server, such as your own server, or some popular git server provider such as Github. You can share or work with others by remote repositories.</li>
+</ol>
+<h2 id="3-Initializing-a-local-repository-git-init"><a href="#3-Initializing-a-local-repository-git-init" class="headerlink" title="3. Initializing a (local) repository (git init)"></a>3. Initializing a (local) repository (git init)</h2><p>To create a local repository, navigate to your work space (which means the folder storing your project), then: <code>git init</code> And it will generate a hidden .git file, which contains all data for the repository.</p>
+<h2 id="4-Staging-and-committing-code-git-add-git-commit"><a href="#4-Staging-and-committing-code-git-add-git-commit" class="headerlink" title="4. Staging and committing code (git add &#x2F; git commit)"></a>4. Staging and committing code (git add &#x2F; git commit)</h2><p>Committing is the most used function in Git, it means adding your changes to the Git repository. One powerful function of Git is that it records all of your history committing, so you can compare the past commit and current commit to see changes you make. Usually you may want to commit your code to the repository after some important modifying, such as bug fixing and feature adding, etc. Before committing, you need to stage your code.</p>
+<h2 id="4-1-Checking-the-status"><a href="#4-1-Checking-the-status" class="headerlink" title="4.1 Checking the status"></a>4.1 Checking the status</h2><p><code>git status</code> This is a command that is very often used when working with Git. It shows us which files have been changed, which files are tracked, etc. We can add the untracked project files to the <strong>staging area</strong> based on the information from the <code>git status</code> command.</p>
+<h3 id="4-2-Staging-files"><a href="#4-2-Staging-files" class="headerlink" title="4.2 Staging files"></a>4.2 Staging files</h3><p>A most comment command is: <code>git add .</code> It add all of the current files and folders inside the current path. Also you can stage specif file by refering to the file name in the command: <code>git add file.js file2.js file3.js</code></p>
+<h3 id="4-3-Making-commits"><a href="#4-3-Making-commits" class="headerlink" title="4.3 Making commits"></a>4.3 Making commits</h3><p>After adding all the files that we want to track to the staging area with the `git add` command, we are ready to make a commit. To commit the files from the staging area, we use the following command: <code>git commit -m &quot;Commit message&quot;</code> Inside the quotes, you should write a commit message. Usually, it is used to describe the changes that you make in this commit.</p>
+<h3 id="4-4-Commit-history"><a href="#4-4-Commit-history" class="headerlink" title="4.4 Commit history"></a>4.4 Commit history</h3><p>To see all the commits that were made for our project, you can use the following command: <code>git log</code> This command will show you the details of each commit, such as auther name, generated hash, date, commit message. Remember that we can refer to your past commit, right? With Git, you even can GO BACK to your past commit status: <code>git checkout &lt;commit-hash&gt;</code> Replace <code>&lt;commit-hash&gt;</code> with the actual hash for the specific commit that you want to visit, which is listed with the <code>git log</code> command. And you will get a elder version of your code, your file. To go back to the latest commit (the newest version of our project code), you can type this command: <code>git checkout master</code></p>
+<h3 id="4-5-Ignoring-files"><a href="#4-5-Ignoring-files" class="headerlink" title="4.5 Ignoring files"></a>4.5 Ignoring files</h3><p>To ignore files that you don’t want to be tracked or added to the staging area, you can create a file called <code>.gitignore</code> in your main project folder. Inside of that file, you can list all the file and folder names that you definitely do not want to track (each ignored file and folder should go to a new line inside the <strong>.gitignore</strong> file).</p>
+<h2 id="5-Branches-git-branch-git-checkout-git-merge"><a href="#5-Branches-git-branch-git-checkout-git-merge" class="headerlink" title="5. Branches (git branch &#x2F; git checkout &#x2F; git merge)"></a>5. Branches (git branch &#x2F; git checkout &#x2F; git merge)</h2><p>What is branch? Imagine you have a strong and stable code, but now you want to do some experiment with your code. It is not a good idea to do it with your stable code, so a wise choice is to make a experiment branch on your stable code (which is called as <strong>master branch</strong>) , and edit and commit on this branch. After you are sure there is no bug, you can merge it to your master branch. By default, once you commit the code, you will get a <strong>master branch</strong>.</p>
+<h3 id="5-1-Creaing-a-new-branch"><a href="#5-1-Creaing-a-new-branch" class="headerlink" title="5.1 Creaing a new branch"></a>5.1 Creaing a new branch</h3><p>You can create a new branch using the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch &lt;new-branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>The new branch that gets created will be the reference to the <strong>current state</strong> of your repository.</p>
+<h3 id="5-2-Changing-branches"><a href="#5-2-Changing-branches" class="headerlink" title="5.2. Changing branches"></a>5.2. Changing branches</h3><p>To switch to a different branch, you use the <strong>git checkout</strong> command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>With that, you switch to a different isolated timeline of your project by changing branches. For example, you could be working on different features in your code and have a separate branch for each feature. When you switch to a branch, you can commit code changes which only affect that particular branch. Then, you can switch to another branch to work on a different feature, which won’t be affected by the changes and commits made from the previous branch. To create a new branch and change to it at the same time, you can use the <strong>-b</strong> flag:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b &lt;new-branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>To list the branches for your project, use this command: <code>git branch</code> To go back to the <strong>master</strong> branch, use this command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-Merging-branches"><a href="#5-3-Merging-branches" class="headerlink" title="5.3. Merging branches"></a>5.3. Merging branches</h3><p>You can merge branches in situations where you want to implement the code changes that you made in an individual branch to a different branch. For example, after you fully implemented and tested a new feature in your code, you would want to merge those changes to the stable branch of your project (which is usually the default <strong>master</strong> branch). To merge the changes from a different branch into your current branch, you can use this command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>You would replace <code>&lt;branch-name&gt;</code> with the branch that you want to integrate into your current branch.</p>
+<h3 id="5-4-Deleting-a-branch"><a href="#5-4-Deleting-a-branch" class="headerlink" title="5.4. Deleting a branch"></a>5.4. Deleting a branch</h3><p>To delete a branch, you can run the <strong>git branch</strong> command with the <strong>-d</strong> flag:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-Conclusion"><a href="#6-Conclusion" class="headerlink" title="6 Conclusion"></a>6 Conclusion</h2><p>Now we have most of the knowledge to use Git on our local computer. Make sure you are familiar with below command:</p>
+<ol>
+<li> git init</li>
+<li>git add</li>
+<li>git commit -m “xxxxx”</li>
+<li>git status</li>
+<li>git log</li>
+<li>git checkout</li>
+<li>git branch</li>
+<li>git merge</li>
+</ol>
+<p>After that, you can learn how to link your local repository to the biggest and most popular online git repositories: Github.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/05/ros2%E4%B8%AD%E7%9A%84tf2%EF%BC%9A%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" rel="prev" title="ROS2中的tf2：基本使用">
+      <i class="fa fa-chevron-left"></i> ROS2中的tf2：基本使用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/07/%E5%9C%A8linux%E4%B8%8A%E7%8E%A9%E8%8B%B1%E9%9B%84%E6%97%A0%E6%95%8C3/" rel="next" title="在Linux上玩英雄无敌3">
+      在Linux上玩英雄无敌3 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Setup-instructions"><span class="nav-number">1.</span> <span class="nav-text">1. Setup instructions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Repositoreis"><span class="nav-number">2.</span> <span class="nav-text">2. Repositoreis</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Initializing-a-local-repository-git-init"><span class="nav-number">3.</span> <span class="nav-text">3. Initializing a (local) repository (git init)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Staging-and-committing-code-git-add-git-commit"><span class="nav-number">4.</span> <span class="nav-text">4. Staging and committing code (git add &#x2F; git commit)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-Checking-the-status"><span class="nav-number">5.</span> <span class="nav-text">4.1 Checking the status</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-Staging-files"><span class="nav-number">5.1.</span> <span class="nav-text">4.2 Staging files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-Making-commits"><span class="nav-number">5.2.</span> <span class="nav-text">4.3 Making commits</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-Commit-history"><span class="nav-number">5.3.</span> <span class="nav-text">4.4 Commit history</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-Ignoring-files"><span class="nav-number">5.4.</span> <span class="nav-text">4.5 Ignoring files</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Branches-git-branch-git-checkout-git-merge"><span class="nav-number">6.</span> <span class="nav-text">5. Branches (git branch &#x2F; git checkout &#x2F; git merge)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-Creaing-a-new-branch"><span class="nav-number">6.1.</span> <span class="nav-text">5.1 Creaing a new branch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-Changing-branches"><span class="nav-number">6.2.</span> <span class="nav-text">5.2. Changing branches</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-Merging-branches"><span class="nav-number">6.3.</span> <span class="nav-text">5.3. Merging branches</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-Deleting-a-branch"><span class="nav-number">6.4.</span> <span class="nav-text">5.4. Deleting a branch</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Conclusion"><span class="nav-number">7.</span> <span class="nav-text">6 Conclusion</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

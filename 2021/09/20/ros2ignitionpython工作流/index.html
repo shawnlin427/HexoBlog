@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="之前和Dolly在the construction上一起探索了ROS2，下面来看看一个更加面向未来的开发工作流：ROS2+Ignition+Python。而且这次，我们从头在自己的电脑上开始配置环境。 开始之前安装以下依赖： sudo apt install python3-colcon-common-extensionssudo apt install python3-catkin-pkg 有时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS2+Ignition+Python工作流">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/20/ros2ignitionpython%E5%B7%A5%E4%BD%9C%E6%B5%81/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="之前和Dolly在the construction上一起探索了ROS2，下面来看看一个更加面向未来的开发工作流：ROS2+Ignition+Python。而且这次，我们从头在自己的电脑上开始配置环境。 开始之前安装以下依赖： sudo apt install python3-colcon-common-extensionssudo apt install python3-catkin-pkg 有时">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-6.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-7-1024x361.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-8.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-9.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-10.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-11-1024x806.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-13.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-14.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-15-1024x233.png">
+<meta property="article:published_time" content="2021-09-20T06:59:57.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.595Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-6.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/20/ros2ignitionpython%E5%B7%A5%E4%BD%9C%E6%B5%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ROS2+Ignition+Python工作流 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/20/ros2ignitionpython%E5%B7%A5%E4%BD%9C%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ROS2+Ignition+Python工作流
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-20 14:59:57" itemprop="dateCreated datePublished" datetime="2021-09-20T14:59:57+08:00">2021-09-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>之前和Dolly在the construction上一起探索了ROS2，下面来看看一个更加面向未来的开发工作流：ROS2+Ignition+Python。而且这次，我们从头在自己的电脑上开始配置环境。</p>
+<h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>安装以下依赖：</p>
+<p>sudo apt install python3-colcon-common-extensions<br>sudo apt install python3-catkin-pkg</p>
+<p>有时候python3-catkin-pkg虽然安装了，在编译过程中还是会显示找不到catkin_pkg。我卸载重装后就好了，仅供参考。</p>
+<h2 id="新建一个Work-space"><a href="#新建一个Work-space" class="headerlink" title="新建一个Work space"></a>新建一个Work space</h2><p>ROS的官网是这么说的：</p>
+<blockquote>
+<p>Our workspace, <code>ros2_examples_ws</code>, will be an <strong>overlay</strong> on top of the existing ROS 2 installation. In general, it is recommended to use an overlay when you plan to iterate on a small number of packages, rather than putting all of your packages into the same workspace.</p>
+</blockquote>
+<p>简单来说，就是为你的项目建立一个单独的work space，而不是把他们全部都堆在ROS2的主路径下。</p>
+<p>新建一个work space很简单，一个有标识性的ws folder，然后在里面创建一个src空文件夹。你的文件夹应该是这样的：</p>
+<p>.<br>└── src</p>
+<p>1 directory, 0 files</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-6.png"></p>
+<p>我这里已经编译过了，所以有别的文件夹。最开始时，除了src以外，不应该有其他任何文件。</p>
+<h2 id="试运行：Dolly"><a href="#试运行：Dolly" class="headerlink" title="试运行：Dolly"></a>试运行：Dolly</h2><p>进入src文件夹，所有的package都应该在这里创建、编辑。下载Dolly：</p>
+<p>git clone <a target="_blank" rel="noopener" href="https://github.com/chapulina/dolly.git">https://github.com/chapulina/dolly.git</a></p>
+<p>然后<strong>到ws的主路径下进行编译</strong>，这很重要。这里要ignore dolly_gazebo这个包，因为我们只安装了ignition：</p>
+<p>rosdep install –from-paths src –ignore-src -r -y<br>colcon build –symlink-install –packages-ignore dolly_gazebo</p>
+<p>编译完成后，试着运行dolly。首先设置环境变量（你自己的路径）：</p>
+<p> . ~&#x2F;ws&#x2F;install&#x2F;setup.bash</p>
+<p>然后使用ros2 launch运行：</p>
+<p> ros2 launch dolly_ignition dolly.launch.py</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-7-1024x361.png"></p>
+<p>可以看到rviz2和ignition gazebo的窗口。</p>
+<h2 id="创建package"><a href="#创建package" class="headerlink" title="创建package"></a>创建package</h2><p>接下来我们创建自己的package，不同之处在于，这次使用基于python的pkg。确保在ws的src文件下，新建一个pkg：</p>
+<p>ros2 pkg create –build-type ament_python my_dolly</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-8.png"></p>
+<p>python的ros2结构如上，其中launch这个文件夹一开始是没有的，这里也创建了，有用。然后在launch file里创建一个文件：</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-9.png"></p>
+<p>import os</p>
+<p>from ament_index_python.packages import get_package_share_directory<br>from launch import LaunchDescription<br>from launch.actions import DeclareLaunchArgument<br>from launch.actions import IncludeLaunchDescription<br>from launch.conditions import IfCondition<br>from launch.launch_description_sources import PythonLaunchDescriptionSource<br>from launch.substitutions import LaunchConfiguration<br>from launch_ros.actions import Node</p>
+<p>def generate_launch_description():</p>
+<pre><code>pkg\_ros\_ign\_gazebo = get\_package\_share\_directory(&#39;ros\_ign\_gazebo&#39;)
+pkg\_dolly\_ignition = get\_package\_share\_directory(&#39;dolly\_ignition&#39;)
+
+# Gazebo launch
+gazebo = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+        os.path.join(pkg\_ros\_ign\_gazebo, &#39;launch&#39;, &#39;ign\_gazebo.launch.py&#39;),
+    ),
+)
+
+spawn = Node(package=&#39;ros\_ign\_gazebo&#39;, executable=&#39;create&#39;,
+             arguments=\[
+                &#39;-name&#39;, &#39;dolly&#39;,
+                &#39;-x&#39;, &#39;5.0&#39;,
+                &#39;-z&#39;, &#39;0.46&#39;,
+                &#39;-Y&#39;, &#39;1.57&#39;,
+                &#39;-file&#39;, os.path.join(pkg\_dolly\_ignition, &#39;models&#39;, &#39;dolly\_ignition&#39;,
+                                      &#39;model.sdf&#39;)\],
+             output=&#39;screen&#39;)
+
+return LaunchDescription(\[
+    DeclareLaunchArgument(
+      &#39;ign\_args&#39;,
+      default\_value=\[os.path.join(pkg\_dolly\_ignition, &#39;worlds&#39;, &#39;station.sdf&#39;) +
+                     &#39; -v 2 --gui-config &#39; +
+                     os.path.join(pkg\_dolly\_ignition, &#39;ign&#39;, &#39;gui.config&#39;), &#39;&#39;\],
+      description=&#39;Ignition Gazebo arguments&#39;),
+    gazebo,
+    spawn,
+\])
+</code></pre>
+<p>基本上照抄dolly_ignition里的launchfile，不过把好几个Node都删掉了，保留了_Gazebo launch_和Spawn dolly。不同的是，如果是c++的架构，编译后launch file就可以用了，<strong>在python架构里，需要修改setup.py里的内容，加上一行：</strong></p>
+<p>from glob import glob</p>
+<p>setup(<br>    …<br>    data_files&#x3D;[<br>        ….<br>        (‘share&#x2F;‘ + package_name, glob(‘launch&#x2F;*.launch.py’))<br>    ],<br>    …<br>)</p>
+<p>接下来回到ws主目录，编译my_dolly：</p>
+<p>colcon build –packages-select my_dolly</p>
+<p>然后launch dolly：</p>
+<p>ros2 launch my_dolly my_dolly.launch.py</p>
+<p>效果相同。</p>
+<h2 id="Python-Subscriber"><a href="#Python-Subscriber" class="headerlink" title="Python Subscriber"></a>Python Subscriber</h2><p>类似的，创建一个Node。所有的Node源码都放在同名文件夹下，与__init__.py放在一起：</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-10.png"></p>
+<p>import rclpy<br>from rclpy.node import Node</p>
+<p>from sensor_msgs.msg import LaserScan</p>
+<p>class LaserScanner(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;laser\_scanner&#39;)
+    self.subscription = self.create\_subscription(
+        LaserScan,
+        &#39;/dolly/laser\_scan&#39;,
+        self.listener\_callback,
+        10)
+    self.subscription  # prevent unused variable warning
+
+def listener\_callback(self, msg):
+    self.get\_logger().info(&#39;I heard: &quot;%f&quot;&#39; % msg.ranges\[0\])
+</code></pre>
+<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
+<pre><code>laser\_scanner = LaserScanner()
+
+rclpy.spin(laser\_scanner)
+
+# Destroy the node explicitly
+# (optional - otherwise it will be done automatically
+# when the garbage collector destroys the node object)
+laser\_scanner.destroy\_node()
+rclpy.shutdown()
+</code></pre>
+<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
+<p>不禁感叹，python真是高级语言啊，比c++写的简介多了。前面编辑launchfile的时候，需要到setup.py里调整参数，这里也是一样的，从而让ros2 run能找到源文件。</p>
+<pre><code>entry\_points=&#123;
+    &#39;console\_scripts&#39;: \[
+        &#39;laser\_scan = my\_dolly.laser\_scan:main&#39;,
+    \],
+&#125;,
+</code></pre>
+<p>然后，我们再试试把它加到launch file里，让他和其他Node一起启动：（此时还需要启动ign_ros_bridge，怎么写参考dolly_ignition的Node）</p>
+<pre><code>#laser
+laser = Node(
+    package=&#39;my\_dolly&#39;,
+    executable=&#39;laser\_scan&#39;,
+    output=&#39;screen&#39;,
+)
+
+return LaunchDescription(\[
+    DeclareLaunchArgument(
+      &#39;ign\_args&#39;,
+      default\_value=\[os.path.join(pkg\_dolly\_ignition, &#39;worlds&#39;, &#39;station.sdf&#39;) +
+                     &#39; -v 2 --gui-config &#39; +
+                     os.path.join(pkg\_dolly\_ignition, &#39;ign&#39;, &#39;gui.config&#39;), &#39;&#39;\],
+      description=&#39;Ignition Gazebo arguments&#39;),
+    gazebo,
+    spawn,
+    bridge,
+    laser,
+\])
+</code></pre>
+<p>编译后启动，可以看到打印出来的传感器数据：</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-11-1024x806.png"></p>
+<p>总结一下，Node放在同名文件夹里，在setup.py里修改entry_point来让ros2找到启动路径。</p>
+<h2 id="Python-Publisher"><a href="#Python-Publisher" class="headerlink" title="Python Publisher"></a>Python Publisher</h2><p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-13.png"></p>
+<p>import rclpy<br>from rclpy.node import Node</p>
+<p>from geometry_msgs.msg import Twist</p>
+<p>class MovingRobot(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;moving\_robot&#39;)
+    self.publisher\_ = self.create\_publisher(Twist, &#39;/dolly/cmd\_vel&#39;, 10)
+    timer\_period = 0.5  # seconds
+    self.timer = self.create\_timer(timer\_period, self.timer\_callback)
+    self.i = 0
+
+def timer\_callback(self):
+    msg = Twist()
+    msg.linear.x = 0.5
+    msg.angular.z = 0.3
+    self.publisher\_.publish(msg)
+    self.get\_logger().info(str(msg))
+    self.i += 1
+</code></pre>
+<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
+<pre><code>moving\_robot = MovingRobot()
+
+rclpy.spin(moving\_robot)
+
+# Destroy the node explicitly
+# (optional - otherwise it will be done automatically
+# when the garbage collector destroys the node object)
+moving\_robot.destroy\_node()
+rclpy.shutdown()
+</code></pre>
+<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
+<p>过于简单，感觉没有什么要讲的。setup.py里：</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-14.png"></p>
+<p>运行：</p>
+<p>shaw@shaw-Inspiron-7590:<del>&#x2F;Data&#x2F;Seafile&#x2F;robot&#x2F;ros2_ws$ ros2 launch my_dolly my_dolly.launch.py<br>shaw@shaw-Inspiron-7590:</del>&#x2F;Data&#x2F;Seafile&#x2F;robot&#x2F;ros2_ws$ ros2 run my_dolly moving_robot</p>
+<h2 id="避障"><a href="#避障" class="headerlink" title="避障"></a>避障</h2><p>最后来改写一下避障：</p>
+<p>obstacle.py</p>
+<p>import rclpy<br>from rclpy.node import Node</p>
+<p>from geometry_msgs.msg import Twist<br>from sensor_msgs.msg import LaserScan</p>
+<p>class Obstacle(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;obstacle&#39;)
+    self.subscription = self.create\_subscription(
+        LaserScan,
+        &#39;/dolly/laser\_scan&#39;,
+        self.listener\_callback,
+        10)
+    self.subscription  # prevent unused variable warning
+    self.publisher\_ = self.create\_publisher(Twist, &#39;/dolly/cmd\_vel&#39;, 10)
+    
+def listener\_callback(self, msg):
+    min\_distance = 10
+    for each in msg.ranges:
+        if each &lt; min\_distance:
+            min\_distance = each
+        else:
+            continue
+    message = Twist()
+    if min\_distance &lt; 1:
+        message.linear.x = 0.0
+        message.angular.z = 0.3
+    else:
+        message.linear.x = 0.3
+        message.linear.z = 0.0
+    self.publisher\_.publish(message)
+    
+</code></pre>
+<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
+<pre><code>obstacle = Obstacle()
+
+rclpy.spin(obstacle)
+
+obstacle.destroy\_node()
+rclpy.shutdown()
+</code></pre>
+<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-15-1024x233.png"></p>
+<p>这个地方必须按照这个顺序来，否则编译不通过，具体是为什么不太清楚。其他步骤类似上面。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总结一下，使用python进行ROS2开发简单不少。首先，来分析一下ros2和ignition在仿真中的角色都是什么：</p>
+<h3 id="ROS2与Ignition的角色"><a href="#ROS2与Ignition的角色" class="headerlink" title="ROS2与Ignition的角色"></a>ROS2与Ignition的角色</h3><p>ROS2：控制。对机器人的控制，都应当使用ROS2进行，这样迁移到真实机器人上的时候，更加快速。因为ROS2并不在乎它所控制的是真实机器人还是仿真中的机器人，它只与topic进行交互。</p>
+<p>Ignition：仿真。Ignition也提供了topic一类的机制，他们的作用是与ROS2进行映射，从而使用ROS2来控制仿真中的机器人。在ROS2只关注与topic的交互时，ignition关注的是阅读topic中的信息，并基于信息对仿真机器人做出物理仿真，例如速度上的改变等。</p>
+<h3 id="Python工作流"><a href="#Python工作流" class="headerlink" title="Python工作流"></a>Python工作流</h3><ol>
+<li>建立workspace</li>
+<li>在workspace下的src文件夹中建立package：ros2 pkg create –build-type ament_python my_dolly</li>
+<li>在package同名子文件下编写Node脚本</li>
+<li>在launch文件夹下编写launch file</li>
+<li>在setup里修改data_files（for launch file）、entry_points（for node）</li>
+<li>在worksapce下编译：colcon build –packages-select my_dolly</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/18/%E5%92%8Cdolly%E4%B8%80%E8%B5%B7%E6%8E%A2%E7%B4%A2ros2%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%8F%91%E5%B8%83%E8%AF%9D%E9%A2%98%EF%BC%8C%E9%81%BF%E9%9A%9C/" rel="prev" title="和Dolly一起探索ROS2（三）：发布话题，避障">
+      <i class="fa fa-chevron-left"></i> 和Dolly一起探索ROS2（三）：发布话题，避障
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/20/%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%96%87%E4%BB%B6%E5%B0%BA%E5%AF%B8%E8%B6%85%E8%BF%87upload-max-filesize%E6%96%87%E4%BB%B6%E4%B8%AD%E5%AE%9A%E4%B9%89%E7%9A%84php-ini%E5%80%BC%E7%9A%84%E8%A7%A3%E5%86%B3/" rel="next" title="上传的文件尺寸超过upload_max_filesize文件中定义的php.ini值的解决方法">
+      上传的文件尺寸超过upload_max_filesize文件中定义的php.ini值的解决方法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E4%B9%8B%E5%89%8D"><span class="nav-number">1.</span> <span class="nav-text">开始之前</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AAWork-space"><span class="nav-number">2.</span> <span class="nav-text">新建一个Work space</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%95%E8%BF%90%E8%A1%8C%EF%BC%9ADolly"><span class="nav-number">3.</span> <span class="nav-text">试运行：Dolly</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BApackage"><span class="nav-number">4.</span> <span class="nav-text">创建package</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-Subscriber"><span class="nav-number">5.</span> <span class="nav-text">Python Subscriber</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python-Publisher"><span class="nav-number">6.</span> <span class="nav-text">Python Publisher</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%BF%E9%9A%9C"><span class="nav-number">7.</span> <span class="nav-text">避障</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ROS2%E4%B8%8EIgnition%E7%9A%84%E8%A7%92%E8%89%B2"><span class="nav-number">8.1.</span> <span class="nav-text">ROS2与Ignition的角色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">8.2.</span> <span class="nav-text">Python工作流</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

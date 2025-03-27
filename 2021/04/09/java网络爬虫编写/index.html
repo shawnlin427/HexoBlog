@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="我最初刚学习Python时，对编程基本一窍不通，当时的想法很简单，只是为了学点简单的编程方便自己做点小玩意儿。当时自己编写的第一个应用就是爬虫，写完之后对Python的语法、模块安装、数据结构（虽然Python就不存在什么数据结构）等各种方面都有了入门级的了解。我个人认为，直接从一个项目开始学习比按部就班地按照课程学习会来的快得多，当然这是比较功利的，如果是真的想好好掌握Java这门语言的，应当还">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java网络爬虫编写">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/java%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB%E7%BC%96%E5%86%99/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="我最初刚学习Python时，对编程基本一窍不通，当时的想法很简单，只是为了学点简单的编程方便自己做点小玩意儿。当时自己编写的第一个应用就是爬虫，写完之后对Python的语法、模块安装、数据结构（虽然Python就不存在什么数据结构）等各种方面都有了入门级的了解。我个人认为，直接从一个项目开始学习比按部就班地按照课程学习会来的快得多，当然这是比较功利的，如果是真的想好好掌握Java这门语言的，应当还">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210128212727521-1250703072.png">
+<meta property="article:published_time" content="2021-04-09T05:17:56.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.445Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210128212727521-1250703072.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/java%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB%E7%BC%96%E5%86%99/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java网络爬虫编写 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/java%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB%E7%BC%96%E5%86%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java网络爬虫编写
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 13:17:56" itemprop="dateCreated datePublished" datetime="2021-04-09T13:17:56+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我最初刚学习Python时，对编程基本一窍不通，当时的想法很简单，只是为了学点简单的编程方便自己做点小玩意儿。当时自己编写的第一个应用就是爬虫，写完之后对Python的语法、模块安装、数据结构（虽然Python就不存在什么数据结构）等各种方面都有了入门级的了解。我个人认为，直接从一个项目开始学习比按部就班地按照课程学习会来的快得多，当然这是比较功利的，如果是真的想好好掌握Java这门语言的，应当还是按照课程慢慢学习。这篇文章主要参考了<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_36146275/article/details/54974359">https://blog.csdn.net/weixin_36146275&#x2F;article&#x2F;details&#x2F;54974359</a>。</p>
+<h2 id="新建一个Java项目"><a href="#新建一个Java项目" class="headerlink" title="新建一个Java项目"></a>新建一个Java项目</h2><p>在vscode中新建一个Java项目，会看到选择项目类型这个下拉框，里面有几种类型：Maven、Spring Boot、Quarkus、MicroProfile。他们的解释如下：</p>
+<ul>
+<li>Maven：Apache Maven是一个软件项目管理的综合工具。基于项目对象模型（POM）的概念，提供了帮助管理构建、文档、报告、依赖、发布等方法，Maven简化和标准化项目建设过程。Maven的基本原理是采用远程仓库和本地仓库以及一个核心的配置文件pom.xml，pom.xml中定义的jar文件从远程仓库下载到本地仓库，各个项目使用同一个本地仓库的jar，同一个版本的jar只需下载一次，而且避免每个应用都去拷贝jar。同时它采用了现在流行的插件体系架构，所以maven的核心非常的小，只有几兆大小的文件，在执行maven任务时，才会自动下载需要的插件。</li>
+<li>Spring Boot：是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程。Spring的一个最大的目的就是使JAVA EE开发更加容易。JavaEE：全称Java平台企业版（Java Platform Enterprise Edition），是Sun公司为企业级应用推出的标准平台。JavaEE是个大杂烩，包括Applet、EJB、JDBC、JNDI、Servlet、JSP等技术的标准，运行在一个完整的应用服务器上，用来开发大规模、分布式、健壮的网络应用。</li>
+<li>Quarkus：一个针对OpenJDK HotSpot和GraalVM量身定制的Kubernetes本机Java堆栈，它是从最佳Java库和标准中精制而成的。</li>
+<li>Eclipse MicroProfile：和Spring类似，是一个Jave EE的微服务框架。</li>
+</ul>
+<p>实际上初学者应该迟一些再接触这些框架。这里选择Maven进入下一步，Maven介绍和入门<a target="_blank" rel="noopener" href="https://www.cnblogs.com/OverloadBachPunk/p/14339962.html">传送门在这里</a>。</p>
+<h2 id="Java模块（Jsoup）安装与导入"><a href="#Java模块（Jsoup）安装与导入" class="headerlink" title="Java模块（Jsoup）安装与导入"></a>Java模块（Jsoup）安装与导入</h2><p>Jsoup可以用于编写Java网络爬虫。官方介绍：Open source Java HTML parser, with the best of HTML5 DOM methods and CSS selectors, for easy data extraction.</p>
+<p>在Maven+vscode的开发环境下中导入外部包非常方便。同样参照<a target="_blank" rel="noopener" href="https://www.cnblogs.com/OverloadBachPunk/p/14339962.html">Maven介绍和入门</a>。</p>
+<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><p>简便起见，将所有的功能都先写在main方法里。</p>
+<h3 id="连接目标网页并获取内容"><a href="#连接目标网页并获取内容" class="headerlink" title="连接目标网页并获取内容"></a>连接目标网页并获取内容</h3><p>链接目标网页通过Jsoup的connect方法实现，参数为网页的url。Connection 接口还提供一个方法链来解决特殊请求，具体如下：</p>
+<p> Document doc &#x3D; Jsoup.connect(“<a target="_blank" rel="noopener" href="http://example.com/">http://example.com</a>“;)<br>  .data(“query”, “Java”)<br>  .userAgent(“Mozilla”)<br>  .cookie(“auth”, “token”)<br>  .timeout(3000)<br>  .post();</p>
+<p>最简单的例子（也是此爬虫使用的例子如下）：<br><code>Document doc = Jsoup.connect(&quot;http://news.sohu.com/&quot;).get();</code><br>这里需要使用到Jsoup的Document类。Document是一个装载html的文档类，它是Jsoup一个非常重要的类。所有的HTML文件都应该被声明为Document类才能被Jsoup进一步处理。</p>
+<h4 id="Java的异常处理机制"><a href="#Java的异常处理机制" class="headerlink" title="Java的异常处理机制"></a>Java的异常处理机制</h4><p>注意，因为get取得和解析一个HTML文件。如果从该URL获取HTML时发生错误，便会抛出 IOException，应适当处理。处理的方法之一是在定义方法时，将这个异常抛出，如下：<br><code>public static void main( String[] args ) throws IOException</code><br>这种方法在方法签名中，用于声明该方法可能抛出的异常。还有其他的异常处理机制有：</p>
+<ol>
+<li>try：它里面放置可能引发异常的代码</li>
+<li>catch：后面对应异常类型和一个代码块，用于表明该catch块用于处理这种类型的代码块，可以有多个catch块。</li>
+<li>finally：主要用于回收在try块里打开的物力资源（如数据库连接、网络连接和磁盘文件），异常机制总是保证finally块总是被执行。只有finally块，执行完成之后，才会回来执行try或者catch块中的return或者throw语句，如果finally中使用了return或者 throw等终止方法的语句，则就不会跳回执行，直接停止。</li>
+<li>throw：用于抛出一个实际的异常，可以单独作为语句使用，抛出一个具体的异常对象。</li>
+</ol>
+<h3 id="检索HTML内容"><a href="#检索HTML内容" class="headerlink" title="检索HTML内容"></a>检索HTML内容</h3><p>示例如下：<br><code>Elements newATags = doc.select(&quot;div.main-right&quot;).select(&quot;div.list16&quot;).select(&quot;ul&quot;).select(&quot;li&quot;).select(&quot;a&quot;);</code><br>Element类似Python中lxml通过xpath解析得到的“Elements”，在Jsoup中，可以通过select这个更为强大的方法直接获得所有满足检索条件的标签。这些标签被存在属于Elements类的newATags中，可以通过get方法来获取所需索引的Element，也可以通过for进行遍历。除此之外，比较常用的方法是attr()，获得相应属性名的属性值；text()获得标签内的文字。</p>
+<h3 id="Java文件读写"><a href="#Java文件读写" class="headerlink" title="Java文件读写"></a>Java文件读写</h3><p>Java中最简单的写入文件方法是通过FileWriter类，如下：</p>
+<pre><code>public void writeToFile( String str) &#123;
+    try &#123;
+        FileWriter out = new FileWriter(&quot;foobar.txt&quot;, true);
+        out.write(str);
+        out.close();
+    &#125; catch (IOException e) &#123;
+    &#125;
+&#125;
+</code></pre>
+<p>调用这个方法，就可以以附加的形式逐条写入爬取内容。如果不加参数true，默认是false，即每次写入都会覆盖上一次的记录。</p>
+<p>整体程序如下：</p>
+<p>package lx;</p>
+<p>import java.io.BufferedWriter;<br>import java.io.FileWriter;<br>import java.io.IOException;<br>import java.io.OutputStreamWriter;</p>
+<p>import org.jsoup.Jsoup;<br>import org.jsoup.nodes.Document;<br>import org.jsoup.nodes.Element;<br>import org.jsoup.select.Elements;<br>&#x2F;**<br> * Hello world!<br> *<br> *&#x2F;<br>public class MyScrapy<br>{<br>    public void writeToFile( String str) {<br>        try {<br>            FileWriter out &#x3D; new FileWriter(“foobar.txt”, true);<br>            out.write(str);<br>            out.close();<br>        } catch (IOException e) {<br>        }<br>    }<br>    public static void main( String[] args ) throws IOException<br>    {<br>        MyScrapy scrapy &#x3D; new MyScrapy();<br>        Document doc &#x3D; Jsoup.connect(“<a target="_blank" rel="noopener" href="http://news.sohu.com/%22).get()">http://news.sohu.com/&quot;).get()</a>;<br>        Elements newATags &#x3D; doc.select(“div.main-right”).select(“div.list16”).select(“ul”).select(“li”).select(“a”);<br>        for (Element element:newATags){<br>            String url &#x3D; element.attr(“href”);<br>            if(url.indexOf(“&#x2F;&#x2F;“)&#x3D;&#x3D;0  url.indexOf(“<a target="_blank" rel="noopener" href="http://www.sohu.com/a/">http://www.sohu.com/a/</a>“)&lt;0){<br>                continue;<br>            }<br>            String title &#x3D; element.attr(“title”);<br>            Document dm &#x3D; Jsoup.connect(url).get();<br>            Elements em &#x3D; dm.select(“p”).select(“img”);<br>            if(em&#x3D;&#x3D;null  em.size()&lt;1){<br>                continue;<br>            }<br>            String img &#x3D; em.get(0).attr(“src”);<br>            if(img.indexOf(“&#x2F;&#x2F;“)&#x3D;&#x3D;0){<br>                img &#x3D; img.substring(2);<br>            }<br>            String output &#x3D; “url: “+url+” title: “+title + “ image: “+img;<br>            System.out.println(output);<br>            scrapy.writeToFile(output+’\n’);<br>        }<br>    }<br>}</p>
+<h3 id="编译、运行、打包"><a href="#编译、运行、打包" class="headerlink" title="编译、运行、打包"></a>编译、运行、打包</h3><p>输入命令<code>mvn clean package</code>，然后在&#x2F;target&#x2F;classes目录下运行命令<code>java lx.MyScrapy</code>，却发现报错：</p>
+<p>Exception in thread “main” java.lang.NoClassDefFoundError: org&#x2F;jsoup&#x2F;Jsoup<br>        at lx.MyScrapy.main(MyScrapy.java:29)<br>Caused by: java.lang.ClassNotFoundException: org.jsoup.Jsoup<br>        at java.base&#x2F;jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:606)<br>        at java.base&#x2F;jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:168)<br>        at java.base&#x2F;java.lang.ClassLoader.loadClass(ClassLoader.java:522)<br>        … 1 more</p>
+<p>而在maven下直接编译运行java文件是可以运行的。经过一番搜索，发现这是因为maven在打包时就不会把外部依赖也打包进去，防止其他人在使用你的jar包时产生依赖冲突。stackoverflow上给出了通过在POM中加入插件项的解决办法，不过在vscode下，有更简单的方式将外部依赖打包到jar包中。</p>
+<ol>
+<li>首先用maven进行package，生成classes</li>
+<li>在左侧窗口的JAVA PROJECT中，点击导出到jar文件<img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210128212727521-1250703072.png"></li>
+<li>再运行<code>java -jar .\scrapy.jar</code>，此时jar文件可以运行。</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>通过这个爬虫教程，主要学习以下基础知识：</p>
+<ol>
+<li>Maven+VScode的基本使用方法；</li>
+<li>Maven导入外部依赖包的基础方式；</li>
+<li>Java中异常的处理方法；</li>
+<li>Jsoup包的基本使用方式；</li>
+<li>Java中基础的文件读写操作；</li>
+<li>在VScode下对Java进行打包的简单方式。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/09/maven%E5%85%A5%E9%97%A8/" rel="prev" title="Maven入门">
+      <i class="fa fa-chevron-left"></i> Maven入门
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/09/protege%E4%B8%AD%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%E7%9A%84%E6%B5%8B%E8%AF%95%E4%BD%BF%E7%94%A8/" rel="next" title="Protege中推理引擎的测试使用">
+      Protege中推理引擎的测试使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AAJava%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">新建一个Java项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E6%A8%A1%E5%9D%97%EF%BC%88Jsoup%EF%BC%89%E5%AE%89%E8%A3%85%E4%B8%8E%E5%AF%BC%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">Java模块（Jsoup）安装与导入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">功能实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E7%9B%AE%E6%A0%87%E7%BD%91%E9%A1%B5%E5%B9%B6%E8%8E%B7%E5%8F%96%E5%86%85%E5%AE%B9"><span class="nav-number">3.1.</span> <span class="nav-text">连接目标网页并获取内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java%E7%9A%84%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6"><span class="nav-number">3.1.1.</span> <span class="nav-text">Java的异常处理机制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E7%B4%A2HTML%E5%86%85%E5%AE%B9"><span class="nav-number">3.2.</span> <span class="nav-text">检索HTML内容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99"><span class="nav-number">3.3.</span> <span class="nav-text">Java文件读写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E3%80%81%E8%BF%90%E8%A1%8C%E3%80%81%E6%89%93%E5%8C%85"><span class="nav-number">3.4.</span> <span class="nav-text">编译、运行、打包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

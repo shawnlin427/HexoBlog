@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这一节主要学习对句子的分析。 简单句子成分简单句子可以理解为英文中没有which、when这些修饰的句子，只要没有这些成分，再长的句子都算简单句子。除了最简单的主谓宾结构，句子中还有一下成分：  表语：Ambaŭ Germanio kaj Francio estas demokratiaj ŝtatoj. 俄国和法国都是皿煮国家。民主，demokratiaj，就是表语，表明主语或者宾语的性质。 状">
+<meta property="og:type" content="article">
+<meta property="og:title" content="世界语学习笔记（三）">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/12/03/%E4%B8%96%E7%95%8C%E8%AF%AD%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="这一节主要学习对句子的分析。 简单句子成分简单句子可以理解为英文中没有which、when这些修饰的句子，只要没有这些成分，再长的句子都算简单句子。除了最简单的主谓宾结构，句子中还有一下成分：  表语：Ambaŭ Germanio kaj Francio estas demokratiaj ŝtatoj. 俄国和法国都是皿煮国家。民主，demokratiaj，就是表语，表明主语或者宾语的性质。 状">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-03T01:49:34.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.638Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/12/03/%E4%B8%96%E7%95%8C%E8%AF%AD%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>世界语学习笔记（三） | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/12/03/%E4%B8%96%E7%95%8C%E8%AF%AD%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%89%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          世界语学习笔记（三）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-03 09:49:34" itemprop="dateCreated datePublished" datetime="2021-12-03T09:49:34+08:00">2021-12-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/thought/" itemprop="url" rel="index"><span itemprop="name">thought</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/thought/%E4%B8%96%E7%95%8C%E8%AF%AD/" itemprop="url" rel="index"><span itemprop="name">世界语</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这一节主要学习对句子的分析。</p>
+<h2 id="简单句子成分"><a href="#简单句子成分" class="headerlink" title="简单句子成分"></a>简单句子成分</h2><p>简单句子可以理解为英文中没有which、when这些修饰的句子，只要没有这些成分，再长的句子都算简单句子。除了最简单的主谓宾结构，句子中还有一下成分：</p>
+<ul>
+<li>表语：Ambaŭ Germanio kaj Francio estas demokratiaj ŝtatoj. 俄国和法国都是皿煮国家。民主，demokratiaj，就是表语，表明主语或者宾语的性质。</li>
+<li>状语，Alta junulo rapide kuras. 一个年轻人很快的跑，很快的，rapide，就是状语，修饰谓语。</li>
+<li>定语，Ŝi estas lernanto, ne tre saĝa, sed tre diligenta. 他是个学生，不是很聪明，但是很勤奋，tre saĝa是形容lernanto的，作定语。</li>
+</ul>
+<h2 id="复杂句子成分"><a href="#复杂句子成分" class="headerlink" title="复杂句子成分"></a>复杂句子成分</h2><p>复杂句子类似于：I don‘t know where I am、I see what you did last night这种，此时作为主谓宾等句子成分的不是词语或者词组，而是一个句子，此时称为复杂句子成分。在学习世界语的复杂句子成分是，可以和英文进行比对，但是不要彻底收到英文的影响。</p>
+<ul>
+<li>从句有指代的情况：类似英文中where、which、who一类的从句，比如：Nur diru al mi, kie vi estas. 只要告诉我你在哪里，kie就是指代哪里，可以发现，此时语序和英文是完全一致的，比如Only if you tell me where you are。</li>
+<li>从句无指代的情况：类似I think you are crazy，此时从句开头没有where which who等，在世界语中，需要用一个无实际意义的ke相连表示这种情况，比如Mi aŭdis, ke li iris al Usono. 我听说他去了美国。</li>
+</ul>
+<p>以下是一些引导词做疑问句和关系词时的中文含义，但是是不准确的，比如kie也可以用于程度的提问，这里只是做一举例。</p>
+<p>世界语</p>
+<p>疑问词</p>
+<p>关系词</p>
+<p>kiu</p>
+<p>谁</p>
+<p>那个</p>
+<p>kie</p>
+<p>哪里</p>
+<p>那里</p>
+<p>kio</p>
+<p>什么</p>
+<p>那个（事）</p>
+<p>kia</p>
+<p>什么样的</p>
+<p>那样的</p>
+<p>kies</p>
+<p>谁的</p>
+<p>那个的</p>
+<p>kiom</p>
+<p>多少</p>
+<p>那么多</p>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>— Saluton, Solis! 你好，Solis！<br>— Saluton, Ŝadman! 你好，Ŝadman！<br>— Ĉu vi povas bone aŭdi min? 你能听清吗？<br>— Jes, nun mi povas. 可以，现在可以听清。<br>Sed post momento ne estos telefona servo. Ĉar mi estas en trajno. Mi vojaĝas al urbo Hami. 但一会儿手机就会没有信号了。因为我在火车上。我现在去哈密市。</p>
+<p>— Saluton, Ŝadman! 你好，Ŝadman！<br>Nun estas telefona servo. 现在有信号了。<br>— Ĉu vi ankoraŭ estas en trajno?  现在你还在火车上吗？<br>— Jes. Sed la trajno proksimiĝas al la urbo Hami. Do denove estas telefona servo. Post 5 minutoj la trajno atingos la urbon. 还在火车上。但火车马上就到哈密市了，所以手机又有信号了。<br>— Bone. Mi telefonos al vi post duona horo. 好，半个小时后我打给你。<br>— Sed mi tuj telefonos al vi, post kiam mi atingos la hotelon. 我一到宾馆就给你打。<br>— Bone. Ĝis baldaŭ. 好，一会儿聊。<br>— Ĝis! 一会儿见！</p>
+<p>— Saluton! Mi atingis hotelon. Nun mi estas en la hotelo. 你好，我到宾馆了。现在我就在宾馆里。<br>— Do bone. Nun ni povas daŭrigi nian interparoladon. 好。我们可以开始聊了。<br>— Bone. 好。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/03/%E4%B8%96%E7%95%8C%E8%AF%AD%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="prev" title="世界语学习笔记（二）">
+      <i class="fa fa-chevron-left"></i> 世界语学习笔记（二）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/07/%E4%B8%96%E7%95%8C%E8%AF%AD%E5%AD%A6%E4%B9%A0%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E8%B4%AD%E7%89%A9/" rel="next" title="世界语学习（四）：购物">
+      世界语学习（四）：购物 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%8F%A5%E5%AD%90%E6%88%90%E5%88%86"><span class="nav-number">1.</span> <span class="nav-text">简单句子成分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E6%9D%82%E5%8F%A5%E5%AD%90%E6%88%90%E5%88%86"><span class="nav-number">2.</span> <span class="nav-text">复杂句子成分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0"><span class="nav-number">3.</span> <span class="nav-text">练习</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

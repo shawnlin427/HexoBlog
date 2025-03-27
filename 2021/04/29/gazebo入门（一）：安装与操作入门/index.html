@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本系列基本COPY自Gazebo的官方Tutorial，英文好的可以直接前往Gazebo官网学习，记得自带梯子，不然图片加载不出来。 安装如果你是Ubuntu用户，只要运行一行： curl -sSL http:&#x2F;&#x2F;get.gazebosim.org  sh 这样安装的是最新版的。或者也可以在应用商店里安装Gazebo9.或者安装ROS Melodic的时候，也会集成Gazebo9. 如果你不是Ub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gazebo入门（一）：安装与操作入门">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/29/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%AE%89%E8%A3%85%E4%B8%8E%E6%93%8D%E4%BD%9C%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="本系列基本COPY自Gazebo的官方Tutorial，英文好的可以直接前往Gazebo官网学习，记得自带梯子，不然图片加载不出来。 安装如果你是Ubuntu用户，只要运行一行： curl -sSL http:&#x2F;&#x2F;get.gazebosim.org  sh 这样安装的是最新版的。或者也可以在应用商店里安装Gazebo9.或者安装ROS Melodic的时候，也会集成Gazebo9. 如果你不是Ub">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2021-04-29_09-09-1024x565.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/ftu3-mouse-controls-1024x415.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/gazebo8_model_editor_ui-1024x624.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-44-1024x692.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-45-1024x687.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-46-751x1024.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-47-1024x760.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-48-1024x750.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-49-1024x625.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-50.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-51.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-52-1024x764.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-53-1024x808.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-54-1024x969.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-56-963x1024.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-57-1024x517.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-58-1024x815.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-59-1000x1024.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-60-1024x807.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-61.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-62-1024x330.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-63-1024x915.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-64.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-65.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-66-1024x753.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-67-1024x598.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-68-1024x592.png">
+<meta property="article:published_time" content="2021-04-29T03:44:02.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.509Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2021-04-29_09-09-1024x565.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/29/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%AE%89%E8%A3%85%E4%B8%8E%E6%93%8D%E4%BD%9C%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Gazebo入门（一）：安装与操作入门 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/29/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%AE%89%E8%A3%85%E4%B8%8E%E6%93%8D%E4%BD%9C%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Gazebo入门（一）：安装与操作入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-29 11:44:02" itemprop="dateCreated datePublished" datetime="2021-04-29T11:44:02+08:00">2021-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本系列基本COPY自Gazebo的官方Tutorial，英文好的可以直接前往<a target="_blank" rel="noopener" href="http://gazebosim.org/tutorials?cat=guided_b">Gazebo官网</a>学习，记得自带梯子，不然图片加载不出来。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>如果你是Ubuntu用户，只要运行一行：</p>
+<p>curl -sSL <a target="_blank" rel="noopener" href="http://get.gazebosim.org/">http://get.gazebosim.org</a>  sh</p>
+<p>这样安装的是最新版的。或者也可以在应用商店里安装Gazebo9.或者安装ROS Melodic的时候，也会集成Gazebo9.</p>
+<p>如果你不是Ubuntu用户，那我建议你把操作系统换成Ubuntu，别费那么多劲去尝试在Centos、Deepin、RedHat之类的系统上装Gazebo了。Gazebo对显卡有一定的要求，目前来看Ubuntu是对Nvidia显卡支持最好的Linux系统。</p>
+<h2 id="Gazebo的界面"><a href="#Gazebo的界面" class="headerlink" title="Gazebo的界面"></a>Gazebo的界面</h2><p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2021-04-29_09-09-1024x565.png"></p>
+<p>World界面GUI释义如上。底部的控制条用于控制仿真。鼠标操作如下：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/ftu3-mouse-controls-1024x415.png"></p>
+<h2 id="Gazebo操作"><a href="#Gazebo操作" class="headerlink" title="Gazebo操作"></a>Gazebo操作</h2><p>Gazebo的界面当然不止这么些，不过接下来我们以练代学。我们会建立一个简单的机器人小车，并给他放上一个深度相机传感器。Gazebo提供了简单的机器人建模工具，但是如果要建立更为复杂的模型，需要编辑SDF文件。</p>
+<h3 id="模型编辑页面GUI"><a href="#模型编辑页面GUI" class="headerlink" title="模型编辑页面GUI"></a>模型编辑页面GUI</h3><p>在Edit选项栏中选择Model Editor，进入模型编辑界面。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/gazebo8_model_editor_ui-1024x624.png"></p>
+<ol>
+<li>对模型进行操作的一些工具，很像World界面中的</li>
+<li>左状态栏，也是一些编辑模型的工具，有两个tab：insert，model</li>
+<li>插入页，可以插入基本形状、Custom形状，以及从模型库插入模型，后者包括各种传感器，以及小车、船、无人机等复杂的现有模型。Gazebo支持.dae&#x2F;.stl&#x2F;..obj&#x2F;.svg格式的模型文件。</li>
+<li>模型页，可以设置当前模型的一些参数。一个模型的组成包括Link、Joints、Nested Model（插入的模型）以及Plugin。</li>
+</ol>
+<p>Gazebo的模型编辑GUI功能可以覆盖大部分的SDF文件操作，但是不支持以下操作：</p>
+<ol>
+<li>编辑插入的模型，或者把自建模型连接到插入模型上</li>
+<li>插入其他形状的几何体</li>
+<li>对等高图的支持</li>
+<li>CAD功能</li>
+</ol>
+<h2 id="制作模型"><a href="#制作模型" class="headerlink" title="制作模型"></a>制作模型</h2><h4 id="车厢"><a href="#车厢" class="headerlink" title="车厢"></a>车厢</h4><p>首先插入一个Box作为车的车厢：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-44-1024x692.png"></p>
+<p>可以通过上方ToolBar中的模型缩放来改变模型的大小：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-45-1024x687.png"></p>
+<p>也可以通过在Link Inspect中修改参数来改变模型形状，模型位置等。双击Box打开Link Inspector，将Pose中的Z修改为0.4。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-46-751x1024.png"></p>
+<h4 id="前转向轮"><a href="#前转向轮" class="headerlink" title="前转向轮"></a>前转向轮</h4><p>接下来插入前转向轮，使用简单的圆柱形状。插入后，双击圆柱打开Link Inspector，切到Visual页面，修改几何形状：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-47-1024x760.png"></p>
+<p>修改之后会发现一个小圆柱套在一个大圆柱里。这是因为我们只修改了其视图形状，没有修改其碰撞体积。切换到Collision页面，做一样的修改。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-48-1024x750.png"></p>
+<p>然后我们需要调整轮子的位置与朝向。在Link页面中，修改其Pose：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-49-1024x625.png"></p>
+<p>Z轴上高度为0.3m，这样轮子能够刚好接触到地面。Roll设置为1.5707rad（也就是90°）。这样轮子就立在地上了。接下来再复制一个轮子，转向轮创建完成。</p>
+<h3 id="链接车厢与转向轮"><a href="#链接车厢与转向轮" class="headerlink" title="链接车厢与转向轮"></a>链接车厢与转向轮</h3><p>链接使用Joint功能，在上方Toolbar的靠右端。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-50.png"></p>
+<p>点击Joint，会出现一个Create Joint窗口，此时如果把鼠标移到模型上，会产生高亮效果。观察窗口中的Joint types，它描述了模型之间连接的方式，这里我们选择Revolute，即旋转。查看Link Selections栏，此时我们要选择的是Parent Link，也就是车厢。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-51.png"></p>
+<p>点击一下车厢，再点击一下车轮，链接就建立了。可以看到黄色的一条线，这条线的颜色会随着链接方式而变化。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-52-1024x764.png"></p>
+<p>接下来我们要把车轮贴到车厢上，使用Align links的方式将其对齐。首先确定对齐方式是Child to Parent，也就是下面那个白条的选项（看不清楚）。然后选择X轴最大对齐，也就是两个物体的x轴最大处对齐：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-53-1024x808.png"></p>
+<p>然后选择Y轴的Reverse选项。这样对齐方式会变成“最小-最大”，然后选择最大对齐，这样child的y最大处和parent的y最小处对齐：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-54-1024x969.png"></p>
+<p>这样车轮就形成了。点击OK，但是好像忘了什么：车轮的旋转方向不太对。现在旋转轴是X轴，需要改成Y轴。可以通过右键模型，在Joint列表中选择相应的Joint来打开Joint Inspector，也可以在左侧model页面中找到对应的Joint。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-56-963x1024.png"></p>
+<p>右侧的轮子也同样设置。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-57-1024x517.png"></p>
+<h3 id="加入转向轮"><a href="#加入转向轮" class="headerlink" title="加入转向轮"></a>加入转向轮</h3><p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-58-1024x815.png"></p>
+<p>插入一个球体，设置其视图和碰撞形状，半径设置为0.2m。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-59-1000x1024.png"></p>
+<p>连接方式为Ball，连接线颜色为紫色；</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-60-1024x807.png"></p>
+<p>对齐方式为Y轴中间对齐、X轴最小处对齐。最后在Link Inspector中设置球体的空间位置，让其刚好接触到地面，如图：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-61.png"></p>
+<h3 id="插入传感器"><a href="#插入传感器" class="headerlink" title="插入传感器"></a>插入传感器</h3><p>我们插入一个深度传感器，这样小车可以测量它和前面物体的距离。在Insert界面的下方，你可以看到Model Database，找到各种传感器。新安装的Gazebo不会在本地保存模型，但是你可以从网络资源库下载模型，下载的模型会保存在本地，这样不用重复下载。找到Depth Camera，放置在主界面中。它看起来是一个小立方体。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-62-1024x330.png"></p>
+<p>接下来把它放到大概小车中间的上方，并且用Joints链接。连接的时候注意，方式选择为Fixed。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-63-1024x915.png"></p>
+<h3 id="加载插件"><a href="#加载插件" class="headerlink" title="加载插件"></a>加载插件</h3><p>这样我们就完成了小车的模型建立，但是如果不加载插件，小车只能静止在原地。插件，也可以说是脚本，可以用于传感器数据的读取、处理，路径规划，以及控制等等。这里我们使用一个现成的插件，它可以读取深度相机数据，让小车跟随前方的障碍物。</p>
+<p>在Model页面中，找到Model Plugins，点击Add。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-64.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-65.png"></p>
+<p>Plugin name可以是任何名字。Filename指向了储存在本地的plugin文件，Gazebo没有设置一个文件浏览器来选择文件实在是让人很无语。Innerxml里可以给脚本加一些参数，这个脚本足够简单所以没有任何参数。比如需要制定左右轮子的名称，这样脚本才能控制正确的轮子。follower脚本作为一个范例脚本，做了许多假设来自动找到轮子和传感器。接下来点击OK部署脚本。</p>
+<h3 id="保存并测试"><a href="#保存并测试" class="headerlink" title="保存并测试"></a>保存并测试</h3><p>点击File中的save保存模型。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-66-1024x753.png"></p>
+<p>然后点击File中的exit model editor退出模型编辑界面，回到world界面。在这个界面中，我们可以与模型交互了。在小车前面放一个障碍物，看看它会如何相应：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-67-1024x598.png"></p>
+<p>点击下方的运行按钮。能看到小车向着障碍物运行。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-68-1024x592.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/28/%E6%8A%98%E8%85%BElinux%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" rel="prev" title="折腾Linux的一些思考">
+      <i class="fa fa-chevron-left"></i> 折腾Linux的一些思考
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/02/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B/" rel="next" title="Gazebo入门（二）：自定义模型">
+      Gazebo入门（二）：自定义模型 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gazebo%E7%9A%84%E7%95%8C%E9%9D%A2"><span class="nav-number">2.</span> <span class="nav-text">Gazebo的界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gazebo%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">Gazebo操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%BC%96%E8%BE%91%E9%A1%B5%E9%9D%A2GUI"><span class="nav-number">3.1.</span> <span class="nav-text">模型编辑页面GUI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">制作模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%A6%E5%8E%A2"><span class="nav-number">4.0.1.</span> <span class="nav-text">车厢</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E8%BD%AC%E5%90%91%E8%BD%AE"><span class="nav-number">4.0.2.</span> <span class="nav-text">前转向轮</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E8%BD%A6%E5%8E%A2%E4%B8%8E%E8%BD%AC%E5%90%91%E8%BD%AE"><span class="nav-number">4.1.</span> <span class="nav-text">链接车厢与转向轮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%85%A5%E8%BD%AC%E5%90%91%E8%BD%AE"><span class="nav-number">4.2.</span> <span class="nav-text">加入转向轮</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E4%BC%A0%E6%84%9F%E5%99%A8"><span class="nav-number">4.3.</span> <span class="nav-text">插入传感器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E6%8F%92%E4%BB%B6"><span class="nav-number">4.4.</span> <span class="nav-text">加载插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E5%B9%B6%E6%B5%8B%E8%AF%95"><span class="nav-number">4.5.</span> <span class="nav-text">保存并测试</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

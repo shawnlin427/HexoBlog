@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="这一篇随笔的例子如下：可以看到，标高为2的楼板有一个缺口。那么这块楼板在IFC中是如何表示的呢？往下看：  楼板形状的表示方式在Python中用ifcopenshell打开IFC文件，输入 import ifcopenshellf &#x3D; ifcopenshell.open(‘project1_ifc4.ifc’)slab_list &#x3D; f.by_type(‘ifcslab’)sl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IFC中构件上洞口的表达方式">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/ifc%E4%B8%AD%E6%9E%84%E4%BB%B6%E4%B8%8A%E6%B4%9E%E5%8F%A3%E7%9A%84%E8%A1%A8%E8%BE%BE%E6%96%B9%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="这一篇随笔的例子如下：可以看到，标高为2的楼板有一个缺口。那么这块楼板在IFC中是如何表示的呢？往下看：  楼板形状的表示方式在Python中用ifcopenshell打开IFC文件，输入 import ifcopenshellf &#x3D; ifcopenshell.open(‘project1_ifc4.ifc’)slab_list &#x3D; f.by_type(‘ifcslab’)sl">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210226161517579-1765810054.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210226161517579-1765810054-1024x482.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210226163232286-1568754367.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210226163232286-1568754367-1024x993.png">
+<meta property="article:published_time" content="2021-04-09T05:34:03.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.452Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210226161517579-1765810054.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/ifc%E4%B8%AD%E6%9E%84%E4%BB%B6%E4%B8%8A%E6%B4%9E%E5%8F%A3%E7%9A%84%E8%A1%A8%E8%BE%BE%E6%96%B9%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>IFC中构件上洞口的表达方式 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/ifc%E4%B8%AD%E6%9E%84%E4%BB%B6%E4%B8%8A%E6%B4%9E%E5%8F%A3%E7%9A%84%E8%A1%A8%E8%BE%BE%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          IFC中构件上洞口的表达方式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 13:34:03" itemprop="dateCreated datePublished" datetime="2021-04-09T13:34:03+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/" itemprop="url" rel="index"><span itemprop="name">bim</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/IFC/" itemprop="url" rel="index"><span itemprop="name">IFC</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这一篇随笔的例子如下：<br><img src="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210226161517579-1765810054.png"><br>可以看到，标高为2的楼板有一个缺口。那么这块楼板在IFC中是如何表示的呢？往下看：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210226161517579-1765810054-1024x482.png"></p>
+<h2 id="楼板形状的表示方式"><a href="#楼板形状的表示方式" class="headerlink" title="楼板形状的表示方式"></a>楼板形状的表示方式</h2><p>在Python中用ifcopenshell打开IFC文件，输入</p>
+<p>import ifcopenshell<br>f &#x3D; ifcopenshell.open(‘project1_ifc4.ifc’)<br>slab_list &#x3D; f.by_type(‘ifcslab’)<br>slab_list[1].ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates<br>(0.0, 0.0, 4000.0)</p>
+<p>可以看到这块楼板的相对坐标参照点是(0.0, 0.0, 4000.0)，也就是标高2的位置。说明<code>slab_list[1]</code>就是我们想要找到的楼板。随后查看楼板的形状：</p>
+<p>In [27]: slab_list[1].Representation.Representations<br>Out[27]:<br>(#973&#x3D;IfcShapeRepresentation(#120,’Body’,’SweptSolid’,(#963)),<br> #986&#x3D;IfcShapeRepresentation(#122,’FootPrint’,’Curve2D’,(#984)))</p>
+<p>可以看出楼板的形态是通过两类IfcShapeRepresentation组成的。SweptSolid说明其Body是一个拉伸体；Curve2D说明其FootPrint（草图）是一个2D曲线。接下来分别查看这两个Individual的属性：</p>
+<p>In [67]: slab_list[1].Representation.Representations[1].Items[0].Points #查看Curve2D的坐标点<br>Out[67]:<br>(#978&#x3D;IfcCartesianPoint((0.,20200.)),<br> #980&#x3D;IfcCartesianPoint((20200.,20200.)),<br> #982&#x3D;IfcCartesianPoint((20200.,0.)),<br> #10&#x3D;IfcCartesianPoint((0.,0.)),<br> #978&#x3D;IfcCartesianPoint((0.,20200.)))<br>In [75]: slab_list[1].Representation.Representations[0].Items[0].SweptArea #查看SweptArea的拉伸横截面区域<br>Out[75]: #959&#x3D;IfcRectangleProfileDef(.AREA.,$,#958,20200.,20200.0000000001)</p>
+<p>可以看出，Curve2D中的点组成了一个闭环，构成楼板的草图；楼板的SweptArea的Xdim与Ydim则与楼板的长宽对应（如果楼板不是矩形会如何呢？之后再做研究）。然而，我们并没有看到洞口的信息在里面出现。</p>
+<h2 id="洞口的信息"><a href="#洞口的信息" class="headerlink" title="洞口的信息"></a>洞口的信息</h2><p>显然，洞口的信息并不包括在楼板中。那么洞口会在哪里呢？在Protege中打开转换后的IFC文件，在IfcProduct下找，很快就可以找到了：<br><img src="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210226163232286-1568754367.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210226163232286-1568754367-1024x993.png"></p>
+<p>原来洞口属于IfcOpeningElement类。接下来用ifcopenshell进一步查看这个实例的属性：</p>
+<p>In [98]: open_list &#x3D; f.by_type(‘IfcOpeningElement’)</p>
+<p>In [99]: open_list<br>Out[99]: [#1012&#x3D;IfcOpeningElement(‘2dW1x8jJT85xQnO5ksAdUC’,#42,’楼板:常规 - 150mm:334036:2’,$,’Opening’,#1010,#1004,’334036’,$)]</p>
+<p>In [100]: open_list[0].Representation.Representations<br>Out[100]: (#1002&#x3D;IfcShapeRepresentation(#120,’Body’,’SweptSolid’,(#996)),)</p>
+<p>发现洞孔只存在一个SweptSolid作为形状的表示，猜测可能是因为洞口的形状是简单的矩形，因此只需要SweptSolid就可以表示了（不确定）。进一步查看洞口的其他属性：</p>
+<p>In [114]: open_list[0].Representation.Representations[0].Items[0].Depth<br>Out[114]: 150.0</p>
+<p>In [128]: open_list[0].ObjectPlacement.RelativePlacement.Location.Coordinates<br>Out[128]: (13000.0, 13000.0, 150.0)</p>
+<p>In [136]: open_list[0].Representation.Representations[0].Items[0].SweptArea<br>Out[136]: #994&#x3D;IfcRectangleProfileDef(.AREA.,$,#993,4000.,4000.)</p>
+<p>洞口深度为150，位置在(13000.0, 13000.0, 150.0)，SweptArea面积为（4000.,4000.)。这与我们的洞口是完全一致的。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/09/ifc%E4%B8%AD%E6%9E%84%E4%BB%B6%E4%BD%8D%E7%BD%AE%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/" rel="prev" title="IFC中构件位置的表示方法">
+      <i class="fa fa-chevron-left"></i> IFC中构件位置的表示方法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/09/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8Emutt%E5%92%8Cpython%E7%88%AC%E8%99%AB%E7%9A%84%E6%AF%8F%E6%97%A5%E8%A6%81%E9%97%BB%E4%B8%8E%E5%A4%A9%E6%B0%94%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81/" rel="next" title="制作一个基于mutt和python爬虫的每日要闻与天气自动发送脚本">
+      制作一个基于mutt和python爬虫的每日要闻与天气自动发送脚本 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A5%BC%E6%9D%BF%E5%BD%A2%E7%8A%B6%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">楼板形状的表示方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B4%9E%E5%8F%A3%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-number">2.</span> <span class="nav-text">洞口的信息</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

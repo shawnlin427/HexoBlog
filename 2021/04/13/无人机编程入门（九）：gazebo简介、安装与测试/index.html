@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="至今为止，我们都没有见过实体化的无人机，除了地面站中简单地标出了无人机的位置和飞行姿态。一直没能看着自己的无人机真正升空，实在是有一点遗憾。在你尝试在真实的无人机上实验之前，还有一个选择：无人机仿真。如果你只是想让无人机飞到一个地方再飞回来，那么前面的教程就足够你参考了；但是如果你想让无人机进行一些更为精细的操作的话，无人机仿真是很有必要的。 Gazebo是一个很有效的仿真工具，可以用来测试算法、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="无人机编程入门（九）：Gazebo简介、安装与测试">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/13/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B9%9D%EF%BC%89%EF%BC%9Agazebo%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="至今为止，我们都没有见过实体化的无人机，除了地面站中简单地标出了无人机的位置和飞行姿态。一直没能看着自己的无人机真正升空，实在是有一点遗憾。在你尝试在真实的无人机上实验之前，还有一个选择：无人机仿真。如果你只是想让无人机飞到一个地方再飞回来，那么前面的教程就足够你参考了；但是如果你想让无人机进行一些更为精细的操作的话，无人机仿真是很有必要的。 Gazebo是一个很有效的仿真工具，可以用来测试算法、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-31-1024x970.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-32.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-33.png">
+<meta property="article:published_time" content="2021-04-13T02:44:20.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.487Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-31-1024x970.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/13/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B9%9D%EF%BC%89%EF%BC%9Agazebo%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E6%B5%8B%E8%AF%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>无人机编程入门（九）：Gazebo简介、安装与测试 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/13/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B9%9D%EF%BC%89%EF%BC%9Agazebo%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          无人机编程入门（九）：Gazebo简介、安装与测试
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-13 10:44:20" itemprop="dateCreated datePublished" datetime="2021-04-13T10:44:20+08:00">2021-04-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>至今为止，我们都没有见过实体化的无人机，除了地面站中简单地标出了无人机的位置和飞行姿态。一直没能看着自己的无人机真正升空，实在是有一点遗憾。在你尝试在真实的无人机上实验之前，还有一个选择：无人机仿真。如果你只是想让无人机飞到一个地方再飞回来，那么前面的教程就足够你参考了；但是如果你想让无人机进行一些更为精细的操作的话，无人机仿真是很有必要的。</p>
+<p>Gazebo是一个很有效的仿真工具，可以用来测试算法、设计机器人、进行测试，提供一个三维视窗来让你观察机器人的表现。在这一章，我们会安装gazebo并进行简单的测试。</p>
+<h2 id="安装Gazebo"><a href="#安装Gazebo" class="headerlink" title="安装Gazebo"></a>安装Gazebo</h2><p>安装之前，我们需要对环境变量进行一下设置。Gazebo对虚拟机的3D硬件加速支持有BUG，会出现闪退的情形。因此我们先关闭硬件加速：</p>
+<p>echo “ export SVGA_VGPU10&#x3D;0” &gt;&gt; ~&#x2F;.bashrc<br>source ~&#x2F;.bashrc</p>
+<p>然后我们将 <a target="_blank" rel="noopener" href="http://packages.osrfoundation.org/">http://packages.osrfoundation.org</a>加入到系统的源列表里，这样我们用apt install就可以安装Gazebo了。：</p>
+<p>sudo sh -c ‘echo “deb <a target="_blank" rel="noopener" href="http://packages.osrfoundation.org/gazebo/ubuntu-stable">http://packages.osrfoundation.org/gazebo/ubuntu-stable</a> `lsb_release -cs` main” &gt; &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;gazebo-stable.list’<br>wget <a target="_blank" rel="noopener" href="http://packages.osrfoundation.org/gazebo.key">http://packages.osrfoundation.org/gazebo.key</a> -O -  sudo apt-key add -<br>sudo apt update</p>
+<p>接下来安装gazebo9：</p>
+<p>sudo apt install gazebo9 libgazebo9-dev</p>
+<p>我们打开Gazebo的界面看看安装是否成功：</p>
+<p>gazebo –verbose</p>
+<p>如果界面能成功打开，并且没有闪退，说明安装没有问题。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-31-1024x970.png"></p>
+<h2 id="安装Ardupilot-gazebo插件"><a href="#安装Ardupilot-gazebo插件" class="headerlink" title="安装Ardupilot-gazebo插件"></a>安装Ardupilot-gazebo插件</h2><p>这个插件允许你在Gazebo中对ArduPilot控制的无人机进行仿真，他也提供了一个无人机模型和场景用于观察。</p>
+<p>cd $courseRoot<br>git clone <a target="_blank" rel="noopener" href="https://github.com/khancyr/ardupilot/_gazebo">https://github.com/khancyr/ardupilot\_gazebo</a><br>cd ardupilot_gazebo<br>mkdir build<br>cd build<br>cmake ..<br>make -j4<br>sudo make install<br>echo ‘source &#x2F;usr&#x2F;share&#x2F;gazebo&#x2F;setup.sh’ &gt;&gt; ~&#x2F;.bashrc</p>
+<p>在这个过程中无人机的模型和默认场景也被下载下来，我们把模型和场景坐在的文件夹也加入环境变量，这样加载时不需要输入完整的模型路径名称。</p>
+<p>echo ‘export GAZEBO_MODEL_PATH&#x3D;<del>&#x2F;courseRoot&#x2F;ardupilot_gazebo&#x2F;models’ &gt;&gt; ~&#x2F;.bashrc<br>echo ‘export GAZEBO_RESOURCE_PATH&#x3D;</del>&#x2F;courseRoot&#x2F;ardupilot_gazebo&#x2F;worlds:${GAZEBO_RESOURCE_PATH}’ &gt;&gt; ~&#x2F;.bashrc<br>source ~&#x2F;.bashrc</p>
+<h2 id="Gazebo测试"><a href="#Gazebo测试" class="headerlink" title="Gazebo测试"></a>Gazebo测试</h2><p>安装完毕后，我们对Gazebo进行测试。首先，我们运行一个SITL：</p>
+<p>sim_vehicle.py -v ArduCopter -f gazebo-iris –map –console</p>
+<p>然后，我们运行gazebo：</p>
+<p>gazebo –verbose worlds&#x2F;iris_arducopter_runway.world</p>
+<p>这时候会卡很久一段时间（我是这样），这是因为gazebo正在下载模型，耐心等待即可，偶尔敲一敲空格（可能有用）。你应该可以看到这样的界面：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-32.png"></p>
+<p>然后在控制台里控制无人机起飞，看看会发生什么吧：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-33.png"></p>
+<p>芜湖起飞！下一章，我们来看看如何把Gazebo和我们之前学习的知识联系到一起。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/12/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AB%EF%BC%89%EF%BC%9Adronekit%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="prev" title="无人机编程入门（八）：DroneKit使用（二）">
+      <i class="fa fa-chevron-left"></i> 无人机编程入门（八）：DroneKit使用（二）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/13/%E4%B8%93%E5%AE%B6%E7%B3%BB%E7%BB%9F%E9%87%8C%E7%9A%84%E6%8E%A8%E7%90%86%E6%9C%BA%E5%AE%9E%E7%8E%B0/" rel="next" title="专家系统里的推理机实现">
+      专家系统里的推理机实现 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Gazebo"><span class="nav-number">1.</span> <span class="nav-text">安装Gazebo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Ardupilot-gazebo%E6%8F%92%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">安装Ardupilot-gazebo插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gazebo%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">Gazebo测试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

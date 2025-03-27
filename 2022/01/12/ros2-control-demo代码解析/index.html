@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言网上有很多ros_control的教程，ros2_control的很少。ros2_control官方出了一个doc，但是看完之后，大部分人也只会照着文档跑demo，对其中各种原理完全不理解。像我一开始就完全搞不清楚，这个ros2_control，到底是怎么怎么通过hw_interface和硬件交互的？ros2_control demo是不涉及这块内容的，因为它要保证没有实际硬件的情况下这个de">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ros2_control_demo代码解析">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/01/12/ros2-control-demo%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="前言网上有很多ros_control的教程，ros2_control的很少。ros2_control官方出了一个doc，但是看完之后，大部分人也只会照着文档跑demo，对其中各种原理完全不理解。像我一开始就完全搞不清楚，这个ros2_control，到底是怎么怎么通过hw_interface和硬件交互的？ros2_control demo是不涉及这块内容的，因为它要保证没有实际硬件的情况下这个de">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/01/image-12.png">
+<meta property="article:published_time" content="2022-01-12T02:37:41.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.669Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.lxshaw.com/wp-content/uploads/2022/01/image-12.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/01/12/ros2-control-demo%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ros2_control_demo代码解析 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/01/12/ros2-control-demo%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ros2_control_demo代码解析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-12 10:37:41" itemprop="dateCreated datePublished" datetime="2022-01-12T10:37:41+08:00">2022-01-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>网上有很多ros_control的教程，ros2_control的很少。ros2_control官方出了一个doc，但是看完之后，大部分人也只会照着文档跑demo，对其中各种原理完全不理解。像我一开始就完全搞不清楚，这个ros2_control，到底是怎么怎么通过hw_interface和硬件交互的？ros2_control demo是不涉及这块内容的，因为它要保证没有实际硬件的情况下这个demo也能跑得起来，所以它没有写涉及真实硬件的代码。不过，只要你看完了这篇博文，就会发现，ros2_control真的很简单。</p>
+<p>这篇博文通过对ros2_control_demo代码的分析，介绍如何使用ros2_control。</p>
+<h2 id="文档结构"><a href="#文档结构" class="headerlink" title="文档结构"></a>文档结构</h2><p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/01/image-12.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/01/image-12.png"></a></p>
+<p>一个使用ros2_control的项目不一定要这么设置，只要包含了以下内容：</p>
+<ul>
+<li>bringup<ul>
+<li>config，里面存放controller的设置，以及其他需要的设置，比如使用joint_tractory_controller的时候可以把轨迹点的信息卸载配置文件里存放。</li>
+<li>launch，launch file</li>
+</ul>
+</li>
+<li>description<ul>
+<li>urdf文件</li>
+</ul>
+</li>
+<li>hardware<ul>
+<li>hardware interface，硬件接口，代码的工作量主要在这里</li>
+</ul>
+</li>
+<li>test_nodes<ul>
+<li>一些其他自定义的工具，比如轨迹发布，或者一个自己写的可视化页面等等，随意</li>
+</ul>
+</li>
+</ul>
+<p>总的来说，只有前面三个是必须的，也没有必要像demo项目一样分成几个package分别编译。</p>
+<h2 id="rrbot-system-position-only"><a href="#rrbot-system-position-only" class="headerlink" title="rrbot_system_position_only"></a><a target="_blank" rel="noopener" href="https://github.com/ros-controls/ros2_control_demos/blob/master/ros2_control_demo_bringup/launch/rrbot_system_position_only.launch.py">rrbot_system_position_only</a></h2><p>我们以这个demo为例来探索ros2_control，因为这个demo是最简单的一个。它使用position controller。</p>
+<h2 id="launch-file"><a href="#launch-file" class="headerlink" title="launch file"></a>launch file</h2><p>我们从launch file开始，我们要先知道，ros2_control能起作用，都依赖什么。</p>
+<p>from launch import LaunchDescription<br>from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription<br>from launch.launch_description_sources import PythonLaunchDescriptionSource<br>from launch.substitutions import LaunchConfiguration, ThisLaunchFileDir</p>
+<p>def generate_launch_description():<br>    # Declare arguments<br>    declared_arguments &#x3D; []<br>    declared_arguments.append(<br>        DeclareLaunchArgument(<br>            “prefix”,<br>            default_value&#x3D;’””‘,<br>            description&#x3D;”Prefix of the joint names, useful for \<br>        multi-robot setup. If changed than also joint names in the controllers’ configuration \<br>        have to be updated.”,<br>        )<br>    )</p>
+<h1 id="不使用fake-hardware，这个对之后分析没有影响，可以忽略"><a href="#不使用fake-hardware，这个对之后分析没有影响，可以忽略" class="headerlink" title="不使用fake_hardware，这个对之后分析没有影响，可以忽略"></a>不使用fake_hardware，这个对之后分析没有影响，可以忽略</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;use\_fake\_hardware&quot;,
+        default\_value=&quot;false&quot;,
+        description=&quot;Start robot with fake hardware mirroring command to its states.&quot;,
+    )
+)
+</code></pre>
+<h1 id="同上"><a href="#同上" class="headerlink" title="同上"></a>同上</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;fake\_sensor\_commands&quot;,
+        default\_value=&quot;false&quot;,
+        description=&quot;Enable fake command interfaces for sensors used for simple simulations. \\
+        Used only if &#39;use\_fake\_hardware&#39; parameter is true.&quot;,
+    )
+)
+</code></pre>
+<h1 id="定义slowdown，减速系数"><a href="#定义slowdown，减速系数" class="headerlink" title="定义slowdown，减速系数"></a>定义slowdown，减速系数</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;slowdown&quot;, default\_value=&quot;50.0&quot;, description=&quot;Slowdown factor of the RRbot.&quot;
+    )
+)
+</code></pre>
+<h1 id="重点，启动controller，默认是启动forward-position-controller，这是一个使用pid的最简单的controller，接受各个关节的位置-速度-力作为输入"><a href="#重点，启动controller，默认是启动forward-position-controller，这是一个使用pid的最简单的controller，接受各个关节的位置-速度-力作为输入" class="headerlink" title="重点，启动controller，默认是启动forward_position_controller，这是一个使用pid的最简单的controller，接受各个关节的位置&#x2F;速度&#x2F;力作为输入"></a>重点，启动controller，默认是启动forward_position_controller，这是一个使用pid的最简单的controller，接受各个关节的位置&#x2F;速度&#x2F;力作为输入</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;robot\_controller&quot;,
+        default\_value=&quot;forward\_position\_controller&quot;,
+        description=&quot;Robot controller to start.&quot;,
+    )
+)
+</code></pre>
+<h1 id="是否启动rviz"><a href="#是否启动rviz" class="headerlink" title="是否启动rviz"></a>是否启动rviz</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;start\_rviz&quot;,
+        default\_value=&quot;true&quot;,
+        description=&quot;Start RViz2 automatically with this launch file.&quot;,
+    )
+)
+
+# Initialize Arguments
+prefix = LaunchConfiguration(&quot;prefix&quot;)
+use\_fake\_hardware = LaunchConfiguration(&quot;use\_fake\_hardware&quot;)
+fake\_sensor\_commands = LaunchConfiguration(&quot;fake\_sensor\_commands&quot;)
+slowdown = LaunchConfiguration(&quot;slowdown&quot;)
+robot\_controller = LaunchConfiguration(&quot;robot\_controller&quot;)
+start\_rviz = LaunchConfiguration(&quot;start\_rviz&quot;)
+</code></pre>
+<h1 id="用以上参数启动rrbot-base-launch-py"><a href="#用以上参数启动rrbot-base-launch-py" class="headerlink" title="用以上参数启动rrbot_base.launch.py"></a>用以上参数启动rrbot_base.launch.py</h1><pre><code>base\_launch = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(\[ThisLaunchFileDir(), &quot;/rrbot\_base.launch.py&quot;\]),
+    launch\_arguments=&#123;
+        &quot;description\_file&quot;: &quot;rrbot\_system\_position\_only.urdf.xacro&quot;,
+        &quot;prefix&quot;: prefix,
+        &quot;use\_fake\_hardware&quot;: use\_fake\_hardware,
+        &quot;fake\_sensor\_commands&quot;: fake\_sensor\_commands,
+        &quot;slowdown&quot;: slowdown,
+        &quot;robot\_controller&quot;: robot\_controller,
+        &quot;start\_rviz&quot;: start\_rviz,
+    &#125;.items(),
+)
+
+return LaunchDescription(declared\_arguments + \[base\_launch\])
+</code></pre>
+<p>那么我们再看看rrbot_base.launch.py是怎么样的，会很长，耐心往下看：</p>
+<p>from launch import LaunchDescription<br>from launch.actions import DeclareLaunchArgument, RegisterEventHandler<br>from launch.conditions import IfCondition<br>from launch.event_handlers import OnProcessExit<br>from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution</p>
+<p>from launch_ros.actions import Node<br>from launch_ros.substitutions import FindPackageShare</p>
+<p>def generate_launch_description():<br>    # Declare arguments<br>    declared_arguments &#x3D; []</p>
+<h1 id="运行的包名"><a href="#运行的包名" class="headerlink" title="运行的包名"></a>运行的包名</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;runtime\_config\_package&quot;,
+        default\_value=&quot;ros2\_control\_demo\_bringup&quot;,
+        description=&#39;Package with the controller\\&#39;s configuration in &quot;config&quot; folder. \\
+    Usually the argument is not set, it enables use of a custom setup.&#39;,
+    )
+)
+</code></pre>
+<h1 id="重点，默认读取rrbot-controllers-yaml作为配置controllers-file"><a href="#重点，默认读取rrbot-controllers-yaml作为配置controllers-file" class="headerlink" title="重点，默认读取rrbot_controllers.yaml作为配置controllers_file"></a>重点，默认读取rrbot_controllers.yaml作为配置controllers_file</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;controllers\_file&quot;,
+        default\_value=&quot;rrbot\_controllers.yaml&quot;,
+        description=&quot;YAML file with the controllers configuration.&quot;,
+    )
+)
+</code></pre>
+<h1 id="urdf等描述文件存放的包名"><a href="#urdf等描述文件存放的包名" class="headerlink" title="urdf等描述文件存放的包名"></a>urdf等描述文件存放的包名</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;description\_package&quot;,
+        default\_value=&quot;rrbot\_description&quot;,
+        description=&quot;Description package with robot URDF/xacro files. Usually the argument \\
+    is not set, it enables use of a custom description.&quot;,
+    )
+)
+</code></pre>
+<h1 id="指定urdf的参数"><a href="#指定urdf的参数" class="headerlink" title="指定urdf的参数"></a>指定urdf的参数</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;description\_file&quot;,
+        description=&quot;URDF/XACRO description file with the robot.&quot;,
+    )
+)
+</code></pre>
+<h1 id="prefix，可忽略"><a href="#prefix，可忽略" class="headerlink" title="prefix，可忽略"></a>prefix，可忽略</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;prefix&quot;,
+        default\_value=&#39;&quot;&quot;&#39;,
+        description=&quot;Prefix of the joint names, useful for \\
+    multi-robot setup. If changed than also joint names in the controllers&#39; configuration \\
+    have to be updated.&quot;,
+    )
+)
+</code></pre>
+<h1 id="是否使用gazebo-simulator"><a href="#是否使用gazebo-simulator" class="headerlink" title="是否使用gazebo simulator"></a>是否使用gazebo simulator</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;use\_sim&quot;,
+        default\_value=&quot;false&quot;,
+        description=&quot;Start robot in Gazebo simulation.&quot;,
+    )
+)
+</code></pre>
+<h1 id="是否使用fake-hardware，这个会被覆盖"><a href="#是否使用fake-hardware，这个会被覆盖" class="headerlink" title="是否使用fake_hardware，这个会被覆盖"></a>是否使用fake_hardware，这个会被覆盖</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;use\_fake\_hardware&quot;,
+        default\_value=&quot;true&quot;,
+        description=&quot;Start robot with fake hardware mirroring command to its states.&quot;,
+    )
+)
+</code></pre>
+<h1 id="同上-1"><a href="#同上-1" class="headerlink" title="同上"></a>同上</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;fake\_sensor\_commands&quot;,
+        default\_value=&quot;false&quot;,
+        description=&quot;Enable fake command interfaces for sensors used for simple simulations. \\
+        Used only if &#39;use\_fake\_hardware&#39; parameter is true.&quot;,
+    )
+)
+</code></pre>
+<h1 id="前面有定义"><a href="#前面有定义" class="headerlink" title="前面有定义"></a>前面有定义</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;slowdown&quot;, default\_value=&quot;3.0&quot;, description=&quot;Slowdown factor of the RRbot.&quot;
+    )
+)
+</code></pre>
+<h1 id="前面有定义-1"><a href="#前面有定义-1" class="headerlink" title="前面有定义"></a>前面有定义</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;robot\_controller&quot;,
+        default\_value=&quot;forward\_position\_controller&quot;,
+        description=&quot;Robot controller to start.&quot;,
+    )
+)
+</code></pre>
+<h1 id="前面有定义-2"><a href="#前面有定义-2" class="headerlink" title="前面有定义"></a>前面有定义</h1><pre><code>declared\_arguments.append(
+    DeclareLaunchArgument(
+        &quot;start\_rviz&quot;,
+        default\_value=&quot;true&quot;,
+        description=&quot;Start RViz2 automatically with this launch file.&quot;,
+    )
+)
+
+# Initialize Arguments
+runtime\_config\_package = LaunchConfiguration(&quot;runtime\_config\_package&quot;)
+controllers\_file = LaunchConfiguration(&quot;controllers\_file&quot;)
+description\_package = LaunchConfiguration(&quot;description\_package&quot;)
+description\_file = LaunchConfiguration(&quot;description\_file&quot;)
+prefix = LaunchConfiguration(&quot;prefix&quot;)
+use\_sim = LaunchConfiguration(&quot;use\_sim&quot;)
+use\_fake\_hardware = LaunchConfiguration(&quot;use\_fake\_hardware&quot;)
+fake\_sensor\_commands = LaunchConfiguration(&quot;fake\_sensor\_commands&quot;)
+slowdown = LaunchConfiguration(&quot;slowdown&quot;)
+robot\_controller = LaunchConfiguration(&quot;robot\_controller&quot;)
+start\_rviz = LaunchConfiguration(&quot;start\_rviz&quot;)
+
+# Get URDF via xacro， 并向xacro传入前面的一些参数
+robot\_description\_content = Command(
+    \[
+        PathJoinSubstitution(\[FindExecutable(name=&quot;xacro&quot;)\]),
+        &quot; &quot;,
+        PathJoinSubstitution(
+            \[FindPackageShare(description\_package), &quot;urdf&quot;, description\_file\]
+        ),
+        &quot; &quot;,
+        &quot;prefix:=&quot;,
+        prefix,
+        &quot; &quot;,
+        &quot;use\_sim:=&quot;,
+        use\_sim,
+        &quot; &quot;,
+        &quot;use\_fake\_hardware:=&quot;,
+        use\_fake\_hardware,
+        &quot; &quot;,
+        &quot;fake\_sensor\_commands:=&quot;,
+        fake\_sensor\_commands,
+        &quot; &quot;,
+        &quot;slowdown:=&quot;,
+        slowdown,
+    \]
+)
+robot\_description = &#123;&quot;robot\_description&quot;: robot\_description\_content&#125;
+</code></pre>
+<p>#找到controller配置文件<br>    robot_controllers &#x3D; PathJoinSubstitution(<br>        [<br>            FindPackageShare(runtime_config_package),<br>            “config”,<br>            controllers_file,<br>        ]<br>    )</p>
+<p>#找到rviz配置文件<br>    rviz_config_file &#x3D; PathJoinSubstitution(<br>        [FindPackageShare(description_package), “config”, “rrbot.rviz”]<br>    )<br>#重点重点，要启动controller_manager<br>    control_node &#x3D; Node(<br>        package&#x3D;”controller_manager”,<br>        executable&#x3D;”ros2_control_node”,<br>        parameters&#x3D;[robot_description, robot_controllers],<br>        output&#x3D;{<br>            “stdout”: “screen”,<br>            “stderr”: “screen”,<br>        },<br>    )<br>#通过robot_state_publisher解析urdf发布joint state<br>    robot_state_pub_node &#x3D; Node(<br>        package&#x3D;”robot_state_publisher”,<br>        executable&#x3D;”robot_state_publisher”,<br>        output&#x3D;”both”,<br>        parameters&#x3D;[robot_description],<br>    )<br>#启动rviz<br>    rviz_node &#x3D; Node(<br>        package&#x3D;”rviz2”,<br>        executable&#x3D;”rviz2”,<br>        name&#x3D;”rviz2”,<br>        output&#x3D;”log”,<br>        arguments&#x3D;[“-d”, rviz_config_file],<br>        condition&#x3D;IfCondition(start_rviz),<br>    )<br>#重点重点，用controller_manager生成一个joint_state_broadcaster<br>    joint_state_broadcaster_spawner &#x3D; Node(<br>        package&#x3D;”controller_manager”,<br>        executable&#x3D;”spawner”,<br>        arguments&#x3D;[“joint_state_broadcaster”, “–controller-manager”, “&#x2F;controller_manager”],<br>    )<br>#重点重点，用controller_manager生成一个前面定义的robot_controller，也就是forward_congtroller<br>    robot_controller_spawner &#x3D; Node(<br>        package&#x3D;”controller_manager”,<br>        executable&#x3D;”spawner”,<br>        arguments&#x3D;[robot_controller, “-c”, “&#x2F;controller_manager”],<br>    )</p>
+<pre><code># Delay rviz start after \`joint\_state\_broadcaster\` 在joint\_state\_broadcaster\_spawner后再启动rviz
+delay\_rviz\_after\_joint\_state\_broadcaster\_spawner = RegisterEventHandler(
+    event\_handler=OnProcessExit(
+        target\_action=joint\_state\_broadcaster\_spawner,
+        on\_exit=\[rviz\_node\],
+    )
+)
+
+# Delay start of robot\_controller after \`joint\_state\_broadcaster\`同上
+delay\_robot\_controller\_spawner\_after\_joint\_state\_broadcaster\_spawner = RegisterEventHandler(
+    event\_handler=OnProcessExit(
+        target\_action=joint\_state\_broadcaster\_spawner,
+        on\_exit=\[robot\_controller\_spawner\],
+    )
+)
+
+nodes = \[
+    control\_node,
+    robot\_state\_pub\_node,
+    joint\_state\_broadcaster\_spawner,
+    delay\_rviz\_after\_joint\_state\_broadcaster\_spawner,
+    delay\_robot\_controller\_spawner\_after\_joint\_state\_broadcaster\_spawner,
+\]
+
+return LaunchDescription(declared\_arguments + nodes)
+</code></pre>
+<p>看下来我们有几个重点：</p>
+<ul>
+<li>默认读取rrbot_controllers.yaml作为配置controllers_file</li>
+<li>启动controller_manager，其实不启动也是可以的，不过就要一个一个手动加载了</li>
+<li>用controller_manager生成一个joint_state_broadcaster</li>
+<li>用controller_manager生成一个也就是forward_congtroller</li>
+</ul>
+<p>这里的大部分代码都是可以复用的，除了标为重要的几个部分，涉及到具体的加载文件或路径。</p>
+<h2 id="Config"><a href="#Config" class="headerlink" title="Config"></a>Config</h2><p>controller_manager:<br>  ros__parameters:<br>    update_rate: 10  # Hz</p>
+<pre><code>joint\_state\_broadcaster:
+  type: joint\_state\_broadcaster/JointStateBroadcaster
+
+forward\_position\_controller:
+  type: forward\_command\_controller/ForwardCommandController
+
+position\_trajectory\_controller:
+  type: joint\_trajectory\_controller/JointTrajectoryController
+</code></pre>
+<p>forward_position_controller:<br>  ros__parameters:<br>    joints:<br>      - joint1<br>      - joint2<br>    interface_name: position</p>
+<p>position_trajectory_controller:<br>  ros__parameters:<br>    joints:<br>      - joint1<br>      - joint2</p>
+<pre><code>command\_interfaces:
+  - position
+
+state\_interfaces:
+  - position
+
+state\_publish\_rate: 200.0 # Defaults to 50
+action\_monitor\_rate: 20.0 # Defaults to 20
+
+allow\_partial\_joints\_goal: false # Defaults to false
+open\_loop\_control: true
+allow\_integration\_in\_goal\_trajectories: true
+constraints:
+  stopped\_velocity\_tolerance: 0.01 # Defaults to 0.01
+  goal\_time: 0.0 # Defaults to 0.0 (start immediately)
+</code></pre>
+<p>因为我们只使用forward_position_controller，所以甚至可以忽略下面的position_trajectory_controller。</p>
+<p>这里的joints要和urdf中的joint名称匹配。</p>
+<h2 id="URDF"><a href="#URDF" class="headerlink" title="URDF"></a>URDF</h2><p>demo中的URDF通过多个xacro拼接而成，涉及到以下文件：</p>
+<?xml version="1.0"?>
+<!-- Revolute-Revolute Manipulator -->
+<!--
+Copied and modified from ROS1 example -
+https://github.com/ros-simulation/gazebo\_ros\_demos/blob/kinetic-devel/rrbot\_description/urdf/rrbot.xacro
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="2dof\_robot">
+  <xacro:arg name="use\_sim" default="false" />
+
+  <!-- Enable setting arguments from the launch file -->
+<p>  &lt;xacro:arg name&#x3D;”use_fake_hardware” default&#x3D;”false” &#x2F;&gt;<br>  &lt;xacro:arg name&#x3D;”fake_sensor_commands” default&#x3D;”false” &#x2F;&gt;<br>  &lt;xacro:arg name&#x3D;”prefix” default&#x3D;”” &#x2F;&gt;<br>  &lt;xacro:arg name&#x3D;”slowdown” default&#x3D;”100.0” &#x2F;&gt;</p>
+  <!-- Import RRBot macro -- 机器人的描述文件>
+  <xacro:include filename="$(find rrbot\_description)/urdf/rrbot\_description.urdf.xacro" />
+
+  <!-- Import all Gazebo-customization elements, including Gazebo colors -- gazebo的材质文件>
+  <xacro:include filename="$(find rrbot\_description)/gazebo/rrbot.gazebo.xacro" />
+
+  <!-- Import Rviz colors -- rviz的材质文件>
+  <xacro:include filename="$(find rrbot\_description)/gazebo/rrbot.materials.xacro" />
+
+  <!-- Import RRBot ros2\_control description -- 重点，ros2\_control相关内容>
+  <xacro:include filename="$(find rrbot\_description)/ros2\_control/rrbot\_system\_position\_only.ros2\_control.xacro" />
+
+  <!-- Used for fixing robot -->
+  <link name="world"/>
+  <gazebo reference="world">
+    <static>true</static>
+  </gazebo>
+
+<p>  &lt;xacro:rrbot parent&#x3D;”world” prefix&#x3D;”$(arg prefix)”&gt;<br>    <origin xyz="0 0 0" rpy="0 0 0" /><br>  </xacro:rrbot></p>
+<p>  &lt;xacro:rrbot_gazebo prefix&#x3D;”$(arg prefix)” &#x2F;&gt;</p>
+<p>  &lt;xacro:rrbot_system_position_only<br>    name&#x3D;”RRBotSystemPositionOnly” prefix&#x3D;”$(arg prefix)”<br>    use_fake_hardware&#x3D;”$(arg use_fake_hardware)”<br>    fake_sensor_commands&#x3D;”$(arg fake_sensor_commands)”<br>    slowdown&#x3D;”$(arg slowdown)” &#x2F;&gt;</p>
+</robot>
+
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<p>  &lt;xacro:macro name&#x3D;”rrbot_system_position_only” params&#x3D;”name prefix use_sim:&#x3D;^false use_fake_hardware:&#x3D;^true fake_sensor_commands:&#x3D;^false slowdown:&#x3D;2.0”&gt;</p>
+<pre><code>&lt;ros2\_control name=&quot;$&#123;name&#125;&quot; type=&quot;system&quot;&gt;
+
+  &lt;xacro:if value=&quot;$(arg use\_sim)&quot;&gt;
+    &lt;hardware&gt;
+      &lt;plugin&gt;gazebo\_ros2\_control/GazeboSystem&lt;/plugin&gt;
+    &lt;/hardware&gt;
+  &lt;/xacro:if&gt;
+  &lt;xacro:unless value=&quot;$(arg use\_sim)&quot;&gt;
+    &lt;hardware&gt;
+      &lt;xacro:if value=&quot;$&#123;use\_fake\_hardware&#125;&quot;&gt;
+        &lt;plugin&gt;fake\_components/GenericSystem&lt;/plugin&gt;
+        &lt;param name=&quot;fake\_sensor\_commands&quot;&gt;$&#123;fake\_sensor\_commands&#125;&lt;/param&gt;
+        &lt;param name=&quot;state\_following\_offset&quot;&gt;0.0&lt;/param&gt;
+</code></pre>
+<!-- Import Rviz colors -- 默认是不使用simulator和fake\_hardware的，所以会执行下面的配置，也就是加载RRBotSystemPositionOnlyHardware作为hw interface>
+          </xacro:if>
+          <xacro:unless value="${use\_fake\_hardware}">
+            <plugin>ros2\_control\_demo\_hardware/RRBotSystemPositionOnlyHardware</plugin>
+            <param name="example\_param\_hw\_start\_duration\_sec">0.0</param>
+            <param name="example\_param\_hw\_stop\_duration\_sec">3.0</param>
+            <param name="example\_param\_hw\_slowdown">${slowdown}</param>
+          </xacro:unless>
+        </hardware>
+      </xacro:unless>
+
+      <joint name="joint1">
+        <command\_interface name="position">
+          <param name="min">-1</param>
+          <param name="max">1</param>
+        </command\_interface>
+        <state\_interface name="position"/>
+      </joint>
+      <joint name="joint2">
+        <command\_interface name="position">
+          <param name="min">-1</param>
+          <param name="max">1</param>
+        </command\_interface>
+        <state\_interface name="position"/>
+      </joint>
+    </ros2\_control>
+
+  </xacro:macro>
+
+</robot>
+
+看完之后我们下一步要看的就是RRBotSystemPositionOnlyHardware。
+
+## Hardware Interface
+
+先看头文件：
+
+#ifndef ROS2\_CONTROL\_DEMO\_HARDWARE\_\_RRBOT\_SYSTEM\_POSITION\_ONLY\_HPP\_
+#define ROS2\_CONTROL\_DEMO\_HARDWARE\_\_RRBOT\_SYSTEM\_POSITION\_ONLY\_HPP\_
+
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "hardware\_interface/handle.hpp"
+#include "hardware\_interface/hardware\_info.hpp"
+#include "hardware\_interface/system\_interface.hpp"
+#include "hardware\_interface/types/hardware\_interface\_return\_values.hpp"
+#include "rclcpp/macros.hpp"
+#include "rclcpp\_lifecycle/node\_interfaces/lifecycle\_node\_interface.hpp"
+#include "rclcpp\_lifecycle/state.hpp"
+#include "ros2\_control\_demo\_hardware/visibility\_control.h"
+
+using CallbackReturn = rclcpp\_lifecycle::node\_interfaces::LifecycleNodeInterface::CallbackReturn;
+
+namespace ros2\_control\_demo\_hardware
+{
+class RRBotSystemPositionOnlyHardware : public hardware\_interface::SystemInterface
+{
+public:
+  RCLCPP\_SHARED\_PTR\_DEFINITIONS(RRBotSystemPositionOnlyHardware);
+
+  ROS2\_CONTROL\_DEMO\_HARDWARE\_PUBLIC
+  CallbackReturn on\_init(const hardware\_interface::HardwareInfo & info) override;
+
+  ROS2\_CONTROL\_DEMO\_HARDWARE\_PUBLIC
+  CallbackReturn on\_configure(const rclcpp\_lifecycle::State & previous\_state) override;
+
+  ROS2\_CONTROL\_DEMO\_HARDWARE\_PUBLIC
+  std::vector<hardware\_interface::StateInterface> export\_state\_interfaces() override;
+
+  ROS2\_CONTROL\_DEMO\_HARDWARE\_PUBLIC
+  std::vector<hardware\_interface::CommandInterface> export\_command\_interfaces() override;
+
+  ROS2\_CONTROL\_DEMO\_HARDWARE\_PUBLIC
+  CallbackReturn on\_activate(const rclcpp\_lifecycle::State & previous\_state) override;
+
+  ROS2\_CONTROL\_DEMO\_HARDWARE\_PUBLIC
+  CallbackReturn on\_deactivate(const rclcpp\_lifecycle::State & previous\_state) override;
+
+  ROS2\_CONTROL\_DEMO\_HARDWARE\_PUBLIC
+  hardware\_interface::return\_type read() override;
+
+  ROS2\_CONTROL\_DEMO\_HARDWARE\_PUBLIC
+  hardware\_interface::return\_type write() override;
+
+private:
+  // Parameters for the RRBot simulation
+  double hw\_start\_sec\_;
+  double hw\_stop\_sec\_;
+  double hw\_slowdown\_;
+
+  // Store the command for the simulated robot
+  std::vector<double> hw\_commands\_;
+  std::vector<double> hw\_states\_;
+};
+
+}  // namespace ros2\_control\_demo\_hardware
+
+#endif  // ROS2\_CONTROL\_DEMO\_HARDWARE\_\_RRBOT\_SYSTEM\_POSITION\_ONLY\_HPP\_
+
+这里实际上是继承了SystemInterface，并重写几个方法。下面是源文件：
+
+#include "ros2\_control\_demo\_hardware/rrbot\_system\_position\_only.hpp"
+
+#include <chrono>
+#include <cmath>
+#include <limits>
+#include <memory>
+#include <vector>
+
+#include "hardware\_interface/types/hardware\_interface\_type\_values.hpp"
+#include "rclcpp/rclcpp.hpp"
+
+namespace ros2\_control\_demo\_hardware
+{
+CallbackReturn RRBotSystemPositionOnlyHardware::on\_init(
+  const hardware\_interface::HardwareInfo & info)
+{
+  if (hardware\_interface::SystemInterface::on\_init(info) != CallbackReturn::SUCCESS)
+  {
+    return CallbackReturn::ERROR;
+  }
+
+  // START: This part here is for exemplary purposes - Please do not copy to your production code
+  // 这里是根据urdf中的描述，读取几个预定义的参数
+  hw\_start\_sec\_ = stod(info\_.hardware\_parameters\["example\_param\_hw\_start\_duration\_sec"\]);
+  hw\_stop\_sec\_ = stod(info\_.hardware\_parameters\["example\_param\_hw\_stop\_duration\_sec"\]);
+  hw\_slowdown\_ = stod(info\_.hardware\_parameters\["example\_param\_hw\_slowdown"\]);
+  // END: This part here is for exemplary purposes - Please do not copy to your production code
+  hw\_states\_.resize(info\_.joints.size(), std::numeric\_limits<double>::quiet\_NaN());
+  hw\_commands\_.resize(info\_.joints.size(), std::numeric\_limits<double>::quiet\_NaN());
+
+  for (const hardware\_interface::ComponentInfo & joint : info\_.joints)
+  {
+    // RRBotSystemPositionOnly has exactly one state and command interface on each joint，只有一个position interface
+    if (joint.command\_interfaces.size() != 1)
+    {
+      RCLCPP\_FATAL(
+        rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"),
+        "Joint '%s' has %zu command interfaces found. 1 expected.", joint.name.c\_str(),
+        joint.command\_interfaces.size());
+      return CallbackReturn::ERROR;
+    }
+   //控制器类型必须是HW\_IF\_POSITION
+    if (joint.command\_interfaces\[0\].name != hardware\_interface::HW\_IF\_POSITION)
+    {
+      RCLCPP\_FATAL(
+        rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"),
+        "Joint '%s' have %s command interfaces found. '%s' expected.", joint.name.c\_str(),
+        joint.command\_interfaces\[0\].name.c\_str(), hardware\_interface::HW\_IF\_POSITION);
+      return CallbackReturn::ERROR;
+    }
+  //同上
+    if (joint.state\_interfaces.size() != 1)
+    {
+      RCLCPP\_FATAL(
+        rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"),
+        "Joint '%s' has %zu state interface. 1 expected.", joint.name.c\_str(),
+        joint.state\_interfaces.size());
+      return CallbackReturn::ERROR;
+    }
+
+    if (joint.state\_interfaces\[0\].name != hardware\_interface::HW\_IF\_POSITION)
+    {
+      RCLCPP\_FATAL(
+        rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"),
+        "Joint '%s' have %s state interface. '%s' expected.", joint.name.c\_str(),
+        joint.state\_interfaces\[0\].name.c\_str(), hardware\_interface::HW\_IF\_POSITION);
+      return CallbackReturn::ERROR;
+    }
+  }
+
+  return CallbackReturn::SUCCESS;
+}
+
+CallbackReturn RRBotSystemPositionOnlyHardware::on\_configure(
+  const rclcpp\_lifecycle::State & /\*previous\_state\*/)
+{
+  // START: This part here is for exemplary purposes - Please do not copy to your production code
+  RCLCPP\_INFO(
+    rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Configuring ...please wait...");
+  // 这里直接进行了一个秒的读，实际中可以在这里再做一些其他的操作
+  for (int i = 0; i < hw\_start\_sec\_; i++)
+  {
+    rclcpp::sleep\_for(std::chrono::seconds(1));
+    RCLCPP\_INFO(
+      rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "%.1f seconds left...",
+      hw\_start\_sec\_ - i);
+  }
+  // END: This part here is for exemplary purposes - Please do not copy to your production code
+
+  // reset values always when configuring hardware
+  for (uint i = 0; i < hw\_states\_.size(); i++)
+  {
+    hw\_states\_\[i\] = 0;
+    hw\_commands\_\[i\] = 0;
+  }
+
+  RCLCPP\_INFO(rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Successfully configured!");
+
+  return CallbackReturn::SUCCESS;
+}
+
+  //获取标准格式的状态信息，不用修改，如果想知道多个interface怎么写，查看rrbot\_system\_multi\_interface.cpp
+std::vector<hardware\_interface::StateInterface>
+RRBotSystemPositionOnlyHardware::export\_state\_interfaces()
+{
+  std::vector<hardware\_interface::StateInterface> state\_interfaces;
+  for (uint i = 0; i < info\_.joints.size(); i++)
+  {
+    state\_interfaces.emplace\_back(hardware\_interface::StateInterface(
+      info\_.joints\[i\].name, hardware\_interface::HW\_IF\_POSITION, &hw\_states\_\[i\]));
+  }
+
+  return state\_interfaces;
+}
+    //获取标准格式的状态信息，不用修改
+std::vector<hardware\_interface::CommandInterface>
+RRBotSystemPositionOnlyHardware::export\_command\_interfaces()
+{
+  std::vector<hardware\_interface::CommandInterface> command\_interfaces;
+  for (uint i = 0; i < info\_.joints.size(); i++)
+  {
+    command\_interfaces.emplace\_back(hardware\_interface::CommandInterface(
+      info\_.joints\[i\].name, hardware\_interface::HW\_IF\_POSITION, &hw\_commands\_\[i\]));
+  }
+
+  return command\_interfaces;
+}
+  //激活控制器的时候做一些事情，这里也是读秒
+CallbackReturn RRBotSystemPositionOnlyHardware::on\_activate(
+  const rclcpp\_lifecycle::State & /\*previous\_state\*/)
+{
+  // START: This part here is for exemplary purposes - Please do not copy to your production code
+  RCLCPP\_INFO(
+    rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Activating ...please wait...");
+
+  for (int i = 0; i < hw\_start\_sec\_; i++)
+  {
+    rclcpp::sleep\_for(std::chrono::seconds(1));
+    RCLCPP\_INFO(
+      rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "%.1f seconds left...",
+      hw\_start\_sec\_ - i);
+  }
+  // END: This part here is for exemplary purposes - Please do not copy to your production code
+
+  // command and state should be equal when starting，开始的时候状态要和命令一样
+  for (uint i = 0; i < hw\_states\_.size(); i++)
+  {
+    hw\_commands\_\[i\] = hw\_states\_\[i\];
+  }
+
+  RCLCPP\_INFO(rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Successfully activated!");
+
+  return CallbackReturn::SUCCESS;
+}
+  // 类似上面
+CallbackReturn RRBotSystemPositionOnlyHardware::on\_deactivate(
+  const rclcpp\_lifecycle::State & /\*previous\_state\*/)
+{
+  // START: This part here is for exemplary purposes - Please do not copy to your production code
+  RCLCPP\_INFO(
+    rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Deactivating ...please wait...");
+
+  for (int i = 0; i < hw\_stop\_sec\_; i++)
+  {
+    rclcpp::sleep\_for(std::chrono::seconds(1));
+    RCLCPP\_INFO(
+      rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "%.1f seconds left...",
+      hw\_stop\_sec\_ - i);
+  }
+
+  RCLCPP\_INFO(rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Successfully deactivated!");
+  // END: This part here is for exemplary purposes - Please do not copy to your production code
+
+  return CallbackReturn::SUCCESS;
+}
+  // 重点来了，read方法，这里要写的是读取hw\_states\_的方法，要与硬件交互
+hardware\_interface::return\_type RRBotSystemPositionOnlyHardware::read()
+{
+  // START: This part here is for exemplary purposes - Please do not copy to your production code
+  RCLCPP\_INFO(rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Reading...");
+
+  for (uint i = 0; i < hw\_states\_.size(); i++)
+  {
+    // Simulate RRBot's movement
+    hw\_states\_\[i\] = hw\_states\_\[i\] + (hw\_commands\_\[i\] - hw\_states\_\[i\]) / hw\_slowdown\_;
+    RCLCPP\_INFO(
+      rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Got state %.5f for joint %d!",
+      hw\_states\_\[i\], i);
+  }
+  RCLCPP\_INFO(rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Joints successfully read!");
+  // END: This part here is for exemplary purposes - Please do not copy to your production code
+
+  return hardware\_interface::return\_type::OK;
+}
+  // 重点来了，write方法，这里要写的是通过hw\_commands\_执行相应的命令，要与硬件交互
+hardware\_interface::return\_type RRBotSystemPositionOnlyHardware::write()
+{
+  // START: This part here is for exemplary purposes - Please do not copy to your production code
+  RCLCPP\_INFO(rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Writing...");
+
+  for (uint i = 0; i < hw\_commands\_.size(); i++)
+  {
+    // Simulate sending commands to the hardware
+    RCLCPP\_INFO(
+      rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Got command %.5f for joint %d!",
+      hw\_commands\_\[i\], i);
+  }
+  RCLCPP\_INFO(
+    rclcpp::get\_logger("RRBotSystemPositionOnlyHardware"), "Joints successfully written!");
+  // END: This part here is for exemplary purposes - Please do not copy to your production code
+
+  return hardware\_interface::return\_type::OK;
+}
+
+}  // namespace ros2\_control\_demo\_hardware
+
+#include "pluginlib/class\_list\_macros.hpp"
+
+PLUGINLIB\_EXPORT\_CLASS(
+  ros2\_control\_demo\_hardware::RRBotSystemPositionOnlyHardware, hardware\_interface::SystemInterface)
+
+我再描述一下ros2\_control在做什么：这个demo控制器也是一个pid控制器，我们知道简单来说就是根据目标和当前值进行一系列运算得到输出量，这个输出量就是hw\_commands\_。ros2\_control只负责接受hw\_states\_和目标值来计算输出值，它不关心hw\_states\_从哪里来，也不关心这个 hw\_commands\_ 到底要如何作用到硬件上，这是用户需要做的事情。我们要做的就是在read函数中写一些C++代码来从硬件中获取数据，一般来说就是传感器，然后赋值给hw\_states\_。然后，在write函数中写一些代码，来根据计算出的hw\_commands\_执行命令。比如说我有一个定速电机，那么就可以进行以下的逻辑：
+
+*   hw\_commands为正时，电机正转
+*   hw\_commands为负时，电机反转
+
+这样就完成控制了！
+
+下一步，我们来在树莓派上实现一个简单的电机位置control。
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/10/%E5%A4%8D%E6%B4%BB%E8%8A%82%E5%B2%9B-%E5%BE%AE%E8%BD%AF%E6%A8%A1%E6%8B%9F%E9%A3%9E%E8%A1%8C%E5%9C%B0%E7%90%86%E6%B8%B8/" rel="prev" title="复活节岛-微软模拟飞行地理游">
+      <i class="fa fa-chevron-left"></i> 复活节岛-微软模拟飞行地理游
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/30/wp-global-styles-kratos-4-0-3/" rel="next" title="Custom Styles">
+      Custom Styles <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%A1%A3%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">文档结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rrbot-system-position-only"><span class="nav-number">3.</span> <span class="nav-text">rrbot_system_position_only</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#launch-file"><span class="nav-number">4.</span> <span class="nav-text">launch file</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8fake-hardware%EF%BC%8C%E8%BF%99%E4%B8%AA%E5%AF%B9%E4%B9%8B%E5%90%8E%E5%88%86%E6%9E%90%E6%B2%A1%E6%9C%89%E5%BD%B1%E5%93%8D%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%BF%BD%E7%95%A5"><span class="nav-number"></span> <span class="nav-text">不使用fake_hardware，这个对之后分析没有影响，可以忽略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E4%B8%8A"><span class="nav-number"></span> <span class="nav-text">同上</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89slowdown%EF%BC%8C%E5%87%8F%E9%80%9F%E7%B3%BB%E6%95%B0"><span class="nav-number"></span> <span class="nav-text">定义slowdown，减速系数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%8D%E7%82%B9%EF%BC%8C%E5%90%AF%E5%8A%A8controller%EF%BC%8C%E9%BB%98%E8%AE%A4%E6%98%AF%E5%90%AF%E5%8A%A8forward-position-controller%EF%BC%8C%E8%BF%99%E6%98%AF%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8pid%E7%9A%84%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84controller%EF%BC%8C%E6%8E%A5%E5%8F%97%E5%90%84%E4%B8%AA%E5%85%B3%E8%8A%82%E7%9A%84%E4%BD%8D%E7%BD%AE-%E9%80%9F%E5%BA%A6-%E5%8A%9B%E4%BD%9C%E4%B8%BA%E8%BE%93%E5%85%A5"><span class="nav-number"></span> <span class="nav-text">重点，启动controller，默认是启动forward_position_controller，这是一个使用pid的最简单的controller，接受各个关节的位置&#x2F;速度&#x2F;力作为输入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%98%AF%E5%90%A6%E5%90%AF%E5%8A%A8rviz"><span class="nav-number"></span> <span class="nav-text">是否启动rviz</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E4%BB%A5%E4%B8%8A%E5%8F%82%E6%95%B0%E5%90%AF%E5%8A%A8rrbot-base-launch-py"><span class="nav-number"></span> <span class="nav-text">用以上参数启动rrbot_base.launch.py</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E7%9A%84%E5%8C%85%E5%90%8D"><span class="nav-number"></span> <span class="nav-text">运行的包名</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%87%8D%E7%82%B9%EF%BC%8C%E9%BB%98%E8%AE%A4%E8%AF%BB%E5%8F%96rrbot-controllers-yaml%E4%BD%9C%E4%B8%BA%E9%85%8D%E7%BD%AEcontrollers-file"><span class="nav-number"></span> <span class="nav-text">重点，默认读取rrbot_controllers.yaml作为配置controllers_file</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#urdf%E7%AD%89%E6%8F%8F%E8%BF%B0%E6%96%87%E4%BB%B6%E5%AD%98%E6%94%BE%E7%9A%84%E5%8C%85%E5%90%8D"><span class="nav-number"></span> <span class="nav-text">urdf等描述文件存放的包名</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%87%E5%AE%9Aurdf%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number"></span> <span class="nav-text">指定urdf的参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#prefix%EF%BC%8C%E5%8F%AF%E5%BF%BD%E7%95%A5"><span class="nav-number"></span> <span class="nav-text">prefix，可忽略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%98%AF%E5%90%A6%E4%BD%BF%E7%94%A8gazebo-simulator"><span class="nav-number"></span> <span class="nav-text">是否使用gazebo simulator</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%98%AF%E5%90%A6%E4%BD%BF%E7%94%A8fake-hardware%EF%BC%8C%E8%BF%99%E4%B8%AA%E4%BC%9A%E8%A2%AB%E8%A6%86%E7%9B%96"><span class="nav-number"></span> <span class="nav-text">是否使用fake_hardware，这个会被覆盖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E4%B8%8A-1"><span class="nav-number"></span> <span class="nav-text">同上</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E9%9D%A2%E6%9C%89%E5%AE%9A%E4%B9%89"><span class="nav-number"></span> <span class="nav-text">前面有定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E9%9D%A2%E6%9C%89%E5%AE%9A%E4%B9%89-1"><span class="nav-number"></span> <span class="nav-text">前面有定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E9%9D%A2%E6%9C%89%E5%AE%9A%E4%B9%89-2"><span class="nav-number"></span> <span class="nav-text">前面有定义</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Config"><span class="nav-number">1.</span> <span class="nav-text">Config</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URDF"><span class="nav-number">2.</span> <span class="nav-text">URDF</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

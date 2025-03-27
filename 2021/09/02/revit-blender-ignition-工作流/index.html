@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="下面这个工作流能够导出携带材质的Revit模型到Ignition中（应该如此） 环境与软件版本：  IFC：随意 blender 2.93.4 IFCBlender：随意  Revit-&gt;IFC从Revit中导出IFC，IFC会携带材质。 IFC-&gt;Blender将IFC导入到Blender中，需要一个IFCBlender插件，前往ifcopenshell网站下载： http:&#x2F;&#x2F;if">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Revit-Blender-Ignition 工作流">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/02/revit-blender-ignition-%E5%B7%A5%E4%BD%9C%E6%B5%81/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="下面这个工作流能够导出携带材质的Revit模型到Ignition中（应该如此） 环境与软件版本：  IFC：随意 blender 2.93.4 IFCBlender：随意  Revit-&gt;IFC从Revit中导出IFC，IFC会携带材质。 IFC-&gt;Blender将IFC导入到Blender中，需要一个IFCBlender插件，前往ifcopenshell网站下载： http:&#x2F;&#x2F;if">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-1-1024x562.png">
+<meta property="article:published_time" content="2021-09-02T04:28:34.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.582Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-1-1024x562.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/02/revit-blender-ignition-%E5%B7%A5%E4%BD%9C%E6%B5%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Revit-Blender-Ignition 工作流 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/02/revit-blender-ignition-%E5%B7%A5%E4%BD%9C%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Revit-Blender-Ignition 工作流
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-02 12:28:34" itemprop="dateCreated datePublished" datetime="2021-09-02T12:28:34+08:00">2021-09-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/BIM/" itemprop="url" rel="index"><span itemprop="name">BIM</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/" itemprop="url" rel="index"><span itemprop="name">bim</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/IFC/" itemprop="url" rel="index"><span itemprop="name">IFC</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>下面这个工作流能够导出携带材质的Revit模型到Ignition中（应该如此）</p>
+<p>环境与软件版本：</p>
+<ol>
+<li>IFC：随意</li>
+<li>blender 2.93.4</li>
+<li>IFCBlender：随意</li>
+</ol>
+<h2 id="Revit-IFC"><a href="#Revit-IFC" class="headerlink" title="Revit-&gt;IFC"></a>Revit-&gt;IFC</h2><p>从Revit中导出IFC，IFC会携带材质。</p>
+<h2 id="IFC-Blender"><a href="#IFC-Blender" class="headerlink" title="IFC-&gt;Blender"></a>IFC-&gt;Blender</h2><p>将IFC导入到Blender中，需要一个IFCBlender插件，前往ifcopenshell网站下载：</p>
+<p><a target="_blank" rel="noopener" href="http://ifcopenshell.org/ifcblender">http://ifcopenshell.org/ifcblender</a></p>
+<p>下载好后，到Blender内启用并安装，就可以导入IFC模型了。</p>
+<h2 id="IFC-DAE"><a href="#IFC-DAE" class="headerlink" title="IFC-&gt;DAE"></a>IFC-&gt;DAE</h2><p>这一步是为了调整文件的组织结构，IFC的组织结构是会划分楼层的，这使得下一步中无法识别。</p>
+<p>要做到这一步，只需要导入IFC模型后（时间比较长），将当前模型导出为dae一次即可，然后再次读取dae文件。</p>
+<h2 id="DAE-SDF"><a href="#DAE-SDF" class="headerlink" title="DAE-&gt;SDF"></a>DAE-&gt;SDF</h2><p>这一步需要Ignition提供的一个脚本：</p>
+<p>import bpy<br>import os.path<br>from bpy_extras.io_utils import ImportHelper<br>from bpy.props import StringProperty, BoolProperty<br>from bpy.types import Operator</p>
+<p>import xml.etree.ElementTree as ET<br>from xml.dom import minidom</p>
+<h1 id="Target-blender-version-2-82"><a href="#Target-blender-version-2-82" class="headerlink" title="Target blender version: 2.82"></a>Target blender version: 2.82</h1><p>########################################################################################################################</p>
+<h3 id="Exports-model-dae-of-the-scene-with-textures-its-corresponding-model-sdf-file-and-a-default-model-config-file"><a href="#Exports-model-dae-of-the-scene-with-textures-its-corresponding-model-sdf-file-and-a-default-model-config-file" class="headerlink" title="Exports model.dae of the scene with textures, its corresponding model.sdf file, and a default model.config file"></a>Exports model.dae of the scene with textures, its corresponding model.sdf file, and a default model.config file</h3><p>########################################################################################################################<br>def export_sdf(prefix_path):</p>
+<pre><code>dae\_filename = &#39;model.dae&#39;
+sdf\_filename = &#39;model.sdf&#39;
+model\_config\_filename = &#39;model.config&#39;
+lightmap\_filename = &#39;LightmapBaked.png&#39;
+model\_name = &#39;my\_model&#39;
+meshes\_folder\_prefix = &#39;meshes/&#39;
+
+# Exports the dae file and its associated textures
+bpy.ops.wm.collada\_export(filepath=prefix\_path+meshes\_folder\_prefix+dae\_filename, check\_existing=False, filter\_blender=False, filter\_image=False, filter\_movie=False, filter\_python=False, filter\_font=False, filter\_sound=False, filter\_text=False, filter\_btx=False, filter\_collada=True, filter\_folder=True, filemode=8)
+
+# objects = bpy.context.selected\_objects
+objects = bpy.context.selectable\_objects
+mesh\_objects = \[ o for o in objects if o.type == &#39;MESH&#39; \]
+light\_objects = \[ o for o in objects if o.type == &#39;LIGHT&#39; \]
+
+#############################################
+#### export sdf xml based off the scene #####
+#############################################
+sdf = ET.Element(&#39;sdf&#39;, attrib=&#123;&#39;version&#39;:&#39;1.8&#39;&#125;)
+
+# 1 model and 1 link
+model = ET.SubElement(sdf, &quot;model&quot;, attrib=&#123;&quot;name&quot;:&quot;test&quot;&#125;)
+static = ET.SubElement(sdf, &quot;static&quot;)
+static.text = &quot;true&quot;
+link = ET.SubElement(model, &quot;link&quot;, attrib=&#123;&quot;name&quot;:&quot;testlink&quot;&#125;)
+# for each geometry in geometry library add a &lt;visual&gt; tag
+for o in mesh\_objects:
+    visual = ET.SubElement(link, &quot;visual&quot;, attrib=&#123;&quot;name&quot;:o.name&#125;)
+
+    geometry = ET.SubElement(visual, &quot;geometry&quot;)
+    mesh = ET.SubElement(geometry, &quot;mesh&quot;)
+    uri = ET.SubElement(mesh, &quot;uri&quot;)
+    uri.text = meshes\_folder\_prefix+dae\_filename
+    submesh = ET.SubElement(mesh, &quot;submesh&quot;)
+    submesh\_name = ET.SubElement(submesh, &quot;name&quot;)
+    submesh\_name.text = o.name
+    
+    # grab diffuse/albedo map
+    diffuse\_map = &quot;&quot;    
+    nodes = o.active\_material.node\_tree.nodes
+    principled = next(n for n in nodes if n.type == &#39;BSDF\_PRINCIPLED&#39;)
+    if principled is not None:
+        base\_color = principled.inputs\[&#39;Base Color&#39;\] #Or principled.inputs\[0\]
+        value = base\_color.default\_value
+        if len(base\_color.links):
+            link\_node = base\_color.links\[0\].from\_node
+            diffuse\_map = link\_node.image.name
+    
+    # setup diffuse/specular color
+    material = ET.SubElement(visual, &quot;material&quot;)
+    diffuse = ET.SubElement(material, &quot;diffuse&quot;)
+    diffuse.text = &quot;1.0 1.0 1.0 1.0&quot;
+    specular = ET.SubElement(material, &quot;specular&quot;)
+    specular.text = &quot;0.0 0.0 0.0 1.0&quot;
+    pbr = ET.SubElement(material, &quot;pbr&quot;)
+    metal = ET.SubElement(pbr, &quot;metal&quot;)
+    if diffuse\_map != &quot;&quot;:
+        albedo\_map = ET.SubElement(metal, &quot;albedo\_map&quot;)
+        albedo\_map.text = meshes\_folder\_prefix + diffuse\_map
+    
+    # for lightmapping, add the UV and turn off casting of shadows
+    if os.path.isfile(lightmap\_filename):
+        light\_map = ET.SubElement(metal, &quot;light\_map&quot;, attrib=&#123;&quot;uv\_set&quot;:&quot;1&quot;&#125;)
+        light\_map.text = meshes\_folder\_prefix + lightmap\_filename
+        
+        cast\_shadows = ET.SubElement(visual, &quot;cast\_shadows&quot;)
+        cast\_shadows.text = &quot;0&quot;
+    
+def add\_attenuation\_tags(light\_tag, blender\_light):
+    attenuation = ET.SubElement(light, &quot;attenuation&quot;)
+    range = ET.SubElement(attenuation, &quot;range&quot;)
+    range.text = str(blender\_light.cutoff\_distance)
+    linear\_attenuation = ET.SubElement(attenuation, &quot;linear&quot;)
+    linear\_attenuation.text = str(blender\_pointlight.linear\_attenuation)
+    quad\_attenuation = ET.SubElement(attenuation, &quot;quadratic&quot;)
+    quad\_attenuation.text = str(blender\_pointlight.quadratic\_coefficient)
+    const\_attenuation = ET.SubElement(attenuation, &quot;constant&quot;)
+    const\_attenuation.text = str(blender\_pointlight.constant\_coefficient)
+
+# export lights
+for l in light\_objects:
+    blender\_light = l.data
+    
+    if blender\_light.type == &quot;POINT&quot;:
+        light = ET.SubElement(link, &quot;light&quot;, attrib=&#123;&quot;name&quot;:l.name, &quot;type&quot;:&quot;point&quot;&#125;)
+        diffuse = ET.SubElement(light, &quot;diffuse&quot;)
+        diffuse.text = str(blender\_light.color.r) + &quot; &quot; + str(blender\_light.color.g) + &quot; &quot; + str(blender\_light.color.b) + &quot; 1.0&quot;
+        blender\_pointlight = bpy.types.PointLight(blender\_light)
+        
+        add\_attenuation\_tags(light, blender\_pointlight)
+        
+    if blender\_light.type == &quot;SPOT&quot;:
+        light = ET.SubElement(link, &quot;light&quot;, attrib=&#123;&quot;name&quot;:l.name, &quot;type&quot;:&quot;spot&quot;&#125;)
+        diffuse = ET.SubElement(light, &quot;diffuse&quot;)
+        diffuse.text = str(blender\_light.color.r) + &quot; &quot; + str(blender\_light.color.g) + &quot; &quot; + str(blender\_light.color.b) + &quot; 1.0&quot;
+        blender\_spotlight = bpy.types.SpotLight(blender\_light)
+        
+        add\_attenuation\_tags(light, blender\_spotlight)
+        # note: unsupported &lt;spot&gt; tags in blender
+        
+    if blender\_light.type == &quot;SUN&quot;:
+        light = ET.SubElement(link, &quot;light&quot;, attrib=&#123;&quot;name&quot;:l.name, &quot;type&quot;:&quot;directional&quot;&#125;)
+        diffuse = ET.SubElement(light, &quot;diffuse&quot;)
+        diffuse.text = str(blender\_light.color.r) + &quot; &quot; + str(blender\_light.color.g) + &quot; &quot; + str(blender\_light.color.b) + &quot; 1.0&quot;
+        blender\_pointlight = bpy.types.SunLight(blender\_light)
+        
+    if blender\_light.type == &quot;SUN&quot; or blender\_light.type == &quot;SPOT&quot;:
+        direction = ET.SubElement(light, &quot;direction&quot;)
+        direction.text = str(l.matrix\_world\[0\]\[2\]) + &quot; &quot; + str(l.matrix\_world\[1\]\[2\]) + &quot; &quot; + str(l.matrix\_world\[2\]\[2\])
+        
+    # unsupported: AREA lights
+
+    cast\_shadows = ET.SubElement(light, &quot;cast\_shadows&quot;)
+    cast\_shadows.text = &quot;true&quot;
+    
+    # todo : bpy.types.light script api lacks an intensity value, possible candidate is energy/power(Watts)?
+    intensity = ET.SubElement(light, &quot;intensity&quot;)
+    intensity.text = &quot;1.0&quot;
+
+## sdf collision tags
+collision = ET.SubElement(link, &quot;collision&quot;, attrib=&#123;&quot;name&quot;:&quot;collision&quot;&#125;)
+
+geometry = ET.SubElement(collision, &quot;geometry&quot;)
+mesh = ET.SubElement(geometry, &quot;mesh&quot;)
+uri = ET.SubElement(mesh, &quot;uri&quot;)
+uri.text = meshes\_folder\_prefix+dae\_filename
+
+surface = ET.SubElement(collision, &quot;surface&quot;)
+contact = ET.SubElement(collision, &quot;contact&quot;)
+collide\_bitmask = ET.SubElement(collision, &quot;collide\_bitmask&quot;)
+collide\_bitmask.text = &quot;0x01&quot;
+
+## sdf write to file
+xml\_string = ET.tostring(sdf, encoding=&#39;unicode&#39;)
+reparsed = minidom.parseString(xml\_string)
+
+sdf\_file = open(prefix\_path+sdf\_filename, &quot;w&quot;)
+sdf\_file.write(reparsed.toprettyxml(indent=&quot;  &quot;))
+sdf\_file.close()
+
+##############################
+### generate model.config ####
+##############################
+model = ET.Element(&#39;model&#39;)
+name = ET.SubElement(model, &#39;name&#39;)
+name.text = model\_name
+version = ET.SubElement(model, &#39;version&#39;)
+version.text = &quot;1.0&quot;
+sdf\_tag = ET.SubElement(model, &quot;sdf&quot;, attrib=&#123;&quot;sdf&quot;:&quot;1.8&quot;&#125;)
+sdf\_tag.text = sdf\_filename
+
+author = ET.SubElement(model, &#39;author&#39;)
+name = ET.SubElement(author, &#39;name&#39;)
+name.text = &quot;Generated by blender SDF tools&quot;
+
+xml\_string = ET.tostring(model, encoding=&#39;unicode&#39;)
+reparsed = minidom.parseString(xml\_string)
+
+config\_file = open(prefix\_path+model\_config\_filename, &quot;w&quot;)
+config\_file.write(reparsed.toprettyxml(indent=&quot;  &quot;))
+config\_file.close()
+</code></pre>
+<h4 id="UI-Handling"><a href="#UI-Handling" class="headerlink" title="UI Handling"></a>UI Handling</h4><p>class OT_TestOpenFilebrowser(Operator, ImportHelper):<br>  bl_idname &#x3D; “test.open_filebrowser”<br>  bl_label &#x3D; “Save”</p>
+<p>  directory : bpy.props.StringProperty(name&#x3D;”Outdir Path”)</p>
+<p>  def execute(self, context):<br>    “””Do the export with the selected file.”””</p>
+<pre><code>if not os.path.isdir(self.directory):
+    print(self.directory + &quot; is not a directory!&quot;)
+else:
+    print(&quot;exporting to directory: &quot; + self.directory)
+    export\_sdf(self.directory)
+return &#123;&#39;FINISHED&#39;&#125;
+</code></pre>
+<p>def register():<br>    bpy.utils.register_class(OT_TestOpenFilebrowser)<br>def unregister():<br>    bpy.utils.unregister_class(OT_TestOpenFilebrowser)</p>
+<p>if __name__ &#x3D;&#x3D; “__main__“:<br>    register()<br>    bpy.ops.test.open_filebrowser(‘INVOKE_DEFAULT’)</p>
+<h1 id="alternatively-comment-the-main-code-block-and-do-a-function-call-without-going-through-all-the-ui"><a href="#alternatively-comment-the-main-code-block-and-do-a-function-call-without-going-through-all-the-ui" class="headerlink" title="alternatively comment the main code block and do a function call without going through all the ui"></a>alternatively comment the main code block and do a function call without going through all the ui</h1><h1 id="prefix-path-‘-home-ddeng-blender-lightmap-final-office-office-‘"><a href="#prefix-path-‘-home-ddeng-blender-lightmap-final-office-office-‘" class="headerlink" title="prefix_path &#x3D; ‘&#x2F;home&#x2F;ddeng&#x2F;blender_lightmap&#x2F;final_office&#x2F;office&#x2F;‘"></a>prefix_path &#x3D; ‘&#x2F;home&#x2F;ddeng&#x2F;blender_lightmap&#x2F;final_office&#x2F;office&#x2F;‘</h1><h1 id="export-sdf-prefix-path"><a href="#export-sdf-prefix-path" class="headerlink" title="export_sdf(prefix_path)"></a>export_sdf(prefix_path)</h1><p>复制上面文本保存为一个py文件，在Blender中，点击最左下角的编辑器类型，选择Scripting下的文本编辑器，点击打开，选择上述py文件，然后点击运行按钮。选择一个保存路径后，就会生成dae文件、model.config、model.sdf。</p>
+<p>但是我个人发现这个插件因为是吧每个部分分别插入sdf文件中，所以经常出问题，不如直接自己手动插入：</p>
+<sdf version="1.7">
+  <world name="demo">
+    
+<pre><code>&lt;include&gt;
+  &lt;uri&gt;https://fuel.ignitionrobotics.org/1.0/OpenRobotics/models/Sun&lt;/uri&gt;
+&lt;/include&gt;
+
+&lt;include&gt;
+  &lt;uri&gt;https://fuel.ignitionrobotics.org/1.0/OpenRobotics/models/Ground Plane&lt;/uri&gt;
+&lt;/include&gt;
+&lt;model name=&quot;myModel&quot;&gt;
+  &lt;pose&gt;0 0 0 0 0 0&lt;/pose&gt;
+  &lt;static&gt;true&lt;/static&gt;
+  &lt;link name=&quot;link&quot;&gt;
+    &lt;collision name=&quot;collision&quot;&gt;
+      &lt;geometry&gt;
+        
+        &lt;mesh&gt;
+          &lt;uri&gt;untitled.dae&lt;/uri&gt;
+        &lt;/mesh&gt;
+      &lt;/geometry&gt;
+    &lt;/collision&gt;
+    &lt;visual name=&quot;visual&quot;&gt;
+      &lt;geometry&gt;
+        
+        &lt;mesh&gt;
+          &lt;uri&gt;untitled.dae&lt;/uri&gt;
+        &lt;/mesh&gt;
+      &lt;/geometry&gt;
+    &lt;/visual&gt;
+  &lt;/link&gt;
+&lt;/model&gt;
+</code></pre>
+  </world>
+</sdf>
+
+<p>不如像这样直接导入，倒是一点问题也没有。</p>
+<p>这个工作流的好处在于他保存了材质，让场景看起来更加真实。下面这个颜色是我在Blender里随便加的。</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-1-1024x562.png"></p>
+<p>但是这个方法虽然快，也有弊端。比如，如果我想在这个模型的某颗树下加一个物体，如果sdf是按照部件逐个导入dae的，那么可以根据名称直接找到树所在的sdf模型，然后相对位置放置即可，但是，如果是整个导入的，就只能按照世界绝对坐标系放置了。在之后的与IFC结合的工作中，这实际上是非常关键的。因此，还是得想办法把这个完整的工作流跑通。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/01/ignition%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB%EF%BC%9A%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B8%8Eignition%E7%9A%84%E7%BB%93%E5%90%88/" rel="prev" title="Ignition资源分享：强化学习与Ignition的结合">
+      <i class="fa fa-chevron-left"></i> Ignition资源分享：强化学习与Ignition的结合
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/09/03/ignition%E6%8F%92%E4%BB%B6%EF%BC%9Aopenjoint/" rel="next" title="Ignition插件：OpenJoint">
+      Ignition插件：OpenJoint <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Revit-IFC"><span class="nav-number">1.</span> <span class="nav-text">Revit-&gt;IFC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IFC-Blender"><span class="nav-number">2.</span> <span class="nav-text">IFC-&gt;Blender</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IFC-DAE"><span class="nav-number">3.</span> <span class="nav-text">IFC-&gt;DAE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DAE-SDF"><span class="nav-number">4.</span> <span class="nav-text">DAE-&gt;SDF</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Target-blender-version-2-82"><span class="nav-number"></span> <span class="nav-text">Target blender version: 2.82</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Exports-model-dae-of-the-scene-with-textures-its-corresponding-model-sdf-file-and-a-default-model-config-file"><span class="nav-number">0.1.</span> <span class="nav-text">Exports model.dae of the scene with textures, its corresponding model.sdf file, and a default model.config file</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UI-Handling"><span class="nav-number">0.1.1.</span> <span class="nav-text">UI Handling</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#alternatively-comment-the-main-code-block-and-do-a-function-call-without-going-through-all-the-ui"><span class="nav-number"></span> <span class="nav-text">alternatively comment the main code block and do a function call without going through all the ui</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#prefix-path-%E2%80%98-home-ddeng-blender-lightmap-final-office-office-%E2%80%98"><span class="nav-number"></span> <span class="nav-text">prefix_path &#x3D; ‘&#x2F;home&#x2F;ddeng&#x2F;blender_lightmap&#x2F;final_office&#x2F;office&#x2F;‘</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#export-sdf-prefix-path"><span class="nav-number"></span> <span class="nav-text">export_sdf(prefix_path)</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

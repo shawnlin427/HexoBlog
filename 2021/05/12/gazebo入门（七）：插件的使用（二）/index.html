@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Gazebo的可拓展性基本上是插件带来的。插件所做的实际上无非两件事：  从模型中读取数据，修改模型的数据； 订阅话题消息，发布消息  实际上两件事的效果是一样的，但是如果使用后者就可以连接到ROS。 本节学习如何从零开始写一个插件，最后能够实现在外部操控Gazebo世界中的模型表现。使用的模型是Velodyne，教程在这里。 最简单的HelloWorld插件在一个新文件夹里新建一个velodyn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gazebo入门（七）：插件的使用（二）">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/12/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="Gazebo的可拓展性基本上是插件带来的。插件所做的实际上无非两件事：  从模型中读取数据，修改模型的数据； 订阅话题消息，发布消息  实际上两件事的效果是一样的，但是如果使用后者就可以连接到ROS。 本节学习如何从零开始写一个插件，最后能够实现在外部操控Gazebo世界中的模型表现。使用的模型是Velodyne，教程在这里。 最简单的HelloWorld插件在一个新文件夹里新建一个velodyn">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-40-1024x622.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-41-1024x238.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-42-1024x199.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-43-1024x460.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-44-1024x250.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-45-1024x226.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-46-1024x285.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-47-1024x275.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-48-1024x299.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-49-1024x323.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-50-1024x339.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-51-1024x312.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-52-1024x245.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-53-1024x364.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-54-1024x488.png">
+<meta property="article:published_time" content="2021-05-12T01:58:16.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.519Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-40-1024x622.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/12/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Gazebo入门（七）：插件的使用（二） | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/12/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%83%EF%BC%89%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Gazebo入门（七）：插件的使用（二）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-12 09:58:16" itemprop="dateCreated datePublished" datetime="2021-05-12T09:58:16+08:00">2021-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/Robotics/" itemprop="url" rel="index"><span itemprop="name">Robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Gazebo的可拓展性基本上是插件带来的。插件所做的实际上无非两件事：</p>
+<ol>
+<li>从模型中读取数据，修改模型的数据；</li>
+<li>订阅话题消息，发布消息</li>
+</ol>
+<p>实际上两件事的效果是一样的，但是如果使用后者就可以连接到ROS。</p>
+<p>本节学习如何从零开始写一个插件，最后能够实现在外部操控Gazebo世界中的模型表现。使用的模型是Velodyne，<a target="_blank" rel="noopener" href="http://82.156.1.75/tech/ros/2021/05/02/gazebo%e5%85%a5%e9%97%a8%ef%bc%88%e4%ba%8c%ef%bc%89%ef%bc%9a%e8%87%aa%e5%ae%9a%e4%b9%89%e6%a8%a1%e5%9e%8b/">教程在这里</a>。</p>
+<h2 id="最简单的HelloWorld插件"><a href="#最简单的HelloWorld插件" class="headerlink" title="最简单的HelloWorld插件"></a>最简单的HelloWorld插件</h2><p>在一个新文件夹里新建一个velodyne_plugin.cc文件：</p>
+<p>#ifndef _VELODYNE_PLUGIN_HH_<br>#define _VELODYNE_PLUGIN_HH_</p>
+<p>#include &lt;gazebo&#x2F;gazebo.hh&gt;<br>#include &lt;gazebo&#x2F;physics&#x2F;physics.hh&gt;</p>
+<p>namespace gazebo<br>{<br>  &#x2F;&#x2F;&#x2F; \brief A plugin to control a Velodyne sensor.<br>  class VelodynePlugin : public ModelPlugin<br>  {<br>    &#x2F;&#x2F;&#x2F; \brief Constructor<br>    public: VelodynePlugin() {}</p>
+<pre><code>/// \\brief The load function is called by Gazebo when the plugin is
+/// inserted into simulation
+/// \\param\[in\] \_model A pointer to the model that this plugin is
+/// attached to.
+/// \\param\[in\] \_sdf A pointer to the plugin&#39;s SDF element.
+public: virtual void Load(physics::ModelPtr \_model, sdf::ElementPtr \_sdf)
+&#123;
+  // Just output a message for now
+  std::cerr &lt;&lt; &quot;\\nThe velodyne plugin is attach to model\[&quot; &lt;&lt;
+    \_model-&gt;GetName() &lt;&lt; &quot;\]\\n&quot;;
+&#125;
+</code></pre>
+<p>  };</p>
+<p>  &#x2F;&#x2F; Tell Gazebo about this plugin, so that Gazebo can call Load on this plugin.<br>  GZ_REGISTER_MODEL_PLUGIN(VelodynePlugin)<br>}<br>#endif</p>
+<p>#ifndef _VELODYNE_PLUGIN_HH_<br>#define _VELODYNE_PLUGIN_HH_<br>&#x2F;&#x2F;your codes here<br>#endif</p>
+<p>这里是防止被重复定义导致编译错误。</p>
+<p>#include &lt;gazebo&#x2F;gazebo.hh&gt;<br>#include &lt;gazebo&#x2F;physics&#x2F;physics.hh&gt;</p>
+<p>这是我们使用的两个头文件，gazebo.hh包括一些核心组件，physics.hh包括与物理世界交互的一些功能。其他常用的头文件还有common.hh, transport.hh等。</p>
+<p>所有的插件的命名空间都是gazebo。根据插件种类的不同，其继承的类也不同，一共有六种类，参照上一节。</p>
+<p>一个最简单的插件包括两个方法：与类同名的方法，在这里是VelodynePlugin()，还有Load方法。可以把Load方法看作是主函数。由于这是一个ModelPlugin，Load方法主要会读取model和sdf的参数，这里的model实际上就是sdf文件里的model块，之后会验证这一点。</p>
+<p>然后创建一个CMakeLists.txt:</p>
+<p>cmake_minimum_required(VERSION 2.8 FATAL_ERROR)</p>
+<h1 id="Find-Gazebo"><a href="#Find-Gazebo" class="headerlink" title="Find Gazebo"></a>Find Gazebo</h1><p>find_package(gazebo REQUIRED)<br>include_directories(${GAZEBO_INCLUDE_DIRS})<br>link_directories(${GAZEBO_LIBRARY_DIRS})<br>set(CMAKE_CXX_FLAGS “${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}”)</p>
+<h1 id="Build-our-plugin"><a href="#Build-our-plugin" class="headerlink" title="Build our plugin"></a>Build our plugin</h1><p>add_library(velodyne_plugin SHARED velodyne_plugin.cc)<br>target_link_libraries(velodyne_plugin ${GAZEBO_LIBRARIES})</p>
+<p>编译过程上一节里有，就不再重复了。然后新建一个velodyne.world：</p>
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <world name="default">
+    <!-- A global light source -->
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground\_plane</uri>
+    </include>
+
+<pre><code>&lt;!-- A testing model that includes the Velodyne sensor model --&gt;
+&lt;model name=&quot;my\_velodyne&quot;&gt;
+  &lt;include&gt;
+    &lt;uri&gt;model://velodyne\_hdl32&lt;/uri&gt;
+  &lt;/include&gt;
+
+  &lt;!-- Attach the plugin to this model --&gt;
+  &lt;plugin name=&quot;velodyne\_control&quot; filename=&quot;libvelodyne\_plugin.so&quot;/&gt;
+&lt;/model&gt;
+</code></pre>
+  </world>
+</sdf>
+
+<p>这是一个model plugin，所以插入在model中，名字可以随便取，但是文件名不要搞错了。文件名就是编译得到的文件，在build文件夹下。</p>
+<p>在运行这个世界文件前，还要把插件所在目录，也就是build加入到Gazebo的插件环境路径下，参照上一节。运行世界时加上参数–verbose，就可以看到输出：</p>
+<p>The velodyne plugin is attached to model[my_velodyne]</p>
+<h2 id="使用插件改变模型的属性"><a href="#使用插件改变模型的属性" class="headerlink" title="使用插件改变模型的属性"></a>使用插件改变模型的属性</h2><p>插件是通过修改SDF文件来改变模型的属性的。回到刚刚的插件源文件velodyne_plugin.cc，修改Load函数：</p>
+<p>public: virtual void Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)<br>{<br>  &#x2F;&#x2F; Safety check<br>  if (_model-&gt;GetJointCount() &#x3D;&#x3D; 0)<br>  {<br>    std::cerr &lt;&lt; “Invalid joint count, Velodyne plugin not loaded\n”;<br>    return;<br>  }</p>
+<p>  &#x2F;&#x2F; Store the model pointer for convenience.<br>  this-&gt;model &#x3D; _model;</p>
+<p>  &#x2F;&#x2F; Get the first joint. We are making an assumption about the model<br>  &#x2F;&#x2F; having one joint that is the rotational joint.<br>  this-&gt;joint &#x3D; _model-&gt;GetJoints()[0];</p>
+<p>  &#x2F;&#x2F; Setup a P-controller, with a gain of 0.1.<br>  this-&gt;pid &#x3D; common::PID(0.1, 0, 0);</p>
+<p>  &#x2F;&#x2F; Apply the P-controller to the joint.<br>  this-&gt;model-&gt;GetJointController()-&gt;SetVelocityPID(<br>      this-&gt;joint-&gt;GetScopedName(), this-&gt;pid);</p>
+<p>  &#x2F;&#x2F; Set the joint’s target velocity. This target velocity is just<br>  &#x2F;&#x2F; for demonstration purposes.<br>  this-&gt;model-&gt;GetJointController()-&gt;SetVelocityTarget(<br>      this-&gt;joint-&gt;GetScopedName(), 10.0);<br>}</p>
+<p>Load函数接收model和sdf作为输入。在阅读代码的过程中，查阅<a target="_blank" rel="noopener" href="http://osrf-distributions.s3.amazonaws.com/gazebo/api/11.0.0/index.html">Gazebo’s Document</a>是很必要的。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-40-1024x622.png"></p>
+<p>if (_model-&gt;GetJointCount() &#x3D;&#x3D; 0)比如这一句，这个_model属于physics::ModelPtr，因此在physics modules中找到Model。我指针学的不太好，为什么_model是ModelPtr类却可以使用Model的方法，我不太清楚。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-41-1024x238.png"></p>
+<p>然后可以找到这个方法：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-42-1024x199.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-43-1024x460.png"></p>
+<p>这样就可以理解了。同理，其他的方法：</p>
+<ul>
+<li>GetJoints()</li>
+</ul>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-44-1024x250.png"></p>
+<p>返回关节的向量（？）</p>
+<ul>
+<li>GetJointController()</li>
+</ul>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-45-1024x226.png"></p>
+<p>返回Controller的handle。handle是什么？参考一下他人的解释：</p>
+<blockquote>
+<p>知道了HANDLE的本质(一个32位的整数,用16进制表示),再来说说HANDLE的作用.看我前面第二段的例子,你可以了解到为了控制一个物体,你需要找到它的”手柄”.HANDLE就是充当win32下各种”物体”的”手柄”.事实上,很多windows API都需要一个HANDLE作为输入参数,这是因为API需要和一些你看不见的对象打交道,这些对象是不能被你所移动或修改的,所以不能给你一个指针来对它进行操作.oh,指针的确是个好东西,它所拥有的能力实在太强大了,但所谓能力越大,责任越大,使用指针的时候千万要小心,不然会造成毁灭性的错误.所以,为了安全,还是给你一个HANDLE吧,通过这个HANDLE,你就可以对那些对象进行一些处理.HANDLE在这里充当什么角色呢?应该算是一个中间人吧,HANDLE是固定的,它不会变,但是对象的地址会变,当对象在内存中的位置发生改变后,我们不能通过之前的对象指针找到对象,怎么办呢?嗯,这时候HANDLE的用处就出来了,HANDLE就是用来记录对象的最新地址的.有点明白了吧?换一种说法吧,嗯,其实就是你知道HANDLE在哪里,但你不知道对象在哪里,而HANDLE知道对象在哪里,所以,只要你知道了HANDLE在哪里,你就能找到对象(尽管你还是不知那个对象住在内存的哪个地方,不过找到它就行了,不是吗?).嗯,是不是有点像索引的作用呢?为什么不给我们知道对象在内存中的位置呢?呵呵,<a target="_blank" rel="noopener" href="http://lib.csdn.net/base/operatingsystem">操作系统</a>怕你对它进行一些不利的操作啊.反正你通过HANDLE能让对象做它应该做的事,这就足够了.这就是封装吧,MS最喜欢做的事情,呵呵.</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq/_39584315/article/details/81909135">https://blog.csdn.net/qq\_39584315/article/details/81909135</a></p>
+</blockquote>
+<p>简单地说，有了handle就可以操控我们的对象了。</p>
+<ul>
+<li>SetVelocityPID()</li>
+</ul>
+<p>这个方法属于JointController类：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-46-1024x285.png"></p>
+<p>它接受关节名称和common::PID作为输入。</p>
+<ul>
+<li>GetScopedName()</li>
+</ul>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-47-1024x275.png"></p>
+<p>这个方法会返回一个SDF中某个element的名称，以一种类似“绝对路径”的方式。</p>
+<ul>
+<li>SetVelocityTarget()</li>
+</ul>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-48-1024x299.png"></p>
+<p>这个方法也属于JointController，接受jointname和一个double数值作为输入，用来控制PID。</p>
+<p>这样看下来，是不是其实很明了了？重新编译后运行，再打开世界文件就可以看到模型旋转了。</p>
+<h2 id="Plugin与SDF交互"><a href="#Plugin与SDF交互" class="headerlink" title="Plugin与SDF交互"></a>Plugin与SDF交互</h2><p>我们通过Plugin实现了对模型关节的操控，这很好，但是如果我们想改变转速，就要重新编译。更进一步的做法是，让Plugin从SDF中读取数据，这样通过修改SDF就可以改变模型的转速了。</p>
+<p>首先修改world文件中的<plugin>：</p>
+<plugin name="velodyne\_control" filename="libvelodyne\_plugin.so">
+  <velocity>25</velocity>
+</plugin>
+
+<p>然后修改plugin文件：</p>
+<p>&#x2F;&#x2F; Default to zero velocity<br>double velocity &#x3D; 0;</p>
+<p>&#x2F;&#x2F; Check that the velocity element exists, then read the value<br>if (_sdf-&gt;HasElement(“velocity”))<br>  velocity &#x3D; _sdf-&gt;Get<double>(“velocity”);</p>
+<p>&#x2F;&#x2F; Set the joint’s target velocity. This target velocity is just<br>&#x2F;&#x2F; for demonstration purposes.<br>this-&gt;model-&gt;GetJointController()-&gt;SetVelocityTarget(<br>    this-&gt;joint-&gt;GetScopedName(), velocity);</p>
+<p>来看看这些引入的新方法，他们都是属于SDF这个类的。这些方法得到<a target="_blank" rel="noopener" href="http://osrf-distributions.s3.amazonaws.com/sdformat/api/11.0.0/index.html">SDF的API文档里找</a>：</p>
+<ul>
+<li>HasElement()</li>
+</ul>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-49-1024x323.png"></p>
+<p>Element类的方法，返回布尔值。</p>
+<ul>
+<li>Get()</li>
+</ul>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-50-1024x339.png"></p>
+<p>根据标签名称（Key）返回所属值。</p>
+<p>重新编译后，更改world文件里的值，旋转速度也会变化。</p>
+<h2 id="创建API"><a href="#创建API" class="headerlink" title="创建API"></a>创建API</h2><p>我们只需要修改SDF文件就可以改变模型的转速，这很好，但是我们想再进一步，通过外部命令来改变模型的转速。这又该如何去做呢？我们有两种方法做到这一点：</p>
+<ul>
+<li>第一种方式是通过message传递。Gazebo与ROS有相似的message传递机制，包括topic、publisher、subscriber。Plugin可以充当一个Node的角色，接受topic传来的消息，并向topic发布消息来实现这一点。这种方式适合进程间通信。</li>
+<li>第二种方式是通过function。我们将会在原Plugin里创建一个新的function来调整参数，然后再新建一个Plugin，让他继承原来的Plugin。我们让Gazebo读取这个子插件，然后就可以通过调用function来改变参数了。这种方式在Gazebo-ROS中比较常见。</li>
+</ul>
+<p>我们需要引入新的包了。这是最终的plugin源文件：</p>
+<p>#ifndef _VELODYNE_PLUGIN_HH_<br>#define _VELODYNE_PLUGIN_HH_</p>
+<p>#include &lt;gazebo&#x2F;gazebo.hh&gt;<br>#include &lt;gazebo&#x2F;physics&#x2F;physics.hh&gt;<br>#include &lt;gazebo&#x2F;transport&#x2F;transport.hh&gt;<br>#include &lt;gazebo&#x2F;msgs&#x2F;msgs.hh&gt;</p>
+<p>namespace gazebo<br>{<br>  &#x2F;&#x2F;&#x2F; \brief A plugin to control a Velodyne sensor.<br>  class VelodynePlugin : public ModelPlugin<br>  {<br>    &#x2F;&#x2F;&#x2F; \brief Constructor<br>    public: VelodynePlugin() {}</p>
+<pre><code>/// \\brief The load function is called by Gazebo when the plugin is
+/// inserted into simulation
+/// \\param\[in\] \_model A pointer to the model that this plugin is
+/// attached to.
+/// \\param\[in\] \_sdf A pointer to the plugin&#39;s SDF element.
+public: virtual void Load(physics::ModelPtr \_model, sdf::ElementPtr \_sdf)
+&#123;
+  // Safety check
+  if (\_model-&gt;GetJointCount() == 0)
+  &#123;
+    std::cerr &lt;&lt; &quot;Invalid joint count, Velodyne plugin not loaded\\n&quot;;
+    return;
+  &#125;
+
+  // Store the model pointer for convenience.
+  this-&gt;model = \_model;
+
+  // Get the first joint. We are making an assumption about the model
+  // having one joint that is the rotational joint.
+  this-&gt;joint = \_model-&gt;GetJoints()\[0\];
+
+  // Setup a P-controller, with a gain of 0.1.
+  this-&gt;pid = common::PID(0.1, 0, 0);
+
+  // Apply the P-controller to the joint.
+  this-&gt;model-&gt;GetJointController()-&gt;SetVelocityPID(
+      this-&gt;joint-&gt;GetScopedName(), this-&gt;pid);
+
+  // Default to zero velocity
+  double velocity = 0;
+
+  // Check that the velocity element exists, then read the value
+  if (\_sdf-&gt;HasElement(&quot;velocity&quot;))
+    velocity = \_sdf-&gt;Get&lt;double&gt;(&quot;velocity&quot;);
+
+  this-&gt;SetVelocity(velocity);
+
+  // Create the node
+  this-&gt;node = transport::NodePtr(new transport::Node());
+  #if GAZEBO\_MAJOR\_VERSION &lt; 8
+  this-&gt;node-&gt;Init(this-&gt;model-&gt;GetWorld()-&gt;GetName());
+  #else
+  this-&gt;node-&gt;Init(this-&gt;model-&gt;GetWorld()-&gt;Name());
+  #endif
+
+  // Create a topic name
+  std::string topicName = &quot;~/&quot; + this-&gt;model-&gt;GetName() + &quot;/vel\_cmd&quot;;
+
+  // Subscribe to the topic, and register a callback
+  this-&gt;sub = this-&gt;node-&gt;Subscribe(topicName,
+     &amp;VelodynePlugin::OnMsg, this);
+&#125;
+
+/// \\brief Set the velocity of the Velodyne
+/// \\param\[in\] \_vel New target velocity
+public: void SetVelocity(const double &amp;\_vel)
+&#123;
+  // Set the joint&#39;s target velocity.
+  this-&gt;model-&gt;GetJointController()-&gt;SetVelocityTarget(
+      this-&gt;joint-&gt;GetScopedName(), \_vel);
+&#125;
+
+/// \\brief Handle incoming message
+/// \\param\[in\] \_msg Repurpose a vector3 message. This function will
+/// only use the x component.
+private: void OnMsg(ConstVector3dPtr &amp;\_msg)
+&#123;
+  this-&gt;SetVelocity(\_msg-&gt;x());
+&#125;
+
+/// \\brief A node used for transport
+private: transport::NodePtr node;
+
+/// \\brief A subscriber to a named topic.
+private: transport::SubscriberPtr sub;
+
+/// \\brief Pointer to the model.
+private: physics::ModelPtr model;
+
+/// \\brief Pointer to the joint.
+private: physics::JointPtr joint;
+
+/// \\brief A PID controller for the joint.
+private: common::PID pid;
+</code></pre>
+<p>  };</p>
+<p>  &#x2F;&#x2F; Tell Gazebo about this plugin, so that Gazebo can call Load on this plugin.<br>  GZ_REGISTER_MODEL_PLUGIN(VelodynePlugin)<br>}<br>#endif</p>
+<p>多了很多新方法，我们一个一个来看，先看下面这个新区块：</p>
+<pre><code>  // Create the node
+  this-&gt;node = transport::NodePtr(new transport::Node());
+  #if GAZEBO\_MAJOR\_VERSION &lt; 8
+  this-&gt;node-&gt;Init(this-&gt;model-&gt;GetWorld()-&gt;GetName());
+  #else
+  this-&gt;node-&gt;Init(this-&gt;model-&gt;GetWorld()-&gt;Name());
+  #endif
+</code></pre>
+<ul>
+<li>NodePtr</li>
+</ul>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-51-1024x312.png"></p>
+<p>Node和ROS中概念是一样的。</p>
+<ul>
+<li>Init()</li>
+</ul>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-52-1024x245.png"></p>
+<p>初始化节点，这里设置的其实是话题的命名空间。代码里使用了世界的名称来命名它。</p>
+<pre><code>  // Subscribe to the topic, and register a callback
+  this-&gt;sub = this-&gt;node-&gt;Subscribe(topicName,
+     &amp;VelodynePlugin::OnMsg, this);
+</code></pre>
+<ul>
+<li>Subscribe()</li>
+</ul>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-53-1024x364.png"></p>
+<p>Subscribe()有好几种使用方法，这里使用的应该是这一种：输入参数为话题名称、接受话题所使用的方法，以及一个latching参数（这个参数在任何一种subscribe里都有）。返回的是一个指针，指向一个Subscribe object。所以将其赋予this-&gt;sub。</p>
+<p>接下来需要向”~&#x2F;“ + this-&gt;model-&gt;GetName() + “&#x2F;vel_cmd”这个话题发布消息。新建一个vel.cc：</p>
+<p>#include &lt;gazebo&#x2F;gazebo_config.h&gt;<br>#include &lt;gazebo&#x2F;transport&#x2F;transport.hh&gt;<br>#include &lt;gazebo&#x2F;msgs&#x2F;msgs.hh&gt;</p>
+<p>&#x2F;&#x2F; Gazebo’s API has changed between major releases. These changes are<br>&#x2F;&#x2F; accounted for with #if..#endif blocks in this file.<br>#if GAZEBO_MAJOR_VERSION &lt; 6<br>#include &lt;gazebo&#x2F;gazebo.hh&gt;<br>#else<br>#include &lt;gazebo&#x2F;gazebo_client.hh&gt;<br>#endif</p>
+<p>&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;&#x2F;<br>int main(int _argc, char **_argv)<br>{<br>  &#x2F;&#x2F; Load gazebo as a client<br>#if GAZEBO_MAJOR_VERSION &lt; 6<br>  gazebo::setupClient(_argc, _argv);<br>#else<br>  gazebo::client::setup(_argc, _argv);<br>#endif</p>
+<p>  &#x2F;&#x2F; Create our node for communication<br>  gazebo::transport::NodePtr node(new gazebo::transport::Node());<br>  node-&gt;Init();</p>
+<p>  &#x2F;&#x2F; Publish to the  velodyne topic<br>  gazebo::transport::PublisherPtr pub &#x3D;<br>    node-&gt;Advertise<a href="gazebo::msgs::Vector3d">gazebo::msgs::Vector3d</a>(“~&#x2F;my_velodyne&#x2F;vel_cmd”);</p>
+<p>  &#x2F;&#x2F; Wait for a subscriber to connect to this publisher<br>  pub-&gt;WaitForConnection();</p>
+<p>  &#x2F;&#x2F; Create a a vector3 message<br>  gazebo::msgs::Vector3d msg;</p>
+<p>  &#x2F;&#x2F; Set the velocity in the x-component<br>#if GAZEBO_MAJOR_VERSION &lt; 6<br>  gazebo::msgs::Set(&amp;msg, gazebo::math::Vector3(std::atof(_argv[1]), 0, 0));<br>#else<br>  gazebo::msgs::Set(&amp;msg, ignition::math::Vector3d(std::atof(_argv[1]), 0, 0));<br>#endif</p>
+<p>  &#x2F;&#x2F; Send the message<br>  pub-&gt;Publish(msg);</p>
+<p>  &#x2F;&#x2F; Make sure to shut everything down.<br>#if GAZEBO_MAJOR_VERSION &lt; 6<br>  gazebo::shutdown();<br>#else<br>  gazebo::client::shutdown();<br>#endif<br>}</p>
+<p>  gazebo::transport::NodePtr node(new gazebo::transport::Node());<br>  node-&gt;Init();</p>
+<p>首先创建了一个Node作为发送节点。</p>
+<p>  &#x2F;&#x2F; Publish to the  velodyne topic<br>  gazebo::transport::PublisherPtr pub &#x3D;<br>    node-&gt;Advertise<a href="gazebo::msgs::Vector3d">gazebo::msgs::Vector3d</a>(“~&#x2F;my_velodyne&#x2F;vel_cmd”);</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-54-1024x488.png"></p>
+<p>输入话题的名称，返回Publisher的指针。然后向该话题发布消息即可。</p>
+<p>修改CMakeLists.txt，加入：</p>
+<p># Build the stand-alone test program<br>add_executable(vel vel.cc)</p>
+<p>if (${gazebo_VERSION_MAJOR} LESS 6)</p>
+<h1 id="These-two"><a href="#These-two" class="headerlink" title="These two"></a>These two</h1><p>  include(FindBoost)<br>  find_package(Boost ${MIN_BOOST_VERSION} REQUIRED system filesystem regex)<br>  target_link_libraries(vel ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})<br>else()<br>  target_link_libraries(vel ${GAZEBO_LIBRARIES})<br>endif()</p>
+<p>将vel.cc编译成vel可执行文件。编译之后重新执行world文件，然后用vel控制转速：</p>
+<p>cd ~&#x2F;velodyne_plugin&#x2F;build<br>.&#x2F;vel 2</p>
+<p>可以看到转速改变了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/08/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/" rel="prev" title="Gazebo入门（六）：插件的使用（一）">
+      <i class="fa fa-chevron-left"></i> Gazebo入门（六）：插件的使用（一）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/13/ros%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%86%99%E4%B8%80%E4%B8%AAtopic%E7%9A%84listner%E4%B8%8Etalker/" rel="next" title="ROS入门（三）：写一个topic的listner与talker">
+      ROS入门（三）：写一个topic的listner与talker <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84HelloWorld%E6%8F%92%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">最简单的HelloWorld插件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Find-Gazebo"><span class="nav-number"></span> <span class="nav-text">Find Gazebo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Build-our-plugin"><span class="nav-number"></span> <span class="nav-text">Build our plugin</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8F%92%E4%BB%B6%E6%94%B9%E5%8F%98%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">使用插件改变模型的属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Plugin%E4%B8%8ESDF%E4%BA%A4%E4%BA%92"><span class="nav-number">2.</span> <span class="nav-text">Plugin与SDF交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAAPI"><span class="nav-number">3.</span> <span class="nav-text">创建API</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#These-two"><span class="nav-number"></span> <span class="nav-text">These two</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="微软不愧是最佳Linux和MacOS应用开发团队。微软推出了WSL的拓展：WSLG，可以在linux子系统下运行GUI图形程序了。原理上，依然是基于Hyper-V的虚拟机，但是因为包装的很好，性能上损失比较小，运行起来也如同Windows原生GUI图形程序一样丝滑（对于第一方软件来说），但是美中不足的在于，目前对高分屏的支持不是很好。 开始之前开始之前，首先想想为什么要用到Linux系统呢？对我来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows11下使用wslg">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/10/windows11%E4%B8%8B%E4%BD%BF%E7%94%A8wslg/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="微软不愧是最佳Linux和MacOS应用开发团队。微软推出了WSL的拓展：WSLG，可以在linux子系统下运行GUI图形程序了。原理上，依然是基于Hyper-V的虚拟机，但是因为包装的很好，性能上损失比较小，运行起来也如同Windows原生GUI图形程序一样丝滑（对于第一方软件来说），但是美中不足的在于，目前对高分屏的支持不是很好。 开始之前开始之前，首先想想为什么要用到Linux系统呢？对我来">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/10/image-1024x671.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/10/image-2-1024x554.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/10/image-3-1024x576.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/10/image-4-1024x550.png">
+<meta property="article:published_time" content="2021-10-10T09:33:34.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.608Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.lxshaw.com/wp-content/uploads/2021/10/image-1024x671.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/10/windows11%E4%B8%8B%E4%BD%BF%E7%94%A8wslg/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Windows11下使用wslg | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/10/windows11%E4%B8%8B%E4%BD%BF%E7%94%A8wslg/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Windows11下使用wslg
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-10 17:33:34" itemprop="dateCreated datePublished" datetime="2021-10-10T17:33:34+08:00">2021-10-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>微软不愧是最佳Linux和MacOS应用开发团队。微软推出了WSL的拓展：WSLG，可以在linux子系统下运行GUI图形程序了。原理上，依然是基于Hyper-V的虚拟机，但是因为包装的很好，性能上损失比较小，运行起来也如同Windows原生GUI图形程序一样丝滑（对于第一方软件来说），但是美中不足的在于，目前对高分屏的支持不是很好。</p>
+<h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>开始之前，首先想想为什么要用到Linux系统呢？对我来说，是因为ROS和Ignition在Ubuntu下的支持更好，所以要使用Ubuntu。但是另一方面，Autodesk全家桶只能在Windows下运行。所以，看到WSLG后我是非常兴奋的，这恰好满足了我的需求。因此，对我来说WSLG值得折腾。</p>
+<h2 id="安装Win11"><a href="#安装Win11" class="headerlink" title="安装Win11"></a>安装Win11</h2><p>目前安装Windows11要在预览计划中加入Dev渠道：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-1024x671.png"></a></p>
+<p>然后检查更新后就可以升级到Windows11.</p>
+<h2 id="安装WSL和WSLG"><a href="#安装WSL和WSLG" class="headerlink" title="安装WSL和WSLG"></a>安装WSL和WSLG</h2><p><a target="_blank" rel="noopener" href="https://github.com/microsoft/wslg">https://github.com/microsoft/wslg</a></p>
+<p>参考wslg的github页面，我这里是之前没有安装过wsl的，所以按照以下步骤：</p>
+<h2 id="Install-instructions-Fresh-Install-no-prior-WSL-installation"><a href="#Install-instructions-Fresh-Install-no-prior-WSL-installation" class="headerlink" title="Install instructions (Fresh Install - no prior WSL installation)"></a>Install instructions (Fresh Install - no prior WSL installation)</h2><p>From a command prompt with administrator privileges, run the command <code>wsl --install -d Ubuntu</code>, then reboot when prompted.</p>
+<p>After reboot the installation will continue. You’ll be asked to enter a username and password. These will be your Linux credentials, they can be anything you want and don’t have to match your Windows credentials.</p>
+<p>Voilà! WSL and WSLg are installed and ready to be used!</p>
+<p>不过这样安装后，还需要运行一次wsl –update才能正常使用WSLg。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>首先来测试一下gedit：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image-2.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-2-1024x554.png"></a></p>
+<p>瞬间启动。再来试一试Ignition：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-3-1024x576.png"></a></p>
+<p>也没有问题！很强。</p>
+<h2 id="强大的VScode"><a href="#强大的VScode" class="headerlink" title="强大的VScode"></a>强大的VScode</h2><p>VScode瞬间变得无比强大。因为只要在当前路径下输入code .就可以<strong>在Windows的VScode中</strong>打开当前路径。</p>
+<p>这还不是最强的，最强的是，<strong>在VScode的终端中，也可以打开Linux的GUI程序</strong>！</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image-4.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-4-1024x550.png"></a></p>
+<p>目前暂时没有发现什么Bug。只能说一句巨硬牛逼！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/07/%E5%9C%A8linux%E4%B8%8A%E7%8E%A9%E8%8B%B1%E9%9B%84%E6%97%A0%E6%95%8C3/" rel="prev" title="在Linux上玩英雄无敌3">
+      <i class="fa fa-chevron-left"></i> 在Linux上玩英雄无敌3
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/12/%E9%A2%91%E5%9F%9F%E5%9B%BE%E5%83%8F%E5%8F%98%E6%8D%A2/" rel="next" title="频域图像变换">
+      频域图像变换 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E4%B9%8B%E5%89%8D"><span class="nav-number">1.</span> <span class="nav-text">开始之前</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Win11"><span class="nav-number">2.</span> <span class="nav-text">安装Win11</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85WSL%E5%92%8CWSLG"><span class="nav-number">3.</span> <span class="nav-text">安装WSL和WSLG</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-instructions-Fresh-Install-no-prior-WSL-installation"><span class="nav-number">4.</span> <span class="nav-text">Install instructions (Fresh Install - no prior WSL installation)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">5.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%BA%E5%A4%A7%E7%9A%84VScode"><span class="nav-number">6.</span> <span class="nav-text">强大的VScode</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

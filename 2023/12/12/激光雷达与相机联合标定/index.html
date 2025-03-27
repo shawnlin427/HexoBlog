@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="工具MatLab2022及以后版本，ROS2. 之前很少用Matlab，但是这次标定发现matlab真的是一个非常reliable的工具箱。不会出奇奇怪怪的问题，开箱即用，维护世界一流，教程详实。对ROS也有很好的支持。说两句题外话，在用matlab标定前，我还用过hk mars实验室的标定工具，还有一些手动标定工具。最后发现，最传统的方法+算法，配合上最稳定的工具，就是最省心的方法。想要走捷径，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="激光雷达与相机联合标定">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2023/12/12/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE%E4%B8%8E%E7%9B%B8%E6%9C%BA%E8%81%94%E5%90%88%E6%A0%87%E5%AE%9A/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="工具MatLab2022及以后版本，ROS2. 之前很少用Matlab，但是这次标定发现matlab真的是一个非常reliable的工具箱。不会出奇奇怪怪的问题，开箱即用，维护世界一流，教程详实。对ROS也有很好的支持。说两句题外话，在用matlab标定前，我还用过hk mars实验室的标定工具，还有一些手动标定工具。最后发现，最传统的方法+算法，配合上最稳定的工具，就是最省心的方法。想要走捷径，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-12-12T15:36:15.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.720Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2023/12/12/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE%E4%B8%8E%E7%9B%B8%E6%9C%BA%E8%81%94%E5%90%88%E6%A0%87%E5%AE%9A/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>激光雷达与相机联合标定 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2023/12/12/%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE%E4%B8%8E%E7%9B%B8%E6%9C%BA%E8%81%94%E5%90%88%E6%A0%87%E5%AE%9A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          激光雷达与相机联合标定
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-12-12 23:36:15" itemprop="dateCreated datePublished" datetime="2023-12-12T23:36:15+08:00">2023-12-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p>MatLab2022及以后版本，ROS2.</p>
+<p>之前很少用Matlab，但是这次标定发现matlab真的是一个非常reliable的工具箱。不会出奇奇怪怪的问题，开箱即用，维护世界一流，教程详实。对ROS也有很好的支持。说两句题外话，在用matlab标定前，我还用过hk mars实验室的标定工具，还有一些手动标定工具。最后发现，最传统的方法+算法，配合上最稳定的工具，就是最省心的方法。想要走捷径，就免不了掉坑里。</p>
+<h1 id="准备数据"><a href="#准备数据" class="headerlink" title="准备数据"></a>准备数据</h1><p>使用ros2 bag来采集数据。我使用的是livox mid360+一般的usb相机。命令为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ros2 bag record /livox/lidar /usb_cam1/image_raw -o cam1</span><br></pre></td></tr></table></figure>
+
+<p>录制好ros2bag后拷到安装了Matlab的电脑下进行处理。</p>
+<p>坑1：有的时候拷贝ros2bag会造成数据损坏。原因不明，甚至有的时候拷到U盘都还行，U盘插到第二台机子上就不行了。解决方法是直接在U盘的工作路径下进行ros2bag录制。</p>
+<h1 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h1><p>主要步骤：</p>
+<ol>
+<li>用matlab读取数据</li>
+<li>抽取点云和图像的topic</li>
+<li>同步点云和图像时间戳</li>
+<li>输出同步的点云和图像对</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">bagReader = ros2bagreader(&quot;cam1_6&quot;)</span><br><span class="line">pcBag = select(bagReader, &#x27;Topic&#x27;, &#x27;/livox/lidar&#x27;)</span><br><span class="line">imageBag = select(bagReader, &#x27;Topic&#x27;, &#x27;/usb_cam_1/image_raw&#x27;)</span><br><span class="line">pcMsgs = readMessages(pcBag);</span><br><span class="line">imageMsgs = readMessages(imageBag);</span><br><span class="line">//-------------抽取时间戳</span><br><span class="line">t1 = double(pcBag.MessageList.Time)</span><br><span class="line">t2 = double(imageBag.MessageList.Time)</span><br><span class="line">//-------------同步时间戳</span><br><span class="line">k = 1;</span><br><span class="line">if size(t2,1) &gt; size(t1,1)</span><br><span class="line">    for i = 1:size(t1,1)</span><br><span class="line">        [val,indx] = min(abs(t1(i) - t2));</span><br><span class="line">        if val &lt;= 1e7</span><br><span class="line">            idx(k,:) = [i indx];</span><br><span class="line">            k = k + 1;</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">else</span><br><span class="line">    for i = 1:size(t2,1)</span><br><span class="line">        [val,indx] = min(abs(t2(i) - t1));</span><br><span class="line">        if val &lt;= 1e7</span><br><span class="line">            idx(k,:) = [indx i];</span><br><span class="line">            k = k + 1;</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//-------------创建路径</span><br><span class="line">pcFilesPath = fullfile(pwd,&#x27;PointClouds&#x27;);</span><br><span class="line">imageFilesPath = fullfile(pwd,&#x27;Images&#x27;);</span><br><span class="line">if ~exist(imageFilesPath,&#x27;dir&#x27;)</span><br><span class="line">    mkdir(imageFilesPath);</span><br><span class="line">end</span><br><span class="line">if ~exist(pcFilesPath,&#x27;dir&#x27;)</span><br><span class="line">    mkdir(pcFilesPath);</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">//-------------输出文件</span><br><span class="line">for i = 1:6:length(idx) //中间值可修改以实现下采样，输出20左右对数据为宜</span><br><span class="line">    I = rosReadImage(imageMsgs&#123;idx(i,2)&#125;);</span><br><span class="line">    pc = pointCloud(rosReadXYZ(pcMsgs&#123;idx(i,1)&#125;));</span><br><span class="line">    n_strPadded = sprintf(&#x27;%04d&#x27;,i) ;</span><br><span class="line">    pcFileName = strcat(pcFilesPath,&#x27;/&#x27;,n_strPadded,&#x27;.pcd&#x27;);</span><br><span class="line">    imageFileName = strcat(imageFilesPath,&#x27;/&#x27;,n_strPadded,&#x27;.png&#x27;);</span><br><span class="line">    imwrite(I,imageFileName);</span><br><span class="line">    pcwrite(pc,pcFileName);</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>由于mid360的点云是360度的，容易有距离很远的点云造成干扰。所以用一个脚本截取ROI。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">save_path = pwd;</span><br><span class="line">imageFilesPath = fullfile(save_path,&#x27;Images&#x27;);</span><br><span class="line">rawPcFilesPath = fullfile(save_path,&#x27;PointClouds&#x27;);</span><br><span class="line">cropPcFilesPath = fullfile(save_path, &#x27;CropPointClouds&#x27;);</span><br><span class="line">if ~exist(cropPcFilesPath,&#x27;dir&#x27;)</span><br><span class="line">    mkdir(cropPcFilesPath);</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">%pcshow an example pointcloud to decide the roi</span><br><span class="line">ptCloud = pcread(fullfile(rawPcFilesPath, &#x27;0001.pcd&#x27;))</span><br><span class="line">pcshow(ptCloud);</span><br><span class="line">xlabel(&#x27;X&#x27;);</span><br><span class="line">ylabel(&#x27;Y&#x27;);</span><br><span class="line">zlabel(&#x27;Z&#x27;);</span><br><span class="line">%x y z</span><br><span class="line">% roi = [0.5 6 -6 1 -0.4 2]; %front lidar</span><br><span class="line">% roi = [-6 6 -6 6 -1 1.6];    %bp_r</span><br><span class="line">roi = [-6 6 -6 6 -1 1.6];    %bp_f</span><br><span class="line">indices = findPointsInROI(ptCloud,roi);</span><br><span class="line">ptCloudB = select(ptCloud,indices);</span><br><span class="line"></span><br><span class="line">figure</span><br><span class="line">pcshow(ptCloud.Location,[0.5 0.5 0.5])</span><br><span class="line">hold on</span><br><span class="line">pcshow(ptCloudB.Location,&#x27;r&#x27;);</span><br><span class="line">legend(&#x27;Point Cloud&#x27;,&#x27;Points within ROI&#x27;,&#x27;Location&#x27;,&#x27;southoutside&#x27;,&#x27;Color&#x27;,[1 1 1])</span><br><span class="line">hold off</span><br><span class="line"></span><br><span class="line">% Get a list of all files in the source folder</span><br><span class="line">file_list = dir(fullfile(imageFilesPath, &#x27;*.png&#x27;)); </span><br><span class="line"></span><br><span class="line">% Loop through each image file in the source folder</span><br><span class="line">for i = 1:length(file_list)</span><br><span class="line">    % Get the filename</span><br><span class="line">    filename = file_list(i).name;</span><br><span class="line">    splitnames = strsplit(filename, &#x27;.&#x27;);</span><br><span class="line">    iname = splitnames(1);</span><br><span class="line">    pcfilename = strcat(iname&#123;1&#125;, &#x27;.pcd&#x27;);</span><br><span class="line"></span><br><span class="line">    rawfilepath = fullfile(rawPcFilesPath, pcfilename);</span><br><span class="line">    cropfilepath = fullfile(cropPcFilesPath, pcfilename);</span><br><span class="line">    </span><br><span class="line">    % load the pc</span><br><span class="line">    rawpc = pcread(rawfilepath);</span><br><span class="line">    indices = findPointsInROI(rawpc,roi);</span><br><span class="line">    croppc = select(rawpc,indices);</span><br><span class="line">    pcwrite(croppc,cropfilepath);</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>最终输出images、pointclouds、croppointclouds三个文件夹。</p>
+<h1 id="标定"><a href="#标定" class="headerlink" title="标定"></a>标定</h1><p>打开lidar camera calibrator，导入images，croppointclouds。如果calibrator能检测到棋盘格的话，就会列在accept data里。但是mid360的点云单帧分布不均匀，很多时候都捕捉不到，就需要手动选择棋盘格的点云。</p>
+<p>有十张左右标定好的数据对就可以进行标定了，如果激光雷达的x轴和相机的z轴不平行的话，一般要输入initial matrix才能使得标定结果收敛。虽然说教程里讲的是for better result，实际上不指定无法收敛。所以要自己大概估计一下initial matrix，最重要的是旋转矩阵。</p>
+<p>旋转矩阵通过欧拉角得到，欧拉角的定义是依次绕z y x旋转：【z,x,y】</p>
+<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><h2 id="点云投射"><a href="#点云投射" class="headerlink" title="点云投射"></a>点云投射</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ptCloud = pcread(&#x27;C:\Users\user\Documents\MATLAB\CropPointClouds\0001.pcd&#x27;)</span><br><span class="line">img = imread(&#x27;C:\Users\user\Documents\MATLAB\Images\0001.png&#x27;)imPts = projectLidarPointsOnImage(ptCloud, cameraParams.Intrinsics, tform)</span><br><span class="line">figure</span><br><span class="line">imshow(img)</span><br><span class="line">hold on</span><br><span class="line">plot(imPts(:,1),imPts(:,2),&#x27;.&#x27;,&#x27;Color&#x27;,&#x27;r&#x27;)</span><br><span class="line">hold off</span><br></pre></td></tr></table></figure>
+
+<h2 id="点云上色"><a href="#点云上色" class="headerlink" title="点云上色"></a>点云上色</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ptCloud = pcread(&#x27;C:\Users\user\Documents\MATLAB\CropPointClouds\0001.pcd&#x27;)</span><br><span class="line">img = imread(&#x27;C:\Users\user\Documents\MATLAB\Images\0001.png&#x27;)</span><br><span class="line">ptCloudOut = fuseCameraToLidar(img, ptCloud, cameraParams.Intrinsics, tform)</span><br><span class="line">pcshow(ptCloudOut)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/12/02/livox-driver%E5%9C%A8nx%E4%B8%8B%E5%AE%89%E8%A3%85/" rel="prev" title="livox driver在nx下安装">
+      <i class="fa fa-chevron-left"></i> livox driver在nx下安装
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/03/02/main/" rel="next" title="Main">
+      Main <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">1.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="nav-number">2.</span> <span class="nav-text">准备数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">数据处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%87%E5%AE%9A"><span class="nav-number">4.</span> <span class="nav-text">标定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%88%E6%9E%9C"><span class="nav-number">5.</span> <span class="nav-text">效果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%B9%E4%BA%91%E6%8A%95%E5%B0%84"><span class="nav-number">5.1.</span> <span class="nav-text">点云投射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%82%B9%E4%BA%91%E4%B8%8A%E8%89%B2"><span class="nav-number">5.2.</span> <span class="nav-text">点云上色</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

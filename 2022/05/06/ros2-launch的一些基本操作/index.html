@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="执行操作的各种方式在launch file中，一般操作仅限于以下几种：  运行一个Ros Node，等同于ros2 run 执行一条命令，等同于在终端中输入一行命令 运行其他的launch文件，等同于ros2 launch  Node from launch_ros.actions import Nodefrom launch_ros.actions import Node   node_robo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS2 Launch的一些基本操作">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/05/06/ros2-launch%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="执行操作的各种方式在launch file中，一般操作仅限于以下几种：  运行一个Ros Node，等同于ros2 run 执行一条命令，等同于在终端中输入一行命令 运行其他的launch文件，等同于ros2 launch  Node from launch_ros.actions import Nodefrom launch_ros.actions import Node   node_robo">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-06T03:32:04.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.688Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/05/06/ros2-launch%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ROS2 Launch的一些基本操作 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/05/06/ros2-launch%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ROS2 Launch的一些基本操作
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-06 11:32:04" itemprop="dateCreated datePublished" datetime="2022-05-06T11:32:04+08:00">2022-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="执行操作的各种方式"><a href="#执行操作的各种方式" class="headerlink" title="执行操作的各种方式"></a>执行操作的各种方式</h2><p>在launch file中，一般操作仅限于以下几种：</p>
+<ol>
+<li>运行一个Ros Node，等同于ros2 run</li>
+<li>执行一条命令，等同于在终端中输入一行命令</li>
+<li>运行其他的launch文件，等同于ros2 launch</li>
+</ol>
+<h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p> from launch_ros.actions import Nodefrom launch_ros.actions import Node<br>   node_robot_state_publisher &#x3D; Node(<br>        package&#x3D;”robot_state_publisher”,<br>        executable&#x3D;”robot_state_publisher”,<br>        output&#x3D;”screen”,<br>        parameters&#x3D;[robot_description],<br>    )</p>
+<p>最基本的执行单元，需要提供package、executable，并制定output和parameters（有时候是arguments）。output属性有log和screen两种，screen是输出到屏幕，log是输出到一个log file中。</p>
+<p>更多信息参照<a target="_blank" rel="noopener" href="http://wiki.ros.org/roslaunch/XML/node%EF%BC%88%E6%AD%A4%E9%A1%B5%E9%9D%A2%E6%98%AFROS1%E7%89%88%E6%9C%AC%E7%9A%84%EF%BC%8C%E4%B8%8D%E5%8F%AF%E7%9B%B4%E6%8E%A5%E5%A4%8D%E7%94%A8%E5%88%B0ROS2%E4%B8%AD%EF%BC%89">http://wiki.ros.org/roslaunch/XML/node（此页面是ROS1版本的，不可直接复用到ROS2中）</a></p>
+<h3 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h3><p>from launch.substitutions import Command</p>
+<pre><code>robot\_description\_content = Command(
+    \[
+        PathJoinSubstitution(\[FindExecutable(name=&quot;xacro&quot;)\]),
+        &quot; &quot;,
+        PathJoinSubstitution(
+            \[FindPackageShare(&quot;diffbot\_description&quot;), &quot;urdf&quot;, &quot;diffbot\_system.urdf.xacro&quot;\]
+        ),
+    \]
+)
+</code></pre>
+<p>相当于执行一条命令，并将命令的输出赋予一个对象。经常会和PathJoinSubstitution配合使用，后者是返回一个路径的substitution对象（下一节讲）。需要注意的是，空格也是需要写在参数列表里的。</p>
+<h3 id="Launch"><a href="#Launch" class="headerlink" title="Launch"></a>Launch</h3><p>from launch.actions import IncludeLaunchDescription<br>from launch.launch_description_sources import PythonLaunchDescriptionSource</p>
+<pre><code>pkg\_gazebo\_ros = FindPackageShare(package=&#39;gazebo\_ros&#39;).find(&#39;gazebo\_ros&#39;)
+gazebo\_launch = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(os.path.join(pkg\_gazebo\_ros,&quot;launch&quot;,&quot;gazebo.launch.py&quot;))
+)
+</code></pre>
+<p>相当于启动另一个Launch文件，一般用于启动模拟器。需要指定launch文件的路径，使用IncludeLaunchDescription和PythonLaunchDescriptionSource嵌入launch文件。</p>
+<h2 id="表示路径的各种方式"><a href="#表示路径的各种方式" class="headerlink" title="表示路径的各种方式"></a>表示路径的各种方式</h2><h3 id="Substitution"><a href="#Substitution" class="headerlink" title="Substitution"></a>Substitution</h3><p>SuSubstitutions are variables that are only evaluated during execution of the launch description and can be used to acquire specific information like a launch configuration, an environment variable, or to evaluate an arbitrary Python expression.（官方解释）简单地说，Substitution是一类对象，可以参数化地进行调用。</p>
+<h4 id="Executable"><a href="#Executable" class="headerlink" title="Executable"></a>Executable</h4><p>from launch.substitutions import FindExecutable<br>FindExecutable(name&#x3D;”xacro”)</p>
+<p>这会搜索到一个可执行程序的路径，以launch.substitutions.find_executable.FindExecutable对象的格式返回（不是路径字符串）。要使用它，需要配合PathJoinSubstitution函数使用，后者会将其转化为PathJoinSubstitution对象，这样可以被作为路径的一部分被其他Substitution函数使用，如下：</p>
+<pre><code>robot\_description\_content = Command(
+    \[
+        PathJoinSubstitution(\[FindExecutable(name=&quot;xacro&quot;)\]), 
+        &#39; &#39;,
+        PathJoinSubstitution(\[FindPackageShare(&#39;sany&#39;), &#39;urdf&#39;, &#39;sany.xacro&#39;\]),
+    \]
+)
+</code></pre>
+<h4 id="Package"><a href="#Package" class="headerlink" title="Package"></a>Package</h4><p>from launch_ros.substitutions import FindPackageShare<br>pkg_gazebo_ros &#x3D; FindPackageShare(package&#x3D;’gazebo_ros’)</p>
+<p>这会在当前环境下尝试搜索到指定的package的share路径，以FindPackageShare的方式返回。同理，也需要配合PathJoinSubstitution函数使用，例如：</p>
+<p>IncludeLaunchDescription(<br>            PythonLaunchDescriptionSource([<br>                PathJoinSubstitution([<br>                    FindPackageShare(‘launch_tutorial’),<br>                    ‘launch’,<br>                    ‘example_substitutions.launch.py’<br>                ])<br>            ]),</p>
+<p>不仅如此，还可以使用该对象的find方法，来直接具体到这个package的share路径下的某个文件夹，此时返回的是字符串路径，可以使用os.join方式合成完整路径，如下：</p>
+<p>pkg_gazebo_ros &#x3D; FindPackageShare(package&#x3D;’gazebo_ros’).find(‘gazebo_ros’)<br>  gazebo_launch &#x3D; IncludeLaunchDescription(<br>        PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros,”launch”,”gazebo.launch.py”))<br>    )</p>
+<h4 id="Launch-1"><a href="#Launch-1" class="headerlink" title="Launch"></a>Launch</h4><p>ThisLaunchFileDir是一个快速地返回指向当前Package的Launch文件夹的Substitution对象的方式，它一般用于参数化的LaunchFile，此时会有一个base_launch，其他Launch通过引用这个launchFile并修改参数的方式达到不同的launch效果。</p>
+<h2 id="添加参数的各种方式"><a href="#添加参数的各种方式" class="headerlink" title="添加参数的各种方式"></a>添加参数的各种方式</h2><h3 id="可执行程序"><a href="#可执行程序" class="headerlink" title="可执行程序"></a>可执行程序</h3><p>使用Command时，添加参数的方式就好像在终端中一样，直接输入即可，如下：</p>
+<pre><code>robot\_description\_content = Command(
+    \[
+        PathJoinSubstitution(\[FindExecutable(name=&quot;xacro&quot;)\]),
+        &quot; &quot;,
+        PathJoinSubstitution(
+            \[FindPackageShare(description\_package), &quot;urdf&quot;, description\_file\]
+        ),
+        &quot; &quot;,
+        &quot;prefix:=&quot;,
+        prefix,
+        &quot; &quot;,
+        &quot;use\_sim:=&quot;,
+        use\_sim,
+        &quot; &quot;,
+        &quot;use\_fake\_hardware:=&quot;,
+        use\_fake\_hardware,
+        &quot; &quot;,
+        &quot;fake\_sensor\_commands:=&quot;,
+        fake\_sensor\_commands,
+        &quot; &quot;,
+        &quot;slowdown:=&quot;,
+        slowdown,
+    \]
+)
+</code></pre>
+<h3 id="Node-1"><a href="#Node-1" class="headerlink" title="Node"></a>Node</h3><p>向Node添加参数有两种方式：parameters和arguments。区别在于，parameters是通过指定Node的parameters来进行的，在Node中，会有以下对parameters的声明：</p>
+<p>this-&gt;declare_parameter<a href="std::string">std::string</a>(“my_parameter”, “world”);</p>
+<p>此时使用方式如下：</p>
+<pre><code>robot\_state\_pub\_node = Node(
+    package=&quot;robot\_state\_publisher&quot;,
+    executable=&quot;robot\_state\_publisher&quot;,
+    output=&quot;both&quot;,
+    parameters=\[robot\_description\],
+)
+</code></pre>
+<p>而arguments则类似直接在终端中通过“-xxx”的方式指定参数。此时Node中会有对命令行参数的声明。使用方式如下：</p>
+<pre><code>rviz\_node = Node(
+    package=&quot;rviz2&quot;,
+    executable=&quot;rviz2&quot;,
+    name=&quot;rviz2&quot;,
+    output=&quot;log&quot;,
+    arguments=\[&quot;-d&quot;, rviz\_config\_file\],
+)
+</code></pre>
+<p>到底要使用哪一个，实际上是和Node本身的代码相关的。因为这篇博文是说launch file的，这里就不赘述。</p>
+<h3 id="Launch-2"><a href="#Launch-2" class="headerlink" title="Launch"></a>Launch</h3><p>从Launch file本身来说，需要通过DeclareLaunchArgument来声明参数：</p>
+<p>from launch.actions import DeclareLaunchArgument<br>    arg_show_rviz &#x3D; DeclareLaunchArgument(<br>        “start_rviz”,<br>        default_value&#x3D;”false”,<br>        description&#x3D;”start RViz automatically with the launch file”,<br>    )</p>
+<p>在使用IncludeLaunchDescription调用Launch文件的时候，需要使用函数的launch_arguments参数指定这些参数：</p>
+<pre><code>base\_launch = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(\[ThisLaunchFileDir(), &quot;/rrbot\_base.launch.py&quot;\]),
+    launch\_arguments=&#123;
+        &quot;controllers\_file&quot;: &quot;rrbot\_multi\_interface\_forward\_controllers.yaml&quot;,
+        &quot;description\_file&quot;: &quot;rrbot\_system\_multi\_interface.urdf.xacro&quot;,
+        &quot;prefix&quot;: prefix,
+        &quot;use\_fake\_hardware&quot;: use\_fake\_hardware,
+        &quot;fake\_sensor\_commands&quot;: fake\_sensor\_commands,
+        &quot;slowdown&quot;: slowdown,
+        &quot;robot\_controller&quot;: robot\_controller,
+    &#125;.items(),
+)
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/05/%E4%BD%BF%E7%94%A8gazebo%E5%92%8Cros2%E4%BB%BF%E7%9C%9F%E9%97%AD%E7%8E%AF%E6%9C%BA%E5%99%A8%E4%BA%BA/" rel="prev" title="使用Gazebo和ROS2仿真闭环机器人">
+      <i class="fa fa-chevron-left"></i> 使用Gazebo和ROS2仿真闭环机器人
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/10/%E4%BD%BF%E7%94%A8google-map%E7%94%9F%E6%88%90%E4%BD%A0%E7%9A%84%E6%88%B7%E5%A4%96%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83/" rel="next" title="使用Google Map生成你的户外机器人测试环境">
+      使用Google Map生成你的户外机器人测试环境 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E6%93%8D%E4%BD%9C%E7%9A%84%E5%90%84%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">执行操作的各种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Node"><span class="nav-number">1.1.</span> <span class="nav-text">Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Command"><span class="nav-number">1.2.</span> <span class="nav-text">Command</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Launch"><span class="nav-number">1.3.</span> <span class="nav-text">Launch</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E7%A4%BA%E8%B7%AF%E5%BE%84%E7%9A%84%E5%90%84%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">表示路径的各种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Substitution"><span class="nav-number">2.1.</span> <span class="nav-text">Substitution</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Executable"><span class="nav-number">2.1.1.</span> <span class="nav-text">Executable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Package"><span class="nav-number">2.1.2.</span> <span class="nav-text">Package</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Launch-1"><span class="nav-number">2.1.3.</span> <span class="nav-text">Launch</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%8F%82%E6%95%B0%E7%9A%84%E5%90%84%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">添加参数的各种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.1.</span> <span class="nav-text">可执行程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Node-1"><span class="nav-number">3.2.</span> <span class="nav-text">Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Launch-2"><span class="nav-number">3.3.</span> <span class="nav-text">Launch</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

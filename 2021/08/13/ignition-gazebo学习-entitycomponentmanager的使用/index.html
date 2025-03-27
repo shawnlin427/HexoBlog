@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="EntityComponentManager是一个用于控制sdf世界中实体增加和删除的功能，之所以把这个功能单独拿出来说，是因为基于它可以实现许多功能，比如说解除链接功能，或者是增加链接功能。ign官方有一个DetachableJoint插件，就使用了这个功能。 我们来看看，官方给出的插件中是如何运用这个功能的。这个插件主要由三个函数组成：  Configure PreUpdate OnDetac">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ignition Gazebo学习: 阅读DetachableJoint代码">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/08/13/ignition-gazebo%E5%AD%A6%E4%B9%A0-entitycomponentmanager%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="EntityComponentManager是一个用于控制sdf世界中实体增加和删除的功能，之所以把这个功能单独拿出来说，是因为基于它可以实现许多功能，比如说解除链接功能，或者是增加链接功能。ign官方有一个DetachableJoint插件，就使用了这个功能。 我们来看看，官方给出的插件中是如何运用这个功能的。这个插件主要由三个函数组成：  Configure PreUpdate OnDetac">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-08-13T12:13:21.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.572Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/08/13/ignition-gazebo%E5%AD%A6%E4%B9%A0-entitycomponentmanager%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Ignition Gazebo学习: 阅读DetachableJoint代码 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/08/13/ignition-gazebo%E5%AD%A6%E4%B9%A0-entitycomponentmanager%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ignition Gazebo学习: 阅读DetachableJoint代码
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-08-13 20:13:21" itemprop="dateCreated datePublished" datetime="2021-08-13T20:13:21+08:00">2021-08-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>EntityComponentManager是一个用于控制sdf世界中实体增加和删除的功能，之所以把这个功能单独拿出来说，是因为基于它可以实现许多功能，比如说解除链接功能，或者是增加链接功能。ign官方有一个DetachableJoint插件，就使用了这个功能。</p>
+<p>我们来看看，官方给出的插件中是如何运用这个功能的。这个插件主要由三个函数组成：</p>
+<ol>
+<li>Configure</li>
+<li>PreUpdate</li>
+<li>OnDetachableRequest</li>
+</ol>
+<h2 id="Configure"><a href="#Configure" class="headerlink" title="Configure"></a>Configure</h2><p>void DetachableJoint::Configure(const Entity &amp;_entity,<br>                                const std::shared_ptr<const sdf::Element> &amp;_sdf,<br>                                EntityComponentManager &amp;_ecm,<br>                                EventManager &amp; &#x2F;*_eventMgr*&#x2F;)<br>&#x2F;&#x2F;函数继承自模板文件中的Configure，插件挂载在_entity之下。_ecm是一个EntityComponentManager。_sdf是插件所属的sdf区块。<br>{<br>&#x2F;&#x2F;model的初始化方法为Model(gazebo::Entity _entity&#x3D;kNullEntity)，由此将_entity所指向的model赋值给this-&gt;model。<br>  this-&gt;model &#x3D; Model(_entity);<br>&#x2F;&#x2F;model.Valid是一个用于检测model是否正确指向一个entity的方法，使用_ecm作为参数。如果不存在，那么抛出一个错误。这是为了确保插件放在model内。<br>  if (!this-&gt;model.Valid(_ecm))<br>  {<br>    ignerr &lt;&lt; “DetachableJoint should be attached to a model entity. “<br>           &lt;&lt; “Failed to initialize.” &lt;&lt; std::endl;<br>    return;<br>  }<br>&#x2F;&#x2F;如果_sdf内有parent_link这个元素：<br>  if (_sdf-&gt;HasElement(“parent_link”))<br>  {<br>&#x2F;&#x2F;则使用_sdf的Get方法获取其parentLinkName属性;<br>    auto parentLinkName &#x3D; _sdf-&gt;Get<a href="std::string">std::string</a>(“parent_link”);<br>&#x2F;&#x2F;然后，使用model的LinkByName方法，找到parentLinkName所对应的Entity;<br>    this-&gt;parentLinkEntity &#x3D; this-&gt;model.LinkByName(_ecm, parentLinkName);<br>&#x2F;&#x2F;如果parentLinkName所对应的Entity是kNullEntity（也就是无）：<br>    if (kNullEntity &#x3D;&#x3D; this-&gt;parentLinkEntity)<br>    {<br>&#x2F;&#x2F;报错，parent_link这个参数的值不对（也就是名称错误），跳出程序<br>      ignerr &lt;&lt; “Link with name “ &lt;&lt; parentLinkName<br>             &lt;&lt; “ not found in model “ &lt;&lt; this-&gt;model.Name(_ecm)<br>             &lt;&lt; “. Make sure the parameter ‘parent_link’ has the “<br>             &lt;&lt; “correct value. Failed to initialize.\n”;<br>      return;<br>    }<br>  }<br>&#x2F;&#x2F;如果没有parent_link这个元素，报错，跳出程序<br>  else<br>  {<br>    ignerr &lt;&lt; “‘parent_link’ is a required parameter for DetachableJoint. “<br>              “Failed to initialize.\n”;<br>    return;<br>  }</p>
+<p>  if (_sdf-&gt;HasElement(“child_model”))<br>  {<br>    this-&gt;childModelName &#x3D; _sdf-&gt;Get<a href="std::string">std::string</a>(“child_model”);<br>  }<br>  else<br>  {<br>    ignerr &lt;&lt; “‘child_model’ is a required parameter for DetachableJoint.”<br>              “Failed to initialize.\n”;<br>    return;<br>  }<br>&#x2F;&#x2F;如果_sdf内有child_link这个元素：<br>  if (_sdf-&gt;HasElement(“child_link”))<br>  {<br>&#x2F;&#x2F;则使用_sdf的Get方法获取其ChildLinkName属性;<br>    this-&gt;childLinkName &#x3D; _sdf-&gt;Get<a href="std::string">std::string</a>(“child_link”);<br>  }<br>&#x2F;&#x2F;否则报错，跳出<br>  else<br>  {<br>    ignerr &lt;&lt; “‘child_link’ is a required parameter for DetachableJoint.”<br>              “Failed to initialize.\n”;<br>    return;<br>  }</p>
+<p>  &#x2F;&#x2F; Setup detach topic<br>&#x2F;&#x2F;设置一个Topic，不过这里只是把这个话题的名称列出来。defalutTopic名称为&#x2F;model&#x2F;model的名称&#x2F;detachable_joint&#x2F;detach<br>  std::string defaultTopic{“&#x2F;model&#x2F;“ + this-&gt;model.Name(_ecm) +<br>                           “&#x2F;detachable_joint&#x2F;detach”};<br>&#x2F;&#x2F;把这个topic赋值给this-&gt;topic<br>  this-&gt;topic &#x3D; _sdf-&gt;Get<a href="std::string">std::string</a>(“topic”, defaultTopic).first;</p>
+<p>  this-&gt;suppressChildWarning &#x3D;<br>      _sdf-&gt;Get<bool>(“suppress_child_warning”, this-&gt;suppressChildWarning)<br>          .first;<br>&#x2F;&#x2F;上面都完成后，将this-&gt;validConfig值改为true<br>  this-&gt;validConfig &#x3D; true;<br>}</p>
+<p>Configure主要是对插件是否能够正确读取参数做一检查。</p>
+<h2 id="PreUpdate"><a href="#PreUpdate" class="headerlink" title="PreUpdate"></a>PreUpdate</h2><p>&#x2F;&#x2F;PreUpdate,是在每一个模拟帧计算前执行的任务<br>void DetachableJoint::PreUpdate(<br>    const ignition::gazebo::UpdateInfo &amp; &#x2F;*_info*&#x2F;,<br>    ignition::gazebo::EntityComponentManager &amp;_ecm)<br>{<br>  IGN_PROFILE(“DetachableJoint::PreUpdate”);<br>&#x2F;&#x2F;this-&gt;validConfig，如果Configure函数顺利执行的话值为true；initialized在一开始的状态为默认的false，如果下面这些nt，变成一个特定函数正常执行，则会变为true，也就是不会在执行这些语句，后面再看<br>  if (this-&gt;validConfig &amp;&amp; !this-&gt;initialized)<br>  {<br>    &#x2F;&#x2F; Look for the child model and link<br>&#x2F;&#x2F;先初始化一个Entity对象，默认kNullEntity也就是空对象<br>    Entity modelEntity{kNullEntity};<br>&#x2F;&#x2F;__model__也就是“this”的model属性，如果这个model就是Configure函数中初始化的childModelName（这种情况下，意味着你把插件放在了这个model里）：<br>    if (“__model__“ &#x3D;&#x3D; this-&gt;childModelName)<br>    {<br>&#x2F;&#x2F;modelEntity的值改为this-&gt;model.Entity()<br>      modelEntity &#x3D; this-&gt;model.Entity();<br>    }<br>    else<br>    {<br>&#x2F;&#x2F;否则的话，使用_cem的EntityByComponents寻找符合条件的Entity：类型为Model，名称为this-&gt;childModelName。这个时候意味着插件可能放在了model以外的地方：<br>      modelEntity &#x3D; _ecm.EntityByComponents(<br>          components::Model(), components::Name(this-&gt;childModelName));<br>    }<br>&#x2F;&#x2F;如果经过上面的操作，找到了对应的modelEntity（不为空）：<br>    if (kNullEntity !&#x3D; modelEntity)<br>    {<br>&#x2F;&#x2F;还是用_ecm.EntityByComponents找对应的Entity，这次的寻找筛选器为：类型为Link，ParentEntity为modelEntity，Name为childLinkName的对象。其实就是找到childLinkEntity对应的实体。<br>      this-&gt;childLinkEntity &#x3D; _ecm.EntityByComponents(<br>          components::Link(), components::ParentEntity(modelEntity),<br>          components::Name(this-&gt;childLinkName));<br>&#x2F;&#x2F;如果经过上面的操作，找到了对应的childLinkEntity：<br>      if (kNullEntity !&#x3D; this-&gt;childLinkEntity)<br>      {<br>        &#x2F;&#x2F; Attach the models<br>        &#x2F;&#x2F; We do this by creating a detachable joint entity.<br>&#x2F;&#x2F;用_ecm.CreateEntity方法创建一个实体。此时我们还没有指定这是一个什么实体，不过先赋值给this-&gt;detachableJointEntity<br>        this-&gt;detachableJointEntity &#x3D; _ecm.CreateEntity();<br>&#x2F;&#x2F;然后具体指定实体类型。使用_ecm.CreateComponent方法，指定为components::DetachableJoint。因为DetachableJoint这个特殊的Joint已经被加入ignition library了，所以可以直接指定。目前仅支持fixed类型的Joint。<br>        _ecm.CreateComponent(<br>            this-&gt;detachableJointEntity,<br>            components::DetachableJoint({this-&gt;parentLinkEntity,<br>                                         this-&gt;childLinkEntity, “fixed”}));<br>&#x2F;&#x2F;订阅topic，绑定OnDetachRequest函数<br>        this-&gt;node.Subscribe(<br>            this-&gt;topic, &amp;DetachableJoint::OnDetachRequest, this);<br>&#x2F;&#x2F;订阅成功后打印一条消息，然后把initialized状态改为true，上面的寻找childLinkEngity等操作不会再执行<br>        ignmsg &lt;&lt; “DetachableJoint subscribing to messages on “<br>               &lt;&lt; “[“ &lt;&lt; this-&gt;topic &lt;&lt; “]“ &lt;&lt; std::endl;</p>
+<pre><code>    this-&gt;initialized = true;
+  &#125;
+</code></pre>
+<p>&#x2F;&#x2F;如果找不到的话，报错<br>      else<br>      {<br>        ignwarn &lt;&lt; “Child Link “ &lt;&lt; this-&gt;childLinkName<br>                &lt;&lt; “ could not be found.\n”;<br>      }<br>    }<br>    else if (!this-&gt;suppressChildWarning)<br>    {<br>      ignwarn &lt;&lt; “Child Model “ &lt;&lt; this-&gt;childModelName<br>              &lt;&lt; “ could not be found.\n”;<br>    }<br>  }</p>
+<p>&#x2F;&#x2F;initialized变为true后，每次PreUpdate时执行下面的语句<br>  if (this-&gt;initialized)<br>  {<br>&#x2F;&#x2F;如果收到了detachRequested为true的消息，并且detachableJointEntity存在的话：<br>    if (this-&gt;detachRequested &amp;&amp; (kNullEntity !&#x3D; this-&gt;detachableJointEntity))<br>    {<br>      &#x2F;&#x2F; Detach the models<br>      igndbg &lt;&lt; “Removing entity: “ &lt;&lt; this-&gt;detachableJointEntity &lt;&lt; std::endl;<br>&#x2F;&#x2F;使用_ecm.RequestRemoveENtity方法移除一个Entity；<br>      _ecm.RequestRemoveEntity(this-&gt;detachableJointEntity);<br>&#x2F;&#x2F;将detachableJointEntity设为空实体，将detachRequested重设为false。<br>      this-&gt;detachableJointEntity &#x3D; kNullEntity;<br>      this-&gt;detachRequested &#x3D; false;<br>    }<br>  }<br>}</p>
+<p>PreUpdate里完成了对Entity的搜索、创建DetachableJoint、订阅Topic、删除DetachableJoint四大工作。主要运用了_ecm的几个方法：</p>
+<ol>
+<li>EntityByComponents，用来寻找符合条件的Entity</li>
+<li>CreateEntity，创建一个Entity</li>
+<li>CreateComponent给Entity创建一些Component，变成一个特定的Entity</li>
+<li>RequestRemoveEntity删除Entity</li>
+</ol>
+<h2 id="OnDetachRequests"><a href="#OnDetachRequests" class="headerlink" title="OnDetachRequests"></a>OnDetachRequests</h2><p>void DetachableJoint::OnDetachRequest(const msgs::Empty &amp;)<br>{<br>  this-&gt;detachRequested &#x3D; true;<br>}</p>
+<p>这个函数就很简单了，从参数可以看出，它接受一个Empty类型的msgs，然后就把this-&gt;detachRequested的值改为true。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/22/%E7%BB%99%E8%B1%86/" rel="prev" title="给豆">
+      <i class="fa fa-chevron-left"></i> 给豆
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/15/freecad-bim%E4%BD%BF%E7%94%A8%E6%84%9F%E5%8F%97/" rel="next" title="FreeCAD BIM使用感受">
+      FreeCAD BIM使用感受 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Configure"><span class="nav-number">1.</span> <span class="nav-text">Configure</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PreUpdate"><span class="nav-number">2.</span> <span class="nav-text">PreUpdate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OnDetachRequests"><span class="nav-number">3.</span> <span class="nav-text">OnDetachRequests</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

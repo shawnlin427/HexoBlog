@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Action简介Action字面意义上理解就是“动作”。实际上，是对消息收发机制的一个上层包装。在Dolly避障中，我们让Dolly在没有避开障碍物前，都执行一个恒定的转向动作。实际上这就是一个Action。一个Acition一般由三部分组成：  goal,目标 feedback，在action执行过程中的反馈； result，结果。  目标、反馈和结果之间不一定要相同——事实上，他们往往是不同的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS2入门之Acition操作">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/12/ros2%E5%85%A5%E9%97%A8%E4%B9%8Bacition%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="Action简介Action字面意义上理解就是“动作”。实际上，是对消息收发机制的一个上层包装。在Dolly避障中，我们让Dolly在没有避开障碍物前，都执行一个恒定的转向动作。实际上这就是一个Action。一个Acition一般由三部分组成：  goal,目标 feedback，在action执行过程中的反馈； result，结果。  目标、反馈和结果之间不一定要相同——事实上，他们往往是不同的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/10/image-5.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/10/image-6.png">
+<meta property="article:published_time" content="2021-10-12T09:11:45.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.610Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.lxshaw.com/wp-content/uploads/2021/10/image-5.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/12/ros2%E5%85%A5%E9%97%A8%E4%B9%8Bacition%E6%93%8D%E4%BD%9C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ROS2入门之Acition操作 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/12/ros2%E5%85%A5%E9%97%A8%E4%B9%8Bacition%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ROS2入门之Acition操作
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-12 17:11:45" itemprop="dateCreated datePublished" datetime="2021-10-12T17:11:45+08:00">2021-10-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Action简介"><a href="#Action简介" class="headerlink" title="Action简介"></a><strong>Action简介</strong></h2><p>Action字面意义上理解就是“动作”。实际上，是对消息收发机制的一个上层包装。在Dolly避障中，我们让Dolly在没有避开障碍物前，都执行一个恒定的转向动作。实际上这就是一个Action。<br>一个Acition一般由三部分组成：</p>
+<ol>
+<li>goal,目标</li>
+<li>feedback，在action执行过程中的反馈；</li>
+<li>result，结果。</li>
+</ol>
+<p>目标、反馈和结果之间不一定要相同——事实上，他们往往是不同的。例如我们去拿一个苹果，目标是苹果的位置，feedback是手的位置，result是“成功”或“失败”这样一条信息。Action也是类似的。</p>
+<p>使用Action的好处主要在于，可以随时终止Action，但保留当前的机器人状态——例如，机器人已经走了一段路，此时遇到障碍物时终止Action。有人可能会说了，用Dolly的时候也没见用Action呀？确实如此，所以说Action是一个上层包装，目的是为了配合server和client让项目架构看起来更简洁，同时feedback功能也便于调试.</p>
+<h2 id="创建自己的Action"><a href="#创建自己的Action" class="headerlink" title="创建自己的Action"></a><strong>创建自己的Action</strong></h2><p>根据目标、反馈、结果的不同，action的形式也是多种多样，以至于ROS2难以提前全部预设。因此，往往需要创建自己的action。</p>
+<p>如果是使用c++写的ROS2包，换句话说，如果在create package的时候使用了ament_cmake选项的，那么下一步就可以不用继续了。反之，如果当初创建package的时候使用了ament_python，也就是基于python写的ROS2包，那么还需要在当前工作环境下，再使用ament_cmake创建一个c++的ROS2包。原因是，现在ament_python还不支持对自定义Action的编译，只能另外创建一个c++的pkg来编译自定义Action编译。</p>
+<p>假设，现在我们使用ament_python创建了一个名为toturial的package，就像图片中你看到的那样：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-5.png"></a></p>
+<p>那么现在，将路径切换到src，输入：</p>
+<p>ros2 pkg create –build-type ament_cmake my_action</p>
+<p>然后，在my_action中创建一个名为action的文件夹，在里面新建一个.action文件，名为Fibonacci.action，也就是斐波那契数列。文件内容如下：</p>
+<h2 id="int32-order"><a href="#int32-order" class="headerlink" title="int32 order"></a>int32 order</h2><h2 id="int32-sequence"><a href="#int32-sequence" class="headerlink" title="int32[] sequence"></a>int32[] sequence</h2><p>int32[] partial_sequence</p>
+<p>你可以看到，这个action文件由三部分组成，每辆各部分之间用“—”隔开。从上到下，他们分别代表了一个action消息的goal、feedback、result数据类型。在数据类型后的，是数据的名称。类似src和msg的定义，也可以这么写：</p>
+<h2 id="int64-aint64-bint64-c"><a href="#int64-aint64-bint64-c" class="headerlink" title="int64 aint64 bint64 c"></a>int64 a<br>int64 b<br>int64 c</h2><h2 id="int32-sequence-1"><a href="#int32-sequence-1" class="headerlink" title="int32[] sequence"></a>int32[] sequence</h2><p>int32[] partial_sequence</p>
+<p>值得注意的是，不类似于msg这种有很多预设类型的数据类型，action更多可以理解为是一个函数的输入、调试输出和返回值。恐怕很少有固定输入、调试输出和返回值的函数模板吧。这又一次说明了，为什么我们要自定义action类型。</p>
+<p>完成上面的步骤后，文件夹结构应该是这样的：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image-6.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-6.png"></a></p>
+<p>然后，需要对CMakeLists.txt做一些修改。在最后一行前，插入：</p>
+<p>find_package(rosidl_default_generators REQUIRED)</p>
+<p>rosidl_generate_interfaces(${PROJECT_NAME}<br>  “action&#x2F;Fibonacci.action”<br>)</p>
+<p>并且，在package.xml中，加入：</p>
+<p>  <depend>action_msgs</depend></p>
+<p>  &lt;member_of_group&gt;rosidl_interface_packages&lt;&#x2F;member_of_group&gt;<br>  &lt;test_depend&gt;ament_lint_auto&lt;&#x2F;test_depend&gt;<br>  &lt;test_depend&gt;ament_lint_common&lt;&#x2F;test_depend&gt;</p>
+<p>然后就可以编译了，在workspace的主路径下，输入：</p>
+<p>colcon build –packages-select my_action</p>
+<p>编译花费的时间会比较长，在我的电脑上花费了一分多钟，比较奇怪。编译完成后，就可以在该工作路径下的其他packages中调用action了。</p>
+<h2 id="写一个action-server"><a href="#写一个action-server" class="headerlink" title="写一个action server"></a>写一个action server</h2><p>在toturial包中创建action_server.py，内容：</p>
+<p>import rclpy<br>from rclpy.action import ActionServer<br>from rclpy.node import Node<br>import time<br>from my_action.action import Fibonacci</p>
+<p>class FibonacciActionServer(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;fibonacci\_action\_server&#39;)
+    self.\_action\_server = ActionServer(
+        self,
+        Fibonacci,
+        &#39;fibonacci&#39;,
+        self.execute\_callback)
+
+def execute\_callback(self, goal\_handle):
+    self.get\_logger().info(&#39;Executing goal...&#39;)
+
+    feedback\_msg = Fibonacci.Feedback()
+    feedback\_msg.partial\_sequence = \[0, 1\]
+
+    for i in range(1, goal\_handle.request.order):
+        feedback\_msg.partial\_sequence.append(
+            feedback\_msg.partial\_sequence\[i\] + feedback\_msg.partial\_sequence\[i-1\])
+        self.get\_logger().info(&#39;Feedback: &#123;0&#125;&#39;.format(feedback\_msg.partial\_sequence))
+        goal\_handle.publish\_feedback(feedback\_msg)
+        time.sleep(1)
+
+    goal\_handle.succeed()
+
+    result = Fibonacci.Result()
+    result.sequence = feedback\_msg.partial\_sequence
+    return result
+</code></pre>
+<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
+<pre><code>fibonacci\_action\_server = FibonacciActionServer()
+
+rclpy.spin(fibonacci\_action\_server)
+</code></pre>
+<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
+<h3 id="code-examination"><a href="#code-examination" class="headerlink" title="code examination"></a>code examination</h3><p>开头导入一些包，以及我们自定义的action数据类型。</p>
+<p>import rclpy<br>from rclpy.action import ActionServer<br>from rclpy.node import Node<br>import time<br>from my_action.action import Fibonacci</p>
+<p>在class中，初始化时，创建一个ActionServer，方式和Subscriber一类的很像，也是指定数据类型、action name（对标topic），以及绑定的函数。</p>
+<p>class FibonacciActionServer(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;fibonacci\_action\_server&#39;)
+    self.\_action\_server = ActionServer(
+        self,
+        Fibonacci,
+        &#39;fibonacci&#39;,
+        self.execute\_callback)
+</code></pre>
+<p>在绑定的函数execute_callback中，参数为goal_handle，也就是action client传入的数据。首先初始化一个feedback_msg，其类型为Fibonacci.Feedback()。实际上，就是action中三块内容的最后那一块，包含了nt32[] partial_sequence。使用Feedback所包含的数据名词进行赋值。</p>
+<pre><code>    feedback\_msg = Fibonacci.Feedback()
+    feedback\_msg.partial\_sequence = \[0, 1\]
+</code></pre>
+<p>接下来，是处理环节。这个server的作用是，接收到一个order后，给出这个数量长度的斐波那契数列。所以，可以看到order中的数据，是通过goal_handle.requests.order给出的。</p>
+<p>随后就是斐波那契数列数列的计算过程，不做赘述。</p>
+<p>接着，使用goal_handle.publish_feedback这个方法，向action client返回feedback，参数为feedback_msgs。</p>
+<pre><code>    for i in range(1, goal\_handle.request.order):
+        feedback\_msg.partial\_sequence.append(
+            feedback\_msg.partial\_sequence\[i\] + feedback\_msg.partial\_sequence\[i-1\])
+        self.get\_logger().info(&#39;Feedback: &#123;0&#125;&#39;.format(feedback\_msg.partial\_sequence))
+        goal\_handle.publish\_feedback(feedback\_msg)
+        time.sleep(1)
+</code></pre>
+<p>接下来，当action server成功完成goal后，需要讲goal_handle的状态设置为succeed，否则程序会默认goal被中止了，也就不会返回result。因此完成goal后，需要声明：</p>
+<pre><code>    goal\_handle.succeed()
+</code></pre>
+<p>最后就是返回Result了，因为action中定义的Result类型和Feedback是一样的，都是int32[]，所以可以直接赋值。</p>
+<pre><code>    result = Fibonacci.Result()
+    result.sequence = feedback\_msg.partial\_sequence
+    return result
+</code></pre>
+<p>在最后，依然是再熟悉不过的main部分。最后加入if部分使得可以直接通过python3运行：</p>
+<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
+<pre><code>fibonacci\_action\_server = FibonacciActionServer()
+
+rclpy.spin(fibonacci\_action\_server)
+</code></pre>
+<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
+<h3 id="Server总结"><a href="#Server总结" class="headerlink" title="Server总结"></a>Server总结</h3><p>小小总结一下，一个action server包括：</p>
+<ol>
+<li>创建ActionServer</li>
+<li>创建绑定函数</li>
+<li>接收信息后处理</li>
+<li>处理时发送feedback，一般用do while</li>
+<li>结束后设置goal为succeed，发送result</li>
+</ol>
+<h2 id="写一个Action-client"><a href="#写一个Action-client" class="headerlink" title="写一个Action client"></a>写一个Action client</h2><p>实际上这里的Action server已经可以用了。运行python3 action_server.py，然后在另一个控制台，输入</p>
+<p>ros2 action list</p>
+<p>就能看到&#x2F;fibonacci这个action了。那么，该如何向这个action发送命令呢？需要输入：</p>
+<p>ros2 action send_goal fibonacci my_action&#x2F;action&#x2F;Fibonacci “{order: 5}”</p>
+<p>执行前需要source一下install目录下的setup.bash。过一会儿，就能看到返回结果：</p>
+<p>Waiting for an action server to become available…<br>Sending goal:<br>     order: 5</p>
+<p>Goal accepted with ID: b8899de227e04067baaa9ffc72f61e65</p>
+<p>Result:<br>    sequence:</p>
+<ul>
+<li>0</li>
+<li>1</li>
+<li>1</li>
+<li>2</li>
+<li>3</li>
+<li>5</li>
+</ul>
+<p>Goal finished with status: SUCCEEDED</p>
+<p>那问题来了，为什么要用action client呢？原因很简单——这样我们是看不到feedback的。我们当然希望任务执行中能看到feedback，这样如果执行出现机器探测不到但是人能够察觉出的异常，就可以快速中止任务。因此，需要一个能够观察到feedback的action client。</p>
+<p>再创建一个action_client.py，内容：</p>
+<p>import rclpy<br>from rclpy.action import ActionClient<br>from rclpy.node import Node</p>
+<p>from my_action.action import Fibonacci</p>
+<p>class FibonacciActionClient(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;fibonacci\_action\_client&#39;)
+    self.\_action\_client = ActionClient(self, Fibonacci, &#39;fibonacci&#39;)
+
+def send\_goal(self, order):
+    goal\_msg = Fibonacci.Goal()
+    goal\_msg.order = order
+
+    self.\_action\_client.wait\_for\_server()
+
+    self.\_send\_goal\_future = self.\_action\_client.send\_goal\_async(goal\_msg, feedback\_callback=self.feedback\_callback)
+
+    self.\_send\_goal\_future.add\_done\_callback(self.goal\_response\_callback)
+
+def goal\_response\_callback(self, future):
+    goal\_handle = future.result()
+    if not goal\_handle.accepted:
+        self.get\_logger().info(&#39;Goal rejected :(&#39;)
+        return
+
+    self.get\_logger().info(&#39;Goal accepted :)&#39;)
+
+    self.\_get\_result\_future = goal\_handle.get\_result\_async()
+    self.\_get\_result\_future.add\_done\_callback(self.get\_result\_callback)
+
+def get\_result\_callback(self, future):
+    result = future.result().result
+    self.get\_logger().info(&#39;Result: &#123;0&#125;&#39;.format(result.sequence))
+    rclpy.shutdown()
+
+def feedback\_callback(self, feedback\_msg):
+    feedback = feedback\_msg.feedback
+    self.get\_logger().info(&#39;Received feedback: &#123;0&#125;&#39;.format(feedback.partial\_sequence))
+</code></pre>
+<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
+<pre><code>action\_client = FibonacciActionClient()
+
+action\_client.send\_goal(10)
+
+rclpy.spin(action\_client)
+</code></pre>
+<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
+<h3 id="code-examination-1"><a href="#code-examination-1" class="headerlink" title="code examination"></a>code examination</h3><p>类似的导入暂且不提，直接来看主体部分。首先，声明ActionClient需要action的类型和action topic。</p>
+<p>然后，我们定义了一个send_goal函数，这里有一些方法需要解释一下意思。首先是wait_for_server()，这个方法命令client搜寻相应action topic是否被创建，也就是相应的action server是否已经启动。如果没有，则等待。</p>
+<p>接下来，使用send_goal_async来发送goal_msg。这个方法会返回一个”future“，这个future描述了当前goal_send的状态。这里还有一个feedback_callback参数，这个下面再说。</p>
+<p>再然后，我们先为goal_send声明一个callback，使用add_done_callback这个方法，其参数为一个函数，接下来就会讲到这个goal_response_callback的原理。这个callback指代了goal_send的状态，根据server接受goal的情况，可能是reject或者是accept。</p>
+<pre><code>def send\_goal(self, order):
+    goal\_msg = Fibonacci.Goal()
+    goal\_msg.order = order
+</code></pre>
+<p>le<br>        self._action_client.wait_for_server()</p>
+<pre><code>    self.\_send\_goal\_future = self.\_action\_client.send\_goal\_async(goal\_msg, feedback\_callback=self.feedback\_callback)
+
+    self.\_send\_goal\_future.add\_done\_callback(self.goal\_response\_callback)
+</code></pre>
+<p>在goal_response_callback里，接受future作为参数。首先，获取当前goal_handle的状态。</p>
+<p>然后，根据状态来确定下一步怎么进行。如果goal被拒绝了，则直接return不再继续。如果接受了，那么和前面一块send_goal函数中相似，再创建一个future，不过这个future是描述result的状态的，使用的方法也不同，变为get_result_async()，主体则是goal_handle本身。</p>
+<p>类似的，也为result future声明一个callback，来返回处理结果。参数为get_result_callback——是的，又要有一个新的函数了。</p>
+<pre><code>def goal\_response\_callback(self, future):
+    goal\_handle = future.result()
+    if not goal\_handle.accepted:
+        self.get\_logger().info(&#39;Goal rejected :(&#39;)
+        return
+
+    self.get\_logger().info(&#39;Goal accepted :)&#39;)
+
+    self.\_get\_result\_future = goal\_handle.get\_result\_async()
+    self.\_get\_result\_future.add\_done\_callback(self.get\_result\_callback)
+</code></pre>
+<p>再get_result_callback里，写的就是goal_handle的状态了。future.result()是Fibonacci action，再后面的result则是真正返回的内容，也就是包含了int32[] sequence的action result。</p>
+<p>在这个脚本里，设置为完成goal后就关闭该client。</p>
+<pre><code>def get\_result\_callback(self, future):
+    result = future.result().result
+    self.get\_logger().info(&#39;Result: &#123;0&#125;&#39;.format(result.sequence))
+    rclpy.shutdown()
+</code></pre>
+<p>前面提到了feedback，那么我们怎么通过client来获取feedback呢？首先，创建一个函数，其参数内容为feedback_msg。这个feedback_msg的类型是 Fibonacci action 。</p>
+<p>下一步，获取feedback数据，也就是feedback_msg.feedback.partial_sequence，partial_sequance是我们自己定义的数据的名称。</p>
+<pre><code>def feedback\_callback(self, feedback\_msg):
+    feedback = feedback\_msg.feedback
+    self.get\_logger().info(&#39;Received feedback: &#123;0&#125;&#39;.format(feedback.partial\_sequence))
+</code></pre>
+<p>下面的问题是，把这个函数绑定到哪里呢？这一步看起来不太直观，绑定的位置是发送goal的函数参数，也就是self._send_goal_future &#x3D; self._action_client.send_goal_async(goal_msg, feedback_callback&#x3D;self.feedback_callback)。</p>
+<pre><code>def feedback\_callback(self, feedback\_msg):
+    feedback = feedback\_msg.feedback
+    self.get\_logger().info(&#39;Received feedback: &#123;0&#125;&#39;.format(feedback.partial\_sequence))
+</code></pre>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>写一个action client似乎比client还要复杂——其实并不，action client基本上是模板化的，修改的地方不多。写一个action client的流程是：</p>
+<ol>
+<li>创建ActionClient，声明action类型和action topic</li>
+<li>创建一个send_goal函数，参数为order，里面要包含：<ol>
+<li>声明goal_msg的类型（xxxx.Goal()）</li>
+<li>令goal_msg.order &#x3D; order</li>
+<li>wait_for_server</li>
+<li>使用action client的send_goal_async方法发送goal_msg，返回send_goal_future</li>
+<li>为send_goal_future声明callback，绑定callback函数</li>
+</ol>
+</li>
+<li>创建send_goal的callback函数，参数为future<ol>
+<li>根据future的结果决定下一步（跳出或继续）</li>
+<li>使用goal_handle的get_result_async方法获取result_future</li>
+<li>为result_future声明callback，绑定callback函数</li>
+</ol>
+</li>
+<li>创建result_future的callback函数，参数为future<ol>
+<li>根据result执行相应命令（打印到控制台或者别的什么）</li>
+</ol>
+</li>
+<li>创建feedback的callback函数，参数为feedback_msg<ol>
+<li>根据feedback_msg执行相应命令（中止action等）</li>
+<li>绑定到send_goal_async</li>
+</ol>
+</li>
+</ol>
+<p>难点主要在，难以分清楚action消息、action消息的组成、action消息各组成的数据。例如：</p>
+<ol>
+<li>goal_msg是action消息的组成，也就是Fibonacci.Goal()</li>
+<li>result的future.result()是action消息。</li>
+<li>feedback_msg是action消息。</li>
+</ol>
+<p>所以应当说这一块ROS2做的不是很好，类型不明显。修改代码的时候，应当注意各参数的类型。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>打开action_server后，使用python3运行该脚本：</p>
+<p>[INFO] [1634029628.139290300] [fibonacci_action_client]: Goal accepted :)<br>[INFO] [1634029628.140118300] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1])<br>[INFO] [1634029629.128878500] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2])<br>[INFO] [1634029630.130619100] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3])<br>[INFO] [1634029631.136094700] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5])<br>[INFO] [1634029632.139388800] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5, 8])<br>[INFO] [1634029633.139042600] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5, 8, 13])<br>[INFO] [1634029634.141083400] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5, 8, 13, 21])<br>[INFO] [1634029635.143444400] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5, 8, 13, 21, 34])<br>[INFO] [1634029636.145086200] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])<br>[INFO] [1634029637.150578100] [fibonacci_action_client]: Result: array(‘i’, [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/12/%E9%A2%91%E5%9F%9F%E5%9B%BE%E5%83%8F%E5%8F%98%E6%8D%A2/" rel="prev" title="频域图像变换">
+      <i class="fa fa-chevron-left"></i> 频域图像变换
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/17/ros2%EF%BC%9Aaction%E7%9A%84%E5%8F%96%E6%B6%88/" rel="next" title="ROS2：Action的取消">
+      ROS2：Action的取消 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Action%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">Action简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84Action"><span class="nav-number">2.</span> <span class="nav-text">创建自己的Action</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#int32-order"><span class="nav-number">3.</span> <span class="nav-text">int32 order</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#int32-sequence"><span class="nav-number">4.</span> <span class="nav-text">int32[] sequence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#int64-aint64-bint64-c"><span class="nav-number">5.</span> <span class="nav-text">int64 aint64 bint64 c</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#int32-sequence-1"><span class="nav-number">6.</span> <span class="nav-text">int32[] sequence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E4%B8%80%E4%B8%AAaction-server"><span class="nav-number">7.</span> <span class="nav-text">写一个action server</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#code-examination"><span class="nav-number">7.1.</span> <span class="nav-text">code examination</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Server%E6%80%BB%E7%BB%93"><span class="nav-number">7.2.</span> <span class="nav-text">Server总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E4%B8%80%E4%B8%AAAction-client"><span class="nav-number">8.</span> <span class="nav-text">写一个Action client</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#code-examination-1"><span class="nav-number">8.1.</span> <span class="nav-text">code examination</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">8.2.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">8.3.</span> <span class="nav-text">使用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

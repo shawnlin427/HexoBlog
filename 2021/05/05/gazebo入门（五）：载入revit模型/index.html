@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Revit可以用于建筑建模，将Revit中的建筑模型导入Gazebo，即可以创造较为精细的模拟环境。这也是BIM-ROS仿真的必须工作。 从Revit导出.dae模型下载lumion-revit插件：https:&#x2F;&#x2F;lumion3d.com&#x2F;revit-to-lumion-bridge&#x2F;，基本上支持所有的Revit版本。安装完成后，在lumion插件页点击export即可导出dae模型：   可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gazebo入门（五）：载入Revit模型">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/05/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E8%BD%BD%E5%85%A5revit%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="Revit可以用于建筑建模，将Revit中的建筑模型导入Gazebo，即可以创造较为精细的模拟环境。这也是BIM-ROS仿真的必须工作。 从Revit导出.dae模型下载lumion-revit插件：https:&#x2F;&#x2F;lumion3d.com&#x2F;revit-to-lumion-bridge&#x2F;，基本上支持所有的Revit版本。安装完成后，在lumion插件页点击export即可导出dae模型：   可以">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-27-1024x499.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-26-1024x179.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-28-1024x523.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-29-1024x340.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-30-1024x331.png">
+<meta property="article:published_time" content="2021-05-05T08:03:42.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.516Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-27-1024x499.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/05/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E8%BD%BD%E5%85%A5revit%E6%A8%A1%E5%9E%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Gazebo入门（五）：载入Revit模型 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/05/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E8%BD%BD%E5%85%A5revit%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Gazebo入门（五）：载入Revit模型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-05 16:03:42" itemprop="dateCreated datePublished" datetime="2021-05-05T16:03:42+08:00">2021-05-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/BIM/" itemprop="url" rel="index"><span itemprop="name">BIM</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Revit可以用于建筑建模，将Revit中的建筑模型导入Gazebo，即可以创造较为精细的模拟环境。这也是BIM-ROS仿真的必须工作。</p>
+<h2 id="从Revit导出-dae模型"><a href="#从Revit导出-dae模型" class="headerlink" title="从Revit导出.dae模型"></a>从Revit导出.dae模型</h2><p>下载lumion-revit插件：<a target="_blank" rel="noopener" href="https://lumion3d.com/revit-to-lumion-bridge/">https://lumion3d.com/revit-to-lumion-bridge/</a>，基本上支持所有的Revit版本。安装完成后，在lumion插件页点击export即可导出dae模型：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-27-1024x499.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-26-1024x179.png"></p>
+<p>可以用Blender打开dae模型查看是否导出成功，选择import-collada：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-28-1024x523.png"></p>
+<p>因为我对Blender也不太熟，不太清楚为什么不显示材质。实际上应该是有显示的，只是现在没有光照。切换成Texture Paint页面就能看到材质了。(但是在Ubuntu下还是无法显示）。</p>
+<h2 id="将建筑模型插入到Gazebo"><a href="#将建筑模型插入到Gazebo" class="headerlink" title="将建筑模型插入到Gazebo"></a>将建筑模型插入到Gazebo</h2><p>在Blender中将模型导出为STL格式，经过验证，obj或者dae格式的模型导入都会存在错误。这个过程中会丢失材质，暂时没有找到解决办法。</p>
+<p>随后新建一个xxx.world文件，输入：</p>
+<?xml version="1.0"?>
+<sdf version="1.4">
+  <world name="sample\_world">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://ground\_plane</uri>
+    </include>
+    <model name="building">
+      <pose>0 0 0 0 0 0</pose>
+      <static>true</static>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <mesh><uri>file://building.stl</uri></mesh>
+          </geometry>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <mesh><uri>file://building.stl</uri></mesh>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+  </world>
+</sdf>
+
+<p>将visual和collision的几何形状都指向stl文件，将stl文件与world文件放在一个文件夹下。还需要指定<static>true</static>.在当前文件下运行：</p>
+<p>gazebo sample.world</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-29-1024x340.png"></p>
+<p>模型显示正常。美中不足的地方是，建筑物变成封闭的了，因为门窗都是关闭的。一种解决办法是，在Blender中删除所有的门窗，然后再导出，效果如图：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-30-1024x331.png"></p>
+<p>就完成了BIM模型在Gazebo中的导入工作。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/05/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E8%BF%9E%E6%8E%A5%E5%88%B0ros2/" rel="prev" title="Gazebo入门（四）：连接到ROS2">
+      <i class="fa fa-chevron-left"></i> Gazebo入门（四）：连接到ROS2
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/08/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/" rel="next" title="Gazebo入门（六）：插件的使用（一）">
+      Gazebo入门（六）：插件的使用（一） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8ERevit%E5%AF%BC%E5%87%BA-dae%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">从Revit导出.dae模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E5%BB%BA%E7%AD%91%E6%A8%A1%E5%9E%8B%E6%8F%92%E5%85%A5%E5%88%B0Gazebo"><span class="nav-number">2.</span> <span class="nav-text">将建筑模型插入到Gazebo</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

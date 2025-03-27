@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="脚本一开始运行在树莓派上，后来迁移到腾讯云服务器上。爬虫使用python，定时发送通过sh脚本和crontab定时任务完成，邮件发送使用mutt。一个稍微有点用的小玩意儿。 爬虫编写import requestsfrom lxml import etreeimport jsonimport refrom ast import literal_evalimport datetimeimport ti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="制作一个基于mutt和python爬虫的每日要闻与天气自动发送脚本">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8Emutt%E5%92%8Cpython%E7%88%AC%E8%99%AB%E7%9A%84%E6%AF%8F%E6%97%A5%E8%A6%81%E9%97%BB%E4%B8%8E%E5%A4%A9%E6%B0%94%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="脚本一开始运行在树莓派上，后来迁移到腾讯云服务器上。爬虫使用python，定时发送通过sh脚本和crontab定时任务完成，邮件发送使用mutt。一个稍微有点用的小玩意儿。 爬虫编写import requestsfrom lxml import etreeimport jsonimport refrom ast import literal_evalimport datetimeimport ti">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8Emutt%E5%92%8Cpython%E7%88%AC%E8%99%AB%E7%9A%84%E6%AF%8F%E6%97%A5%E8%A6%81%E9%97%BB%E4%B8%8E%E5%A4%A9%E6%B0%94%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81/%7B%7D">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-1024x678.png">
+<meta property="article:published_time" content="2021-04-09T05:53:12.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.453Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8Emutt%E5%92%8Cpython%E7%88%AC%E8%99%AB%E7%9A%84%E6%AF%8F%E6%97%A5%E8%A6%81%E9%97%BB%E4%B8%8E%E5%A4%A9%E6%B0%94%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81/%7B%7D">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8Emutt%E5%92%8Cpython%E7%88%AC%E8%99%AB%E7%9A%84%E6%AF%8F%E6%97%A5%E8%A6%81%E9%97%BB%E4%B8%8E%E5%A4%A9%E6%B0%94%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>制作一个基于mutt和python爬虫的每日要闻与天气自动发送脚本 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8Emutt%E5%92%8Cpython%E7%88%AC%E8%99%AB%E7%9A%84%E6%AF%8F%E6%97%A5%E8%A6%81%E9%97%BB%E4%B8%8E%E5%A4%A9%E6%B0%94%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          制作一个基于mutt和python爬虫的每日要闻与天气自动发送脚本
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 13:53:12" itemprop="dateCreated datePublished" datetime="2021-04-09T13:53:12+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>脚本一开始运行在树莓派上，后来迁移到腾讯云服务器上。爬虫使用python，定时发送通过sh脚本和crontab定时任务完成，邮件发送使用mutt。一个稍微有点用的小玩意儿。</p>
+<h2 id="爬虫编写"><a href="#爬虫编写" class="headerlink" title="爬虫编写"></a>爬虫编写</h2><p>import requests<br>from lxml import etree<br>import json<br>import re<br>from ast import literal_eval<br>import datetime<br>import time<br>import random<br>from writehtml import *</p>
+<p>def get_weather():<br>    headers_weather &#x3D; {<br>        ‘Host’: ‘<a target="_blank" rel="noopener" href="http://www.weather.com.cn/">www.weather.com.cn</a>‘,<br>        ‘Referer’: ‘<a target="_blank" rel="noopener" href="http://www.weather.com.cn/">http://www.weather.com.cn/</a>‘,<br>        ‘Upgrade-Insecure-Requests’: ‘1’,<br>        ‘User-Agent’: ‘Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;88.0.4324.182 Safari&#x2F;537.36 Edg&#x2F;88.0.705.81’<br>    }<br>    url &#x3D; “<a target="_blank" rel="noopener" href="http://www.weather.com.cn/weather/101010100.shtml">http://www.weather.com.cn/weather/101010100.shtml</a>“ #海淀<br>    res &#x3D; requests.get(url, headers&#x3D;headers_weather)<br>    res.encoding &#x3D; ‘utf-8’<br>    html &#x3D; etree.HTML(res.text)<br>    weather &#x3D; re.findall(‘“1d”:(.*?),”23d”‘, res.text)[0]<br>    weather &#x3D; literal_eval(weather)<br>    weather_list &#x3D; []<br>    for each in weather:<br>        hourlist &#x3D; each.split(‘,’)<br>        weather_list.append([hourlist[0]]+hourlist[2:-1])<br>    return weather_list</p>
+<p>def get_baidutop10():<br>    headers &#x3D; {<br>        ‘Host’: ‘top.baidu.com’,<br>        ‘Referer’: ‘<a target="_blank" rel="noopener" href="https://www.baidu.com/">https://www.baidu.com/</a>‘,<br>        ‘Upgrade-Insecure-Requests’: ‘1’,<br>        ‘User-Agent’: ‘Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;88.0.4324.182 Safari&#x2F;537.36 Edg&#x2F;88.0.705.81’<br>    }<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="http://top.baidu.com/?fr=mhd%5C_card">http://top.baidu.com/?fr=mhd\_card</a>‘<br>    res &#x3D; requests.get(url, headers&#x3D;headers)<br>    res.encoding &#x3D; ‘gb2312’<br>    html &#x3D; etree.HTML(res.text)<br>    top10_title &#x3D; html.xpath(‘&#x2F;&#x2F;*[@id&#x3D;”hot-list”]&#x2F;li&#x2F;a[1]&#x2F;@title’)<br>    top10_link &#x3D; html.xpath(‘&#x2F;&#x2F;*[@id&#x3D;”hot-list”]&#x2F;li&#x2F;a[1]&#x2F;@href’)<br>    return top10_link, top10_title</p>
+<p>def get_weibotop10():<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://s.weibo.com/top/summary">https://s.weibo.com/top/summary</a>‘<br>    res &#x3D; requests.get(url)<br>    res.encoding &#x3D; ‘utf-8’<br>    html &#x3D; etree.HTML(res.text)<br>    top10_link &#x3D; html.xpath(‘&#x2F;&#x2F;*[@id&#x3D;”pl_top_realtimehot”]&#x2F;table&#x2F;tbody&#x2F;tr[position()&lt;&#x3D;11]&#x2F;td[2]&#x2F;a&#x2F;@href’)<br>    top10_title &#x3D; html.xpath(‘&#x2F;&#x2F;*[@id&#x3D;”pl_top_realtimehot”]&#x2F;table&#x2F;tbody&#x2F;tr[position()&lt;&#x3D;11]&#x2F;td[2]&#x2F;a&#x2F;text()’)<br>    top10_link &#x3D; list(map(lambda x: ‘<a target="_blank" rel="noopener" href="https://s.weibo.com/'+x">https://s.weibo.com/&#39;+x</a>, top10_link))<br>    return top10_link, top10_title</p>
+<p>def get_huputop10():<br>    headers_hupu &#x3D; {<br>        ‘Sec-Fetch-Dest’: ‘document’,<br>        ‘Sec-Fetch-Mode’: ‘navigate’,<br>        ‘Sec-Fetch-Site’: ‘none’,<br>        ‘Sec-Fetch-User’: ‘?1’,<br>        ‘Upgrade-Insecure-Requests’: ‘1’,<br>        ‘User-Agent’: ‘Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;88.0.4324.182 Safari&#x2F;537.36 Edg&#x2F;88.0.705.81’<br>    }<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://bbs.hupu.com/all-gambia">https://bbs.hupu.com/all-gambia</a>‘<br>    res &#x3D; requests.get(url, headers&#x3D;headers_hupu)<br>    res.encoding &#x3D; ‘utf-8’<br>    html &#x3D; etree.HTML(res.text)<br>    top10_title &#x3D; html.xpath(‘&#x2F;&#x2F;div[@class&#x3D;”bbsHotPit”]&#x2F;div&#x2F;ul&#x2F;li[position()&lt;&#x3D;3]&#x2F;span[1]&#x2F;a&#x2F;@title’)[:10]<br>    top10_link &#x3D; html.xpath(‘&#x2F;&#x2F;div[@class&#x3D;”bbsHotPit”]&#x2F;div&#x2F;ul&#x2F;li[position()&lt;&#x3D;3]&#x2F;span[1]&#x2F;a&#x2F;@href’)[:10]<br>    top10_link &#x3D; list(map(lambda x: ‘<a target="_blank" rel="noopener" href="https://bbs.hupu.com'+x/">https://bbs.hupu.com&#39;+x</a>, top10_link))<br>    return top10_link, top10_title</p>
+<p>def get_ezutop10():<br>    headers &#x3D; {<br>        ‘Host’: ‘<a target="_blank" rel="noopener" href="http://www.douban.com/">www.douban.com</a>‘,<br>        ‘Referer’: ‘<a target="_blank" rel="noopener" href="https://www.douban.com/group/blabla/?type=elite">https://www.douban.com/group/blabla/?type=elite</a>‘,<br>        ‘Sec-Fetch-Dest’: ‘document’,<br>        ‘Sec-Fetch-Mode’: ‘navigate’,<br>        ‘Sec-Fetch-Site’: ‘same-origin’,<br>        ‘Sec-Fetch-User’: ‘?1’,<br>        ‘Upgrade-Insecure-Requests’: ‘1’,<br>        ‘User-Agent’: ‘Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;88.0.4324.182 Safari&#x2F;537.36 Edg&#x2F;88.0.705.81’<br>    }<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://www.douban.com/group/blabla/?type=essence">https://www.douban.com/group/blabla/?type=essence</a>‘<br>    res &#x3D; requests.get(url, headers&#x3D;headers)<br>    res.encoding &#x3D; ‘utf-8’<br>    html &#x3D; etree.HTML(res.text)<br>    top10_title &#x3D; html.xpath(‘&#x2F;&#x2F;table[@class&#x3D;”olt”]&#x2F;tr[position()&lt;&#x3D;11]&#x2F;td[1]&#x2F;a&#x2F;@title’)<br>    top10_link &#x3D; html.xpath(‘&#x2F;&#x2F;table[@class&#x3D;”olt”]&#x2F;tr[position()&lt;&#x3D;11]&#x2F;td[1]&#x2F;a&#x2F;@href’)<br>    return top10_link, top10_title</p>
+<p>def get_rmtop10(date):<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="http://www.people.com.cn/GB/59476/review/'+date+'.html">http://www.people.com.cn/GB/59476/review/&#39;+date+&#39;.html</a>‘<br>    res &#x3D; requests.get(url)<br>    res.encoding &#x3D; ‘gb2312’<br>    html &#x3D; etree.HTML(res.text)<br>    top10_link &#x3D; html.xpath(‘&#x2F;&#x2F;table[@id&#x3D;”ta_1”]&#x2F;tr&#x2F;td&#x2F;li&#x2F;a&#x2F;@href’)<br>    top10_title &#x3D; html.xpath(‘&#x2F;&#x2F;table[@id&#x3D;”ta_1”]&#x2F;tr&#x2F;td&#x2F;li&#x2F;a&#x2F;text()’)<br>    return top10_link, top10_title</p>
+<p>def get_todayhistory(month, day): # month和day是字符串格式，带零。（‘03’，’08‘）<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://baike.baidu.com/cms/home/eventsOnHistory/%7B%7D.json'.format(month)">https://baike.baidu.com/cms/home/eventsOnHistory/{}.json&#39;.format(month)</a><br>    headers &#x3D; {<br>        ‘Host’: ‘baike.baidu.com’,<br>        ‘Referer’: ‘<a target="_blank" rel="noopener" href="https://baike.baidu.com/calendar/">https://baike.baidu.com/calendar/</a>‘,<br>        ‘Sec-Fetch-Dest’: ‘empty’,<br>        ‘Sec-Fetch-Mode’: ‘cors’,<br>        ‘Sec-Fetch-Site’: ‘same-origin’,<br>        ‘User-Agent’: ‘Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;88.0.4324.182 Safari&#x2F;537.36 Edg&#x2F;88.0.705.81’,<br>        ‘X-Requested-With’: ‘XMLHttpRequest’<br>    }<br>    res &#x3D; requests.get(url, headers&#x3D;headers)<br>    content &#x3D; json.loads(res.text)<br>    history_list &#x3D; []<br>    for each in content[month][month+day]:<br>        year &#x3D; each[‘year’]<br>        title &#x3D; ‘’.join(re.findall(r’[\u4e00-\u9fa5]‘, each[‘title’]))<br>        history_list.append([year, title])<br>    return history_list</p>
+<p>def get_randomsentence():<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://v2.jinrishici.com/sentence">https://v2.jinrishici.com/sentence</a>‘<br>    headers &#x3D; {<br>        ‘cookie’: ‘X-User-Token&#x3D;9cA&#x2F;6FT0nadkWlwpBAMfp8tVqHOihW0m’,<br>    }<br>    res &#x3D; requests.get(url, headers&#x3D;headers)<br>    content &#x3D; json.loads(res.text)<br>    note &#x3D; content[“data”][“content”]+’        ‘+’————‘+’《’+content[“data”][“origin”][“title”]+’》, ‘+content[“data”][“origin”][“author”]+’, ‘+content[“data”][“origin”][“dynasty”]<br>    return note</p>
+<p>def get_fastival(date): #日期格式：xx月xx日，3月8日,不带零<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="http://www.jieriya.com/">http://www.jieriya.com/</a>‘<br>    res &#x3D; requests.get(url)<br>    res.encoding &#x3D; ‘gb2312’<br>    url_list &#x3D; re.findall(‘&lt;li class&#x3D;\“sj\“&gt;%s</li>&lt;li class&#x3D;\“jr\“&gt;&lt;a target&#x3D;\“_blank\“ href&#x3D;\“..&#x2F;(.*?)\“&gt;’%(date), res.text)[:3]<br>    if (len(url_list)&#x3D;&#x3D;0):<br>        return [],[],””<br>    name_list &#x3D; re.findall(‘&lt;li class&#x3D;\“sj\“&gt;%s</li>&lt;li class&#x3D;\“jr\“&gt;&lt;a target&#x3D;\“_blank\“ href&#x3D;\“..&#x2F;jieri.asp\?id&#x3D;[0-9]*\“&gt;(.*?)</a>‘%(date), res.text)[:3]<br>    page_url &#x3D; url+url_list[0]<br>    page_res &#x3D; requests.get(page_url)<br>    page_res.encoding &#x3D; ‘gb2312’<br>    html &#x3D; etree.HTML(page_res.text)<br>    text_list &#x3D; html.xpath(‘&#x2F;&#x2F;*[@id&#x3D;”content”]&#x2F;div[2]&#x2F;p&#x2F;text()’)<br>    for each in text_list:<br>        if (len(each)&gt;&#x3D;40):<br>            return url_list, name_list, each.strip()</p>
+<p>def get_thing():<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://sbike.cn/">https://sbike.cn/</a>‘<br>    res &#x3D; requests.get(url)<br>    res.encoding &#x3D; ‘utf-8’<br>    order &#x3D; int(12*random.random())+1<br>    html &#x3D; etree.HTML(res.text)<br>    title &#x3D; html.xpath(‘&#x2F;&#x2F;li[%s]&#x2F;h3[1]&#x2F;a&#x2F;text()’%(order))[0]<br>    describe &#x3D; html.xpath(‘&#x2F;&#x2F;li[%s]&#x2F;h4&#x2F;text()’%(order))<br>    img_url &#x3D; url[:-1] + html.xpath(‘&#x2F;&#x2F;li[%s]&#x2F;a&#x2F;img&#x2F;@src’%(order))[0]<br>    return title, describe, img_url</p>
+<p>def write_email():<br>    today &#x3D; datetime.datetime.today()<br>    week_day_dict &#x3D; {<br>        0 : ‘星期一’,<br>        1 : ‘星期二’,<br>        2 : ‘星期三’,<br>        3 : ‘星期四’,<br>        4 : ‘星期五’,<br>        5 : ‘星期六’,<br>        6 : ‘星期天’,<br>    }<br>    week &#x3D; week_day_dict[today.weekday()]<br>    year &#x3D; time.strftime(“%Y”, time.localtime())<br>    month &#x3D; time.strftime(“%m”, time.localtime())<br>    day &#x3D; time.strftime(“%d”, time.localtime())<br>    md_date &#x3D; ‘%d月%d日’%(int(month), int(day))<br>    #with open(‘today_info’+’ ‘+today.strftime(‘%Y-%m-%d’)+’.txt’, ‘a’) as f:<br>    weather_list &#x3D; get_weather()<br>    todayhistory_list &#x3D; get_todayhistory(month, day)<br>    wbtop_list_url, wbtop_list  &#x3D; get_weibotop10()<br>    hptop_list_url, hptop_list &#x3D; get_huputop10()<br>    ezutop_list_url, ezutop_list &#x3D; get_ezutop10()<br>    bdtop_list_url, bdtop_list &#x3D; get_baidutop10()<br>    rmtop_list_url, rmtop_list &#x3D; get_rmtop10(year+month+’0’*(2-len(str(int(day))))+str(int(day)-1))<br>    fastival_list_url, fastival_list, text &#x3D; get_fastival(md_date)<br>    sentence &#x3D; get_randomsentence()<br>    thing_title, thing_describe, thing_img_url &#x3D; get_thing()<br>    html &#x3D; ‘’<br>    html +&#x3D; htmlHead()<br>    html +&#x3D; h1title(‘今日要闻’)<br>    html +&#x3D; plaintext(‘今天是%d年%d月%d日，’%(int(year), int(month), int(day))+week+’。’)<br>    html +&#x3D; ‘<br>‘<br>    if (len(fastival_list) !&#x3D; 0):<br>        html +&#x3D; plaintext(‘今天是<b>%s</b>。’%(fastival_list[0])+text)<br>    html +&#x3D; quote(sentence)<br>    html +&#x3D; br()</p>
+<pre><code>html += h2title(&#39;今日天气&#39;)
+html += table(\[&#39;时间&#39;,&#39;天气&#39;,&#39;温度&#39;,&#39;风向&#39;,&#39;风级&#39;\], weather\_list)
+html += br()
+
+html += h2title(&#39;今日热点&#39;)
+html += h3title(&#39;百度新闻&#39;)
+html += ul(bdtop\_list\_url, bdtop\_list)
+html += h3title(&#39;人民网&#39;)
+html += ul(rmtop\_list\_url, rmtop\_list)
+html += h3title(&#39;微博热搜&#39;)
+html += ul(wbtop\_list\_url, wbtop\_list)
+#html += h3title(&#39;虎扑步行街&#39;)
+#html += ul(hptop\_list\_url, hptop\_list)
+#html += h3title(&#39;豆瓣鹅组&#39;)
+#html += ul(ezutop\_list\_url, ezutop\_list)
+html += br()
+
+html += h2title(&#39;每日百科&#39;)
+html += h3title(&#39;历史上的今天&#39;)
+html += table(\[&#39;年份&#39;,&#39;事件&#39;\], todayhistory\_list)
+html += h3title(&#39;每日识物：&#39;+thing\_title)
+html += insertImg(thing\_img\_url)
+for each in thing\_describe:
+    html += plaintext(each)
+    html += &#39;&lt;br&gt;&#39;
+
+html += htmlEnd()
+return html
+</code></pre>
+<p>def main():<br>    html &#x3D; write_email()<br>    #today &#x3D; datetime.datetime.today()<br>    #with open(‘today_info’+’ ‘+today.strftime(‘%Y-%m-%d’)+’.txt’, ‘a’) as f:<br>    with open(‘&#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;today_info.html’, ‘a’) as f:<br>        f.write(html)</p>
+<p>main()</p>
+<p>整体没有什么特别难的，除了中国天气网总是抽风，以及动物百科页面有时候图片不对。后来把虎扑和豆瓣两个去掉了，只剩下人民网、百度、微博。虎扑和豆瓣鹅组热榜实在没什么营养。</p>
+<h2 id="邮件编写"><a href="#邮件编写" class="headerlink" title="邮件编写"></a>邮件编写</h2><p>如果只是发文字的话，邮件实在是不太好看。好在邮件可以支持比较基础的html，但是不支持表外样式，也就是说必须把样式嵌入到html中，邮件才可以读出来。我使用mutt连接到qq邮箱的STPM进行发送，qq邮箱也只能识别一部分的css样式。一番尝试后，写了一个脚本来对一般文字、超链接、图片、列表、表格、各级标题进行邮件排版。</p>
+<p>def h1title(string):<br>    html &#x3D; ‘<h1 style="color: var(--title-color); box-sizing: border-box; break-after: avoid-page; break-inside: avoid; orphans: 2; margin: 6rem 0px 3rem; padding: 0px; width: inherit; position: relative; font-size: 3rem; font-family: SimSun; font-weight: 800; line-height: 3rem; text-align: center; text-transform: uppercase;">{}</h1>‘.format(string)<br>    return html</p>
+<p>def h2title(string):<br>    html &#x3D; ‘<h2 style="color: var(--title-color); box-sizing: border-box; break-after: avoid-page; break-inside: avoid; orphans: 2; padding: 0px; width: inherit; position: relative; font-size: 2rem; margin: 4rem auto; font-family: SimSun; font-weight: 800; line-height: 3rem; text-align: center; text-transform: uppercase;">{}</h2>‘.format(string)<br>    return html</p>
+<p>def h3title(string):<br>    html &#x3D; ‘<h4 style="color: var(--title-color); box-sizing: border-box; break-after: avoid-page; break-inside: avoid; orphans: 2; padding: 0px; width: inherit; position: relative; font-size: 1.5rem; margin: 3rem 0px; font-family: SimSun; font-weight: 600;">{}</h4>‘.format(string)<br>    return html</p>
+<p>def plaintext(string):<br>    html &#x3D; ‘<p style="color: var(--text-color); box-sizing: border-box; line-height: inherit; orphans: 4; margin: 0px; padding: 0px; white-space: pre-wrap; width: inherit; position: relative;">{}</p>‘.format(string)<br>    return html</p>
+<p>def urltext(string, url):<br>    html &#x3D; ‘<p style="color: var(--text-color); box-sizing: border-box; line-height: inherit; orphans: 4; margin: 0px; padding: 0px; white-space: pre-wrap; width: inherit; position: relative;"><a href="{}">{}</a></p>‘.format(url, string)<br>    return html</p>
+<p>def quote(string):<br>    html &#x3D;’<blockquote style="margin: 0.8em 0px 0.8em 2em; padding: 0px 0px 0px 0.7em; border-left: 2px solid rgb(221, 221, 221);" formatblock="1"><i style=""><font color="#999999">{}</font></i></blockquote>‘.format(string)<br>    return html</p>
+<p>def tablehead(thead):<br>    html &#x3D; ‘’<br>    head &#x3D; ‘<thead style="box-sizing: border-box; display: table-header-group;"><tr style="box-sizing: border-box; break-inside: avoid; break-after: auto;">‘<br>    end &#x3D; ‘</tr></thead>‘<br>    html +&#x3D; head<br>    trtemple &#x3D; ‘<th style="box-sizing: border-box; margin: 0; border-bottom: 0px; padding: .5rem 1rem; background: var(--thead-bg); border: 1px solid var(--thead-bg);">{}</th>‘<br>    for each in thead:<br>        html +&#x3D; trtemple.format(each)<br>    html +&#x3D; end<br>    return html</p>
+<p>def tablebody(tbody):<br>    html &#x3D; ‘’<br>    head &#x3D; ‘<tbody style="box-sizing: border-box;">‘<br>    end &#x3D; ‘</tbody>‘<br>    html +&#x3D; head<br>    tdtemple &#x3D; ‘<td bgcolor="var(--tbody-bg)" style="box-sizing: border-box; margin: 0; position: relative; overflow: hidden; padding: 0.5rem 1rem; background-color: var(--tbody-bg); border: 1px solid var(--thead-bg); color: var(--text-color);">{}</td>‘<br>    for row in tbody:<br>        html +&#x3D; ‘<tr style="box-sizing: border-box; break-inside: avoid; break-after: auto;">‘<br>        for each in row:<br>            html +&#x3D; tdtemple.format(each)<br>        html +&#x3D; ‘</td>‘<br>    html +&#x3D; end<br>    return html</p>
+<p>def table(thead, tbody): #tablehead是一个一维数组，tablebody是一个二维数组<br>    html &#x3D; ‘’<br>    head &#x3D; ‘<figure style="color: var(--text-color); box-sizing: border-box; overflow-x: auto; margin: 0px; padding: 0px; display: block;"><table align="left" style="box-sizing: border-box; border-collapse: collapse; border-spacing: 0; overflow: auto; break-inside: auto; text-align: left; margin: 1.5rem auto; width: 98%;" width="98%">‘<br>    end &#x3D; ‘</table></figure>‘<br>    html +&#x3D; head<br>    html +&#x3D; tablehead(thead)<br>    html +&#x3D; tablebody(tbody)<br>    html +&#x3D; end<br>    return html</p>
+<p>def ul(urllist, stringlist):<br>    head &#x3D; ‘<ul style="color: var(--text-color); box-sizing: border-box; margin: 1.5rem auto 1.5rem 1.5rem; padding: 0px; position: relative; list-style: disc;">‘<br>    end &#x3D; ‘</ul>‘<br>    html &#x3D; ‘’<br>    html +&#x3D; head<br>    for each in zip(urllist, stringlist):<br>        html +&#x3D; li(each[0], each[1])<br>    html +&#x3D; end<br>    return html</p>
+<p>def li(url, string):<br>    if url &#x3D;&#x3D; ‘’:<br>        html &#x3D; ‘<li style="box-sizing: border-box; margin: 0; position: relative; padding: 0; white-space: pre-wrap; margin-left: 1rem;">{}</li>‘.format(string)<br>    else:<br>        html &#x3D; ‘<li style="box-sizing: border-box; margin: 0; position: relative; padding: 0; white-space: pre-wrap; margin-left: 1rem;"><a href="{}">{}</a></li>‘.format(url, string)<br>    return html</p>
+<p>def br():<br>    return ‘<hr style="box-sizing: border-box;">‘</p>
+<p>def insertImg(url):<br>    html &#x3D; ‘<p style="box-sizing: border-box; line-height: inherit; orphans: 4; margin-top: 1rem; margin-bottom: 1rem; padding: 0; margin: 1rem auto; white-space: pre-wrap; width: inherit; position: relative;"><img src="{}" referrerpolicy="no-referrer" style="box-sizing: border-box; max-width: 100%; vertical-align: middle; border: 0; display: block; margin: 1.5rem auto; box-shadow: var(--img-shadow); border-radius: 5px;"></p>‘.format(url)<br>    return html</p>
+<p>def htmlHead():<br>    return ‘<div id="original-content"><div class="is-node" id="write" style="box-sizing: border-box; margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 40px; font-family: var(--base-font); font-weight: 400; font-size: 1rem; line-height: 2rem; background: var(--write-bg); max-width: 914px; text-align: justify;">‘</p>
+<p>def htmlEnd():<br>    return ‘</div></div>‘</p>
+<p>看看效果如何：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-1024x678.png"></p>
+<h2 id="使用mutt发送邮件"><a href="#使用mutt发送邮件" class="headerlink" title="使用mutt发送邮件"></a>使用mutt发送邮件</h2><p>接下来需要配置mutt，使其可以自动发送邮件。mutt的配置过程网上教程很多，不做赘述。使用云服务器的需要注意，为了防止有人用云服务器发垃圾邮件，阿里、腾讯这些商家默认封掉了25号端口，没有解封前是无法使用mutt的。解封方式一般都是到云服务器的控制台页面操作。</p>
+<p>使用mutt发送html格式的邮件，句法如下：</p>
+<p>cat &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;today_info.html  mutt -s “今日天气与要文” -e ‘set content_type&#x3D;”text&#x2F;html”‘ $YOURADDRESS$</p>
+<p>加上一个参数-e ‘set content_type&#x3D;”text&#x2F;html”‘即可。接下来制作一个sh脚本，首先运行python脚本，然后发送html文件，最后删掉html文件节省空间。</p>
+<p>&#x2F;usr&#x2F;bin&#x2F;python3 &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;everydaynews.py<br>cat &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;today_info.html  mutt -s “今日天气与要文” -e ‘set content_type&#x3D;”text&#x2F;html”‘ $YOURADDRESS$<br>rm &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;today_info.html</p>
+<h2 id="使用crontab定时发送邮件"><a href="#使用crontab定时发送邮件" class="headerlink" title="使用crontab定时发送邮件"></a>使用crontab定时发送邮件</h2><p>crontab是一个定时执行任务的系统功能。输入<code>crontab -e</code> 来添加定时任务，如下：</p>
+<p>30 07 * * * bash &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;everydaynews.sh &gt; &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;log.txt 2&gt;&amp;1 &amp;</p>
+<p>crontab的定时方法网上有很多解释。后面的部分是为了将脚本的输出放到一个log文件里，否则如果sh有输出却无法写入，crontab会报错，&amp;意味着这个过程放在后台进行，控制台上不显示sh的输出。</p>
+<p>**还有一点非常重要：如果使用crontab，请确保你在crontab、bash、python中与文件相关的操作都使用绝对路径！**crontab无法读取相对路径，网上有一些通过修改系统环境来使得crontab能够读取相对路径的方法，如果只是简单的操作，还是使用绝对路径相对方便一些。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/09/ifc%E4%B8%AD%E6%9E%84%E4%BB%B6%E4%B8%8A%E6%B4%9E%E5%8F%A3%E7%9A%84%E8%A1%A8%E8%BE%BE%E6%96%B9%E5%BC%8F/" rel="prev" title="IFC中构件上洞口的表达方式">
+      <i class="fa fa-chevron-left"></i> IFC中构件上洞口的表达方式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/09/%E5%88%B6%E4%BD%9C%E8%87%AA%E5%B7%B1%E7%9A%84%E4%B8%AD%E6%96%87%E5%AD%97%E4%BD%93/" rel="next" title="制作自己的中文字体">
+      制作自己的中文字体 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%88%AC%E8%99%AB%E7%BC%96%E5%86%99"><span class="nav-number">1.</span> <span class="nav-text">爬虫编写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%82%AE%E4%BB%B6%E7%BC%96%E5%86%99"><span class="nav-number">2.</span> <span class="nav-text">邮件编写</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number"></span> <span class="nav-text">{}</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">{}</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">1.0.1.</span> <span class="nav-text">{}</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8mutt%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">使用mutt发送邮件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8crontab%E5%AE%9A%E6%97%B6%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">使用crontab定时发送邮件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

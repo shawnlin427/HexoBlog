@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本节将会学习如何制作一个机器人模型，许多知识在（二）中已经有提及了，这里就不在继续赘述。直接进入正题： 模型的文件构成模型是以何种形式组织起来的？换句话说，哪些文件组成了Gazebo中表示的模型？一个模型库中含有数个模型，他们如下组织：  Database database.config : Meta data about the database. This is now populated a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gazebo入门（三）：造个机器人">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/04/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E9%80%A0%E4%B8%AA%E6%9C%BA%E5%99%A8%E4%BA%BA/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="本节将会学习如何制作一个机器人模型，许多知识在（二）中已经有提及了，这里就不在继续赘述。直接进入正题： 模型的文件构成模型是以何种形式组织起来的？换句话说，哪些文件组成了Gazebo中表示的模型？一个模型库中含有数个模型，他们如下组织：  Database database.config : Meta data about the database. This is now populated a">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-18.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-19-1024x468.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-20-1024x358.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-21-1024x835.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-22.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-23.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-24-1024x463.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-25-1024x581.png">
+<meta property="article:published_time" content="2021-05-04T09:36:33.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.512Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://82.156.1.75/wp-content/uploads/2021/05/image-18.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/04/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E9%80%A0%E4%B8%AA%E6%9C%BA%E5%99%A8%E4%BA%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Gazebo入门（三）：造个机器人 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/05/04/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E9%80%A0%E4%B8%AA%E6%9C%BA%E5%99%A8%E4%BA%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Gazebo入门（三）：造个机器人
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-04 17:36:33" itemprop="dateCreated datePublished" datetime="2021-05-04T17:36:33+08:00">2021-05-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本节将会学习如何制作一个机器人模型，许多知识在（二）中已经有提及了，这里就不在继续赘述。直接进入正题：</p>
+<h2 id="模型的文件构成"><a href="#模型的文件构成" class="headerlink" title="模型的文件构成"></a>模型的文件构成</h2><p>模型是以何种形式组织起来的？换句话说，哪些文件组成了Gazebo中表示的模型？一个模型库中含有数个模型，他们如下组织：</p>
+<ul>
+<li><em>Database</em><ul>
+<li><em>database.config</em> : Meta data about the database. This is now populated automatically from CMakeLists.txt</li>
+<li><em>model_1</em> : A directory for model_1 单个模型<ul>
+<li><em>model.config</em> : Meta-data about model_1 模型的描述</li>
+<li><em>model.sdf</em> : SDF description of the model 模型文件</li>
+<li><em>model.sdf.erb</em> : Ruby embedded SDF model description 含有Ruby脚本的模型文件（用于重复生成部件等）</li>
+<li><em>meshes</em> : A directory for all COLLADA and STL files 外部3D文件</li>
+<li><em>materials</em> : A directory which should only contain the <code>textures</code> and <code>scripts</code> subdirectories 材质，图像或者用脚本生成<ul>
+<li><em>textures</em> : A directory for image files (jpg, png, etc).</li>
+<li><em>scripts</em> : A directory for OGRE material scripts</li>
+</ul>
+</li>
+<li><em>plugins</em>: A directory for plugin source and header files 插件</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="第一个机器人"><a href="#第一个机器人" class="headerlink" title="第一个机器人"></a>第一个机器人</h2><p>下面就要做第一个机器人了，会用到以下概念：Links、Collision、Visual、Inertial、Sensor、Light、Joints、Plugin。如果对这些概念不熟悉，再去看一遍（二）。</p>
+<ol>
+<li>创建model.config</li>
+</ol>
+<h2 id="mkdir-p-gazebo-models-my-robotgedit-gazebo-models-my-robot-model-config"><a href="#mkdir-p-gazebo-models-my-robotgedit-gazebo-models-my-robot-model-config" class="headerlink" title="mkdir -p ~&#x2F;.gazebo&#x2F;models&#x2F;my_robotgedit ~&#x2F;.gazebo&#x2F;models&#x2F;my_robot&#x2F;model.config"></a>mkdir -p ~&#x2F;.gazebo&#x2F;models&#x2F;my_robot<br>gedit ~&#x2F;.gazebo&#x2F;models&#x2F;my_robot&#x2F;model.config</h2><?xml version="1.0"?>
+<model>
+  <name>My Robot</name>
+  <version>1.0</version>
+  <sdf version='1.4'>model.sdf</sdf>
+
+  <author>
+   <name>My Name</name>
+   <email>me@my.email</email>
+  </author>
+
+  <description>
+    My awesome robot.
+  </description>
+</model>
+
+<p>2. 创建model.sdf</p>
+<p>gedit ~&#x2F;.gazebo&#x2F;models&#x2F;my_robot&#x2F;model.sdf</p>
+<?xml version='1.0'?>
+<sdf version='1.4'>
+    <model name="my\_robot">
+        <static>false</static>
+        <static>true</static>
+        <link name='chassis'>
+            <pose>0 0 .1 0 0 0</pose>
+
+<pre><code>        &lt;collision name=&#39;collision&#39;&gt;
+            &lt;geometry&gt;
+                &lt;box&gt;
+                    &lt;size&gt;.4 .2 .1&lt;/size&gt;
+                &lt;/box&gt;
+            &lt;/geometry&gt;
+        &lt;/collision&gt;
+
+        &lt;visual name=&#39;visual&#39;&gt;
+            &lt;geometry&gt;
+                &lt;box&gt;
+                    &lt;size&gt;.4 .2 .1&lt;/size&gt;
+                &lt;/box&gt;
+            &lt;/geometry&gt;
+        &lt;/visual&gt;
+        &lt;collision name=&#39;caster\_collision&#39;&gt;
+            &lt;pose&gt;-0.15 0 -0.05 0 0 0&lt;/pose&gt;
+            &lt;geometry&gt;
+                &lt;sphere&gt;
+                    &lt;radius&gt;.05&lt;/radius&gt;
+                &lt;/sphere&gt;
+            &lt;/geometry&gt;
+
+            &lt;surface&gt;
+                &lt;friction&gt;
+                    &lt;ode&gt;
+                        &lt;mu&gt;0&lt;/mu&gt;
+                        &lt;mu2&gt;0&lt;/mu2&gt;
+                        &lt;slip1&gt;1.0&lt;/slip1&gt;
+                        &lt;slip2&gt;1.0&lt;/slip2&gt;
+                    &lt;/ode&gt;
+                &lt;/friction&gt;
+            &lt;/surface&gt;
+        &lt;/collision&gt;
+
+        &lt;visual name=&#39;caster\_visual&#39;&gt;
+            &lt;pose&gt;-0.15 0 -0.05 0 0 0&lt;/pose&gt;
+            &lt;geometry&gt;
+                &lt;sphere&gt;
+                    &lt;radius&gt;.05&lt;/radius&gt;
+                &lt;/sphere&gt;
+            &lt;/geometry&gt;
+        &lt;/visual&gt;
+    &lt;/link&gt;
+    &lt;link name=&quot;left\_wheel&quot;&gt;
+        &lt;pose&gt;0.1 0.13 0.1 0 1.5707 1.5707&lt;/pose&gt;
+        &lt;collision name=&quot;collision&quot;&gt;
+            &lt;geometry&gt;
+                &lt;cylinder&gt;
+                    &lt;radius&gt;.1&lt;/radius&gt;
+                    &lt;length&gt;.05&lt;/length&gt;
+                &lt;/cylinder&gt;
+            &lt;/geometry&gt;
+        &lt;/collision&gt;
+        &lt;visual name=&quot;visual&quot;&gt;
+            &lt;geometry&gt;
+                &lt;cylinder&gt;
+                    &lt;radius&gt;.1&lt;/radius&gt;
+                    &lt;length&gt;.05&lt;/length&gt;
+                &lt;/cylinder&gt;
+            &lt;/geometry&gt;
+        &lt;/visual&gt;
+    &lt;/link&gt;
+    &lt;link name=&quot;right\_wheel&quot;&gt;
+        &lt;pose&gt;0.1 -0.13 0.1 0 1.5707 1.5707&lt;/pose&gt;
+        &lt;collision name=&quot;collision&quot;&gt;
+            &lt;geometry&gt;
+                &lt;cylinder&gt;
+                    &lt;radius&gt;.1&lt;/radius&gt;
+                    &lt;length&gt;.05&lt;/length&gt;
+                &lt;/cylinder&gt;
+            &lt;/geometry&gt;
+        &lt;/collision&gt;
+        &lt;visual name=&quot;visual&quot;&gt;
+            &lt;geometry&gt;
+                &lt;cylinder&gt;
+                    &lt;radius&gt;.1&lt;/radius&gt;
+                    &lt;length&gt;.05&lt;/length&gt;
+                &lt;/cylinder&gt;
+            &lt;/geometry&gt;
+        &lt;/visual&gt;
+    &lt;/link&gt;
+    &lt;joint type=&quot;revolute&quot; name=&quot;left\_wheel\_hinge&quot;&gt;
+        &lt;pose&gt;0 0 -0.03 0 0 0&lt;/pose&gt;
+        &lt;child&gt;left\_wheel&lt;/child&gt;
+        &lt;parent&gt;chassis&lt;/parent&gt;
+        &lt;axis&gt;
+            &lt;xyz&gt;0 1 0&lt;/xyz&gt;
+        &lt;/axis&gt;
+    &lt;/joint&gt;
+
+    &lt;joint type=&quot;revolute&quot; name=&quot;right\_wheel\_hinge&quot;&gt;
+        &lt;pose&gt;0 0 0.03 0 0 0&lt;/pose&gt;
+        &lt;child&gt;right\_wheel&lt;/child&gt;
+        &lt;parent&gt;chassis&lt;/parent&gt;
+        &lt;axis&gt;
+            &lt;xyz&gt;0 1 0&lt;/xyz&gt;
+        &lt;/axis&gt;
+    &lt;/joint&gt;
+&lt;/model&gt;
+</code></pre>
+</sdf>
+
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-18.png"></p>
+<p>这是与教程（一）中一样的一个小车。</p>
+<h2 id="链接外部模型"><a href="#链接外部模型" class="headerlink" title="链接外部模型"></a>链接外部模型</h2><p>首先下载外部模型：</p>
+<p>cd ~&#x2F;.gazebo&#x2F;models<br>wget -q -R *index.html*,*.tar.gz –no-parent -r -x -nH <a target="_blank" rel="noopener" href="http://models.gazebosim.org/pioneer2dx/">http://models.gazebosim.org/pioneer2dx/</a></p>
+<p>这一步其实下载了一个完整的Gazebo模型，不过我们只用到它包含的mesh。</p>
+<pre><code>&lt;visual name=&#39;visual&#39;&gt;
+  &lt;geometry&gt;
+    &lt;box&gt;
+      &lt;size&gt;.4 .2 .1&lt;/size&gt;
+    &lt;/box&gt;
+  &lt;/geometry&gt;
+&lt;/visual&gt;
+</code></pre>
+<p>——————-修改<br>        <visual name='visual'><br>            <pose>0 0 0.05 0 0 0</pose><br>            <geometry><br>                <mesh><br>                    <uri>model:&#x2F;&#x2F;pioneer2dx&#x2F;meshes&#x2F;chassis.dae</uri><br>                    <scale>0.9 0.5 0.5</scale><br>                </mesh><br>            </geometry><br>        </visual></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-19-1024x468.png"></p>
+<p>我们有了一个怪异的小车车身，但是碰撞体积不变。</p>
+<h2 id="插入传感器"><a href="#插入传感器" class="headerlink" title="插入传感器"></a>插入传感器</h2><p>这一步需要<strong>插入一个模型</strong>到当前模型。首先下载hokuyo激光雷达的模型：</p>
+<p>cd ~&#x2F;.gazebo&#x2F;models<br>wget -q -R *index.html*,*.tar.gz –no-parent -r -x -nH <a target="_blank" rel="noopener" href="http://models.gazebosim.org/hokuyo/">http://models.gazebosim.org/hokuyo/</a></p>
+<p>在SDF文件中<code>&lt;/model&gt;</code>前面插入：</p>
+<pre><code>&lt;include&gt;
+  &lt;uri&gt;model://hokuyo&lt;/uri&gt;
+  &lt;pose&gt;0.2 0 0.2 0 0 0&lt;/pose&gt;
+&lt;/include&gt;
+&lt;joint name=&quot;hokuyo\_joint&quot; type=&quot;fixed&quot;&gt;
+  &lt;child&gt;hokuyo::link&lt;/child&gt;
+  &lt;parent&gt;chassis&lt;/parent&gt;
+&lt;/joint&gt;
+</code></pre>
+<p>有一点需要注意。joint只能在link之间建立，所以虽然我们插入了一个完整的模型，但是需要在两个模型分别得link之间建立joint。由于当前SDF文件的主模型是小车，对于parent chassis不需要加入namespace。但是对于hokuyo，需要加入。加入方式就是模型名称+”::”。看看hokuyo的sdf文件是什么样的：</p>
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="hokuyo">
+    <pose>0 0 0.035 0 0 0</pose>
+    <link name="link">
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://hokuyo/meshes/hokuyo.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <collision name="collision-base">
+        <pose>0 0 -0.0145 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.05 0.041</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="collision-top">
+        <pose>0 0 0.0205 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.021</radius>
+            <length>0.029</length>
+          </cylinder>
+        </geometry>
+      </collision>
+      <sensor name="laser" type="ray">
+        <pose>0.01 0 0.0175 0 -0 0</pose>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>640</samples>
+              <resolution>1</resolution>
+              <min\_angle>-2.26889</min\_angle>
+              <max\_angle>2.268899</max\_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.08</min>
+            <max>10</max>
+            <resolution>0.01</resolution>
+          </range>
+        </ray>
+        <plugin name="laser" filename="libRayPlugin.so" />
+        <always\_on>1</always\_on>
+        <update\_rate>30</update\_rate>
+        <visualize>true</visualize>
+      </sensor>
+    </link>
+  </model>
+</sdf>
+
+<p>只有一个link，其名称也恰好是“link”。所以child link的名称就是hokuyo::link。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-20-1024x358.png"></p>
+<p>试着换一个传感器，比如照相机。下载模型：</p>
+<p>cd ~&#x2F;.gazebo&#x2F;models<br>wget -q -R *index.html*,*.tar.gz –no-parent -r -x -nH <a target="_blank" rel="noopener" href="http://models.gazebosim.org/camera/">http://models.gazebosim.org/camera/</a></p>
+<p>SDF中要改动的地方很少：</p>
+<pre><code>&lt;include&gt;
+    &lt;uri&gt;model://camera&lt;/uri&gt;
+    &lt;pose&gt;0.2 0 0.2 0 0 0&lt;/pose&gt;
+&lt;/include&gt;
+&lt;joint name=&quot;camera\_joint&quot; type=&quot;fixed&quot;&gt;
+    &lt;child&gt;camera::link&lt;/child&gt;
+    &lt;parent&gt;chassis&lt;/parent&gt;
+&lt;/joint&gt;
+</code></pre>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-21-1024x835.png"></p>
+<p>是不是变得有意思起来了？</p>
+<h2 id="第一个机械臂"><a href="#第一个机械臂" class="headerlink" title="第一个机械臂"></a>第一个机械臂</h2><p>我们做一个二自由度的机械臂，它只有两个自由度：抓取和抓手上下移动。</p>
+<p>model.config:</p>
+<?xml version="1.0"?>
+
+<model>
+  <name>My Gripper</name>
+  <version>1.0</version>
+  <sdf version='1.4'>simple\_gripper.sdf</sdf>
+
+  <author>
+    <name>My Name</name>
+    <email>me@my.email</email>
+  </author>
+
+  <description>
+    My awesome robot.
+  </description>
+</model>
+
+<p>model.sdf:</p>
+<?xml version="1.0"?>
+<sdf version="1.4">
+    <model name="simple\_gripper">
+        <link name="riser">
+            <pose>-0.15 0.0 0.5 0 0 0</pose>
+            <inertial>
+                <pose>0 0 -0.5 0 0 0</pose>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+                <mass>10.0</mass>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.2 0.2 1.0</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.2 0.2 1.0</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>Gazebo/Purple</script>
+                </material>
+            </visual>
+        </link>
+        <link name="palm">
+            <pose>0.0 0.0 0.05 0 0 0</pose>
+            <inertial>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+                <mass>0.5</mass>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>Gazebo/Red</script>
+                </material>
+            </visual>
+        </link>
+        <link name="left\_finger">
+            <pose>0.1 0.2 0.05 0 0 -0.78539</pose>
+            <inertial>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.1 0.3 0.1</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.1 0.3 0.1</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>Gazebo/Blue</script>
+                </material>
+            </visual>
+        </link>
+        <link name="left\_finger\_tip">
+            <pose>0.336 0.3 0.05 0 0 1.5707</pose>
+            <inertial>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>Gazebo/Blue</script>
+                </material>
+            </visual>
+        </link>
+        <link name="right\_finger">
+            <pose>0.1 -0.2 0.05 0 0 .78539</pose>
+            <inertial>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.1 0.3 0.1</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.1 0.3 0.1</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>Gazebo/Green</script>
+                </material>
+            </visual>
+        </link>
+        <link name="right\_finger\_tip">
+            <pose>0.336 -0.3 0.05 0 0 1.5707</pose>
+            <inertial>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>Gazebo/Green</script>
+                </material>
+            </visual>
+        </link>
+        <static>false</static>
+        <joint name="palm\_left\_finger" type="revolute">
+            <pose>0 -0.15 0 0 0 0</pose>
+            <child>left\_finger</child>
+            <parent>palm</parent>
+            <axis>
+                <limit>
+                    <lower>-0.4</lower>
+                    <upper>0.4</upper>
+                </limit>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
+        <joint name="left\_finger\_tip" type="revolute">
+            <pose>0 0.1 0 0 0 0</pose>
+            <child>left\_finger\_tip</child>
+            <parent>left\_finger</parent>
+            <axis>
+                <limit>
+                    <lower>-0.4</lower>
+                    <upper>0.4</upper>
+                </limit>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
+        <joint name="palm\_right\_finger" type="revolute">
+            <pose>0 0.15 0 0 0 0</pose>
+            <child>right\_finger</child>
+            <parent>palm</parent>
+            <axis>
+                <limit>
+                    <lower>-0.4</lower>
+                    <upper>0.4</upper>
+                </limit>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
+        <joint name="right\_finger\_tip" type="revolute">
+            <pose>0 0.1 0 0 0 0</pose>
+            <child>right\_finger\_tip</child>
+            <parent>right\_finger</parent>
+            <axis>
+                <limit>
+                    <lower>-0.4</lower>
+                    <upper>0.4</upper>
+                </limit>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
+        <joint name="palm\_riser" type="prismatic">
+            <child>palm</child>
+            <parent>riser</parent>
+            <axis>
+                <limit>
+                    <lower>0</lower>
+                    <upper>0.9</upper>
+                </limit>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
+    </model>
+</sdf>
+
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-22.png"></p>
+<p>这个抓手一共有五个关节：上下运动，爪子每两个方块之间有一个旋转关节。</p>
+<h2 id="把机械臂安装到小车上"><a href="#把机械臂安装到小车上" class="headerlink" title="把机械臂安装到小车上"></a>把机械臂安装到小车上</h2><p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-23.png"></p>
+<p>首先我们调整一下小车的大小，否则就是把小车安装到机械臂上了。把小车的sdf文件改为以下内容：</p>
+<?xml version='1.0'?>
+<sdf version='1.5'>
+    <model name="mobile\_base">
+        <link name='chassis'>
+            <pose>0 0 .25 0 0 0</pose>
+
+<pre><code>        &lt;inertial&gt;
+            &lt;mass&gt;20.0&lt;/mass&gt;
+            &lt;pose&gt;-0.1 0 -0.1 0 0 0&lt;/pose&gt;
+            &lt;inertia&gt;
+                &lt;ixx&gt;0.5&lt;/ixx&gt;
+                &lt;iyy&gt;1.0&lt;/iyy&gt;
+                &lt;izz&gt;0.1&lt;/izz&gt;
+            &lt;/inertia&gt;
+        &lt;/inertial&gt;
+
+        &lt;collision name=&#39;collision&#39;&gt;
+            &lt;geometry&gt;
+                &lt;box&gt;
+                    &lt;size&gt;2 1 0.3&lt;/size&gt;
+                &lt;/box&gt;
+            &lt;/geometry&gt;
+        &lt;/collision&gt;
+
+        &lt;visual name=&#39;visual&#39;&gt;
+            &lt;geometry&gt;
+                &lt;box&gt;
+                    &lt;size&gt;2 1 0.3&lt;/size&gt;
+                &lt;/box&gt;
+            &lt;/geometry&gt;
+        &lt;/visual&gt;
+
+        &lt;collision name=&#39;caster\_collision&#39;&gt;
+            &lt;pose&gt;-0.8 0 -0.125 0 0 0&lt;/pose&gt;
+            &lt;geometry&gt;
+                &lt;sphere&gt;
+                    &lt;radius&gt;.125&lt;/radius&gt;
+                &lt;/sphere&gt;
+            &lt;/geometry&gt;
+
+            &lt;surface&gt;
+                &lt;friction&gt;
+                    &lt;ode&gt;
+                        &lt;mu&gt;0&lt;/mu&gt;
+                        &lt;mu2&gt;0&lt;/mu2&gt;
+                    &lt;/ode&gt;
+                &lt;/friction&gt;
+            &lt;/surface&gt;
+        &lt;/collision&gt;
+
+        &lt;visual name=&#39;caster\_visual&#39;&gt;
+            &lt;pose&gt;-0.8 0 -0.125 0 0 0&lt;/pose&gt;
+            &lt;geometry&gt;
+                &lt;sphere&gt;
+                    &lt;radius&gt;.125&lt;/radius&gt;
+                &lt;/sphere&gt;
+            &lt;/geometry&gt;
+        &lt;/visual&gt;
+    &lt;/link&gt;
+    &lt;link name=&quot;left\_wheel&quot;&gt;
+        &lt;pose&gt;0.8 0.6 0.125 0 1.5707 1.5707&lt;/pose&gt;
+        &lt;collision name=&quot;collision&quot;&gt;
+            &lt;geometry&gt;
+                &lt;cylinder&gt;
+                    &lt;radius&gt;.125&lt;/radius&gt;
+                    &lt;length&gt;.05&lt;/length&gt;
+                &lt;/cylinder&gt;
+            &lt;/geometry&gt;
+        &lt;/collision&gt;
+        &lt;visual name=&quot;visual&quot;&gt;
+            &lt;geometry&gt;
+                &lt;cylinder&gt;
+                    &lt;radius&gt;.125&lt;/radius&gt;
+                    &lt;length&gt;.05&lt;/length&gt;
+                &lt;/cylinder&gt;
+            &lt;/geometry&gt;
+        &lt;/visual&gt;
+    &lt;/link&gt;
+
+    &lt;link name=&quot;right\_wheel&quot;&gt;
+        &lt;pose&gt;0.8 -0.6 0.125 0 1.5707 1.5707&lt;/pose&gt;
+        &lt;collision name=&quot;collision&quot;&gt;
+            &lt;geometry&gt;
+                &lt;cylinder&gt;
+                    &lt;radius&gt;.125&lt;/radius&gt;
+                    &lt;length&gt;.05&lt;/length&gt;
+                &lt;/cylinder&gt;
+            &lt;/geometry&gt;
+        &lt;/collision&gt;
+        &lt;visual name=&quot;visual&quot;&gt;
+            &lt;geometry&gt;
+                &lt;cylinder&gt;
+                    &lt;radius&gt;.125&lt;/radius&gt;
+                    &lt;length&gt;.05&lt;/length&gt;
+                &lt;/cylinder&gt;
+            &lt;/geometry&gt;
+        &lt;/visual&gt;
+    &lt;/link&gt;
+
+    &lt;joint type=&quot;revolute&quot; name=&quot;left\_wheel\_hinge&quot;&gt;
+        &lt;pose&gt;0 0 -0.03 0 0 0&lt;/pose&gt;
+        &lt;child&gt;left\_wheel&lt;/child&gt;
+        &lt;parent&gt;chassis&lt;/parent&gt;
+        &lt;axis&gt;
+            &lt;use\_parent\_model\_frame&gt;true&lt;/use\_parent\_model\_frame&gt;
+            &lt;xyz&gt;0 1 0&lt;/xyz&gt;
+        &lt;/axis&gt;
+    &lt;/joint&gt;
+
+    &lt;joint type=&quot;revolute&quot; name=&quot;right\_wheel\_hinge&quot;&gt;
+        &lt;pose&gt;0 0 0.03 0 0 0&lt;/pose&gt;
+        &lt;child&gt;right\_wheel&lt;/child&gt;
+        &lt;parent&gt;chassis&lt;/parent&gt;
+        &lt;axis&gt;
+            &lt;use\_parent\_model\_frame&gt;true&lt;/use\_parent\_model\_frame&gt;
+            &lt;xyz&gt;0 1 0&lt;/xyz&gt;
+        &lt;/axis&gt;
+    &lt;/joint&gt;
+
+&lt;/model&gt;
+</code></pre>
+</sdf>
+
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-24-1024x463.png"></p>
+<p>然后新建一个名为simple_mobile_manipulator的模型文件夹：</p>
+<p>model.config:</p>
+<?xml version="1.0"?>
+<model>
+  <name>Simple Mobile Manipulator</name>
+  <version>1.0</version>
+  <sdf version='1.5'>model.sdf</sdf>
+
+  <author>
+    <name>My Name</name>
+    <email>me@my.email</email>
+  </author>
+
+  <description>
+    My simple mobile manipulator
+  </description>
+</model>
+
+<p>model.sdf:</p>
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="simple\_mobile\_manipulator">
+
+<pre><code>&lt;include&gt;
+  &lt;uri&gt;model://my\_gripper&lt;/uri&gt;
+  &lt;pose&gt;1.3 0 0.1 0 0 0&lt;/pose&gt;
+&lt;/include&gt;
+
+&lt;include&gt;
+  &lt;uri&gt;model://my\_robot&lt;/uri&gt;
+  &lt;pose&gt;0 0 0 0 0 0&lt;/pose&gt;
+&lt;/include&gt;
+
+&lt;joint name=&quot;arm\_gripper\_joint&quot; type=&quot;fixed&quot;&gt;
+  &lt;parent&gt;mobile\_base::chassis&lt;/parent&gt;
+  &lt;child&gt;simple\_gripper::riser&lt;/child&gt;
+&lt;/joint&gt;
+
+&lt;!-- attach sensor to the gripper --&gt;
+&lt;include&gt;
+  &lt;uri&gt;model://hokuyo&lt;/uri&gt;
+  &lt;pose&gt;1.3 0 0.3 0 0 0&lt;/pose&gt;
+&lt;/include&gt;
+
+&lt;joint name=&quot;hokuyo\_joint&quot; type=&quot;fixed&quot;&gt;
+  &lt;child&gt;hokuyo::link&lt;/child&gt;
+  &lt;parent&gt;simple\_gripper::palm&lt;/parent&gt;
+&lt;/joint&gt;
+</code></pre>
+  </model>
+</sdf>
+
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/05/image-25-1024x581.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/02/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A8%A1%E5%9E%8B/" rel="prev" title="Gazebo入门（二）：自定义模型">
+      <i class="fa fa-chevron-left"></i> Gazebo入门（二）：自定义模型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/05/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9A%E8%BF%9E%E6%8E%A5%E5%88%B0ros2/" rel="next" title="Gazebo入门（四）：连接到ROS2">
+      Gazebo入门（四）：连接到ROS2 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%96%87%E4%BB%B6%E6%9E%84%E6%88%90"><span class="nav-number">1.</span> <span class="nav-text">模型的文件构成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%BA%E5%99%A8%E4%BA%BA"><span class="nav-number">2.</span> <span class="nav-text">第一个机器人</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mkdir-p-gazebo-models-my-robotgedit-gazebo-models-my-robot-model-config"><span class="nav-number">3.</span> <span class="nav-text">mkdir -p ~&#x2F;.gazebo&#x2F;models&#x2F;my_robotgedit ~&#x2F;.gazebo&#x2F;models&#x2F;my_robot&#x2F;model.config</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E6%8E%A5%E5%A4%96%E9%83%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">链接外部模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E4%BC%A0%E6%84%9F%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">插入传感器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%BA%E6%A2%B0%E8%87%82"><span class="nav-number">6.</span> <span class="nav-text">第一个机械臂</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%8A%E6%9C%BA%E6%A2%B0%E8%87%82%E5%AE%89%E8%A3%85%E5%88%B0%E5%B0%8F%E8%BD%A6%E4%B8%8A"><span class="nav-number">7.</span> <span class="nav-text">把机械臂安装到小车上</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

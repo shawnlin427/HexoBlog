@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Action涉及到很多异步操作，尤其是取消Action。如果没有接触过异步操作的（比如我），刚开始上手会很困难。 但是实际上，Action的取消只有两个关键要素：  使用send_goal_handle进行取消； server端要声明cancel_callback&#x3D;self.cancel_callback。  我们来看ROS2官方提供的代码： Server# Copyright 2018">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS2：Action的取消">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/17/ros2%EF%BC%9Aaction%E7%9A%84%E5%8F%96%E6%B6%88/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="Action涉及到很多异步操作，尤其是取消Action。如果没有接触过异步操作的（比如我），刚开始上手会很困难。 但是实际上，Action的取消只有两个关键要素：  使用send_goal_handle进行取消； server端要声明cancel_callback&#x3D;self.cancel_callback。  我们来看ROS2官方提供的代码： Server# Copyright 2018">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://design.ros2.org/img/actions/goal_state_machine.png">
+<meta property="og:image" content="http://design.ros2.org/img/actions/interaction_example_1.png">
+<meta property="og:image" content="http://design.ros2.org/img/actions/interaction_example_1.png">
+<meta property="article:published_time" content="2021-10-16T16:00:16.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.613Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://design.ros2.org/img/actions/goal_state_machine.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/17/ros2%EF%BC%9Aaction%E7%9A%84%E5%8F%96%E6%B6%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ROS2：Action的取消 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/17/ros2%EF%BC%9Aaction%E7%9A%84%E5%8F%96%E6%B6%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ROS2：Action的取消
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-17 00:00:16" itemprop="dateCreated datePublished" datetime="2021-10-17T00:00:16+08:00">2021-10-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Action涉及到很多异步操作，尤其是取消Action。如果没有接触过异步操作的（比如我），刚开始上手会很困难。</p>
+<p>但是实际上，Action的取消只有两个关键要素：</p>
+<ol>
+<li>使用send_goal_handle进行取消；</li>
+<li>server端要声明cancel_callback&#x3D;self.cancel_callback。</li>
+</ol>
+<p>我们来看ROS2官方提供的代码：</p>
+<h2 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h2><p># Copyright 2018 Open Source Robotics Foundation, Inc.</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="Licensed-under-the-Apache-License-Version-2-0-the-“License”"><a href="#Licensed-under-the-Apache-License-Version-2-0-the-“License”" class="headerlink" title="Licensed under the Apache License, Version 2.0 (the “License”);"></a>Licensed under the Apache License, Version 2.0 (the “License”);</h1><h1 id="you-may-not-use-this-file-except-in-compliance-with-the-License"><a href="#you-may-not-use-this-file-except-in-compliance-with-the-License" class="headerlink" title="you may not use this file except in compliance with the License."></a>you may not use this file except in compliance with the License.</h1><h1 id="You-may-obtain-a-copy-of-the-License-at"><a href="#You-may-obtain-a-copy-of-the-License-at" class="headerlink" title="You may obtain a copy of the License at"></a>You may obtain a copy of the License at</h1><h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="http-www-apache-org-licenses-LICENSE-2-0"><a href="#http-www-apache-org-licenses-LICENSE-2-0" class="headerlink" title="http://www.apache.org/licenses/LICENSE-2.0"></a><a target="_blank" rel="noopener" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></h1><h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="Unless-required-by-applicable-law-or-agreed-to-in-writing-software"><a href="#Unless-required-by-applicable-law-or-agreed-to-in-writing-software" class="headerlink" title="Unless required by applicable law or agreed to in writing, software"></a>Unless required by applicable law or agreed to in writing, software</h1><h1 id="distributed-under-the-License-is-distributed-on-an-“AS-IS”-BASIS"><a href="#distributed-under-the-License-is-distributed-on-an-“AS-IS”-BASIS" class="headerlink" title="distributed under the License is distributed on an “AS IS” BASIS,"></a>distributed under the License is distributed on an “AS IS” BASIS,</h1><h1 id="WITHOUT-WARRANTIES-OR-CONDITIONS-OF-ANY-KIND-either-express-or-implied"><a href="#WITHOUT-WARRANTIES-OR-CONDITIONS-OF-ANY-KIND-either-express-or-implied" class="headerlink" title="WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied."></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</h1><h1 id="See-the-License-for-the-specific-language-governing-permissions-and"><a href="#See-the-License-for-the-specific-language-governing-permissions-and" class="headerlink" title="See the License for the specific language governing permissions and"></a>See the License for the specific language governing permissions and</h1><h1 id="limitations-under-the-License"><a href="#limitations-under-the-License" class="headerlink" title="limitations under the License."></a>limitations under the License.</h1><p>import time</p>
+<p>from example_interfaces.action import Fibonacci</p>
+<p>import rclpy<br>from rclpy.action import ActionServer, CancelResponse, GoalResponse<br>from rclpy.callback_groups import ReentrantCallbackGroup<br>from rclpy.executors import MultiThreadedExecutor<br>from rclpy.node import Node</p>
+<p>class MinimalActionServer(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;minimal\_action\_server&#39;)
+
+    self.\_goal\_handle = None
+
+    self.\_action\_server = ActionServer(
+        self,
+        Fibonacci,
+        &#39;fibonacci&#39;,
+        execute\_callback=self.execute\_callback,
+        callback\_group=ReentrantCallbackGroup(),
+        goal\_callback=self.goal\_callback,
+        handle\_accepted\_callback=self.handle\_accepted\_callback,
+        cancel\_callback=self.cancel\_callback)
+
+def destroy(self):
+    self.\_action\_server.destroy()
+    super().destroy\_node()
+
+def goal\_callback(self, goal\_request):
+    ...
+
+def handle\_accepted\_callback(self, goal\_handle):
+    ...
+
+def cancel\_callback(self, goal\_handle):
+    &quot;&quot;&quot;Accept or reject a client request to cancel an action.&quot;&quot;&quot;
+    self.get\_logger().info(&#39;Received cancel request&#39;)
+    return CancelResponse.ACCEPT
+
+def timer\_callback(self):
+    ...
+
+async def execute\_callback(self, goal\_handle):
+    &quot;&quot;&quot;Execute a goal.&quot;&quot;&quot;
+    self.get\_logger().info(&#39;Executing goal...&#39;)
+
+    # Append the seeds for the Fibonacci sequence
+    feedback\_msg = Fibonacci.Feedback()
+    feedback\_msg.sequence = \[0, 1\]
+
+    # Start executing the action
+    for i in range(1, goal\_handle.request.order):
+        if goal\_handle.is\_cancel\_requested:
+            goal\_handle.canceled()
+            self.get\_logger().info(&#39;Goal canceled&#39;)
+            return Fibonacci.Result()
+
+        # Update Fibonacci sequence
+        feedback\_msg.sequence.append(feedback\_msg.sequence\[i\] + feedback\_msg.sequence\[i-1\])
+
+        self.get\_logger().info(&#39;Publishing feedback: &#123;0&#125;&#39;.format(feedback\_msg.sequence))
+
+        # Publish the feedback
+        goal\_handle.publish\_feedback(feedback\_msg)
+
+        # Sleep for demonstration purposes
+        time.sleep(1)
+
+    goal\_handle.succeed()
+
+    # Populate result message
+    result = Fibonacci.Result()
+    result.sequence = feedback\_msg.sequence
+
+    self.get\_logger().info(&#39;Returning result: &#123;0&#125;&#39;.format(result.sequence))
+
+    return result
+</code></pre>
+<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
+<pre><code>minimal\_action\_server = MinimalActionServer()
+
+# Use a MultiThreadedExecutor to enable processing goals concurrently
+executor = MultiThreadedExecutor()
+
+rclpy.spin(minimal\_action\_server, executor=executor)
+
+minimal\_action\_server.destroy()
+rclpy.shutdown()
+</code></pre>
+<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
+<p>简单起见，省略了一些函数。想要知道action是如何取消的，首先要了解action的完整传递机制。我们所做的其实是从executing到canceling中间的cancel_goal。结果是会返回一个succeeded，还不太清楚如何让他返回canceled和aborted消息。</p>
+<p><img src="http://design.ros2.org/img/actions/goal_state_machine.png" alt="Action Goal State Machine"></p>
+<p>下图是另一个更为实际的例子：</p>
+<p><img src="http://design.ros2.org/img/actions/interaction_example_1.png" alt="Action Interaction Example 1"></p>
+<p>action client首先向server发送goal request，接收后server向client发送response，并向用户自定义的处理方法（控制机器人、返回参数等）发送handle_goal，用户方法会向client发送feedback。</p>
+<p>中途，client可以向server发送cancel request，server接收后，向自定义方法发送通知（用一个标识或者啥的），excution method就直接设置result，让server返回给client。这里的result就是succeed的形式。</p>
+<h2 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h2><p># Copyright 2019 Open Source Robotics Foundation, Inc.</p>
+<h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="Licensed-under-the-Apache-License-Version-2-0-the-“License”-1"><a href="#Licensed-under-the-Apache-License-Version-2-0-the-“License”-1" class="headerlink" title="Licensed under the Apache License, Version 2.0 (the “License”);"></a>Licensed under the Apache License, Version 2.0 (the “License”);</h1><h1 id="you-may-not-use-this-file-except-in-compliance-with-the-License-1"><a href="#you-may-not-use-this-file-except-in-compliance-with-the-License-1" class="headerlink" title="you may not use this file except in compliance with the License."></a>you may not use this file except in compliance with the License.</h1><h1 id="You-may-obtain-a-copy-of-the-License-at-1"><a href="#You-may-obtain-a-copy-of-the-License-at-1" class="headerlink" title="You may obtain a copy of the License at"></a>You may obtain a copy of the License at</h1><h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><h1 id="http-www-apache-org-licenses-LICENSE-2-0-1"><a href="#http-www-apache-org-licenses-LICENSE-2-0-1" class="headerlink" title="http://www.apache.org/licenses/LICENSE-2.0"></a><a target="_blank" rel="noopener" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></h1><h1 id="-5"><a href="#-5" class="headerlink" title=""></a></h1><h1 id="Unless-required-by-applicable-law-or-agreed-to-in-writing-software-1"><a href="#Unless-required-by-applicable-law-or-agreed-to-in-writing-software-1" class="headerlink" title="Unless required by applicable law or agreed to in writing, software"></a>Unless required by applicable law or agreed to in writing, software</h1><h1 id="distributed-under-the-License-is-distributed-on-an-“AS-IS”-BASIS-1"><a href="#distributed-under-the-License-is-distributed-on-an-“AS-IS”-BASIS-1" class="headerlink" title="distributed under the License is distributed on an “AS IS” BASIS,"></a>distributed under the License is distributed on an “AS IS” BASIS,</h1><h1 id="WITHOUT-WARRANTIES-OR-CONDITIONS-OF-ANY-KIND-either-express-or-implied-1"><a href="#WITHOUT-WARRANTIES-OR-CONDITIONS-OF-ANY-KIND-either-express-or-implied-1" class="headerlink" title="WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied."></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</h1><h1 id="See-the-License-for-the-specific-language-governing-permissions-and-1"><a href="#See-the-License-for-the-specific-language-governing-permissions-and-1" class="headerlink" title="See the License for the specific language governing permissions and"></a>See the License for the specific language governing permissions and</h1><h1 id="limitations-under-the-License-1"><a href="#limitations-under-the-License-1" class="headerlink" title="limitations under the License."></a>limitations under the License.</h1><p>from action_msgs.msg import GoalStatus</p>
+<p>from example_interfaces.action import Fibonacci</p>
+<p>import rclpy<br>from rclpy.action import ActionClient</p>
+<p>def feedback_cb(logger, feedback):<br>    logger.info(‘Received feedback:’)</p>
+<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
+<pre><code>node = rclpy.create\_node(&#39;fibonacci\_action\_client&#39;)
+
+action\_client = ActionClient(node, Fibonacci, &#39;fibonacci&#39;)
+
+node.get\_logger().info(&#39;Waiting for action server...&#39;)
+
+action\_client.wait\_for\_server()
+
+goal\_msg = Fibonacci.Goal()
+goal\_msg.order = 10
+
+node.get\_logger().info(&#39;Sending goal request...&#39;)
+
+send\_goal\_future = action\_client.send\_goal\_async(
+    goal\_msg, feedback\_callback=lambda feedback: feedback\_cb(node.get\_logger(), feedback))
+
+rclpy.spin\_until\_future\_complete(node, send\_goal\_future)
+
+goal\_handle = send\_goal\_future.result()
+
+if not goal\_handle.accepted:
+    node.get\_logger().info(&#39;Goal rejected :(&#39;)
+    action\_client.destroy()
+    node.destroy\_node()
+    rclpy.shutdown()
+    return
+
+node.get\_logger().info(&#39;Goal accepted :)&#39;)
+
+
+get\_result\_future = goal\_handle.get\_result\_async()
+
+
+try:
+    rclpy.spin\_until\_future\_complete(node, get\_result\_future)
+except:
+    future = goal\_handle.cancel\_goal\_async()
+    cancel\_response = future.result()
+    print(&quot;goal canceled&quot;)
+    goal\_handle.cancel\_goal()
+    action\_client.destroy()
+    node.destroy\_node()
+    rclpy.shutdown()
+
+result = get\_result\_future.result().result
+node.get\_logger().info(&#39;Goal succeeded! Result: &#123;0&#125;&#39;.format(str(result)))
+
+action\_client.destroy()
+node.destroy\_node()
+rclpy.shutdown()
+</code></pre>
+<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
+<p>这里可以看到，client中在send_goal后，得到了一个send_goal_future。这里要使用rclpy.spin_until_future_complete，确保这个future完成，否则future为NoneType。</p>
+<p><img src="http://design.ros2.org/img/actions/interaction_example_1.png" alt="Action Interaction Example 1"></p>
+<p>可以看到，goal request完成后，会得到一个handle_goal，在client里，使用goal_handle &#x3D; send_goal_future.result()；这个handle_goal可用于result request、cancel request。</p>
+<pre><code>get\_result\_future = goal\_handle.get\_result\_async()
+
+
+try:
+    rclpy.spin\_until\_future\_complete(node, get\_result\_future)
+except:
+    future = goal\_handle.cancel\_goal\_async()
+    cancel\_response = future.result()
+    print(&quot;goal canceled&quot;)
+    action\_client.destroy()
+    node.destroy\_node()
+    rclpy.shutdown()
+</code></pre>
+<p>这里首先发送了result request。在try中，使用rclpy.spin_until_future_complete。它的效果类似于：</p>
+<pre><code>def spin\_until\_finished(self, node, future):
+    while rclpy.ok():
+        rclpy.spin\_once(node)
+        if future.done():
+            result = future.result().result
+            node.get\_logger().info(&#39;Goal succeeded! Result: &#123;0&#125;&#39;.format(result.move\_distance))
+            break
+</code></pre>
+<p>也就是，如果future没有done，就一直rclpy.spin_once。这里插一句，rclpy.spin_once非常的灵活，而rclpy.spin和rclpy.spin_until_future_complete都会阻塞主进程，如果放在qt里就必须使用其他的线程进行。</p>
+<p>回到Client的代码上来，try中的 rclpy.spin_until_future_complete 被KeyInterrupt等中断后，就会执行except里的内容。这里使用了goal_handle.cancel_goal_async()，也会得到一个future。这样就终止了任务。</p>
+<p>这也是我第一次正式接触python的多线程任务。下面的qt+ros2+action，更是让人头大。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/12/ros2%E5%85%A5%E9%97%A8%E4%B9%8Bacition%E6%93%8D%E4%BD%9C/" rel="prev" title="ROS2入门之Acition操作">
+      <i class="fa fa-chevron-left"></i> ROS2入门之Acition操作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/17/calling-parent-class-init-with-multiple-inheritance-whats-the-right-way/" rel="next" title="Calling parent class __init__ with multiple inheritance, what's the right way?">
+      Calling parent class __init__ with multiple inheritance, what's the right way? <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Server"><span class="nav-number">1.</span> <span class="nav-text">Server</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Licensed-under-the-Apache-License-Version-2-0-the-%E2%80%9CLicense%E2%80%9D"><span class="nav-number"></span> <span class="nav-text">Licensed under the Apache License, Version 2.0 (the “License”);</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#you-may-not-use-this-file-except-in-compliance-with-the-License"><span class="nav-number"></span> <span class="nav-text">you may not use this file except in compliance with the License.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#You-may-obtain-a-copy-of-the-License-at"><span class="nav-number"></span> <span class="nav-text">You may obtain a copy of the License at</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-1"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#http-www-apache-org-licenses-LICENSE-2-0"><span class="nav-number"></span> <span class="nav-text">http:&#x2F;&#x2F;www.apache.org&#x2F;licenses&#x2F;LICENSE-2.0</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-2"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unless-required-by-applicable-law-or-agreed-to-in-writing-software"><span class="nav-number"></span> <span class="nav-text">Unless required by applicable law or agreed to in writing, software</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#distributed-under-the-License-is-distributed-on-an-%E2%80%9CAS-IS%E2%80%9D-BASIS"><span class="nav-number"></span> <span class="nav-text">distributed under the License is distributed on an “AS IS” BASIS,</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WITHOUT-WARRANTIES-OR-CONDITIONS-OF-ANY-KIND-either-express-or-implied"><span class="nav-number"></span> <span class="nav-text">WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#See-the-License-for-the-specific-language-governing-permissions-and"><span class="nav-number"></span> <span class="nav-text">See the License for the specific language governing permissions and</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#limitations-under-the-License"><span class="nav-number"></span> <span class="nav-text">limitations under the License.</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Client"><span class="nav-number">1.</span> <span class="nav-text">Client</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-3"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Licensed-under-the-Apache-License-Version-2-0-the-%E2%80%9CLicense%E2%80%9D-1"><span class="nav-number"></span> <span class="nav-text">Licensed under the Apache License, Version 2.0 (the “License”);</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#you-may-not-use-this-file-except-in-compliance-with-the-License-1"><span class="nav-number"></span> <span class="nav-text">you may not use this file except in compliance with the License.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#You-may-obtain-a-copy-of-the-License-at-1"><span class="nav-number"></span> <span class="nav-text">You may obtain a copy of the License at</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-4"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#http-www-apache-org-licenses-LICENSE-2-0-1"><span class="nav-number"></span> <span class="nav-text">http:&#x2F;&#x2F;www.apache.org&#x2F;licenses&#x2F;LICENSE-2.0</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#-5"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unless-required-by-applicable-law-or-agreed-to-in-writing-software-1"><span class="nav-number"></span> <span class="nav-text">Unless required by applicable law or agreed to in writing, software</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#distributed-under-the-License-is-distributed-on-an-%E2%80%9CAS-IS%E2%80%9D-BASIS-1"><span class="nav-number"></span> <span class="nav-text">distributed under the License is distributed on an “AS IS” BASIS,</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WITHOUT-WARRANTIES-OR-CONDITIONS-OF-ANY-KIND-either-express-or-implied-1"><span class="nav-number"></span> <span class="nav-text">WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#See-the-License-for-the-specific-language-governing-permissions-and-1"><span class="nav-number"></span> <span class="nav-text">See the License for the specific language governing permissions and</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#limitations-under-the-License-1"><span class="nav-number"></span> <span class="nav-text">limitations under the License.</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

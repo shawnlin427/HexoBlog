@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="远程Git仓库本质上说是部署在远程服务器上的Git仓库，Gitee、Github这种公开的远程服务使用的比较多。 创建仓库、分支等创建仓库一般在服务网站上就可以完成，例如创建仓库：  以及创建分支：  将远程仓库保存到本地方法1：先将仓库clone到本地，修改后再push到 Gitee 的仓库$ git clone https:&#x2F;&#x2F;gitee.com&#x2F;用户个性地址&#x2F;HelloGitee.git #">
+<meta property="og:type" content="article">
+<meta property="og:title" content="远程Git仓库的使用：以Gitee为例">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/11/20/%E8%BF%9C%E7%A8%8Bgit%E4%BB%93%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%9A%E4%BB%A5gitee%E4%B8%BA%E4%BE%8B/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="远程Git仓库本质上说是部署在远程服务器上的Git仓库，Gitee、Github这种公开的远程服务使用的比较多。 创建仓库、分支等创建仓库一般在服务网站上就可以完成，例如创建仓库：  以及创建分支：  将远程仓库保存到本地方法1：先将仓库clone到本地，修改后再push到 Gitee 的仓库$ git clone https:&#x2F;&#x2F;gitee.com&#x2F;用户个性地址&#x2F;HelloGitee.git #">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/11/image-1024x751.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2021/11/image-1-1024x322.png">
+<meta property="article:published_time" content="2021-11-20T06:39:55.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.627Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.lxshaw.com/wp-content/uploads/2021/11/image-1024x751.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/11/20/%E8%BF%9C%E7%A8%8Bgit%E4%BB%93%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%9A%E4%BB%A5gitee%E4%B8%BA%E4%BE%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>远程Git仓库的使用：以Gitee为例 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/11/20/%E8%BF%9C%E7%A8%8Bgit%E4%BB%93%E5%BA%93%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%9A%E4%BB%A5gitee%E4%B8%BA%E4%BE%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          远程Git仓库的使用：以Gitee为例
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-20 14:39:55" itemprop="dateCreated datePublished" datetime="2021-11-20T14:39:55+08:00">2021-11-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>远程Git仓库本质上说是部署在远程服务器上的Git仓库，Gitee、Github这种公开的远程服务使用的比较多。</p>
+<h2 id="创建仓库、分支等"><a href="#创建仓库、分支等" class="headerlink" title="创建仓库、分支等"></a>创建仓库、分支等</h2><p>创建仓库一般在服务网站上就可以完成，例如创建仓库：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/11/image.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/11/image-1024x751.png"></a></p>
+<p>以及创建分支：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/11/image-1.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/11/image-1-1024x322.png"></a></p>
+<h2 id="将远程仓库保存到本地"><a href="#将远程仓库保存到本地" class="headerlink" title="将远程仓库保存到本地"></a>将远程仓库保存到本地</h2><h3 id="方法1："><a href="#方法1：" class="headerlink" title="方法1："></a>方法1：</h3><h4 id="先将仓库clone到本地，修改后再push到-Gitee-的仓库"><a href="#先将仓库clone到本地，修改后再push到-Gitee-的仓库" class="headerlink" title="先将仓库clone到本地，修改后再push到 Gitee 的仓库"></a>先将仓库clone到本地，修改后再push到 Gitee 的仓库</h4><p>$ git clone <a target="_blank" rel="noopener" href="https://gitee.com/%E7%94%A8%E6%88%B7%E4%B8%AA%E6%80%A7%E5%9C%B0%E5%9D%80/HelloGitee.git">https://gitee.com/用户个性地址/HelloGitee.git</a> #将远程仓库克隆到本地</p>
+<p>在克隆过程中，如果仓库是一个私有仓库，将会要求用户输入 Gitee 的账号和密码。按照提示输入即可。</p>
+<p>当然，用户也可以通过配置本地的git配置信息，执行<code>git config</code>命令预先配置好相关的用户信息，配置执行如下：</p>
+<p>$ git config –global user.name “你的名字或昵称”<br>$ git config –global user.email “你的邮箱”</p>
+<blockquote>
+<p>在 Gitee 平台中，强烈建议您在【设置-多邮箱管理】中的“提交邮箱”与上面配置信息中的邮箱地址保持一致，这样平台就能及时地统计您在平台中提交代码的贡献了。</p>
+</blockquote>
+<p>修改代码后，在仓库目录下执行下面命令</p>
+<p>$ git add . #将当前目录所有文件添加到git暂存区<br>$ git commit -m “my first commit” #提交并备注提交信息<br>$ git push origin master #将本地提交推送到远程仓库</p>
+<p>这种方式一般用于，在copy其他人的代码，或者在新设备上部署代码的时候，也就是从无到有的过程。</p>
+<h3 id="方法2："><a href="#方法2：" class="headerlink" title="方法2："></a>方法2：</h3><h4 id="本地初始化一个仓库，设置远程仓库地址后再做push"><a href="#本地初始化一个仓库，设置远程仓库地址后再做push" class="headerlink" title="本地初始化一个仓库，设置远程仓库地址后再做push"></a>本地初始化一个仓库，设置远程仓库地址后再做push</h4><p>和方法1的差别，在于先创建仓库。</p>
+<p>$ git init<br>$ git remote add origin <a target="_blank" rel="noopener" href="https://gitee.com/%E7%94%A8%E6%88%B7%E4%B8%AA%E6%80%A7%E5%9C%B0%E5%9D%80/HelloGitee.git">https://gitee.com/用户个性地址/HelloGitee.git</a></p>
+<p>这样就完成了版本的一次初始化。<br>接下去，进入你已经初始化好的或者克隆仓库的目录,然后执行：</p>
+<p>$ git pull origin master</p>
+<p>修改&#x2F;添加文件，否则与原文件相比就没有变动。</p>
+<p>$ git add .<br>$ git commit -m “第一次提交”<br>$ git push origin master</p>
+<p>然后如果需要账号密码的话就输入账号密码，这样就完成了一次提交。此时，你可以在你的个人面板、仓库主页查看到你的提交记录。</p>
+<p>这种方法一般用于本地已经有了代码，这时候想把它提交到gitee上的时候。</p>
+<h2 id="提交冲突"><a href="#提交冲突" class="headerlink" title="提交冲突"></a>提交冲突</h2><p>在新建仓库时，如果在 Gitee 平台仓库上已经存在 readme 或其他文件，在提交时可能会存在冲突，这时用户需要选择的是保留线上的文件或者舍弃线上的文件，如果您舍弃线上的文件，则在推送时选择强制推送，强制推送需要执行下面的命令(默认不推荐该行为)：</p>
+<p>$ git push origin master -f</p>
+<p>如果您选择保留线上的 readme 文件,则需要先执行：</p>
+<p>$ git pull origin master</p>
+<h2 id="创建、切换分支"><a href="#创建、切换分支" class="headerlink" title="创建、切换分支"></a>创建、切换分支</h2><h3 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h3><p>第一种方法是，在远程仓库上创建分支后，本地就可以直接和远程仓库同步。然后就可以直接使用git checkout进行分分支的切换。</p>
+<h3 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h3><p>第二种方法是，在本地先创建分支：</p>
+<p>git checkout -b testbranch</p>
+<p>然后推送到远程仓库：</p>
+<p>git push origin testbranch</p>
+<p>这样也可以同步。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总结而言，创建仓库和分支都有两种方法，一种是在gitee或者github上创建后，在本地同步；还有一种是在本地创建后，推送到远程仓库。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/18/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E8%B8%A9%E5%9D%91%EF%BC%9Auint8/" rel="prev" title="图像处理踩坑：Uint8">
+      <i class="fa fa-chevron-left"></i> 图像处理踩坑：Uint8
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/21/ros2%E5%85%A5%E9%97%A8%EF%BC%9Aparameters/" rel="next" title="ROS2入门：Parameters">
+      ROS2入门：Parameters <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%BB%93%E5%BA%93%E3%80%81%E5%88%86%E6%94%AF%E7%AD%89"><span class="nav-number">1.</span> <span class="nav-text">创建仓库、分支等</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E4%BF%9D%E5%AD%98%E5%88%B0%E6%9C%AC%E5%9C%B0"><span class="nav-number">2.</span> <span class="nav-text">将远程仓库保存到本地</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%951%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">方法1：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%88%E5%B0%86%E4%BB%93%E5%BA%93clone%E5%88%B0%E6%9C%AC%E5%9C%B0%EF%BC%8C%E4%BF%AE%E6%94%B9%E5%90%8E%E5%86%8Dpush%E5%88%B0-Gitee-%E7%9A%84%E4%BB%93%E5%BA%93"><span class="nav-number">2.1.1.</span> <span class="nav-text">先将仓库clone到本地，修改后再push到 Gitee 的仓库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%952%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">方法2：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%88%9D%E5%A7%8B%E5%8C%96%E4%B8%80%E4%B8%AA%E4%BB%93%E5%BA%93%EF%BC%8C%E8%AE%BE%E7%BD%AE%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80%E5%90%8E%E5%86%8D%E5%81%9Apush"><span class="nav-number">2.2.1.</span> <span class="nav-text">本地初始化一个仓库，设置远程仓库地址后再做push</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E5%86%B2%E7%AA%81"><span class="nav-number">3.</span> <span class="nav-text">提交冲突</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E3%80%81%E5%88%87%E6%8D%A2%E5%88%86%E6%94%AF"><span class="nav-number">4.</span> <span class="nav-text">创建、切换分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%951"><span class="nav-number">4.1.</span> <span class="nav-text">方法1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%952"><span class="nav-number">4.2.</span> <span class="nav-text">方法2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

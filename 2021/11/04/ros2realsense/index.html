@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ROS2 Package for Intel® RealSense™ DevicesSupported Devices Intel® RealSense™ Camera D400-Series Intel® RealSense™ Depth Cameras D415, D435 and D435i   Intel® RealSense™ Tracking Camera T265  Installa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS2+Realsense">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/11/04/ros2realsense/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="ROS2 Package for Intel® RealSense™ DevicesSupported Devices Intel® RealSense™ Camera D400-Series Intel® RealSense™ Depth Cameras D415, D435 and D435i   Intel® RealSense™ Tracking Camera T265  Installa">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-04T03:05:50.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.621Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/11/04/ros2realsense/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ROS2+Realsense | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/11/04/ros2realsense/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ROS2+Realsense
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-04 11:05:50" itemprop="dateCreated datePublished" datetime="2021-11-04T11:05:50+08:00">2021-11-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="ROS2-Package-for-Intel®-RealSense™-Devices"><a href="#ROS2-Package-for-Intel®-RealSense™-Devices" class="headerlink" title="ROS2 Package for Intel® RealSense™ Devices"></a>ROS2 Package for Intel® RealSense™ Devices</h1><h2 id="Supported-Devices"><a href="#Supported-Devices" class="headerlink" title="Supported Devices"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#supported-devices"></a>Supported Devices</h2><ul>
+<li>Intel® RealSense™ Camera D400-Series<ul>
+<li>Intel® RealSense™ Depth Cameras D415, D435 and D435i</li>
+</ul>
+</li>
+<li>Intel® RealSense™ Tracking Camera T265</li>
+</ul>
+<h2 id="Installation-Instructions"><a href="#Installation-Instructions" class="headerlink" title="Installation Instructions"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#installation-instructions"></a>Installation Instructions</h2><p>The following instructions were verified with ROS2 Foxy on Ubuntu 20.04. The software is verified with ROS2 Dashing on Ubuntu 18.04 also, with the same instructions replacing “foxy” with “dashing”.</p>
+<h3 id="Install-Dependencies"><a href="#Install-Dependencies" class="headerlink" title="Install Dependencies"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#install-dependencies"></a>Install Dependencies</h3><h4 id="1-Install-ROS2-packages-ros-foxy-desktop"><a href="#1-Install-ROS2-packages-ros-foxy-desktop" class="headerlink" title="1. Install ROS2 packages ros-foxy-desktop"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#1-install-ros2-packages-ros-foxy-desktop"></a>1. Install ROS2 packages <a target="_blank" rel="noopener" href="https://index.ros.org/doc/ros2/Installation/Linux-Install-Debians/">ros-foxy-desktop</a></h4><h4 id="2-Install-ROS2-dependences"><a href="#2-Install-ROS2-dependences" class="headerlink" title="2. Install ROS2 dependences"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#2-install-ros2-dependences"></a>2. Install ROS2 dependences</h4><p>Currently, we support librealsense master branch.</p>
+<p>sudo apt-get install ros-foxy-librealsense2</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/IntelRealSense/librealsense.git">Intel® RealSense™ SDK 2.0</a></li>
+</ul>
+<h4 id="3-Install-other-non-ROS-debian-packages"><a href="#3-Install-other-non-ROS-debian-packages" class="headerlink" title="3. Install other non-ROS debian packages"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#3-install-other-non-ros-debian-packages"></a>3. Install other non-ROS debian packages</h4><p>sudo apt-get install -y libssl-dev libusb-1.0-0-dev pkg-config libgtk-3-dev<br>sudo apt-get install -y libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev</p>
+<h3 id="Install-ros2-intel-realsense-From-Source"><a href="#Install-ros2-intel-realsense-From-Source" class="headerlink" title="Install ros2_intel_realsense From Source"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#install-ros2_intel_realsense-from-source"></a>Install ros2_intel_realsense From Source</h3><p># fetch code<br>mkdir -p ~&#x2F;ros2_ws&#x2F;src<br>cd ~&#x2F;ros2_ws&#x2F;src<br>git clone <a target="_blank" rel="noopener" href="https://github.com/intel/ros2/_intel/_realsense.git">https://github.com/intel/ros2\_intel\_realsense.git</a><br>cd ros2_intel_realsense<br>git checkout refactor</p>
+<h1 id="build"><a href="#build" class="headerlink" title="build"></a>build</h1><p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>cd ~&#x2F;ros2_ws<br>colcon build –symlink-install</p>
+<h2 id="Usage-Instructions"><a href="#Usage-Instructions" class="headerlink" title="Usage Instructions"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#usage-instructions"></a>Usage Instructions</h2><h3 id="Start-Camera-Node"><a href="#Start-Camera-Node" class="headerlink" title="Start Camera Node"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#start-camera-node"></a>Start Camera Node</h3><p>Obtain the serial number of your device</p>
+<p>rs-enumerate-devices</p>
+<p>Change the corresponding yaml file with the specific serial number, e.g. for <a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/blob/refactor/realsense_ros/config/d435.yaml#L3">d435.yaml</a> in line3:</p>
+<blockquote>
+<p>serial_no: &lt;serial_number_of_your_device&gt; # d435</p>
+</blockquote>
+<p>To start the camera node in ROS2, plug in the camera, then type the following command:</p>
+<h4 id="Single-camera-taking-d435-for-example"><a href="#Single-camera-taking-d435-for-example" class="headerlink" title="Single camera, taking d435 for example:"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#single-camera-taking-d435-for-example"></a>Single camera, taking d435 for example:</h4><p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>source ~&#x2F;ros2_ws&#x2F;install&#x2F;local_setup.bash</p>
+<h2 id="using-ros2-run"><a href="#using-ros2-run" class="headerlink" title="using ros2 run"></a>using ros2 run</h2><p>cd ~&#x2F;ros2_ws<br>ros2 run realsense_node realsense_node __params:&#x3D;`ros2 pkg prefix realsense_examples`&#x2F;share&#x2F;realsense_ros&#x2F;config&#x2F;d435.yaml __ns:&#x3D;&#x2F;d435</p>
+<h2 id="using-ros2-launch"><a href="#using-ros2-launch" class="headerlink" title="using ros2 launch"></a>using ros2 launch</h2><p>ros2 launch realsense_examples rs_camera.launch.py</p>
+<h4 id="Multi-camera-taking-d435-and-t265-for-example"><a href="#Multi-camera-taking-d435-and-t265-for-example" class="headerlink" title="Multi camera, taking d435 and t265 for example:"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#multi-camera-taking-d435-and-t265-for-example"></a>Multi camera, taking d435 and t265 for example:</h4><ul>
+<li>Terminal 1:</li>
+</ul>
+<p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>source ~&#x2F;ros2_ws&#x2F;install&#x2F;local_setup.bash</p>
+<p>cd ~&#x2F;ros2_ws<br>ros2 run realsense_node realsense_node __params:&#x3D;`ros2 pkg prefix realsense_examples`&#x2F;share&#x2F;realsense_examples&#x2F;config&#x2F;d435.yaml __ns:&#x3D;&#x2F;d435</p>
+<ul>
+<li>Terminal 2:</li>
+</ul>
+<p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>source ~&#x2F;ros2_ws&#x2F;install&#x2F;local_setup.bash</p>
+<p>cd ~&#x2F;ros2_ws<br>ros2 run realsense_node realsense_node __params:&#x3D;`ros2 pkg prefix realsense_examples`&#x2F;share&#x2F;realsense_examples&#x2F;config&#x2F;t265.yaml __ns:&#x3D;&#x2F;t265</p>
+<ul>
+<li>Or using ros2 launch :</li>
+</ul>
+<p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>source ~&#x2F;ros2_ws&#x2F;install&#x2F;local_setup.bash</p>
+<p>cd ~&#x2F;ros2_ws</p>
+<h2 id="before-launch-all-the-cameras-serial-number-should-be-set-in-the-launch-file"><a href="#before-launch-all-the-cameras-serial-number-should-be-set-in-the-launch-file" class="headerlink" title="before launch all the cameras, serial number should be set in the launch file"></a>before launch all the cameras, serial number should be set in the launch file</h2><p>ros2 launch realsense_examples rs_multiple_devices.launch.py</p>
+<h4 id="Multi-camera-with-tf-transform-taking-d435-and-t265-for-example"><a href="#Multi-camera-with-tf-transform-taking-d435-and-t265-for-example" class="headerlink" title="Multi camera with tf(transform), taking d435 and t265 for example:"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#multi-camera-with-tftransform-taking-d435-and-t265-for-example"></a>Multi camera with tf(transform), taking d435 and t265 for example:</h4><p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>source ~&#x2F;ros2_ws&#x2F;install&#x2F;local_setup.bash</p>
+<p>cd ~&#x2F;ros2_ws</p>
+<h2 id="before-launch-all-the-cameras-serial-number-should-be-set-in-the-launch-file-1"><a href="#before-launch-all-the-cameras-serial-number-should-be-set-in-the-launch-file-1" class="headerlink" title="before launch all the cameras, serial number should be set in the launch file"></a>before launch all the cameras, serial number should be set in the launch file</h2><p>ros2 launch realsense_examples rs_t265_and_d400.launch.py</p>
+<p><em><strong>for more usage of these launch files in realsense_examples&#x2F;launch, please refer to our <a target="_blank" rel="noopener" href="https://inte.github.io/robot_devkit">robot devkit</a> project, includes SLAM and navigation etc.</strong></em></p>
+<h3 id="Configure-Parameters-at-Runtime"><a href="#Configure-Parameters-at-Runtime" class="headerlink" title="Configure Parameters at Runtime"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#configure-parameters-at-runtime"></a>Configure Parameters at Runtime</h3><p>Currently only support reconfigure parameters by <code>ros2 param</code> at runtime, e.g.</p>
+<p>Enable camera stream</p>
+<p>ros2 param list<br>ros2 param get &lt;node_name&gt; color0.enabled<br>ros2 param set &lt;node_name&gt; color0.enabled true</p>
+<p>Enable aligned depth</p>
+<p>ros2 param set &lt;node_name&gt; align_depth true</p>
+<p>Enable pointcloud</p>
+<p>ros2 param set &lt;node_name&gt; enable_pointcloud true</p>
+<h2 id="Contribution-Instructions"><a href="#Contribution-Instructions" class="headerlink" title="Contribution Instructions"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#contribution-instructions"></a>Contribution Instructions</h2><p>Contirbution to this project is welcomed! For any patches pleaes make sure regression tests passed. For new features added please add test cases also.</p>
+<h3 id="Run-Colcon-test"><a href="#Run-Colcon-test" class="headerlink" title="Run Colcon test"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#run-colcon-test"></a>Run Colcon test</h3><p># plugin the Realsense device</p>
+<h1 id="invoke-colcon-test"><a href="#invoke-colcon-test" class="headerlink" title="invoke colcon test"></a>invoke colcon test</h1><p>colcon test –packages-select realsense_msgs realsense_node realsense_ros realsense_examples</p>
+<h1 id="check-test-logs"><a href="#check-test-logs" class="headerlink" title="check test logs"></a>check test logs</h1><p>vim log&#x2F;latest_test&#x2F;&lt;package name as `realsense_xxx`&gt;&#x2F;stdout.log</p>
+<h2 id="Published-Topics"><a href="#Published-Topics" class="headerlink" title="Published Topics"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#published-topics"></a>Published Topics</h2><ul>
+<li>D435 and D415</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;color&#x2F;image_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;color&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;infra1&#x2F;image_rect_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;infra1&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;infra2&#x2F;image_rect_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;infra2&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;depth&#x2F;image_rect_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;depth&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;aligned_depth_to_color&#x2F;image_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;aligned_depth_to_color&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/PointCloud2.msg">camera&#x2F;pointcloud</a></p>
+<ul>
+<li>D435i</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;color&#x2F;image_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;color&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;infra1&#x2F;image_rect_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;infra1&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;infra2&#x2F;image_rect_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;infra2&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;depth&#x2F;image_rect_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;depth&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;aligned_depth_to_color&#x2F;image_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;aligned_depth_to_color&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/PointCloud2.msg">camera&#x2F;pointcloud</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Imu.msg">camera&#x2F;gyro&#x2F;sample</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/blob/refactor/realsense_msgs/msg/IMUInfo.msg">camera&#x2F;gyro&#x2F;imu_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Imu.msg">camera&#x2F;accel&#x2F;sample</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/blob/refactor/realsense_msgs/msg/IMUInfo.msg">camera&#x2F;accel&#x2F;imu_info</a></p>
+<ul>
+<li>T265</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;fisheye1&#x2F;image_rect_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;fisheye1&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;fisheye2&#x2F;image_rect_raw</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;fisheye1&#x2F;camera_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Imu.msg">camera&#x2F;gyro&#x2F;sample</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/blob/refactor/realsense_msgs/msg/IMUInfo.msg">camera&#x2F;gyro&#x2F;imu_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Imu.msg">camera&#x2F;accel&#x2F;sample</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/blob/refactor/realsense_msgs/msg/IMUInfo.msg">camera&#x2F;accel&#x2F;imu_info</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/nav_msgs/msg/Odometry.msg">camera&#x2F;odom&#x2F;sample</a></p>
+<h2 id="Known-Issues"><a href="#Known-Issues" class="headerlink" title="Known Issues"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#known-issues"></a>Known Issues</h2><ul>
+<li>Don’t support dynamic reconfigure parameters by rqt_reconfigure due to <a target="_blank" rel="noopener" href="https://github.com/ros-visualization/rqt_reconfigure/issues/53">issue#53</a> of rqt_reconfigure, but you still can reconfigure parameters by <code>ros2 param</code>.</li>
+<li>We support Ubuntu Linux Bionic Beaver 18.04 on 64-bit, but not support Mac OS X 10.12 (Sierra) and Windows 10 yet.</li>
+</ul>
+<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#todo"></a>TODO</h2><ul>
+<li>Merge sensor data from gyroscope and accelerator into one topic</li>
+<li>Support diagnostics</li>
+<li>Support reconfigure parameters by GUI</li>
+</ul>
+<h2 id="License"><a href="#License" class="headerlink" title="License"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#license"></a>License</h2><p>Copyright 2019 Intel Corporation</p>
+<p>Licensed under the Apache License, Version 2.0 (the “License”); you may not use this project except in compliance with the License. You may obtain a copy of the License at</p>
+<p><a target="_blank" rel="noopener" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+<p>*<em>Other names and brands may be claimed as the property of others</em></p>
+<p>Any security issue should be reported using process at <a target="_blank" rel="noopener" href="https://01.org/security">https://01.org/security</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/03/ros2%EF%BC%9A%E5%90%8C%E6%97%B6%E8%AE%A2%E9%98%85%E5%A4%9A%E4%B8%AAtopic/" rel="prev" title="ROS2：同时订阅多个Topic">
+      <i class="fa fa-chevron-left"></i> ROS2：同时订阅多个Topic
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/05/ros2%E5%BC%80%E5%8F%91%E4%BD%93%E4%BC%9A/" rel="next" title="ROS2开发体会">
+      ROS2开发体会 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ROS2-Package-for-Intel%C2%AE-RealSense%E2%84%A2-Devices"><span class="nav-number">1.</span> <span class="nav-text">ROS2 Package for Intel® RealSense™ Devices</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Supported-Devices"><span class="nav-number">1.1.</span> <span class="nav-text">Supported Devices</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Installation-Instructions"><span class="nav-number">1.2.</span> <span class="nav-text">Installation Instructions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-Dependencies"><span class="nav-number">1.2.1.</span> <span class="nav-text">Install Dependencies</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Install-ROS2-packages-ros-foxy-desktop"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1. Install ROS2 packages ros-foxy-desktop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Install-ROS2-dependences"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">2. Install ROS2 dependences</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Install-other-non-ROS-debian-packages"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">3. Install other non-ROS debian packages</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-ros2-intel-realsense-From-Source"><span class="nav-number">1.2.2.</span> <span class="nav-text">Install ros2_intel_realsense From Source</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#build"><span class="nav-number">2.</span> <span class="nav-text">build</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Usage-Instructions"><span class="nav-number">2.1.</span> <span class="nav-text">Usage Instructions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Start-Camera-Node"><span class="nav-number">2.1.1.</span> <span class="nav-text">Start Camera Node</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Single-camera-taking-d435-for-example"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">Single camera, taking d435 for example:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#using-ros2-run"><span class="nav-number">2.2.</span> <span class="nav-text">using ros2 run</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#using-ros2-launch"><span class="nav-number">2.3.</span> <span class="nav-text">using ros2 launch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-camera-taking-d435-and-t265-for-example"><span class="nav-number">2.3.0.1.</span> <span class="nav-text">Multi camera, taking d435 and t265 for example:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#before-launch-all-the-cameras-serial-number-should-be-set-in-the-launch-file"><span class="nav-number">2.4.</span> <span class="nav-text">before launch all the cameras, serial number should be set in the launch file</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Multi-camera-with-tf-transform-taking-d435-and-t265-for-example"><span class="nav-number">2.4.0.1.</span> <span class="nav-text">Multi camera with tf(transform), taking d435 and t265 for example:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#before-launch-all-the-cameras-serial-number-should-be-set-in-the-launch-file-1"><span class="nav-number">2.5.</span> <span class="nav-text">before launch all the cameras, serial number should be set in the launch file</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Configure-Parameters-at-Runtime"><span class="nav-number">2.5.1.</span> <span class="nav-text">Configure Parameters at Runtime</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Contribution-Instructions"><span class="nav-number">2.6.</span> <span class="nav-text">Contribution Instructions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-Colcon-test"><span class="nav-number">2.6.1.</span> <span class="nav-text">Run Colcon test</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#invoke-colcon-test"><span class="nav-number">3.</span> <span class="nav-text">invoke colcon test</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#check-test-logs"><span class="nav-number">4.</span> <span class="nav-text">check test logs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Published-Topics"><span class="nav-number">4.1.</span> <span class="nav-text">Published Topics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Known-Issues"><span class="nav-number">4.2.</span> <span class="nav-text">Known Issues</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TODO"><span class="nav-number">4.3.</span> <span class="nav-text">TODO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#License"><span class="nav-number">4.4.</span> <span class="nav-text">License</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

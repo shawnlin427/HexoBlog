@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="ROS是机器人操作系统（Robot Operating System）的英文缩写。ROS是用于编写机器人软件程序的一种具有高度灵活性的软件架构。但是ROS并不是一个独立的操作系统，而是要依赖于ubuntu等操作系统。ROS2foxy也添加了对Windows等平台的支持，之前ROS只能在Ubuntu操作系统上使用。  ROS的整体布局如上图所示。 ROS NODE（节点）节点，是一个仅负责单一功能的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS2入门（一）：ROS中的概念">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/21/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9Aros%E4%B8%AD%E7%9A%84%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="ROS是机器人操作系统（Robot Operating System）的英文缩写。ROS是用于编写机器人软件程序的一种具有高度灵活性的软件架构。但是ROS并不是一个独立的操作系统，而是要依赖于ubuntu等操作系统。ROS2foxy也添加了对Windows等平台的支持，之前ROS只能在Ubuntu操作系统上使用。  ROS的整体布局如上图所示。 ROS NODE（节点）节点，是一个仅负责单一功能的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://docs.ros.org/en/foxy/_images/Nodes-TopicandService.gif">
+<meta property="og:image" content="https://docs.ros.org/en/foxy/_images/Topic-SinglePublisherandSingleSubscriber.gif">
+<meta property="og:image" content="https://docs.ros.org/en/foxy/_images/Topic-MultiplePublisherandMultipleSubscriber.gif">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-37-1024x608.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-38-1024x608.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-39-1024x533.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-40.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-41-1024x533.png">
+<meta property="og:image" content="https://docs.ros.org/en/foxy/_images/Service-MultipleServiceClient.gif">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-42.png">
+<meta property="og:image" content="http://82.156.1.75/wp-content/uploads/2021/04/image-43.png">
+<meta property="og:image" content="https://docs.ros.org/en/foxy/_images/Action-SingleActionClient.gif">
+<meta property="article:published_time" content="2021-04-21T09:12:19.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.501Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://docs.ros.org/en/foxy/_images/Nodes-TopicandService.gif">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/21/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9Aros%E4%B8%AD%E7%9A%84%E6%A6%82%E5%BF%B5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ROS2入门（一）：ROS中的概念 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/21/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9Aros%E4%B8%AD%E7%9A%84%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ROS2入门（一）：ROS中的概念
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-21 17:12:19" itemprop="dateCreated datePublished" datetime="2021-04-21T17:12:19+08:00">2021-04-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>ROS是机器人操作系统（Robot Operating System）的英文缩写。ROS是用于编写机器人软件程序的一种具有高度灵活性的软件架构。但是ROS并不是一个独立的操作系统，而是要依赖于ubuntu等操作系统。ROS2foxy也添加了对Windows等平台的支持，之前ROS只能在Ubuntu操作系统上使用。</p>
+<p><img src="https://docs.ros.org/en/foxy/_images/Nodes-TopicandService.gif" alt="..&#x2F;_images&#x2F;Nodes-TopicandService.gif"></p>
+<p>ROS的整体布局如上图所示。</p>
+<h2 id="ROS-NODE（节点）"><a href="#ROS-NODE（节点）" class="headerlink" title="ROS NODE（节点）"></a>ROS NODE（节点）</h2><p>节点，是一个仅负责单一功能的模块，比如说控制一个轮子，控制一个激光雷达的工作等等。节点之间的通信方式包括topic（话题）、services（服务）、actions（活动）、parameters（参数），后面会一一介绍。节点中还可能会包含一个Subsriber，来接受信息；Pubilsher，用来发送信息。根据功能，也可以分为Service Clinet和Service Server。</p>
+<p>一个完整的机器人系统就是由多个节点组成的。可以在Turtlesim中查看节点，来对节点有个更深刻的印象。开启一个新的控制台，输入：</p>
+<p>ros2 run turtlesim turtlesim_node</p>
+<p>再开一个新的控制台，输入：</p>
+<p>ros2 node list</p>
+<p>应该能看到：</p>
+<p>&#x2F;turtlesim</p>
+<p>此时只有一个节点，turtlesim，就是那只小海龟。下面开启一个新的节点，用来控制小海龟：</p>
+<p>ros2 run turtlesim turtle_teleop_key</p>
+<p>再次运行ros2 node list，输出：</p>
+<p>&#x2F;turtlesim<br>&#x2F;teleop_turtle</p>
+<p>还可以查看节点的详细信息，例如运行ros2 node info &#x2F;turtlesim，输出：</p>
+<p>&#x2F;turtlesim<br>  Subscribers:<br>    &#x2F;parameter_events: rcl_interfaces&#x2F;msg&#x2F;ParameterEvent<br>    &#x2F;turtle1&#x2F;cmd_vel: geometry_msgs&#x2F;msg&#x2F;Twist<br>  Publishers:<br>    &#x2F;parameter_events: rcl_interfaces&#x2F;msg&#x2F;ParameterEvent<br>    &#x2F;rosout: rcl_interfaces&#x2F;msg&#x2F;Log<br>    &#x2F;turtle1&#x2F;color_sensor: turtlesim&#x2F;msg&#x2F;Color<br>    &#x2F;turtle1&#x2F;pose: turtlesim&#x2F;msg&#x2F;Pose<br>  Service Servers:<br>    &#x2F;clear: std_srvs&#x2F;srv&#x2F;Empty<br>    &#x2F;kill: turtlesim&#x2F;srv&#x2F;Kill<br>    &#x2F;reset: std_srvs&#x2F;srv&#x2F;Empty<br>    &#x2F;spawn: turtlesim&#x2F;srv&#x2F;Spawn<br>    &#x2F;turtle1&#x2F;set_pen: turtlesim&#x2F;srv&#x2F;SetPen<br>    &#x2F;turtle1&#x2F;teleport_absolute: turtlesim&#x2F;srv&#x2F;TeleportAbsolute<br>    &#x2F;turtle1&#x2F;teleport_relative: turtlesim&#x2F;srv&#x2F;TeleportRelative<br>    &#x2F;turtlesim&#x2F;describe_parameters: rcl_interfaces&#x2F;srv&#x2F;DescribeParameters<br>    &#x2F;turtlesim&#x2F;get_parameter_types: rcl_interfaces&#x2F;srv&#x2F;GetParameterTypes<br>    &#x2F;turtlesim&#x2F;get_parameters: rcl_interfaces&#x2F;srv&#x2F;GetParameters<br>    &#x2F;turtlesim&#x2F;list_parameters: rcl_interfaces&#x2F;srv&#x2F;ListParameters<br>    &#x2F;turtlesim&#x2F;set_parameters: rcl_interfaces&#x2F;srv&#x2F;SetParameters<br>    &#x2F;turtlesim&#x2F;set_parameters_atomically: rcl_interfaces&#x2F;srv&#x2F;SetParametersAtomically<br>  Service Clients:</p>
+<p>  Action Servers:<br>    &#x2F;turtle1&#x2F;rotate_absolute: turtlesim&#x2F;action&#x2F;RotateAbsolute<br>  Action Clients:</p>
+<p>可以看到node的Suscriber、Publisher等属性。</p>
+<h2 id="Topic（话题）"><a href="#Topic（话题）" class="headerlink" title="Topic（话题）"></a>Topic（话题）</h2><p>Topic是ROS中传递信息的重要元素。</p>
+<p><img src="https://docs.ros.org/en/foxy/_images/Topic-SinglePublisherandSingleSubscriber.gif" alt="..&#x2F;..&#x2F;_images&#x2F;Topic-SinglePublisherandSingleSubscriber.gif"></p>
+<p>一个节点可以任意个其他节点通过话题传递信息。</p>
+<p><img src="https://docs.ros.org/en/foxy/_images/Topic-MultiplePublisherandMultipleSubscriber.gif" alt="..&#x2F;..&#x2F;_images&#x2F;Topic-MultiplePublisherandMultipleSubscriber.gif"></p>
+<p>下面来看看如何在ROS中查看Topic，首先还是运行海龟和海龟控制，然后新建一个控制台输入rqt_graph，将输出切换到Nodes&#x2F;Topics，Group设为0，可以看到：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-37-1024x608.png"></p>
+<p>这张图显示了turtlesim node和teleop_turtle node是如何沟通的，teleop_turtle node发布一个信息（也就是键盘输入）给cmd_vel topic，随后teleoo_turtle从这个topic订阅信息从而接受数据。rqt_graph绝对是一个非常好用的工具。当然，即使是简单的turtlesim，topic也不止这些，可以通过取消rqt_graph中的Hide选项来查看所有Topic：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-38-1024x608.png"></p>
+<p>我们也可以用命令行来查看Topic，输入ros2 topic list -t，这会显示所有的Topic和他们的类型：</p>
+<p>&#x2F;parameter_events [rcl_interfaces&#x2F;msg&#x2F;ParameterEvent]<br>&#x2F;rosout [rcl_interfaces&#x2F;msg&#x2F;Log]<br>&#x2F;turtle1&#x2F;cmd_vel [geometry_msgs&#x2F;msg&#x2F;Twist]<br>&#x2F;turtle1&#x2F;color_sensor [turtlesim&#x2F;msg&#x2F;Color]<br>&#x2F;turtle1&#x2F;pose [turtlesim&#x2F;msg&#x2F;Pose]</p>
+<p>这就好像论坛上的Topic有不同的类型一样，这样每个nodes可以知道他们应当如何交换相同类型的信息。接下来可以进一步查看Topic都传了什么信息，比如我们想看看cmd_vel这个Topic：</p>
+<p>ros2 topic echo &#x2F;turtle1&#x2F;cmd_vel</p>
+<p>什么都没有，正常，因为还没有node发布消息。我们操控一下turtle，随便输入一个方向，再看输出：</p>
+<h2 id="linear-x-2-0-y-0-0-z-0-0angular-x-0-0-y-0-0-z-0-0"><a href="#linear-x-2-0-y-0-0-z-0-0angular-x-0-0-y-0-0-z-0-0" class="headerlink" title="linear:  x: 2.0  y: 0.0  z: 0.0angular:  x: 0.0  y: 0.0  z: 0.0"></a>linear:<br>  x: 2.0<br>  y: 0.0<br>  z: 0.0<br>angular:<br>  x: 0.0<br>  y: 0.0<br>  z: 0.0</h2><p>这时候我们回到rqt刷新一下，发现多了个node：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-39-1024x533.png"></p>
+<p>这个node就是刚刚我们命令创造的node，它接受topic传来的信息，但是只是显示出来而不传输给任何topic。如果我们想通过命令行查看一个Topic传输信息给哪些nodes，使用这个命令：ros2 topic info &#x2F;turtle1&#x2F;cmd_vel</p>
+<p>Type: geometry_msgs&#x2F;msg&#x2F;Twist<br>Publisher count: 1<br>Subscription count: 2</p>
+<p>这个Topic有一个发布者和两个订阅者，就像rqt图中现实的一样。注意，这里还显示了Topic的类型。如果我们还想知道Topic类型意味着要发布什么格式的信息，可以输入ros2 interface show TOPIC_NAME，比如ros2 interface show geometry_msgs&#x2F;msg&#x2F;Twist</p>
+<p># This expresses velocity in free space broken into its linear and angular parts.</p>
+<p>Vector3  linear<br>Vector3  angular</p>
+<p>联系一下上面echo的命令，会发现linear和angular都是Vector的格式。</p>
+<h3 id="直接向Topic发布消息"><a href="#直接向Topic发布消息" class="headerlink" title="直接向Topic发布消息"></a>直接向Topic发布消息</h3><p>Node可以在Topic上发布消息，其实也可以直接通过命令行向特定的Topic发布消息，效果是差不多的，格式是ros2 topic pub &lt;topic_name&gt; &lt;msg_type&gt; ‘<args>‘。比如这个命令：</p>
+<p>ros2 topic pub –once &#x2F;turtle1&#x2F;cmd_vel geometry_msgs&#x2F;msg&#x2F;Twist “{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}”</p>
+<p>小乌龟会画一个弧形，像这样：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-40.png"></p>
+<p>--once意味着执行一次就退出，也可以改成loop的形式：</p>
+<p>ros2 topic pub –rate 1 &#x2F;turtle1&#x2F;cmd_vel geometry_msgs&#x2F;msg&#x2F;Twist “{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}”</p>
+<p>这样小乌龟就开始打转了。当然，你肯定想到了，这会创造一个新的Node来向Topic发送信息，看看rqt中是否如此：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-41-1024x533.png"></p>
+<p>确实如此。Topic这个机制还是很形象的，可以把ROS想象成一个论坛，有许多发布者与订阅者。下面来看services。</p>
+<h2 id="Services（服务）"><a href="#Services（服务）" class="headerlink" title="Services（服务）"></a>Services（服务）</h2><p>Services是除Topic以外的另一种沟通方式，其基于call-and-response的机制，而不是Topic那种publisher-subscriber的机制。区别在哪里呢？Topic允许所有节点来订阅它，从而自动地更新信息，但是Services只在client进行呼叫的时候才给予信息。</p>
+<p><img src="https://docs.ros.org/en/foxy/_images/Service-MultipleServiceClient.gif" alt="..&#x2F;..&#x2F;_images&#x2F;Service-MultipleServiceClient.gif"></p>
+<p>我们还是运行turtlesim和控制台节点，然后输入ros2 service list：</p>
+<p>&#x2F;clear<br>&#x2F;kill<br>&#x2F;reset<br>&#x2F;spawn<br>&#x2F;teleop_turtle&#x2F;describe_parameters<br>&#x2F;teleop_turtle&#x2F;get_parameter_types<br>&#x2F;teleop_turtle&#x2F;get_parameters<br>&#x2F;teleop_turtle&#x2F;list_parameters<br>&#x2F;teleop_turtle&#x2F;set_parameters<br>&#x2F;teleop_turtle&#x2F;set_parameters_atomically<br>&#x2F;turtle1&#x2F;set_pen<br>&#x2F;turtle1&#x2F;teleport_absolute<br>&#x2F;turtle1&#x2F;teleport_relative<br>&#x2F;turtlesim&#x2F;describe_parameters<br>&#x2F;turtlesim&#x2F;get_parameter_types<br>&#x2F;turtlesim&#x2F;get_parameters<br>&#x2F;turtlesim&#x2F;list_parameters<br>&#x2F;turtlesim&#x2F;set_parameters<br>&#x2F;turtlesim&#x2F;set_parameters_atomically</p>
+<p>每个节点都有6个services。这些服务基本上是所有Node都会有的。可以通过在ros2 service list -t来查看service的类别。我们可以通过向特定的service进行call来进行一些操作，格式如下：</p>
+<p>ros2 service call &lt;service_name&gt; &lt;service_type&gt; <arguments></p>
+<p>问题来了，我们怎么知道service的名称、类别和参数？名称和类别我们知道如何去找，参数需要用到这条命令：</p>
+<p>ros2 interface show &lt;type_name&gt;.srv</p>
+<p>比如ros2 interface show turtlesim&#x2F;srv&#x2F;Spawn：</p>
+<h2 id="float32-xfloat32-yfloat32-thetastring-name-Optional-A-unique-name-will-be-created-and-returned-if-this-is-empty"><a href="#float32-xfloat32-yfloat32-thetastring-name-Optional-A-unique-name-will-be-created-and-returned-if-this-is-empty" class="headerlink" title="float32 xfloat32 yfloat32 thetastring name # Optional.  A unique name will be created and returned if this is empty"></a>float32 x<br>float32 y<br>float32 theta<br>string name # Optional.  A unique name will be created and returned if this is empty</h2><p>string name</p>
+<p>-–上写明了我们需要的参数，下面是service回复的内容类型。那么我们来试试向&#x2F;clear服务发送一条call来增加一只乌龟：</p>
+<p>ros2 service call &#x2F;spawn turtlesim&#x2F;srv&#x2F;Spawn “{x: 2, y: 2, theta: 0.2, name: ‘’}”</p>
+<p>返回：</p>
+<p>waiting for service to become available…<br>requester: making request: turtlesim.srv.Spawn_Request(x&#x3D;2.0, y&#x3D;2.0, theta&#x3D;0.2, name&#x3D;’None’)</p>
+<p>response:<br>turtlesim.srv.Spawn_Response(name&#x3D;’None’)</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-42.png"></p>
+<p>这样就多了一只乌龟。接下来来认识一下参数：</p>
+<h2 id="Parameter（参数）"><a href="#Parameter（参数）" class="headerlink" title="Parameter（参数）"></a>Parameter（参数）</h2><p>参数是节点的一些可调节值。在新的控制台里输入ros2 param list：</p>
+<p>&#x2F;rqt_gui_py_node_35429:<br>  use_sim_time<br>&#x2F;teleop_turtle:<br>  scale_angular<br>  scale_linear<br>  use_sim_time<br>&#x2F;turtlesim:<br>  background_b<br>  background_g<br>  background_r<br>  use_sim_time</p>
+<p>这些参数还是很好理解的。接下来看看如何读取参数，比如说&#x2F;turtlesim的backgorund_g：ros2 param get &#x2F;turtlesim background_g</p>
+<p>Integer value is: 86</p>
+<p>顺便你还知道了参数的类型。接下来就可以设置参数，形式：ros2 param set &lt;node_name&gt; &lt;parameter_name&gt; <value></p>
+<p>试着修改一下：ros2 param set &#x2F;turtlesim background_r 150</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-43.png"></p>
+<p>这种修改都是暂时的，不过可以用dump来储存配置。比如保存当前turtlesim的参数：</p>
+<p>ros2 param dump &#x2F;turtlesim</p>
+<p>Saving to:  .&#x2F;turtlesim.yaml</p>
+<p>下次运行turtlesim的时候，就可以加载参数了，格式：</p>
+<p>ros2 run &lt;package_name&gt; &lt;executable_name&gt; –ros-args –params-file &lt;file_name&gt;</p>
+<p>接下来了解ROS2的最后一个概念：action。</p>
+<h2 id="Action（活动）："><a href="#Action（活动）：" class="headerlink" title="Action（活动）："></a>Action（活动）：</h2><p>Action是一个上层的沟通机制，建立在Topic和Services上。它包括三个部分：目标、结果和反馈。</p>
+<p><img src="https://docs.ros.org/en/foxy/_images/Action-SingleActionClient.gif" alt="..&#x2F;_images&#x2F;Action-SingleActionClient.gif"></p>
+<p>请出我们的小海龟来解释一下这个机制。</p>
+<h2 id="shaw-shaw-BIM-ros2-run-turtlesim-turtle-teleop-keyReading-from-keyboard"><a href="#shaw-shaw-BIM-ros2-run-turtlesim-turtle-teleop-keyReading-from-keyboard" class="headerlink" title="shaw@shaw-BIM:~$ ros2 run turtlesim turtle_teleop_keyReading from keyboard"></a>shaw@shaw-BIM:~$ ros2 run turtlesim turtle_teleop_key<br>Reading from keyboard</h2><p>Use arrow keys to move the turtle.<br>Use GBVCDERT keys to rotate to absolute orientations. ‘F’ to cancel a rotation.<br>‘Q’ to quit.</p>
+<p>注意这一句：Use GBVCDERT keys to rotate to absolute orientations. ‘F’ to cancel a rotation.</p>
+<p>这其实就是一个action。action的特殊之处在于它可以在执行过程中被叫停，例如先输入v来让海龟头朝下，在这个过程中按下r使其头朝上。</p>
+<p>[WARN] [1618995435.309175305] [turtlesim]: Rotation goal received before a previous goal finished. Aborting previous goal<br>[INFO] [1618995437.885072665] [turtlesim]: Rotation goal completed successfully</p>
+<p>可以看到第一个目标在达到前被取消了。</p>
+<h3 id="读取action的信息"><a href="#读取action的信息" class="headerlink" title="读取action的信息"></a>读取action的信息</h3><p>首先输入ros2 node info &#x2F;turtlesim：</p>
+<p>&#x2F;turtlesim<br>  Subscribers:<br>    &#x2F;parameter_events: rcl_interfaces&#x2F;msg&#x2F;ParameterEvent<br>    &#x2F;turtle1&#x2F;cmd_vel: geometry_msgs&#x2F;msg&#x2F;Twist<br>  Publishers:<br>    &#x2F;parameter_events: rcl_interfaces&#x2F;msg&#x2F;ParameterEvent<br>    &#x2F;rosout: rcl_interfaces&#x2F;msg&#x2F;Log<br>    &#x2F;turtle1&#x2F;color_sensor: turtlesim&#x2F;msg&#x2F;Color<br>    &#x2F;turtle1&#x2F;pose: turtlesim&#x2F;msg&#x2F;Pose<br>  Service Servers:<br>    &#x2F;clear: std_srvs&#x2F;srv&#x2F;Empty<br>    &#x2F;kill: turtlesim&#x2F;srv&#x2F;Kill<br>    &#x2F;reset: std_srvs&#x2F;srv&#x2F;Empty<br>    &#x2F;spawn: turtlesim&#x2F;srv&#x2F;Spawn<br>    &#x2F;turtle1&#x2F;set_pen: turtlesim&#x2F;srv&#x2F;SetPen<br>    &#x2F;turtle1&#x2F;teleport_absolute: turtlesim&#x2F;srv&#x2F;TeleportAbsolute<br>    &#x2F;turtle1&#x2F;teleport_relative: turtlesim&#x2F;srv&#x2F;TeleportRelative<br>    &#x2F;turtlesim&#x2F;describe_parameters: rcl_interfaces&#x2F;srv&#x2F;DescribeParameters<br>    &#x2F;turtlesim&#x2F;get_parameter_types: rcl_interfaces&#x2F;srv&#x2F;GetParameterTypes<br>    &#x2F;turtlesim&#x2F;get_parameters: rcl_interfaces&#x2F;srv&#x2F;GetParameters<br>    &#x2F;turtlesim&#x2F;list_parameters: rcl_interfaces&#x2F;srv&#x2F;ListParameters<br>    &#x2F;turtlesim&#x2F;set_parameters: rcl_interfaces&#x2F;srv&#x2F;SetParameters<br>    &#x2F;turtlesim&#x2F;set_parameters_atomically: rcl_interfaces&#x2F;srv&#x2F;SetParametersAtomically<br>  Service Clients:</p>
+<p>  Action Servers:<br>    &#x2F;turtle1&#x2F;rotate_absolute: turtlesim&#x2F;action&#x2F;RotateAbsolute<br>  Action Clients:</p>
+<p>Action Servers:<br>&#x2F;turtle1&#x2F;rotate_absolute: turtlesim&#x2F;action&#x2F;RotateAbsolute：这条说明turtlesim是一个action servers，也就是其会对&#x2F;turtle1&#x2F;rotate_absolute这个活动相应并提供反馈。另一边，我们来看看teleop_turtle的：</p>
+<p>  Action Clients:<br>    &#x2F;turtle1&#x2F;rotate_absolute: turtlesim&#x2F;action&#x2F;RotateAbsolute</p>
+<p>意味着它将对这个活动服务器发送目标。我们来进一步查看这个活动：</p>
+<p>shaw@shaw-BIM:~$ ros2 action info &#x2F;turtle1&#x2F;rotate_absolute<br>Action: &#x2F;turtle1&#x2F;rotate_absolute<br>Action clients: 1<br>    &#x2F;teleop_turtle<br>Action servers: 1<br>&#x2F;turtlesim</p>
+<hr>
+<p>shaw@shaw-BIM:~$ ros2 interface show turtlesim&#x2F;action&#x2F;RotateAbsolute</p>
+<h1 id="The-desired-heading-in-radians"><a href="#The-desired-heading-in-radians" class="headerlink" title="The desired heading in radians"></a>The desired heading in radians</h1><h2 id="float32-theta"><a href="#float32-theta" class="headerlink" title="float32 theta"></a>float32 theta</h2><h1 id="The-angular-displacement-in-radians-to-the-starting-position"><a href="#The-angular-displacement-in-radians-to-the-starting-position" class="headerlink" title="The angular displacement in radians to the starting position"></a>The angular displacement in radians to the starting position</h1><h2 id="float32-delta"><a href="#float32-delta" class="headerlink" title="float32 delta"></a>float32 delta</h2><h1 id="The-remaining-rotation-in-radians"><a href="#The-remaining-rotation-in-radians" class="headerlink" title="The remaining rotation in radians"></a>The remaining rotation in radians</h1><p>float32 remaining</p>
+<p>上面我们查看了ROS2中一共有那些活动，下面我们查看了action的结构，总共分为三部分，第一部分是目标的结构，第二部分是结果的结构，第三部分是反馈的结构。知道了结构后，我们向action server提出一个目标请求：</p>
+<p>ros2 action send_goal &#x2F;turtle1&#x2F;rotate_absolute turtlesim&#x2F;action&#x2F;RotateAbsolute “{theta: 1.57}”</p>
+<p>返回：</p>
+<p>Waiting for an action server to become available…<br>Sending goal:<br>     theta: 1.57</p>
+<p>Goal accepted with ID: 314e4c3cf94649f7b8fd1a4cd591f5a7</p>
+<p>Result:<br>    delta: 0.0</p>
+<p>Goal finished with status: SUCCEEDED</p>
+<p>小海龟也旋转了。每一个目标都有一个单独的ID，我们也可以看到结果，结构和interface中显示的相同。在发送目标的时候，可以加上选项 –feedback，这样可以不断地从topic接受feedback。</p>
+<p>使用action的好处主要包括：</p>
+<ol>
+<li>可终止；</li>
+<li>不断的反馈；</li>
+<li>明确的停止信号。</li>
+</ol>
+<p>到此为止介绍了ROS的主要基本概念。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/20/ros%E5%AE%89%E8%A3%85%E4%B8%ADrosdep-update%E6%97%A0%E6%B3%95%E8%BF%9B%E8%A1%8C%E7%9A%84%E9%97%AE%E9%A2%98/" rel="prev" title="ROS2安装中rosdep update无法进行的问题">
+      <i class="fa fa-chevron-left"></i> ROS2安装中rosdep update无法进行的问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/26/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E3%80%81%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%8C%85/" rel="next" title="ROS2入门（二）：创建启动文件、环境与包">
+      ROS2入门（二）：创建启动文件、环境与包 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#ROS-NODE%EF%BC%88%E8%8A%82%E7%82%B9%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">ROS NODE（节点）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Topic%EF%BC%88%E8%AF%9D%E9%A2%98%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">Topic（话题）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linear-x-2-0-y-0-0-z-0-0angular-x-0-0-y-0-0-z-0-0"><span class="nav-number">3.</span> <span class="nav-text">linear:  x: 2.0  y: 0.0  z: 0.0angular:  x: 0.0  y: 0.0  z: 0.0</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E5%90%91Topic%E5%8F%91%E5%B8%83%E6%B6%88%E6%81%AF"><span class="nav-number">3.1.</span> <span class="nav-text">直接向Topic发布消息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Services%EF%BC%88%E6%9C%8D%E5%8A%A1%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">Services（服务）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#float32-xfloat32-yfloat32-thetastring-name-Optional-A-unique-name-will-be-created-and-returned-if-this-is-empty"><span class="nav-number">5.</span> <span class="nav-text">float32 xfloat32 yfloat32 thetastring name # Optional.  A unique name will be created and returned if this is empty</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parameter%EF%BC%88%E5%8F%82%E6%95%B0%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">Parameter（参数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Action%EF%BC%88%E6%B4%BB%E5%8A%A8%EF%BC%89%EF%BC%9A"><span class="nav-number">7.</span> <span class="nav-text">Action（活动）：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shaw-shaw-BIM-ros2-run-turtlesim-turtle-teleop-keyReading-from-keyboard"><span class="nav-number">8.</span> <span class="nav-text">shaw@shaw-BIM:~$ ros2 run turtlesim turtle_teleop_keyReading from keyboard</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96action%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-number">8.1.</span> <span class="nav-text">读取action的信息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-desired-heading-in-radians"><span class="nav-number"></span> <span class="nav-text">The desired heading in radians</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#float32-theta"><span class="nav-number">1.</span> <span class="nav-text">float32 theta</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-angular-displacement-in-radians-to-the-starting-position"><span class="nav-number"></span> <span class="nav-text">The angular displacement in radians to the starting position</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#float32-delta"><span class="nav-number">1.</span> <span class="nav-text">float32 delta</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-remaining-rotation-in-radians"><span class="nav-number"></span> <span class="nav-text">The remaining rotation in radians</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

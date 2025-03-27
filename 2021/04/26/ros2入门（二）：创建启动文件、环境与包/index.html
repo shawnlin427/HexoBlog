@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="创建启动文件环境和包是标准流程的一部分。启动文件可以让你一行命令启动含有多个node的系统，这样就不用一个一个地启动Node来组成机器人了。 环境是一个包含了指定依赖项的系统运行环境，类似conda中的环境的定义。 包允许你打包你的系统，这样可以分享或很方便地转移系统。 启动创建文件前面我们使用了小海龟示例，一般我们会运行turtlesim节点和turtle控制节点。后者不是必须的，我们也可以通过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ROS2入门（二）：创建启动文件、环境与包">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/26/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E3%80%81%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%8C%85/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="创建启动文件环境和包是标准流程的一部分。启动文件可以让你一行命令启动含有多个node的系统，这样就不用一个一个地启动Node来组成机器人了。 环境是一个包含了指定依赖项的系统运行环境，类似conda中的环境的定义。 包允许你打包你的系统，这样可以分享或很方便地转移系统。 启动创建文件前面我们使用了小海龟示例，一般我们会运行turtlesim节点和turtle控制节点。后者不是必须的，我们也可以通过">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://docs.ros.org/en/foxy/_images/mimic_graph.png">
+<meta property="og:image" content="https://docs.ros.org/en/foxy/_images/overlay.png">
+<meta property="article:published_time" content="2021-04-26T12:15:35.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.503Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://docs.ros.org/en/foxy/_images/mimic_graph.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/26/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E3%80%81%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%8C%85/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ROS2入门（二）：创建启动文件、环境与包 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/26/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E3%80%81%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ROS2入门（二）：创建启动文件、环境与包
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-26 20:15:35" itemprop="dateCreated datePublished" datetime="2021-04-26T20:15:35+08:00">2021-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>创建启动文件环境和包是标准流程的一部分。启动文件可以让你一行命令启动含有多个node的系统，这样就不用一个一个地启动Node来组成机器人了。</p>
+<p>环境是一个包含了指定依赖项的系统运行环境，类似conda中的环境的定义。</p>
+<p>包允许你打包你的系统，这样可以分享或很方便地转移系统。</p>
+<h2 id="启动创建文件"><a href="#启动创建文件" class="headerlink" title="启动创建文件"></a>启动创建文件</h2><p>前面我们使用了小海龟示例，一般我们会运行turtlesim节点和turtle控制节点。后者不是必须的，我们也可以通过直接向topic发布消息的方式控制turtlesim。这里我们创建一个含有两个小海龟的系统，并且让它们两个同步。创建一个python文件，输入：</p>
+<p>from launch import LaunchDescription<br>from launch_ros.actions import Node</p>
+<p>def generate_launch_description():<br>    return LaunchDescription([<br>        Node(<br>            package&#x3D;’turtlesim’,<br>            namespace&#x3D;’turtlesim1’,<br>            executable&#x3D;’turtlesim_node’,<br>            name&#x3D;’sim’<br>        ),<br>        Node(<br>            package&#x3D;’turtlesim’,<br>            namespace&#x3D;’turtlesim2’,<br>            executable&#x3D;’turtlesim_node’,<br>            name&#x3D;’sim’<br>        ),<br>        Node(<br>            package&#x3D;’turtlesim’,<br>            executable&#x3D;’mimic’,<br>            name&#x3D;’mimic’,<br>            remappings&#x3D;[<br>                (‘&#x2F;input&#x2F;pose’, ‘&#x2F;turtlesim1&#x2F;turtle1&#x2F;pose’),<br>                (‘&#x2F;output&#x2F;cmd_vel’, ‘&#x2F;turtlesim2&#x2F;turtle1&#x2F;cmd_vel’),<br>            ]<br>        )<br>    ])</p>
+<p>这里我们创造了三个节点，显然前两个是相同的turtlesim节点。这和之前ros2 run &lt;package_name&gt; &lt;node_name&gt;的效果是一样的。第三个节点值得额外的注意，它的executable属性是mimic，也就是模仿的意思。他将&#x2F;turtlesim1&#x2F;turtle1&#x2F;pose这个topic中的所有信息都remap到&#x2F;turtlesim2&#x2F;turtle1&#x2F;cmd_vel这个topic中。因此第二只小海龟会模仿第一只小海龟的动作。保存后，运行：</p>
+<p>ros2 launch turtlesim_mimic_launch.py</p>
+<p>然后再开启一个命令行，向turtlesim1的&#x2F;turtlesim1&#x2F;turtle1&#x2F;cmd_vel话题发布一条信息：</p>
+<p>ros2 topic pub -r 1 &#x2F;turtlesim1&#x2F;turtle1&#x2F;cmd_vel geometry_msgs&#x2F;msg&#x2F;Twist “{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: -1.8}}”</p>
+<p><img src="https://docs.ros.org/en/foxy/_images/mimic_graph.png" alt="..&#x2F;..&#x2F;_images&#x2F;mimic_graph.png"></p>
+<p>信息是这样流动的：我们向cmd_vel发送一条信息，turtlesim1接受后向pose话题发布信息，此时mimic节点订阅了pose话题收取信息，并将该信息发布到turtle2的cmd_vel话题上，turtlesim2从而获得相同的信息。</p>
+<h2 id="创建环境"><a href="#创建环境" class="headerlink" title="创建环境"></a>创建环境</h2><p>在Linux下，所有的对象都是以文件的方式存储与体现的，因此环境实际上就是包含了一个ROS系统中各种包的路径，直观的体现就是一个文件夹。为什么我们需要一个环境？简单地说，我们不希望一大堆源码和文件把我们的桌面或者&#x2F;home搞得一团糟，还有我们最不希望发生的就是不同的依赖发生冲突。</p>
+<p>mkdir -p ~&#x2F;dev_ws&#x2F;src<br>cd ~&#x2F;dev_ws&#x2F;src</p>
+<p>这样我们就创造了一个工作空间。我们在这里创造环境。然后我们下载一些包：</p>
+<p>git clone <a target="_blank" rel="noopener" href="https://github.com/ros/ros/_tutorials.git">https://github.com/ros/ros\_tutorials.git</a> -b foxy-devel</p>
+<p>进入ros_tutorials文件夹，下面有四个包：</p>
+<p>roscpp_tutorials  rospy_tutorials  ros_tutorials  turtlesim</p>
+<p>我们只用到turtlesim这个包。下一步要做的是在这个工作目录下安装依赖项。我们在工作目录的根目录，也就是dev_ws下，执行：</p>
+<p>rosdep install -i –from-path src –rosdistro foxy -y</p>
+<p>rosdep很有可能还是会接二连三的出现网络问题，没有什么太好的解决办法。下一步是build工作空间，不过在此之前，我们先修改一下turtlesim这个包，这样我们可以确认确实这个包是在当前环境下运行的。修改turtlesim&#x2F;src下的turtle_frame.cpp，找到第52行的“setWindowTitle(“TurtleSim”);”，改成”MyTurtleSim”然后保存。接下来build这个包：</p>
+<p>colcon build</p>
+<p>这会创建以下的文件夹：</p>
+<p>build  install  log  src</p>
+<p>install中包含了当前工作空间的各项设置。下一步要做的就是source这些设置，<strong>开启一个新的控制台，这很重要：</strong></p>
+<p>cd ~&#x2F;dev_ws<br>. install&#x2F;local_setup.bash</p>
+<p>在source的控制台中，运行：</p>
+<p>ros2 run turtlesim turtlesim_node</p>
+<p><img src="https://docs.ros.org/en/foxy/_images/overlay.png" alt="..&#x2F;..&#x2F;_images&#x2F;overlay.png"></p>
+<p>可以看到窗口名称发生了变化。如果要在一个特定环境下运行项目，需要记得source当前环境的设置，也就是. install&#x2F;local_setup.bash。每次开启一个新的控制台，都需要那么做。</p>
+<h2 id="创建包"><a href="#创建包" class="headerlink" title="创建包"></a>创建包</h2><p>一个形象的比喻：你可以在ipython中用交互的方式让计算机执行你的想法，但是更常见的还是运行一个py文件。py文件就像ROS里的包。</p>
+<p>ROS2支持用C++和Python来写包，作为编程苦手我果断选择了Python。选择Python的话，一个包会包含以下文件：</p>
+<ul>
+<li><code>package.xml</code> 描述这个包一些元信息的文件。元信息是”关于信息的信息”。</li>
+<li><code>setup.py</code> 描述了如何安装这个包的文件。运行这个py文件就可以安装包了。</li>
+<li><code>setup.cfg</code> 这个文件不是必须的，如果包含有可执行项，则需要。<code>ros2 run</code>通过这个文件找到可执行包。</li>
+<li><code>/&lt;package_name&gt;</code> 一个目录，含有__init__.py文件。ROS2根据这个找到你的包。</li>
+</ul>
+<p>最简单的一个包目录结构如下：</p>
+<p>my_package&#x2F;<br>      setup.py<br>      package.xml<br>      resource&#x2F;my_package</p>
+<h2 id="环境下的包"><a href="#环境下的包" class="headerlink" title="环境下的包"></a>环境下的包</h2><p>接下来我们把环境和包结合起来。最佳做法是在环境路径中src文件夹下放所有的包，像这样：</p>
+<p>workspace_folder&#x2F;<br>    src&#x2F;<br>      package_1&#x2F;<br>          CMakeLists.txt<br>          package.xml</p>
+<pre><code>  package\_2/
+      setup.py
+      package.xml
+      resource/package\_2
+  ...
+  package\_n/
+      CMakeLists.txt
+      package.xml
+</code></pre>
+<p>你可能注意到了，基于C++和Python的包可以放在一个环境下。接下来我们实打实地创建一个自己的包。进入src文件夹下：</p>
+<p>cd ~&#x2F;dev_ws&#x2F;src<br>ros2 pkg create –build-type ament_python –node-name my_node my_package</p>
+<p>--build-type指定了包使用python，–node-name制定了包和其所含节点的名称。这条命令应当会有一下输出：</p>
+<p>going to create a new package<br>package name: my_package<br>destination directory: &#x2F;home&#x2F;user&#x2F;dev_ws&#x2F;src<br>package format: 3<br>version: 0.0.0<br>description: TODO: Package description<br>maintainer: [‘<name> <email>‘]<br>licenses: [‘TODO: License declaration’]<br>build type: ament_python<br>dependencies: []<br>node_name: my_node<br>creating folder .&#x2F;my_package<br>creating .&#x2F;my_package&#x2F;package.xml<br>creating source folder<br>creating folder .&#x2F;my_package&#x2F;my_package<br>creating .&#x2F;my_package&#x2F;setup.py<br>creating .&#x2F;my_package&#x2F;setup.cfg<br>creating folder .&#x2F;my_package&#x2F;resource<br>creating .&#x2F;my_package&#x2F;resource&#x2F;my_package<br>creating .&#x2F;my_package&#x2F;my_package&#x2F;__init__.py<br>creating folder .&#x2F;my_package&#x2F;test<br>creating .&#x2F;my_package&#x2F;test&#x2F;test_copyright.py<br>creating .&#x2F;my_package&#x2F;test&#x2F;test_flake8.py<br>creating .&#x2F;my_package&#x2F;test&#x2F;test_pep257.py<br>creating .&#x2F;my_package&#x2F;my_package&#x2F;my_node.py</p>
+<p>接下来我们build这个包。返回到环境根目录下：</p>
+<p>cd ..<br>colcon build</p>
+<p>colcon build会build所有的包，也可以通过参数选择：</p>
+<p>colcon build –packages-select my_package</p>
+<p>接下来和创建环境中的步骤一样：</p>
+<p>. install&#x2F;setup.bash<br>ros2 run my_package my_node</p>
+<p>输出如下：</p>
+<p>Hi from my_package.</p>
+<h2 id="修改包的元信息"><a href="#修改包的元信息" class="headerlink" title="修改包的元信息"></a>修改包的元信息</h2><p>我们知道，包其实就是node的一种表现形式。修改node也是通过修改包来体现的。所以我们该如何修改包呢？首先再来看看我们刚刚创建的包里都有什么：</p>
+<p>my_package  package.xml  resource  setup.cfg  setup.py  test</p>
+<p>首先来对package.xml进行修改，这类似于给包打上一下标签，例如它的版本，依赖项，作者的一些信息等。</p>
+<?xml version="1.0"?>
+<?xml-model
+   href="http://download.ros.org/schema/package\_format3.xsd"
+   schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+ <name>my\_package</name>
+ <version>0.0.0</version>
+ <description>TODO: Package description</description>
+ <maintainer email="user@todo.todo">user</maintainer>
+ <license>TODO: License declaration</license>
+
+<p> &lt;test_depend&gt;ament_copyright&lt;&#x2F;test_depend&gt;<br> &lt;test_depend&gt;ament_flake8&lt;&#x2F;test_depend&gt;<br> &lt;test_depend&gt;ament_pep257&lt;&#x2F;test_depend&gt;<br> &lt;test_depend&gt;python3-pytest&lt;&#x2F;test_depend&gt;</p>
+ <export>
+   <build\_type>ament\_python</build\_type>
+ </export>
+</package>
+
+<p>可以修改name、version、description等信息。depend列出了package的一些依赖项，很像maven的管理模式。修改了xml里的信息后，也需要到setup.py里修改：</p>
+<p>from setuptools import setup</p>
+<p>package_name &#x3D; ‘my_py_pkg’</p>
+<p>setup(<br> name&#x3D;package_name,<br> version&#x3D;’0.0.0’,<br> packages&#x3D;[package_name],<br> data_files&#x3D;[<br>     (‘share&#x2F;ament_index&#x2F;resource_index&#x2F;packages’,<br>             [‘resource&#x2F;‘ + package_name]),<br>     (‘share&#x2F;‘ + package_name, [‘package.xml’]),<br>   ],<br> install_requires&#x3D;[‘setuptools’],<br> zip_safe&#x3D;True,<br> maintainer&#x3D;’TODO’,<br> maintainer_email&#x3D;’TODO’,<br> description&#x3D;’TODO: Package description’,<br> license&#x3D;’TODO: License declaration’,<br> tests_require&#x3D;[‘pytest’],<br> entry_points&#x3D;{<br>     ‘console_scripts’: [<br>             ‘my_node &#x3D; my_py_pkg.my_node:main’<br>     ],<br>   },<br>)</p>
+<p>package.xml和setup.py里的信息要一一对应。到这里我们大概了解了ROS的文件组织模式，下一章中我们开始尝试设计并运行一个简单的ROS系统。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/21/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9Aros%E4%B8%AD%E7%9A%84%E6%A6%82%E5%BF%B5/" rel="prev" title="ROS2入门（一）：ROS中的概念">
+      <i class="fa fa-chevron-left"></i> ROS2入门（一）：ROS中的概念
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/27/deepin%E9%85%8D%E7%BD%AEintelnvidia%E5%8F%8C%E6%98%BE%E5%8D%A1/" rel="next" title="Deepin配置Intel&Nvidia双显卡">
+      Deepin配置Intel&Nvidia双显卡 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">启动创建文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%8E%AF%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">创建环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%8C%85"><span class="nav-number">3.</span> <span class="nav-text">创建包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E5%8C%85"><span class="nav-number">4.</span> <span class="nav-text">环境下的包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E5%8C%85%E7%9A%84%E5%85%83%E4%BF%A1%E6%81%AF"><span class="nav-number">5.</span> <span class="nav-text">修改包的元信息</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

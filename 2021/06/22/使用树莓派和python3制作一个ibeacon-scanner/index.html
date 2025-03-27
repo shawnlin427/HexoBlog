@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="iBeacon是Apple出具的低功耗单方向蓝牙通讯技术。理论上来说，支持低功耗蓝牙（Bluetooth4.0以上）的设备都可以成为一个iBeacon信标或者一个iBeacon Reader。树莓派Zero W内置了蓝牙4.0，因此也可以作为一个iBeacon Reader。 IOS下，可以使用Virtual Beacon应用将手机变为一个iBeacon信标。微信官方的iBeacon UUID为：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用树莓派和python3制作一个iBeacon Scanner">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/06/22/%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE%E5%92%8Cpython3%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AAibeacon-scanner/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="iBeacon是Apple出具的低功耗单方向蓝牙通讯技术。理论上来说，支持低功耗蓝牙（Bluetooth4.0以上）的设备都可以成为一个iBeacon信标或者一个iBeacon Reader。树莓派Zero W内置了蓝牙4.0，因此也可以作为一个iBeacon Reader。 IOS下，可以使用Virtual Beacon应用将手机变为一个iBeacon信标。微信官方的iBeacon UUID为：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-22T07:27:04.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.535Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/06/22/%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE%E5%92%8Cpython3%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AAibeacon-scanner/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用树莓派和python3制作一个iBeacon Scanner | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/06/22/%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE%E5%92%8Cpython3%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AAibeacon-scanner/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用树莓派和python3制作一个iBeacon Scanner
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-22 15:27:04" itemprop="dateCreated datePublished" datetime="2021-06-22T15:27:04+08:00">2021-06-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/embedded/" itemprop="url" rel="index"><span itemprop="name">embedded</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/embedded/%E6%A0%91%E8%8E%93%E6%B4%BE/" itemprop="url" rel="index"><span itemprop="name">树莓派</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>iBeacon是Apple出具的低功耗单方向蓝牙通讯技术。理论上来说，支持低功耗蓝牙（Bluetooth4.0以上）的设备都可以成为一个iBeacon信标或者一个iBeacon Reader。树莓派Zero W内置了蓝牙4.0，因此也可以作为一个iBeacon Reader。</p>
+<p>IOS下，可以使用Virtual Beacon应用将手机变为一个iBeacon信标。微信官方的iBeacon UUID为：UUID：FDA50693-A4E2-4FB1-AFCF-C6EB07647825，Major：10001，Minor：12345。</p>
+<h2 id="配置树莓派"><a href="#配置树莓派" class="headerlink" title="配置树莓派"></a>配置树莓派</h2><p>下一步，配置树莓派。过程参考了<a target="_blank" rel="noopener" href="https://github.com/bowdentheo/BLE-Beacon-Scanner%EF%BC%8C%E4%BD%86%E6%98%AF%E8%BF%99%E4%B8%AAproject%E5%B9%B4%E4%BB%A3%E4%B9%85%E8%BF%9C%EF%BC%8C%E4%BD%BF%E7%94%A8%E7%9A%84%E6%98%AFpython2.%E7%BB%8F%E8%BF%87%E6%B5%8B%E8%AF%95%EF%BC%8C%E7%BB%8F%E8%BF%87%E5%BE%AE%E5%B0%8F%E4%BF%AE%E6%94%B9%E5%9C%A8python3%E4%B8%8A%E4%B9%9F%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%EF%BC%9A">https://github.com/bowdentheo/BLE-Beacon-Scanner，但是这个project年代久远，使用的是python2.经过测试，经过微小修改在python3上也可以使用：</a></p>
+<p>安装相关依赖：</p>
+<p>sudo apt-get update<br>sudo apt-get install python3-pip python-dev ipython<br>sudo apt-get install bluetooth libbluetooth-dev<br>sudo pip3 install pybluez<br>sudo pip3 install future</p>
+<p>修改配置文件：</p>
+<p>cd &#x2F;lib&#x2F;systemd&#x2F;system<br>sudo nano bluetooth.service</p>
+<p>找到ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;libexec&#x2F;bluetooth&#x2F;bluetoothd，后面加上–experimental：</p>
+<p>ExecStart&#x3D;&#x2F;usr&#x2F;local&#x2F;libexec&#x2F;bluetooth&#x2F;bluetoothd –experimental</p>
+<p>重启蓝牙服务：</p>
+<p>sudo systemctl daemon-reload<br>sudo systemctl restart bluetooth</p>
+<h2 id="Scanner-脚本"><a href="#Scanner-脚本" class="headerlink" title="Scanner 脚本"></a>Scanner 脚本</h2><p>参考（搬运）了<a target="_blank" rel="noopener" href="https://github.com/switchdoclabs/SDL_Pi_iBeaconScanner">https://github.com/switchdoclabs/SDL_Pi_iBeaconScanner</a>里的脚本。该脚本会搜索周边的所有蓝牙设备并返回参数。但是我们并不需要全部的蓝牙设备，只需要iBeacon，因此进行一点点修改：</p>
+<p>blescan.py:</p>
+<p>from __future__ import print_function</p>
+<h1 id="BLE-iBeaconScanner-based-on-https-github-com-adamf-BLE-blob-master-ble-scanner-py"><a href="#BLE-iBeaconScanner-based-on-https-github-com-adamf-BLE-blob-master-ble-scanner-py" class="headerlink" title="BLE iBeaconScanner based on https://github.com/adamf/BLE/blob/master/ble-scanner.py"></a>BLE iBeaconScanner based on <a target="_blank" rel="noopener" href="https://github.com/adamf/BLE/blob/master/ble-scanner.py">https://github.com/adamf/BLE/blob/master/ble-scanner.py</a></h1><h1 id="SwitchDoc-Lab-December-2020"><a href="#SwitchDoc-Lab-December-2020" class="headerlink" title="SwitchDoc Lab December 2020"></a>SwitchDoc Lab December 2020</h1><p>from builtins import range<br>DEBUG &#x3D; False</p>
+<h1 id="BLE-scanner-based-on-https-github-com-adamf-BLE-blob-master-ble-scanner-py"><a href="#BLE-scanner-based-on-https-github-com-adamf-BLE-blob-master-ble-scanner-py" class="headerlink" title="BLE scanner based on https://github.com/adamf/BLE/blob/master/ble-scanner.py"></a>BLE scanner based on <a target="_blank" rel="noopener" href="https://github.com/adamf/BLE/blob/master/ble-scanner.py">https://github.com/adamf/BLE/blob/master/ble-scanner.py</a></h1><h1 id="BLE-scanner-based-on-https-code-google-com-p-pybluez-source-browse-trunk-examples-advanced-inquiry-with-rssi-py"><a href="#BLE-scanner-based-on-https-code-google-com-p-pybluez-source-browse-trunk-examples-advanced-inquiry-with-rssi-py" class="headerlink" title="BLE scanner, based on https://code.google.com/p/pybluez/source/browse/trunk/examples/advanced/inquiry-with-rssi.py"></a>BLE scanner, based on <a target="_blank" rel="noopener" href="https://code.google.com/p/pybluez/source/browse/trunk/examples/advanced/inquiry-with-rssi.py">https://code.google.com/p/pybluez/source/browse/trunk/examples/advanced/inquiry-with-rssi.py</a></h1><h1 id="https-github-com-pauloborges-bluez-blob-master-tools-hcitool-c-for-lescan"><a href="#https-github-com-pauloborges-bluez-blob-master-tools-hcitool-c-for-lescan" class="headerlink" title="https://github.com/pauloborges/bluez/blob/master/tools/hcitool.c for lescan"></a><a target="_blank" rel="noopener" href="https://github.com/pauloborges/bluez/blob/master/tools/hcitool.c">https://github.com/pauloborges/bluez/blob/master/tools/hcitool.c</a> for lescan</h1><h1 id="https-kernel-googlesource-com-pub-scm-bluetooth-bluez-5-6-lib-hci-h-for-opcodes"><a href="#https-kernel-googlesource-com-pub-scm-bluetooth-bluez-5-6-lib-hci-h-for-opcodes" class="headerlink" title="https://kernel.googlesource.com/pub/scm/bluetooth/bluez/+/5.6/lib/hci.h for opcodes"></a><a target="_blank" rel="noopener" href="https://kernel.googlesource.com/pub/scm/bluetooth/bluez/+/5.6/lib/hci.h">https://kernel.googlesource.com/pub/scm/bluetooth/bluez/+/5.6/lib/hci.h</a> for opcodes</h1><h1 id="https-github-com-pauloborges-bluez-blob-master-lib-hci-c-L2782-for-functions-used-by-lescan"><a href="#https-github-com-pauloborges-bluez-blob-master-lib-hci-c-L2782-for-functions-used-by-lescan" class="headerlink" title="https://github.com/pauloborges/bluez/blob/master/lib/hci.c#L2782 for functions used by lescan"></a><a target="_blank" rel="noopener" href="https://github.com/pauloborges/bluez/blob/master/lib/hci.c#L2782">https://github.com/pauloborges/bluez/blob/master/lib/hci.c#L2782</a> for functions used by lescan</h1><h1 id="performs-a-simple-device-inquiry-and-returns-a-list-of-ble-advertizements"><a href="#performs-a-simple-device-inquiry-and-returns-a-list-of-ble-advertizements" class="headerlink" title="performs a simple device inquiry, and returns a list of ble advertizements"></a>performs a simple device inquiry, and returns a list of ble advertizements</h1><h1 id="discovered-device"><a href="#discovered-device" class="headerlink" title="discovered device"></a>discovered device</h1><h1 id="NOTE-Python’s-struct-pack-will-add-padding-bytes-unless-you-make-the-endianness-explicit-Little-endian"><a href="#NOTE-Python’s-struct-pack-will-add-padding-bytes-unless-you-make-the-endianness-explicit-Little-endian" class="headerlink" title="NOTE: Python’s struct.pack() will add padding bytes unless you make the endianness explicit. Little endian"></a>NOTE: Python’s struct.pack() will add padding bytes unless you make the endianness explicit. Little endian</h1><h1 id="should-be-used-for-BLE-Always-start-a-struct-pack-format-string-with-“"><a href="#should-be-used-for-BLE-Always-start-a-struct-pack-format-string-with-“" class="headerlink" title="should be used for BLE. Always start a struct.pack() format string with “&lt;”"></a>should be used for BLE. Always start a struct.pack() format string with “&lt;”</h1><p>import os<br>import sys<br>import struct<br>import bluetooth._bluetooth as bluez</p>
+<p>LE_META_EVENT &#x3D; 0x3e<br>LE_PUBLIC_ADDRESS&#x3D;0x00<br>LE_RANDOM_ADDRESS&#x3D;0x01<br>LE_SET_SCAN_PARAMETERS_CP_SIZE&#x3D;7<br>OGF_LE_CTL&#x3D;0x08<br>OCF_LE_SET_SCAN_PARAMETERS&#x3D;0x000B<br>OCF_LE_SET_SCAN_ENABLE&#x3D;0x000C<br>OCF_LE_CREATE_CONN&#x3D;0x000D</p>
+<p>LE_ROLE_MASTER &#x3D; 0x00<br>LE_ROLE_SLAVE &#x3D; 0x01</p>
+<h1 id="these-are-actually-subevents-of-LE-META-EVENT"><a href="#these-are-actually-subevents-of-LE-META-EVENT" class="headerlink" title="these are actually subevents of LE_META_EVENT"></a>these are actually subevents of LE_META_EVENT</h1><p>EVT_LE_CONN_COMPLETE&#x3D;0x01<br>EVT_LE_ADVERTISING_REPORT&#x3D;0x02<br>EVT_LE_CONN_UPDATE_COMPLETE&#x3D;0x03<br>EVT_LE_READ_REMOTE_USED_FEATURES_COMPLETE&#x3D;0x04</p>
+<h1 id="Advertisment-event-types"><a href="#Advertisment-event-types" class="headerlink" title="Advertisment event types"></a>Advertisment event types</h1><p>ADV_IND&#x3D;0x00<br>ADV_DIRECT_IND&#x3D;0x01<br>ADV_SCAN_IND&#x3D;0x02<br>ADV_NONCONN_IND&#x3D;0x03<br>ADV_SCAN_RSP&#x3D;0x04</p>
+<p>def returnnumberpacket(pkt):<br>    myInteger &#x3D; 0<br>    multiple &#x3D; 256<br>    for c in pkt:<br>        myInteger +&#x3D;  struct.unpack(“B”,c.to_bytes(1,’little’))[0] * multiple<br>        multiple &#x3D; 1<br>    return myInteger </p>
+<p>def returnstringpacket(pkt):<br>    myString &#x3D; “”;<br>    for c in pkt:<br>        myString +&#x3D;  “%02x” %struct.unpack(“B”,c.to_bytes(1,’little’))[0]<br>    return myString </p>
+<p>def printpacket(pkt):<br>    for c in pkt:<br>        sys.stdout.write(“%02x “ % struct.unpack(“B”,c.to_bytes(1,’little’))[0])</p>
+<p>def packetToString(packet):<br>    “””<br>    Returns the string representation of a raw HCI packet.<br>    “””<br>    if sys.version_info &gt; (3, 0):<br>        return ‘’.join(‘%02x’ % struct.unpack(“B”, bytes([x]))[0] for x in packet)<br>    else:<br>        return ‘’.join(‘%02x’ % struct.unpack(“B”, x)[0] for x in packet)</p>
+<p>def get_packed_bdaddr(bdaddr_string):<br>    packable_addr &#x3D; []<br>    addr &#x3D; bdaddr_string.split(‘:’)<br>    addr.reverse()<br>    for b in addr:<br>        packable_addr.append(int(b, 16))<br>    return struct.pack(“&lt;BBBBBB”, *packable_addr)</p>
+<p>def packed_bdaddr_to_string(bdaddr_packed):<br>    if (len(bdaddr_packed) &#x3D;&#x3D; 6):<br>        return ‘:’.join(‘%02x’%i for i in struct.unpack(“&lt;BBBBBB”, bdaddr_packed[::-1]))<br>    return ‘:’.join(‘%02x’%i for i in struct.unpack(“&lt;BBBBBBBB”, bdaddr_packed[::-1]))</p>
+<p>def hci_enable_le_scan(sock):<br>    hci_toggle_le_scan(sock, 0x01)</p>
+<p>def hci_disable_le_scan(sock):<br>    hci_toggle_le_scan(sock, 0x00)</p>
+<p>def hci_toggle_le_scan(sock, enable):</p>
+<h1 id="hci-le-set-scan-enable-dd-0x01-filter-dup-1000"><a href="#hci-le-set-scan-enable-dd-0x01-filter-dup-1000" class="headerlink" title="hci_le_set_scan_enable(dd, 0x01, filter_dup, 1000);"></a>hci_le_set_scan_enable(dd, 0x01, filter_dup, 1000);</h1><h1 id="memset-scan-cp-0-sizeof-scan-cp"><a href="#memset-scan-cp-0-sizeof-scan-cp" class="headerlink" title="memset(&amp;scan_cp, 0, sizeof(scan_cp));"></a>memset(&amp;scan_cp, 0, sizeof(scan_cp));</h1><p> #uint8_t         enable;</p>
+<h1 id="uint8-t-filter-dup"><a href="#uint8-t-filter-dup" class="headerlink" title="uint8_t         filter_dup;"></a>uint8_t         filter_dup;</h1><h1 id="scan-cp-enable-enable"><a href="#scan-cp-enable-enable" class="headerlink" title="scan_cp.enable &#x3D; enable;"></a>scan_cp.enable &#x3D; enable;</h1><h1 id="scan-cp-filter-dup-filter-dup"><a href="#scan-cp-filter-dup-filter-dup" class="headerlink" title="scan_cp.filter_dup &#x3D; filter_dup;"></a>scan_cp.filter_dup &#x3D; filter_dup;</h1><h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="memset-rq-0-sizeof-rq"><a href="#memset-rq-0-sizeof-rq" class="headerlink" title="memset(&amp;rq, 0, sizeof(rq));"></a>memset(&amp;rq, 0, sizeof(rq));</h1><h1 id="rq-ogf-OGF-LE-CTL"><a href="#rq-ogf-OGF-LE-CTL" class="headerlink" title="rq.ogf &#x3D; OGF_LE_CTL;"></a>rq.ogf &#x3D; OGF_LE_CTL;</h1><h1 id="rq-ocf-OCF-LE-SET-SCAN-ENABLE"><a href="#rq-ocf-OCF-LE-SET-SCAN-ENABLE" class="headerlink" title="rq.ocf &#x3D; OCF_LE_SET_SCAN_ENABLE;"></a>rq.ocf &#x3D; OCF_LE_SET_SCAN_ENABLE;</h1><h1 id="rq-cparam-scan-cp"><a href="#rq-cparam-scan-cp" class="headerlink" title="rq.cparam &#x3D; &amp;scan_cp;"></a>rq.cparam &#x3D; &amp;scan_cp;</h1><h1 id="rq-clen-LE-SET-SCAN-ENABLE-CP-SIZE"><a href="#rq-clen-LE-SET-SCAN-ENABLE-CP-SIZE" class="headerlink" title="rq.clen &#x3D; LE_SET_SCAN_ENABLE_CP_SIZE;"></a>rq.clen &#x3D; LE_SET_SCAN_ENABLE_CP_SIZE;</h1><h1 id="rq-rparam-status"><a href="#rq-rparam-status" class="headerlink" title="rq.rparam &#x3D; &status;"></a>rq.rparam &#x3D; &status;</h1><h1 id="rq-rlen-1"><a href="#rq-rlen-1" class="headerlink" title="rq.rlen &#x3D; 1;"></a>rq.rlen &#x3D; 1;</h1><h1 id="if-hci-send-req-dd-rq-to-0"><a href="#if-hci-send-req-dd-rq-to-0" class="headerlink" title="if (hci_send_req(dd, &amp;rq, to) &lt; 0)"></a>if (hci_send_req(dd, &amp;rq, to) &lt; 0)</h1><h1 id="return-1"><a href="#return-1" class="headerlink" title="return -1;"></a>return -1;</h1><pre><code>cmd\_pkt = struct.pack(&quot;&lt;BB&quot;, enable, 0x00)
+bluez.hci\_send\_cmd(sock, OGF\_LE\_CTL, OCF\_LE\_SET\_SCAN\_ENABLE, cmd\_pkt)
+</code></pre>
+<p>def hci_le_set_scan_parameters(sock):<br>    old_filter &#x3D; sock.getsockopt( bluez.SOL_HCI, bluez.HCI_FILTER, 14)</p>
+<pre><code>SCAN\_RANDOM = 0x01
+OWN\_TYPE = SCAN\_RANDOM
+SCAN\_TYPE = 0x01
+</code></pre>
+<p>def parse_events(sock, loop_count&#x3D;100):<br>    old_filter &#x3D; sock.getsockopt( bluez.SOL_HCI, bluez.HCI_FILTER, 14)</p>
+<pre><code># perform a device inquiry on bluetooth device #0
+# The inquiry should last 8 \* 1.28 = 10.24 seconds
+# before the inquiry is performed, bluez should flush its cache of
+# previously discovered devices
+flt = bluez.hci\_filter\_new()
+bluez.hci\_filter\_all\_events(flt)
+bluez.hci\_filter\_set\_ptype(flt, bluez.HCI\_EVENT\_PKT)
+sock.setsockopt( bluez.SOL\_HCI, bluez.HCI\_FILTER, flt )
+done = False
+results = \[\]
+myFullList = \[\]
+for i in range(0, loop\_count):
+    pkt = sock.recv(255)
+    ptype, event, plen = struct.unpack(&quot;BBB&quot;, pkt\[:3\])
+    dataString = packetToString(pkt)
+    if dataString\[38:46\] == &#39;4c000215&#39;:
+        pass
+    else:
+        continue
+    #print &quot;--------------&quot; 
+    if event == bluez.EVT\_INQUIRY\_RESULT\_WITH\_RSSI:
+         i =0
+    elif event == bluez.EVT\_NUM\_COMP\_PKTS:
+         i =0 
+    elif event == bluez.EVT\_DISCONN\_COMPLETE:
+         i =0 
+    elif event == LE\_META\_EVENT:
+
+        subevent, = struct.unpack(&quot;B&quot;, pkt\[3\].to\_bytes(1, &#39;little&#39;))
+
+        pkt = pkt\[4:\]
+        if subevent == EVT\_LE\_CONN\_COMPLETE:
+            le\_handle\_connection\_complete(pkt)
+        elif subevent == EVT\_LE\_ADVERTISING\_REPORT:
+            #print &quot;advertising report&quot;
+            num\_reports = struct.unpack(&quot;B&quot;, pkt\[0\].to\_bytes(1,&#39;little&#39;))\[0\]
+            report\_pkt\_offset = 0
+            for i in range(0, num\_reports):
+
+                if (DEBUG == True):
+                    print(&quot;-------------&quot;)
+                    #print &quot;\\tfullpacket: &quot;, printpacket(pkt)
+                    print(&quot;\\tUDID: &quot;, printpacket(pkt\[report\_pkt\_offset -22: report\_pkt\_offset - 6\]))
+                    print(&quot;\\tMAJOR: &quot;, printpacket(pkt\[report\_pkt\_offset -6: report\_pkt\_offset - 4\]))
+                    print(&quot;\\tMINOR: &quot;, printpacket(pkt\[report\_pkt\_offset -4: report\_pkt\_offset - 2\]))
+                    print(&quot;\\tMAC address: &quot;, packed\_bdaddr\_to\_string(pkt\[report\_pkt\_offset + 3:report\_pkt\_offset + 9\]))
+                    # commented out - don&#39;t know what this byte is.  It&#39;s NOT TXPower
+                    txpower, = struct.unpack(&quot;b&quot;, pkt\[report\_pkt\_offset -2\].to\_bytes(1,&#39;little&#39;))
+                    print(&quot;\\t(Unknown):&quot;, txpower)
+
+                    rssi, = struct.unpack(&quot;b&quot;, pkt\[report\_pkt\_offset -1\].to\_bytes(1,&#39;little&#39;))
+                    print(&quot;\\tRSSI:&quot;, rssi)
+                # build the return string
+                Adstring = packed\_bdaddr\_to\_string(pkt\[report\_pkt\_offset +1:report\_pkt\_offset + 9\])
+                Adstring += &quot;,&quot;
+                Adstring += returnstringpacket(pkt\[report\_pkt\_offset -22: report\_pkt\_offset - 6\]) 
+                Adstring += &quot;,&quot;
+                Adstring += &quot;%i&quot; % returnnumberpacket(pkt\[report\_pkt\_offset -6: report\_pkt\_offset - 4\]) 
+                Adstring += &quot;,&quot;
+                Adstring += &quot;%i&quot; % returnnumberpacket(pkt\[report\_pkt\_offset -4: report\_pkt\_offset - 2\]) 
+                Adstring += &quot;,&quot;
+                Adstring += &quot;%i&quot; % struct.unpack(&quot;b&quot;, pkt\[report\_pkt\_offset -2\].to\_bytes(1,&#39;little&#39;))
+                Adstring += &quot;,&quot;
+                Adstring += &quot;%i&quot; % struct.unpack(&quot;b&quot;, pkt\[report\_pkt\_offset -1\].to\_bytes(1,&#39;little&#39;))
+
+                #print &quot;\\tAdstring=&quot;, Adstring
+                myFullList.append(Adstring)
+            done = True
+sock.setsockopt( bluez.SOL\_HCI, bluez.HCI\_FILTER, old\_filter )
+return myFullList
+</code></pre>
+<p>testblescan.py:</p>
+<p>from __future__ import print_function</p>
+<h1 id="test-BLE-Scanning-software"><a href="#test-BLE-Scanning-software" class="headerlink" title="test BLE Scanning software"></a>test BLE Scanning software</h1><h1 id="SwitchDoc-Labs-December-2020"><a href="#SwitchDoc-Labs-December-2020" class="headerlink" title="SwitchDoc Labs December 2020"></a>SwitchDoc Labs December 2020</h1><p>import blescan<br>import sys<br>import time<br>import bluetooth._bluetooth as bluez</p>
+<p>dev_id &#x3D; 0<br>try:<br>        sock &#x3D; bluez.hci_open_dev(dev_id)<br>        print (“ble thread started”)</p>
+<p>except:<br>    print (“error accessing bluetooth device…”)<br>    sys.exit(1)</p>
+<p>blescan.hci_le_set_scan_parameters(sock)<br>blescan.hci_enable_le_scan(sock)</p>
+<p>while True:<br>        returnedList &#x3D; blescan.parse_events(sock, 10)<br>        #print(returnedList)<br>        rssiDict &#x3D; {}<br>        for item in returnedList:<br>                itemList &#x3D; item.split(‘,’)<br>                itemKey &#x3D; itemList[1]+’:’+str(itemList[2])+’:’+str(itemList[3])<br>                if (itemKey in rssiDict.keys()):<br>                        rssiDict[itemKey][‘rssi’].append(int(itemList[-1]))<br>                else:<br>                        rssiDict[itemKey] &#x3D; {‘rssi’:[int(itemList[-1])]}<br>        for each in rssiDict:<br>                rssiDict[each][‘ave’] &#x3D; sum(rssiDict[each][‘rssi’])&#x2F;len(rssiDict[each][‘rssi’])<br>        print(rssiDict)<br>        print(“”)<br>        print(“————-“)<br>        time.sleep(1)</p>
+<p>blescan.py搜索一个loop内（默认100次）周边的蓝牙信号，返回结果。加入一个if判断信号标记是否符合iBeacon的编码，从而过滤非iBeacon的蓝牙信号。由于是返回loop内所有获得的蓝牙信号，因此返回值很有可能有重复，在testblescan.py我对相同iBeacon的RSSI去了平均后再返回，从而一个iBeacon只返回一个值。</p>
+<p>最后使用sudo python3 testblescan.py，不要忘了sudo，因为涉及到系统库调用。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/10/%E7%8E%A9%E5%90%8E%E6%84%9F-%E7%81%B5%E5%AA%92-the-medium/" rel="prev" title="玩后感-灵媒 (The Medium)">
+      <i class="fa fa-chevron-left"></i> 玩后感-灵媒 (The Medium)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/23/gazebo%E7%B3%BB%E5%88%97%EF%BC%9Acontain%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="next" title="Gazebo系列：contain插件的使用">
+      Gazebo系列：contain插件的使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%A0%91%E8%8E%93%E6%B4%BE"><span class="nav-number">1.</span> <span class="nav-text">配置树莓派</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scanner-%E8%84%9A%E6%9C%AC"><span class="nav-number">2.</span> <span class="nav-text">Scanner 脚本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BLE-iBeaconScanner-based-on-https-github-com-adamf-BLE-blob-master-ble-scanner-py"><span class="nav-number"></span> <span class="nav-text">BLE iBeaconScanner based on https:&#x2F;&#x2F;github.com&#x2F;adamf&#x2F;BLE&#x2F;blob&#x2F;master&#x2F;ble-scanner.py</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SwitchDoc-Lab-December-2020"><span class="nav-number"></span> <span class="nav-text">SwitchDoc Lab December 2020</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BLE-scanner-based-on-https-github-com-adamf-BLE-blob-master-ble-scanner-py"><span class="nav-number"></span> <span class="nav-text">BLE scanner based on https:&#x2F;&#x2F;github.com&#x2F;adamf&#x2F;BLE&#x2F;blob&#x2F;master&#x2F;ble-scanner.py</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BLE-scanner-based-on-https-code-google-com-p-pybluez-source-browse-trunk-examples-advanced-inquiry-with-rssi-py"><span class="nav-number"></span> <span class="nav-text">BLE scanner, based on https:&#x2F;&#x2F;code.google.com&#x2F;p&#x2F;pybluez&#x2F;source&#x2F;browse&#x2F;trunk&#x2F;examples&#x2F;advanced&#x2F;inquiry-with-rssi.py</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#https-github-com-pauloborges-bluez-blob-master-tools-hcitool-c-for-lescan"><span class="nav-number"></span> <span class="nav-text">https:&#x2F;&#x2F;github.com&#x2F;pauloborges&#x2F;bluez&#x2F;blob&#x2F;master&#x2F;tools&#x2F;hcitool.c for lescan</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#https-kernel-googlesource-com-pub-scm-bluetooth-bluez-5-6-lib-hci-h-for-opcodes"><span class="nav-number"></span> <span class="nav-text">https:&#x2F;&#x2F;kernel.googlesource.com&#x2F;pub&#x2F;scm&#x2F;bluetooth&#x2F;bluez&#x2F;+&#x2F;5.6&#x2F;lib&#x2F;hci.h for opcodes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#https-github-com-pauloborges-bluez-blob-master-lib-hci-c-L2782-for-functions-used-by-lescan"><span class="nav-number"></span> <span class="nav-text">https:&#x2F;&#x2F;github.com&#x2F;pauloborges&#x2F;bluez&#x2F;blob&#x2F;master&#x2F;lib&#x2F;hci.c#L2782 for functions used by lescan</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#performs-a-simple-device-inquiry-and-returns-a-list-of-ble-advertizements"><span class="nav-number"></span> <span class="nav-text">performs a simple device inquiry, and returns a list of ble advertizements</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#discovered-device"><span class="nav-number"></span> <span class="nav-text">discovered device</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NOTE-Python%E2%80%99s-struct-pack-will-add-padding-bytes-unless-you-make-the-endianness-explicit-Little-endian"><span class="nav-number"></span> <span class="nav-text">NOTE: Python’s struct.pack() will add padding bytes unless you make the endianness explicit. Little endian</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#should-be-used-for-BLE-Always-start-a-struct-pack-format-string-with-%E2%80%9C"><span class="nav-number"></span> <span class="nav-text">should be used for BLE. Always start a struct.pack() format string with “&lt;”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#these-are-actually-subevents-of-LE-META-EVENT"><span class="nav-number"></span> <span class="nav-text">these are actually subevents of LE_META_EVENT</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Advertisment-event-types"><span class="nav-number"></span> <span class="nav-text">Advertisment event types</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hci-le-set-scan-enable-dd-0x01-filter-dup-1000"><span class="nav-number"></span> <span class="nav-text">hci_le_set_scan_enable(dd, 0x01, filter_dup, 1000);</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#memset-scan-cp-0-sizeof-scan-cp"><span class="nav-number"></span> <span class="nav-text">memset(&amp;scan_cp, 0, sizeof(scan_cp));</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#uint8-t-filter-dup"><span class="nav-number"></span> <span class="nav-text">uint8_t         filter_dup;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#scan-cp-enable-enable"><span class="nav-number"></span> <span class="nav-text">scan_cp.enable &#x3D; enable;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#scan-cp-filter-dup-filter-dup"><span class="nav-number"></span> <span class="nav-text">scan_cp.filter_dup &#x3D; filter_dup;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number"></span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#memset-rq-0-sizeof-rq"><span class="nav-number"></span> <span class="nav-text">memset(&amp;rq, 0, sizeof(rq));</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rq-ogf-OGF-LE-CTL"><span class="nav-number"></span> <span class="nav-text">rq.ogf &#x3D; OGF_LE_CTL;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rq-ocf-OCF-LE-SET-SCAN-ENABLE"><span class="nav-number"></span> <span class="nav-text">rq.ocf &#x3D; OCF_LE_SET_SCAN_ENABLE;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rq-cparam-scan-cp"><span class="nav-number"></span> <span class="nav-text">rq.cparam &#x3D; &scan_cp;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rq-clen-LE-SET-SCAN-ENABLE-CP-SIZE"><span class="nav-number"></span> <span class="nav-text">rq.clen &#x3D; LE_SET_SCAN_ENABLE_CP_SIZE;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rq-rparam-status"><span class="nav-number"></span> <span class="nav-text">rq.rparam &#x3D; &status;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rq-rlen-1"><span class="nav-number"></span> <span class="nav-text">rq.rlen &#x3D; 1;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#if-hci-send-req-dd-rq-to-0"><span class="nav-number"></span> <span class="nav-text">if (hci_send_req(dd, &amp;rq, to) &lt; 0)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#return-1"><span class="nav-number"></span> <span class="nav-text">return -1;</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#test-BLE-Scanning-software"><span class="nav-number"></span> <span class="nav-text">test BLE Scanning software</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SwitchDoc-Labs-December-2020"><span class="nav-number"></span> <span class="nav-text">SwitchDoc Labs December 2020</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

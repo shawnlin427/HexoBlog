@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wonderful-sea-04900b000.6.azurestaticapps.net","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Ubuntu 20.04 ROS Noetic Gazebo11 Moveit Kinova-ros Aruco-ros Blender IntelRealsense-ros  制作追踪目标Blender导入模型  贴个图  导出到Dae，获得dae和贴图  文件组织 .└── aruco_hook    ├── aruco_hook.sdf    ├── materials    │   └─">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机械臂目标追踪仿真">
+<meta property="og:url" content="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/11/03/%E6%9C%BA%E6%A2%B0%E8%87%82%E7%9B%AE%E6%A0%87%E8%BF%BD%E8%B8%AA%E4%BB%BF%E7%9C%9F/index.html">
+<meta property="og:site_name" content="Shawn Lin&#39;s Blog">
+<meta property="og:description" content="Ubuntu 20.04 ROS Noetic Gazebo11 Moveit Kinova-ros Aruco-ros Blender IntelRealsense-ros  制作追踪目标Blender导入模型  贴个图  导出到Dae，获得dae和贴图  文件组织 .└── aruco_hook    ├── aruco_hook.sdf    ├── materials    │   └─">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-3-1024x804.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-4-1024x548.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-5-1024x478.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-6-1024x702.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-7-1024x503.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-8-1024x359.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-9-1024x583.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-10-1024x555.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-11-1024x602.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-13-1024x654.png">
+<meta property="og:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-14-1024x615.png">
+<meta property="article:published_time" content="2022-11-03T08:02:53.000Z">
+<meta property="article:modified_time" content="2025-03-27T07:52:33.708Z">
+<meta property="article:author" content="Xiao Lin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.lxshaw.com/wp-content/uploads/2022/11/image-3-1024x804.png">
+
+<link rel="canonical" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/11/03/%E6%9C%BA%E6%A2%B0%E8%87%82%E7%9B%AE%E6%A0%87%E8%BF%BD%E8%B8%AA%E4%BB%BF%E7%9C%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>机械臂目标追踪仿真 | Shawn Lin's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Shawn Lin's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/11/03/%E6%9C%BA%E6%A2%B0%E8%87%82%E7%9B%AE%E6%A0%87%E8%BF%BD%E8%B8%AA%E4%BB%BF%E7%9C%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          机械臂目标追踪仿真
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-03 16:02:53" itemprop="dateCreated datePublished" datetime="2022-11-03T16:02:53+08:00">2022-11-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/Robotics/" itemprop="url" rel="index"><span itemprop="name">Robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ol>
+<li>Ubuntu 20.04</li>
+<li>ROS Noetic</li>
+<li>Gazebo11</li>
+<li>Moveit</li>
+<li>Kinova-ros</li>
+<li>Aruco-ros</li>
+<li>Blender</li>
+<li>IntelRealsense-ros</li>
+</ol>
+<h2 id="制作追踪目标"><a href="#制作追踪目标" class="headerlink" title="制作追踪目标"></a>制作追踪目标</h2><p>Blender导入模型</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-3-1024x804.png"></a></p>
+<p>贴个图</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-4.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-4-1024x548.png"></a></p>
+<p>导出到Dae，获得dae和贴图</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-5-1024x478.png"></a></p>
+<p>文件组织</p>
+<p>.<br>└── aruco_hook<br>    ├── aruco_hook.sdf<br>    ├── materials<br>    │   └── textures<br>    │       └── aruco-582.png<br>    ├── meshes<br>    │   └── untitled.dae<br>    └── model.config</p>
+<p>Gazebo里面</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-6.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-6-1024x702.png"></a></p>
+<h2 id="Kinova机器人仿真"><a href="#Kinova机器人仿真" class="headerlink" title="Kinova机器人仿真"></a>Kinova机器人仿真</h2><p>roslaunch kinova_gazebo robot_launch.launch</p>
+<p>报错：process has died [pid 9323, exit code 255, cmd &#x2F;opt&#x2F;ros&#x2F;noetic&#x2F;lib&#x2F;gazebo_ros&#x2F;gzserver -u -e ode &#x2F;home&#x2F;lin&#x2F;kinova_ws&#x2F;src&#x2F;kinova-ros&#x2F;kinova_gazebo&#x2F;worlds&#x2F;jaco.world __name:&#x3D;gazebo __log:&#x3D;&#x2F;home&#x2F;lin&#x2F;.ros&#x2F;log&#x2F;f6f9f014-5b38-11ed-a96a-9344835dca73&#x2F;gazebo-2.log].</p>
+<p>killall gzserver</p>
+<h2 id="Realsense仿真"><a href="#Realsense仿真" class="headerlink" title="Realsense仿真"></a>Realsense仿真</h2><p><a target="_blank" rel="noopener" href="https://github.com/pal-robotics/realsense_gazebo_plugin.git">https://github.com/pal-robotics/realsense_gazebo_plugin.git</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/IntelRealSense/realsense-ros.git">https://github.com/IntelRealSense/realsense-ros.git</a></p>
+<p>编译</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/pal-robotics-forks/realsense/tree/upstream/realsense2_description/urdf">https://github.com/pal-robotics-forks/realsense/tree/upstream/realsense2_description&#x2F;urdf</a></p>
+<p>用这里的<a target="_blank" rel="noopener" href="https://github.com/pal-robotics-forks/realsense/blob/upstream/realsense2_description/urdf/_d435.urdf.xacro">_d435.urdf.xacro</a>、<a target="_blank" rel="noopener" href="https://github.com/pal-robotics-forks/realsense/blob/upstream/realsense2_description/urdf/_d435.gazebo.xacro">_d435.gazebo.xacro</a>替换<a target="_blank" rel="noopener" href="https://github.com/IntelRealSense/realsense-ros.git">realsense-ros</a>库里的xacro文件，复制<a target="_blank" rel="noopener" href="https://github.com/pal-robotics-forks/realsense/blob/upstream/realsense2_description/urdf/test_d435_camera.urdf.xacro">test_d435_camera.urdf.xacro</a>文件</p>
+<p>查看是否成功</p>
+<p>rosrun gazebo_ros spawn_model -urdf -file test_d435_camera.urdf -model realsense2_camera</p>
+<p>这里urdf要自己手动生成一下</p>
+<p><strong>BUG</strong>：没有点云数据</p>
+<p>检查_d435.gazebo.xacro里设置是否开启</p>
+<pre><code>  &lt;pointCloud&gt;true&lt;/pointCloud&gt;
+</code></pre>
+<h2 id="Realsense添加到机器人上"><a href="#Realsense添加到机器人上" class="headerlink" title="Realsense添加到机器人上"></a>Realsense添加到机器人上</h2><p>robot_launch里修改参数，用自己喜欢的Kinova机器人</p>
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->  
+  <arg name="kinova\_robotType" default="j2n7s300"/>
+  <arg name="kinova\_robotName" default="$(arg kinova\_robotType)"/>
+  <arg name="paused" default="true"/>
+  <arg name="use\_sim\_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  <arg name="use\_trajectory\_controller" default="true"/>
+  <arg name="is7dof" default="true"/>
+  <arg name="rqt" default="false"/>
+  <arg name="has2finger" default="false"/>
+  <arg name="description\_name" default="robot\_description"/> <!-- allows remapping of robot\_description into a namespace -->
+
+<p>对应的RobotDescription是j2n7s300_standalone.xacro，添加描述</p>
+<pre><code>&lt;xacro:include filename=&quot;$(find realsense2\_description)/urdf/\_d435.urdf.xacro&quot; /&gt;
+</code></pre>
+<p>&lt;xacro:sensor_d435 parent&#x3D;”j2n7s300_link_base”&gt;<br>    <origin xyz="0.3 0.4 0.5" rpy="0 0 0"/><br>  &lt;&#x2F;xacro:sensor_d435&gt;</p>
+<p>运行launchfile</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-7.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-7-1024x503.png"></a></p>
+<p>Rviz</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-8.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-8-1024x359.png"></a></p>
+<h2 id="识别Aruco"><a href="#识别Aruco" class="headerlink" title="识别Aruco"></a>识别Aruco</h2><p>新写个Launch file一起启动gazebo模拟和aruco detector</p>
+<launch>
+  <include file="$(find kinova\_gazebo)/launch/robot\_launch.launch"/>
+
+  <include file="$(find aruco\_ros)/launch/single.launch">
+    <arg name="markerId" value="582"/>
+    <arg name="markerSize" value="0.034"/>
+    <arg name="ref\_frame" value="camera\_color\_frame"/>
+  </include>
+
+</launch>
+
+<p>运行效果</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-9.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-9-1024x583.png"></a></p>
+<p>方向错了，把aruco中single launch的ref frame和camera frame改成camera_color_optical_frame</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-10.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-10-1024x555.png"></a></p>
+<p>这下对了</p>
+<h2 id="Moveit！"><a href="#Moveit！" class="headerlink" title="Moveit！"></a>Moveit！</h2><p>开启模拟</p>
+<p>roslaunch kinova_gazebo robot_launch.launch kinova_robotType:&#x3D;j2s7s300</p>
+<p>启动Moveit</p>
+<p>roslaunch j2s7s300_moveit_config j2s7s300_gazebo_demo.launch</p>
+<p><strong>报错</strong></p>
+<p>[ERROR] [1667528001.838003987, 12.500000000]: The kinematics plugin (arm) failed to load. Error: According to the loaded plugin descriptions the class trac_ik_kinematics_plugin&#x2F;TRAC_IKKinematicsPlugin with base class type kinematics::KinematicsBase does not exist. Declared types are cached_ik_kinematics_plugin&#x2F;CachedKDLKinematicsPlugin cached_ik_kinematics_plugin&#x2F;CachedSrvKinematicsPlugin j2n6s300_arm_kinematics&#x2F;IKFastKinematicsPlugin j2s6s300_arm_kinematics&#x2F;IKFastKinematicsPlugin j2s7s300_robot_arm_kinematics&#x2F;IKFastKinematicsPlugin kdl_kinematics_plugin&#x2F;KDLKinematicsPlugin lma_kinematics_plugin&#x2F;LMAKinematicsPlugin m1n6s300_mico_arm_kinematics&#x2F;IKFastKinematicsPlugin srv_kinematics_plugin&#x2F;SrvKinematicsPlugin<br>[ERROR] [1667528001.838122122, 12.500000000]: Kinematics solver could not be instantiated for joint group arm.</p>
+<p>安装Kinematics</p>
+<p>sudo apt install ros-noetic-trac-ik-kinematics-plugin</p>
+<p>报错（拖动标记规划时）</p>
+<p>[ERROR] [1667528367.276877631, 81.935000000]: Failed to fetch current robot state</p>
+<p>把Use Cartisian Path勾选取消即可。可能是个BUG</p>
+<h3 id="Python-Interface"><a href="#Python-Interface" class="headerlink" title="Python Interface"></a>Python Interface</h3><p>BUG [ WARN] [1667528713.845880249, 219.848000000]: Joint values for monitored state are requested but the full state is not known机器人的关节状态都是初始值</p>
+<p>Launchfile中remap了机器人的关节话题</p>
+<remap unless="$(arg fake\_execution)" from="/joint\_states" to="$(arg joint\_states\_ns)" />
+
+<p>在Python脚本里也要制定话题</p>
+<p>import sys<br>import copy<br>import rospy<br>import moveit_commander<br>import moveit_msgs.msg<br>import geometry_msgs.msg</p>
+<h1 id="指定话题"><a href="#指定话题" class="headerlink" title="指定话题"></a>指定话题</h1><p>joint_state_topic &#x3D; [‘joint_states:&#x3D;&#x2F;j2s7s300&#x2F;joint_states’]<br>moveit_commander.roscpp_initialize(joint_state_topic)<br>rospy.init_node(‘move_group_python_interface_tutorial’,<br>                anonymous&#x3D;True)</p>
+<p>robot &#x3D; moveit_commander.RobotCommander()<br>scene &#x3D; moveit_commander.PlanningSceneInterface()<br>group &#x3D; moveit_commander.MoveGroupCommander(“arm”)<br>print(robot.get_current_state())</p>
+<p>可以显示当前的关节状态了</p>
+<p>规划一个pose</p>
+<p>pose_target &#x3D; geometry_msgs.msg.Pose()<br>pose_target.orientation.w &#x3D; 1.0<br>pose_target.position.x &#x3D; 0.7<br>pose_target.position.y &#x3D; -0.05<br>pose_target.position.z &#x3D; 1.1<br>group.set_pose_target(pose_target)<br>plan1 group.plan()<br>group.go(wait&#x3D;True)</p>
+<p>需要知道Aruco的位置和朝向,</p>
+<p>import tf<br>listener &#x3D; tf.TransformListener()<br>(t,r) &#x3D; listener.lookupTransform(‘&#x2F;world’,’&#x2F;aruco_marker_frame’, rospy.Time(0))</p>
+<p>pose_target &#x3D; geometry_msgs.msg.Pose()<br>pose_target.orientation.x &#x3D; r[0]<br>pose_target.orientation.y &#x3D; r[1]<br>pose_target.orientation.z &#x3D; r[2]<br>pose_target.orientation.w &#x3D; r[3]<br>pose_target.position.x &#x3D; t[0]<br>pose_target.position.y &#x3D; t[1]<br>pose_target.position.z &#x3D; t[2]<br>group.set_pose_target(pose_target)   </p>
+<p>plan &#x3D; group.plan()<br>group.go(wait&#x3D;True)</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-11.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-11-1024x602.png"></a></p>
+<h2 id="抓取姿态调整"><a href="#抓取姿态调整" class="headerlink" title="抓取姿态调整"></a>抓取姿态调整</h2><p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-13.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-13-1024x654.png"></a></p>
+<p>这个姿势好，末端执行器相对marker坐标系先饶Z转90度，再绕Y转90度，RPY角为90 90 0.</p>
+<p>计算一个新的tf</p>
+<p>import transforms3d as tfs<br>m &#x3D; tfs.quaternions.quat2mat(r)<br>m1 &#x3D; tfs.euler.euler2mat(pi&#x2F;2, pi&#x2F;2, 0)<br>fq &#x3D; tfs.quaternions.mat2quat(m1.dot(m))</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-14.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-14-1024x615.png"></a></p>
+<p>不知为何，完全相反.控制爪子</p>
+<p>group2 &#x3D; moveit_commander.MoveGroupCommander(“gripper”)<br>grip_target &#x3D; [1.4, 0, 1.4]<br>group2.set_joint_value_target(grip_target)<br>group2.plan()<br>group2.go() </p>
+<p>模拟器里爪子抖的和帕金斯似的。显示Controller失败，准备用真的机械臂使一下。</p>
+<p>完结！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/11/02/aruco-6d%E4%BD%8D%E5%A7%BF%E6%A3%80%E6%B5%8B/" rel="prev" title="Aruco 6D位姿检测">
+      <i class="fa fa-chevron-left"></i> Aruco 6D位姿检测
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/03/28/pythonopencv%E6%89%8B%E7%9C%BC%E6%A0%87%E5%AE%9A/" rel="next" title="Python+Opencv手眼标定">
+      Python+Opencv手眼标定 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B6%E4%BD%9C%E8%BF%BD%E8%B8%AA%E7%9B%AE%E6%A0%87"><span class="nav-number">1.</span> <span class="nav-text">制作追踪目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kinova%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%BB%BF%E7%9C%9F"><span class="nav-number">2.</span> <span class="nav-text">Kinova机器人仿真</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Realsense%E4%BB%BF%E7%9C%9F"><span class="nav-number">3.</span> <span class="nav-text">Realsense仿真</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Realsense%E6%B7%BB%E5%8A%A0%E5%88%B0%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%8A"><span class="nav-number">4.</span> <span class="nav-text">Realsense添加到机器人上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%86%E5%88%ABAruco"><span class="nav-number">5.</span> <span class="nav-text">识别Aruco</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Moveit%EF%BC%81"><span class="nav-number">6.</span> <span class="nav-text">Moveit！</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-Interface"><span class="nav-number">6.1.</span> <span class="nav-text">Python Interface</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E8%AF%9D%E9%A2%98"><span class="nav-number"></span> <span class="nav-text">指定话题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%93%E5%8F%96%E5%A7%BF%E6%80%81%E8%B0%83%E6%95%B4"><span class="nav-number">1.</span> <span class="nav-text">抓取姿态调整</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Xiao Lin</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xiao Lin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
