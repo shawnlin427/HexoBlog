@@ -170,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/29/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%AE%89%E8%A3%85%E4%B8%8E%E6%93%8D%E4%BD%9C%E5%85%A5%E9%97%A8/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/13/%E4%B8%93%E5%AE%B6%E7%B3%BB%E7%BB%9F%E9%87%8C%E7%9A%84%E6%8E%A8%E7%90%86%E6%9C%BA%E5%AE%9E%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -184,7 +184,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/04/29/gazebo%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%AE%89%E8%A3%85%E4%B8%8E%E6%93%8D%E4%BD%9C%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">Gazebo入门（一）：安装与操作入门</a>
+            <a href="/2021/04/13/%E4%B8%93%E5%AE%B6%E7%B3%BB%E7%BB%9F%E9%87%8C%E7%9A%84%E6%8E%A8%E7%90%86%E6%9C%BA%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">专家系统里的推理机实现</a>
         </h2>
 
         <div class="post-meta">
@@ -194,7 +194,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-04-29 11:44:02" itemprop="dateCreated datePublished" datetime="2021-04-29T11:44:02+08:00">2021-04-29</time>
+              <time title="创建时间：2021-04-13 17:06:50" itemprop="dateCreated datePublished" datetime="2021-04-13T17:06:50+08:00">2021-04-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -209,11 +209,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                  <a href="/categories/bim/" itemprop="url" rel="index"><span itemprop="name">bim</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                  <a href="/categories/bim/%E6%9C%AC%E4%BD%93/" itemprop="url" rel="index"><span itemprop="name">本体</span></a>
                 </span>
             </span>
 
@@ -228,422 +228,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>本系列基本COPY自Gazebo的官方Tutorial，英文好的可以直接前往<a target="_blank" rel="noopener" href="http://gazebosim.org/tutorials?cat=guided_b">Gazebo官网</a>学习，记得自带梯子，不然图片加载不出来。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>如果你是Ubuntu用户，只要运行一行：</p>
-<p>curl -sSL <a target="_blank" rel="noopener" href="http://get.gazebosim.org/">http://get.gazebosim.org</a>  sh</p>
-<p>这样安装的是最新版的。或者也可以在应用商店里安装Gazebo9.或者安装ROS Melodic的时候，也会集成Gazebo9.</p>
-<p>如果你不是Ubuntu用户，那我建议你把操作系统换成Ubuntu，别费那么多劲去尝试在Centos、Deepin、RedHat之类的系统上装Gazebo了。Gazebo对显卡有一定的要求，目前来看Ubuntu是对Nvidia显卡支持最好的Linux系统。</p>
-<h2 id="Gazebo的界面"><a href="#Gazebo的界面" class="headerlink" title="Gazebo的界面"></a>Gazebo的界面</h2><p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2021-04-29_09-09-1024x565.png"></p>
-<p>World界面GUI释义如上。底部的控制条用于控制仿真。鼠标操作如下：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/ftu3-mouse-controls-1024x415.png"></p>
-<h2 id="Gazebo操作"><a href="#Gazebo操作" class="headerlink" title="Gazebo操作"></a>Gazebo操作</h2><p>Gazebo的界面当然不止这么些，不过接下来我们以练代学。我们会建立一个简单的机器人小车，并给他放上一个深度相机传感器。Gazebo提供了简单的机器人建模工具，但是如果要建立更为复杂的模型，需要编辑SDF文件。</p>
-<h3 id="模型编辑页面GUI"><a href="#模型编辑页面GUI" class="headerlink" title="模型编辑页面GUI"></a>模型编辑页面GUI</h3><p>在Edit选项栏中选择Model Editor，进入模型编辑界面。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/gazebo8_model_editor_ui-1024x624.png"></p>
-<ol>
-<li>对模型进行操作的一些工具，很像World界面中的</li>
-<li>左状态栏，也是一些编辑模型的工具，有两个tab：insert，model</li>
-<li>插入页，可以插入基本形状、Custom形状，以及从模型库插入模型，后者包括各种传感器，以及小车、船、无人机等复杂的现有模型。Gazebo支持.dae&#x2F;.stl&#x2F;..obj&#x2F;.svg格式的模型文件。</li>
-<li>模型页，可以设置当前模型的一些参数。一个模型的组成包括Link、Joints、Nested Model（插入的模型）以及Plugin。</li>
-</ol>
-<p>Gazebo的模型编辑GUI功能可以覆盖大部分的SDF文件操作，但是不支持以下操作：</p>
-<ol>
-<li>编辑插入的模型，或者把自建模型连接到插入模型上</li>
-<li>插入其他形状的几何体</li>
-<li>对等高图的支持</li>
-<li>CAD功能</li>
-</ol>
-<h2 id="制作模型"><a href="#制作模型" class="headerlink" title="制作模型"></a>制作模型</h2><h4 id="车厢"><a href="#车厢" class="headerlink" title="车厢"></a>车厢</h4><p>首先插入一个Box作为车的车厢：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-44-1024x692.png"></p>
-<p>可以通过上方ToolBar中的模型缩放来改变模型的大小：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-45-1024x687.png"></p>
-<p>也可以通过在Link Inspect中修改参数来改变模型形状，模型位置等。双击Box打开Link Inspector，将Pose中的Z修改为0.4。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-46-751x1024.png"></p>
-<h4 id="前转向轮"><a href="#前转向轮" class="headerlink" title="前转向轮"></a>前转向轮</h4><p>接下来插入前转向轮，使用简单的圆柱形状。插入后，双击圆柱打开Link Inspector，切到Visual页面，修改几何形状：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-47-1024x760.png"></p>
-<p>修改之后会发现一个小圆柱套在一个大圆柱里。这是因为我们只修改了其视图形状，没有修改其碰撞体积。切换到Collision页面，做一样的修改。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-48-1024x750.png"></p>
-<p>然后我们需要调整轮子的位置与朝向。在Link页面中，修改其Pose：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-49-1024x625.png"></p>
-<p>Z轴上高度为0.3m，这样轮子能够刚好接触到地面。Roll设置为1.5707rad（也就是90°）。这样轮子就立在地上了。接下来再复制一个轮子，转向轮创建完成。</p>
-<h3 id="链接车厢与转向轮"><a href="#链接车厢与转向轮" class="headerlink" title="链接车厢与转向轮"></a>链接车厢与转向轮</h3><p>链接使用Joint功能，在上方Toolbar的靠右端。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-50.png"></p>
-<p>点击Joint，会出现一个Create Joint窗口，此时如果把鼠标移到模型上，会产生高亮效果。观察窗口中的Joint types，它描述了模型之间连接的方式，这里我们选择Revolute，即旋转。查看Link Selections栏，此时我们要选择的是Parent Link，也就是车厢。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-51.png"></p>
-<p>点击一下车厢，再点击一下车轮，链接就建立了。可以看到黄色的一条线，这条线的颜色会随着链接方式而变化。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-52-1024x764.png"></p>
-<p>接下来我们要把车轮贴到车厢上，使用Align links的方式将其对齐。首先确定对齐方式是Child to Parent，也就是下面那个白条的选项（看不清楚）。然后选择X轴最大对齐，也就是两个物体的x轴最大处对齐：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-53-1024x808.png"></p>
-<p>然后选择Y轴的Reverse选项。这样对齐方式会变成“最小-最大”，然后选择最大对齐，这样child的y最大处和parent的y最小处对齐：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-54-1024x969.png"></p>
-<p>这样车轮就形成了。点击OK，但是好像忘了什么：车轮的旋转方向不太对。现在旋转轴是X轴，需要改成Y轴。可以通过右键模型，在Joint列表中选择相应的Joint来打开Joint Inspector，也可以在左侧model页面中找到对应的Joint。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-56-963x1024.png"></p>
-<p>右侧的轮子也同样设置。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-57-1024x517.png"></p>
-<h3 id="加入转向轮"><a href="#加入转向轮" class="headerlink" title="加入转向轮"></a>加入转向轮</h3><p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-58-1024x815.png"></p>
-<p>插入一个球体，设置其视图和碰撞形状，半径设置为0.2m。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-59-1000x1024.png"></p>
-<p>连接方式为Ball，连接线颜色为紫色；</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-60-1024x807.png"></p>
-<p>对齐方式为Y轴中间对齐、X轴最小处对齐。最后在Link Inspector中设置球体的空间位置，让其刚好接触到地面，如图：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-61.png"></p>
-<h3 id="插入传感器"><a href="#插入传感器" class="headerlink" title="插入传感器"></a>插入传感器</h3><p>我们插入一个深度传感器，这样小车可以测量它和前面物体的距离。在Insert界面的下方，你可以看到Model Database，找到各种传感器。新安装的Gazebo不会在本地保存模型，但是你可以从网络资源库下载模型，下载的模型会保存在本地，这样不用重复下载。找到Depth Camera，放置在主界面中。它看起来是一个小立方体。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-62-1024x330.png"></p>
-<p>接下来把它放到大概小车中间的上方，并且用Joints链接。连接的时候注意，方式选择为Fixed。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-63-1024x915.png"></p>
-<h3 id="加载插件"><a href="#加载插件" class="headerlink" title="加载插件"></a>加载插件</h3><p>这样我们就完成了小车的模型建立，但是如果不加载插件，小车只能静止在原地。插件，也可以说是脚本，可以用于传感器数据的读取、处理，路径规划，以及控制等等。这里我们使用一个现成的插件，它可以读取深度相机数据，让小车跟随前方的障碍物。</p>
-<p>在Model页面中，找到Model Plugins，点击Add。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-64.png"></p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-65.png"></p>
-<p>Plugin name可以是任何名字。Filename指向了储存在本地的plugin文件，Gazebo没有设置一个文件浏览器来选择文件实在是让人很无语。Innerxml里可以给脚本加一些参数，这个脚本足够简单所以没有任何参数。比如需要制定左右轮子的名称，这样脚本才能控制正确的轮子。follower脚本作为一个范例脚本，做了许多假设来自动找到轮子和传感器。接下来点击OK部署脚本。</p>
-<h3 id="保存并测试"><a href="#保存并测试" class="headerlink" title="保存并测试"></a>保存并测试</h3><p>点击File中的save保存模型。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-66-1024x753.png"></p>
-<p>然后点击File中的exit model editor退出模型编辑界面，回到world界面。在这个界面中，我们可以与模型交互了。在小车前面放一个障碍物，看看它会如何相应：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-67-1024x598.png"></p>
-<p>点击下方的运行按钮。能看到小车向着障碍物运行。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-68-1024x592.png"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/28/%E6%8A%98%E8%85%BElinux%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/28/%E6%8A%98%E8%85%BElinux%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E8%80%83/" class="post-title-link" itemprop="url">折腾Linux的一些思考</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-28 16:55:30" itemprop="dateCreated datePublished" datetime="2021-04-28T16:55:30+08:00">2021-04-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/thought/" itemprop="url" rel="index"><span itemprop="name">thought</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/thought/%E7%A7%91%E7%A0%94%E4%BA%8C%E4%B8%89%E4%BA%8B/" itemprop="url" rel="index"><span itemprop="name">科研二三事</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1-认清需求"><a href="#1-认清需求" class="headerlink" title="1. 认清需求"></a>1. 认清需求</h2><p>为什么需要用Linux？为了简化操作？为了开发？还是只是因为“Because I can”？</p>
-<p>如果是为了开发，需要一个清晰的开发目标。系统和软件的版本非常重要，稳定优先于新特性。不要使用最新版本的系统，老版本有更多的人帮忙试错。</p>
-<p>如果是为了简化windows的操作，少操一点心，不要使用Ubuntu。推荐Deepin，就能使用微信（虽然依然频繁跳出），已经远胜于其他系统。</p>
-<p>如果只是因为“Because I can”，什么系统都行，但是不要强迫自己用Linux替代Windows。</p>
-<p>不要在Ubuntu上做需要大量协作的文档工作，也不要在Deepin上做专业性的开发工作。</p>
-<h2 id="2-及时放弃，学会妥协"><a href="#2-及时放弃，学会妥协" class="headerlink" title="2. 及时放弃，学会妥协"></a>2. 及时放弃，学会妥协</h2><p>这是针对不影响你的需求的问题。比如，对于开发来说，界面的一些外观BUG并不重要。对于日常使用来说，无法安装CUDA也不重要。如果遇到这些问题，网上的解决方案又无法解决，最好的应对方法是：abandon。</p>
-<p>比如我在试图用Ubuntu20进行ROS开发学习时，遇到了笔记本无法调节亮度的问题。这个问题困扰了我整整两天，两天内我没有任何产出，也没有学习任何ROS的知识。当我安装了Deepin操作系统后，这个问题就解决了。However, I totally lose the possibility to learn ROS, for Deepin can not support ROS very well. It is not a good bargain, considering that adjusting the brightness through hardware is not that important compared with the compatibility with the ROS of the system I’m using.</p>
-<h2 id="3-什么才是最重要的？"><a href="#3-什么才是最重要的？" class="headerlink" title="3. 什么才是最重要的？"></a>3. 什么才是最重要的？</h2><p>顺畅的开发与学习才是最重要的。</p>
-<ol>
-<li>不要强迫自己改变自己的操作习惯。</li>
-<li>不要为了追求新特性盲目升级软件或系统。</li>
-<li>不要让系统强行做它不擅长的工作。</li>
-<li>布置环境是一件浪费时间和精力却又不得不做的事情，如果你花了一天尝试在新的环境下安装兼容的软件却失败了，你就浪费了一天，没有学到任何东西。</li>
-<li>Only your mission matters. Don’t install other application until you really need it. Just work with “it can works”, not “it works the best”. I will now install a Sougou pinyin as I need a Chinese input indeed.</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/27/deepin%E9%85%8D%E7%BD%AEintelnvidia%E5%8F%8C%E6%98%BE%E5%8D%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/27/deepin%E9%85%8D%E7%BD%AEintelnvidia%E5%8F%8C%E6%98%BE%E5%8D%A1/" class="post-title-link" itemprop="url">Deepin配置Intel&Nvidia双显卡</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-27 10:18:26" itemprop="dateCreated datePublished" datetime="2021-04-27T10:18:26+08:00">2021-04-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>转载自<a target="_blank" rel="noopener" href="https://blog.blankshell.com/2020/07/08/deepin%E9%85%8D%E7%BD%AEintelnvidia%E5%8F%8C%E6%98%BE%E5%8D%A1/">https://blog.blankshell.com/2020/07/08/deepin%E9%85%8D%E7%BD%AEintelnvidia%E5%8F%8C%E6%98%BE%E5%8D%A1/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/26/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E3%80%81%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%8C%85/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/26/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E5%88%9B%E5%BB%BA%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E3%80%81%E7%8E%AF%E5%A2%83%E4%B8%8E%E5%8C%85/" class="post-title-link" itemprop="url">ROS2入门（二）：创建启动文件、环境与包</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-26 20:15:35" itemprop="dateCreated datePublished" datetime="2021-04-26T20:15:35+08:00">2021-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>创建启动文件环境和包是标准流程的一部分。启动文件可以让你一行命令启动含有多个node的系统，这样就不用一个一个地启动Node来组成机器人了。</p>
-<p>环境是一个包含了指定依赖项的系统运行环境，类似conda中的环境的定义。</p>
-<p>包允许你打包你的系统，这样可以分享或很方便地转移系统。</p>
-<h2 id="启动创建文件"><a href="#启动创建文件" class="headerlink" title="启动创建文件"></a>启动创建文件</h2><p>前面我们使用了小海龟示例，一般我们会运行turtlesim节点和turtle控制节点。后者不是必须的，我们也可以通过直接向topic发布消息的方式控制turtlesim。这里我们创建一个含有两个小海龟的系统，并且让它们两个同步。创建一个python文件，输入：</p>
-<p>from launch import LaunchDescription<br>from launch_ros.actions import Node</p>
-<p>def generate_launch_description():<br>    return LaunchDescription([<br>        Node(<br>            package&#x3D;’turtlesim’,<br>            namespace&#x3D;’turtlesim1’,<br>            executable&#x3D;’turtlesim_node’,<br>            name&#x3D;’sim’<br>        ),<br>        Node(<br>            package&#x3D;’turtlesim’,<br>            namespace&#x3D;’turtlesim2’,<br>            executable&#x3D;’turtlesim_node’,<br>            name&#x3D;’sim’<br>        ),<br>        Node(<br>            package&#x3D;’turtlesim’,<br>            executable&#x3D;’mimic’,<br>            name&#x3D;’mimic’,<br>            remappings&#x3D;[<br>                (‘&#x2F;input&#x2F;pose’, ‘&#x2F;turtlesim1&#x2F;turtle1&#x2F;pose’),<br>                (‘&#x2F;output&#x2F;cmd_vel’, ‘&#x2F;turtlesim2&#x2F;turtle1&#x2F;cmd_vel’),<br>            ]<br>        )<br>    ])</p>
-<p>这里我们创造了三个节点，显然前两个是相同的turtlesim节点。这和之前ros2 run &lt;package_name&gt; &lt;node_name&gt;的效果是一样的。第三个节点值得额外的注意，它的executable属性是mimic，也就是模仿的意思。他将&#x2F;turtlesim1&#x2F;turtle1&#x2F;pose这个topic中的所有信息都remap到&#x2F;turtlesim2&#x2F;turtle1&#x2F;cmd_vel这个topic中。因此第二只小海龟会模仿第一只小海龟的动作。保存后，运行：</p>
-<p>ros2 launch turtlesim_mimic_launch.py</p>
-<p>然后再开启一个命令行，向turtlesim1的&#x2F;turtlesim1&#x2F;turtle1&#x2F;cmd_vel话题发布一条信息：</p>
-<p>ros2 topic pub -r 1 &#x2F;turtlesim1&#x2F;turtle1&#x2F;cmd_vel geometry_msgs&#x2F;msg&#x2F;Twist “{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: -1.8}}”</p>
-<p><img src="https://docs.ros.org/en/foxy/_images/mimic_graph.png" alt="..&#x2F;..&#x2F;_images&#x2F;mimic_graph.png"></p>
-<p>信息是这样流动的：我们向cmd_vel发送一条信息，turtlesim1接受后向pose话题发布信息，此时mimic节点订阅了pose话题收取信息，并将该信息发布到turtle2的cmd_vel话题上，turtlesim2从而获得相同的信息。</p>
-<h2 id="创建环境"><a href="#创建环境" class="headerlink" title="创建环境"></a>创建环境</h2><p>在Linux下，所有的对象都是以文件的方式存储与体现的，因此环境实际上就是包含了一个ROS系统中各种包的路径，直观的体现就是一个文件夹。为什么我们需要一个环境？简单地说，我们不希望一大堆源码和文件把我们的桌面或者&#x2F;home搞得一团糟，还有我们最不希望发生的就是不同的依赖发生冲突。</p>
-<p>mkdir -p ~&#x2F;dev_ws&#x2F;src<br>cd ~&#x2F;dev_ws&#x2F;src</p>
-<p>这样我们就创造了一个工作空间。我们在这里创造环境。然后我们下载一些包：</p>
-<p>git clone <a target="_blank" rel="noopener" href="https://github.com/ros/ros/_tutorials.git">https://github.com/ros/ros\_tutorials.git</a> -b foxy-devel</p>
-<p>进入ros_tutorials文件夹，下面有四个包：</p>
-<p>roscpp_tutorials  rospy_tutorials  ros_tutorials  turtlesim</p>
-<p>我们只用到turtlesim这个包。下一步要做的是在这个工作目录下安装依赖项。我们在工作目录的根目录，也就是dev_ws下，执行：</p>
-<p>rosdep install -i –from-path src –rosdistro foxy -y</p>
-<p>rosdep很有可能还是会接二连三的出现网络问题，没有什么太好的解决办法。下一步是build工作空间，不过在此之前，我们先修改一下turtlesim这个包，这样我们可以确认确实这个包是在当前环境下运行的。修改turtlesim&#x2F;src下的turtle_frame.cpp，找到第52行的“setWindowTitle(“TurtleSim”);”，改成”MyTurtleSim”然后保存。接下来build这个包：</p>
-<p>colcon build</p>
-<p>这会创建以下的文件夹：</p>
-<p>build  install  log  src</p>
-<p>install中包含了当前工作空间的各项设置。下一步要做的就是source这些设置，<strong>开启一个新的控制台，这很重要：</strong></p>
-<p>cd ~&#x2F;dev_ws<br>. install&#x2F;local_setup.bash</p>
-<p>在source的控制台中，运行：</p>
-<p>ros2 run turtlesim turtlesim_node</p>
-<p><img src="https://docs.ros.org/en/foxy/_images/overlay.png" alt="..&#x2F;..&#x2F;_images&#x2F;overlay.png"></p>
-<p>可以看到窗口名称发生了变化。如果要在一个特定环境下运行项目，需要记得source当前环境的设置，也就是. install&#x2F;local_setup.bash。每次开启一个新的控制台，都需要那么做。</p>
-<h2 id="创建包"><a href="#创建包" class="headerlink" title="创建包"></a>创建包</h2><p>一个形象的比喻：你可以在ipython中用交互的方式让计算机执行你的想法，但是更常见的还是运行一个py文件。py文件就像ROS里的包。</p>
-<p>ROS2支持用C++和Python来写包，作为编程苦手我果断选择了Python。选择Python的话，一个包会包含以下文件：</p>
+          <h1 id="专家系统"><a href="#专家系统" class="headerlink" title="专家系统"></a>专家系统</h1><p>专家系统：模仿人类专家的思维方式进行决策的人工智能算法，算法核心是“知识库（knowledge base）”和“推理机（inference engine）”。专家系统通常包括6个部分：人机交互界面、知识库、综合数据库、推理机、解释器、知识获取。</p>
 <ul>
-<li><code>package.xml</code> 描述这个包一些元信息的文件。元信息是”关于信息的信息”。</li>
-<li><code>setup.py</code> 描述了如何安装这个包的文件。运行这个py文件就可以安装包了。</li>
-<li><code>setup.cfg</code> 这个文件不是必须的，如果包含有可执行项，则需要。<code>ros2 run</code>通过这个文件找到可执行包。</li>
-<li><code>/&lt;package_name&gt;</code> 一个目录，含有__init__.py文件。ROS2根据这个找到你的包。</li>
+<li>知识库：包含解决问题相关的领域知识。在基于规则的专家系统中，<strong>知识用一组规则</strong>来表达。其具有IF（条件）THEN（行为）结构，当规则的条件被满足时，触发规则，继而执行行为。</li>
+<li>数据库：包含一组<strong>事实</strong>，用于匹配知识库中的IF（条件）。</li>
+<li>推理机：<strong>执行</strong>推理，专家系统由此找到解决方案。推理引擎链接知识库中的规则和数据库中的事实。</li>
+<li>解释器：用户使用解释器查看专家系统怎样得出解决方案的过程。</li>
+<li>人机交互界面：人机交互界面是实现用户（查询问题解决方案）和专家系统之间交流的途径。</li>
 </ul>
-<p>最简单的一个包目录结构如下：</p>
-<p>my_package&#x2F;<br>      setup.py<br>      package.xml<br>      resource&#x2F;my_package</p>
-<h2 id="环境下的包"><a href="#环境下的包" class="headerlink" title="环境下的包"></a>环境下的包</h2><p>接下来我们把环境和包结合起来。最佳做法是在环境路径中src文件夹下放所有的包，像这样：</p>
-<p>workspace_folder&#x2F;<br>    src&#x2F;<br>      package_1&#x2F;<br>          CMakeLists.txt<br>          package.xml</p>
-<pre><code>  package\_2/
-      setup.py
-      package.xml
-      resource/package\_2
-  ...
-  package\_n/
-      CMakeLists.txt
-      package.xml
-</code></pre>
-<p>你可能注意到了，基于C++和Python的包可以放在一个环境下。接下来我们实打实地创建一个自己的包。进入src文件夹下：</p>
-<p>cd ~&#x2F;dev_ws&#x2F;src<br>ros2 pkg create –build-type ament_python –node-name my_node my_package</p>
-<p>--build-type指定了包使用python，–node-name制定了包和其所含节点的名称。这条命令应当会有一下输出：</p>
-<p>going to create a new package<br>package name: my_package<br>destination directory: &#x2F;home&#x2F;user&#x2F;dev_ws&#x2F;src<br>package format: 3<br>version: 0.0.0<br>description: TODO: Package description<br>maintainer: [‘<name> <email>‘]<br>licenses: [‘TODO: License declaration’]<br>build type: ament_python<br>dependencies: []<br>node_name: my_node<br>creating folder .&#x2F;my_package<br>creating .&#x2F;my_package&#x2F;package.xml<br>creating source folder<br>creating folder .&#x2F;my_package&#x2F;my_package<br>creating .&#x2F;my_package&#x2F;setup.py<br>creating .&#x2F;my_package&#x2F;setup.cfg<br>creating folder .&#x2F;my_package&#x2F;resource<br>creating .&#x2F;my_package&#x2F;resource&#x2F;my_package<br>creating .&#x2F;my_package&#x2F;my_package&#x2F;__init__.py<br>creating folder .&#x2F;my_package&#x2F;test<br>creating .&#x2F;my_package&#x2F;test&#x2F;test_copyright.py<br>creating .&#x2F;my_package&#x2F;test&#x2F;test_flake8.py<br>creating .&#x2F;my_package&#x2F;test&#x2F;test_pep257.py<br>creating .&#x2F;my_package&#x2F;my_package&#x2F;my_node.py</p>
-<p>接下来我们build这个包。返回到环境根目录下：</p>
-<p>cd ..<br>colcon build</p>
-<p>colcon build会build所有的包，也可以通过参数选择：</p>
-<p>colcon build –packages-select my_package</p>
-<p>接下来和创建环境中的步骤一样：</p>
-<p>. install&#x2F;setup.bash<br>ros2 run my_package my_node</p>
-<p>输出如下：</p>
-<p>Hi from my_package.</p>
-<h2 id="修改包的元信息"><a href="#修改包的元信息" class="headerlink" title="修改包的元信息"></a>修改包的元信息</h2><p>我们知道，包其实就是node的一种表现形式。修改node也是通过修改包来体现的。所以我们该如何修改包呢？首先再来看看我们刚刚创建的包里都有什么：</p>
-<p>my_package  package.xml  resource  setup.cfg  setup.py  test</p>
-<p>首先来对package.xml进行修改，这类似于给包打上一下标签，例如它的版本，依赖项，作者的一些信息等。</p>
-<?xml version="1.0"?>
-<?xml-model
-   href="http://download.ros.org/schema/package\_format3.xsd"
-   schematypens="http://www.w3.org/2001/XMLSchema"?>
-<package format="3">
- <name>my\_package</name>
- <version>0.0.0</version>
- <description>TODO: Package description</description>
- <maintainer email="user@todo.todo">user</maintainer>
- <license>TODO: License declaration</license>
-
-<p> &lt;test_depend&gt;ament_copyright&lt;&#x2F;test_depend&gt;<br> &lt;test_depend&gt;ament_flake8&lt;&#x2F;test_depend&gt;<br> &lt;test_depend&gt;ament_pep257&lt;&#x2F;test_depend&gt;<br> &lt;test_depend&gt;python3-pytest&lt;&#x2F;test_depend&gt;</p>
- <export>
-   <build\_type>ament\_python</build\_type>
- </export>
-</package>
-
-<p>可以修改name、version、description等信息。depend列出了package的一些依赖项，很像maven的管理模式。修改了xml里的信息后，也需要到setup.py里修改：</p>
-<p>from setuptools import setup</p>
-<p>package_name &#x3D; ‘my_py_pkg’</p>
-<p>setup(<br> name&#x3D;package_name,<br> version&#x3D;’0.0.0’,<br> packages&#x3D;[package_name],<br> data_files&#x3D;[<br>     (‘share&#x2F;ament_index&#x2F;resource_index&#x2F;packages’,<br>             [‘resource&#x2F;‘ + package_name]),<br>     (‘share&#x2F;‘ + package_name, [‘package.xml’]),<br>   ],<br> install_requires&#x3D;[‘setuptools’],<br> zip_safe&#x3D;True,<br> maintainer&#x3D;’TODO’,<br> maintainer_email&#x3D;’TODO’,<br> description&#x3D;’TODO: Package description’,<br> license&#x3D;’TODO: License declaration’,<br> tests_require&#x3D;[‘pytest’],<br> entry_points&#x3D;{<br>     ‘console_scripts’: [<br>             ‘my_node &#x3D; my_py_pkg.my_node:main’<br>     ],<br>   },<br>)</p>
-<p>package.xml和setup.py里的信息要一一对应。到这里我们大概了解了ROS的文件组织模式，下一章中我们开始尝试设计并运行一个简单的ROS系统。</p>
+<p>一个完整的专家系统图示如下：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/9861E122-6FDC-4D39-AEB3-8AD4D10495EA.png"></p>
+<h1 id="推理机"><a href="#推理机" class="headerlink" title="推理机"></a>推理机</h1><p>“推理机”根据“知识库”对“数据库”做出决策的基本原理图如下：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/72B3B600-6C96-4073-84DA-C4F7970AAAC4.png"></p>
+<p>CLIPS（C Language Integrated Production System）是一类推理机，原则上可以处理各种领域的推理任务，只要系统能够为CLIPS提供这个领域的特有领域规则(知识库)和事实信息(数据库)。</p>
+<h2 id="Jess"><a href="#Jess" class="headerlink" title="Jess"></a>Jess</h2><p>Jess(Java Expert Shell System)是基于Java语言的CLISP推理机。Jess(CLIPS)的优点是：推理机是开放的，用户提供不同的规则系统，就可以进行不同领域的推理工作，用户可以对推理机的推理能力进行扩展。但，作为前向推理系统，Jess用空间换时间，推理会产生大量的中间数据，空间效率很低；同时，由于Jess(CLIPS)是通用推理引擎，不可能提供针对各种具体领域的优化能力，使得这种推理机制的效率很难优化。</p>
+<h1 id="针对本体的几类推理机"><a href="#针对本体的几类推理机" class="headerlink" title="针对本体的几类推理机"></a>针对本体的几类推理机</h1><p>针对本体的推理一般集中在集中标准的本体语言上，如OWL、RDFS&#x2F;RDF、DAML等。针对本体的推理机，如Jena、Pellet、FaCT、RACER等，效率较高，但推理能力局限在以上的本体语言中。</p>
+<h2 id="Jena"><a href="#Jena" class="headerlink" title="Jena"></a>Jena</h2><p>Jena是面向语义Web的应用开发包，包含的内容比较全面，推理机只是其中一部分。但Jena本身并不是‘推理机设计专家’，它自身包含的推理机基本上就是一种CLIPS配合本体领域产生式规则的前向推理系统。因此，它的运行效率不是很高。好在现在有DIG接口，DIG有点象数据库中的ODBC，允许前端挂接到后台不同的推理引擎上。</p>
+<h2 id="Pellet"><a href="#Pellet" class="headerlink" title="Pellet"></a>Pellet</h2><p>Pellet是一个较为“专业”的推理机，由美国马里兰大学（College Park分校）的MindSwap实验室开发。Pellet是基于Java的开放源码系统。Pellet效率较高，但是缺乏对本体规则语言SWRL的支持并且支持的查询语言不够全面，一般只是进行A-Box推理的时候使用Pellet，如果牵涉到T-Box则推荐使用Racer。</p>
+<h2 id="RACER"><a href="#RACER" class="headerlink" title="RACER"></a>RACER</h2><p>Racer由德国汉堡大学开发，采用Tableaux算法。给定一个Tbox后，Racer可以完成各种查询服务，在Tbox方面推理能力较强，对大本体文件支持良好。但是Racer不支持对枚举类和用户自定义数据类型的推理。</p>
+<h2 id="FaCT"><a href="#FaCT" class="headerlink" title="FaCT++"></a>FaCT++</h2><p>FaCT++是FaCT的新一代产品，由英国曼城斯特大学开发，采用Tableaux算法。Fact++采用了c++语言，但是没有提供OWL接口，不支持对实例的查询。</p>
+<h2 id="Hermit"><a href="#Hermit" class="headerlink" title="Hermit"></a>Hermit</h2><p>HermiT支持OWL2本体语言的所有特性，包括OWL 2的所有数据类型，并且它正确地执行对象和数据属性分类，其中有些推理任务并不完全由其他OWL推理器支持。</p>
+<p>在Protege中，常用的OWL推理机主要包括HermiT、FaCT、Pellet。</p>
+<p>[1] 潘超, 古辉. 本体推理机及应用[J]. 计算机系统应用, 2010, 19(009):163-167.</p>
 
       
     </div>
@@ -663,7 +269,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/21/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9Aros%E4%B8%AD%E7%9A%84%E6%A6%82%E5%BF%B5/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/13/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B9%9D%EF%BC%89%EF%BC%9Agazebo%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E6%B5%8B%E8%AF%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -677,7 +283,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/04/21/ros2%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9Aros%E4%B8%AD%E7%9A%84%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">ROS2入门（一）：ROS中的概念</a>
+            <a href="/2021/04/13/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B9%9D%EF%BC%89%EF%BC%9Agazebo%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">无人机编程入门（九）：Gazebo简介、安装与测试</a>
         </h2>
 
         <div class="post-meta">
@@ -687,7 +293,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-04-21 17:12:19" itemprop="dateCreated datePublished" datetime="2021-04-21T17:12:19+08:00">2021-04-21</time>
+              <time title="创建时间：2021-04-13 10:44:20" itemprop="dateCreated datePublished" datetime="2021-04-13T10:44:20+08:00">2021-04-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -703,291 +309,6 @@
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>ROS是机器人操作系统（Robot Operating System）的英文缩写。ROS是用于编写机器人软件程序的一种具有高度灵活性的软件架构。但是ROS并不是一个独立的操作系统，而是要依赖于ubuntu等操作系统。ROS2foxy也添加了对Windows等平台的支持，之前ROS只能在Ubuntu操作系统上使用。</p>
-<p><img src="https://docs.ros.org/en/foxy/_images/Nodes-TopicandService.gif" alt="..&#x2F;_images&#x2F;Nodes-TopicandService.gif"></p>
-<p>ROS的整体布局如上图所示。</p>
-<h2 id="ROS-NODE（节点）"><a href="#ROS-NODE（节点）" class="headerlink" title="ROS NODE（节点）"></a>ROS NODE（节点）</h2><p>节点，是一个仅负责单一功能的模块，比如说控制一个轮子，控制一个激光雷达的工作等等。节点之间的通信方式包括topic（话题）、services（服务）、actions（活动）、parameters（参数），后面会一一介绍。节点中还可能会包含一个Subsriber，来接受信息；Pubilsher，用来发送信息。根据功能，也可以分为Service Clinet和Service Server。</p>
-<p>一个完整的机器人系统就是由多个节点组成的。可以在Turtlesim中查看节点，来对节点有个更深刻的印象。开启一个新的控制台，输入：</p>
-<p>ros2 run turtlesim turtlesim_node</p>
-<p>再开一个新的控制台，输入：</p>
-<p>ros2 node list</p>
-<p>应该能看到：</p>
-<p>&#x2F;turtlesim</p>
-<p>此时只有一个节点，turtlesim，就是那只小海龟。下面开启一个新的节点，用来控制小海龟：</p>
-<p>ros2 run turtlesim turtle_teleop_key</p>
-<p>再次运行ros2 node list，输出：</p>
-<p>&#x2F;turtlesim<br>&#x2F;teleop_turtle</p>
-<p>还可以查看节点的详细信息，例如运行ros2 node info &#x2F;turtlesim，输出：</p>
-<p>&#x2F;turtlesim<br>  Subscribers:<br>    &#x2F;parameter_events: rcl_interfaces&#x2F;msg&#x2F;ParameterEvent<br>    &#x2F;turtle1&#x2F;cmd_vel: geometry_msgs&#x2F;msg&#x2F;Twist<br>  Publishers:<br>    &#x2F;parameter_events: rcl_interfaces&#x2F;msg&#x2F;ParameterEvent<br>    &#x2F;rosout: rcl_interfaces&#x2F;msg&#x2F;Log<br>    &#x2F;turtle1&#x2F;color_sensor: turtlesim&#x2F;msg&#x2F;Color<br>    &#x2F;turtle1&#x2F;pose: turtlesim&#x2F;msg&#x2F;Pose<br>  Service Servers:<br>    &#x2F;clear: std_srvs&#x2F;srv&#x2F;Empty<br>    &#x2F;kill: turtlesim&#x2F;srv&#x2F;Kill<br>    &#x2F;reset: std_srvs&#x2F;srv&#x2F;Empty<br>    &#x2F;spawn: turtlesim&#x2F;srv&#x2F;Spawn<br>    &#x2F;turtle1&#x2F;set_pen: turtlesim&#x2F;srv&#x2F;SetPen<br>    &#x2F;turtle1&#x2F;teleport_absolute: turtlesim&#x2F;srv&#x2F;TeleportAbsolute<br>    &#x2F;turtle1&#x2F;teleport_relative: turtlesim&#x2F;srv&#x2F;TeleportRelative<br>    &#x2F;turtlesim&#x2F;describe_parameters: rcl_interfaces&#x2F;srv&#x2F;DescribeParameters<br>    &#x2F;turtlesim&#x2F;get_parameter_types: rcl_interfaces&#x2F;srv&#x2F;GetParameterTypes<br>    &#x2F;turtlesim&#x2F;get_parameters: rcl_interfaces&#x2F;srv&#x2F;GetParameters<br>    &#x2F;turtlesim&#x2F;list_parameters: rcl_interfaces&#x2F;srv&#x2F;ListParameters<br>    &#x2F;turtlesim&#x2F;set_parameters: rcl_interfaces&#x2F;srv&#x2F;SetParameters<br>    &#x2F;turtlesim&#x2F;set_parameters_atomically: rcl_interfaces&#x2F;srv&#x2F;SetParametersAtomically<br>  Service Clients:</p>
-<p>  Action Servers:<br>    &#x2F;turtle1&#x2F;rotate_absolute: turtlesim&#x2F;action&#x2F;RotateAbsolute<br>  Action Clients:</p>
-<p>可以看到node的Suscriber、Publisher等属性。</p>
-<h2 id="Topic（话题）"><a href="#Topic（话题）" class="headerlink" title="Topic（话题）"></a>Topic（话题）</h2><p>Topic是ROS中传递信息的重要元素。</p>
-<p><img src="https://docs.ros.org/en/foxy/_images/Topic-SinglePublisherandSingleSubscriber.gif" alt="..&#x2F;..&#x2F;_images&#x2F;Topic-SinglePublisherandSingleSubscriber.gif"></p>
-<p>一个节点可以任意个其他节点通过话题传递信息。</p>
-<p><img src="https://docs.ros.org/en/foxy/_images/Topic-MultiplePublisherandMultipleSubscriber.gif" alt="..&#x2F;..&#x2F;_images&#x2F;Topic-MultiplePublisherandMultipleSubscriber.gif"></p>
-<p>下面来看看如何在ROS中查看Topic，首先还是运行海龟和海龟控制，然后新建一个控制台输入rqt_graph，将输出切换到Nodes&#x2F;Topics，Group设为0，可以看到：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-37-1024x608.png"></p>
-<p>这张图显示了turtlesim node和teleop_turtle node是如何沟通的，teleop_turtle node发布一个信息（也就是键盘输入）给cmd_vel topic，随后teleoo_turtle从这个topic订阅信息从而接受数据。rqt_graph绝对是一个非常好用的工具。当然，即使是简单的turtlesim，topic也不止这些，可以通过取消rqt_graph中的Hide选项来查看所有Topic：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-38-1024x608.png"></p>
-<p>我们也可以用命令行来查看Topic，输入ros2 topic list -t，这会显示所有的Topic和他们的类型：</p>
-<p>&#x2F;parameter_events [rcl_interfaces&#x2F;msg&#x2F;ParameterEvent]<br>&#x2F;rosout [rcl_interfaces&#x2F;msg&#x2F;Log]<br>&#x2F;turtle1&#x2F;cmd_vel [geometry_msgs&#x2F;msg&#x2F;Twist]<br>&#x2F;turtle1&#x2F;color_sensor [turtlesim&#x2F;msg&#x2F;Color]<br>&#x2F;turtle1&#x2F;pose [turtlesim&#x2F;msg&#x2F;Pose]</p>
-<p>这就好像论坛上的Topic有不同的类型一样，这样每个nodes可以知道他们应当如何交换相同类型的信息。接下来可以进一步查看Topic都传了什么信息，比如我们想看看cmd_vel这个Topic：</p>
-<p>ros2 topic echo &#x2F;turtle1&#x2F;cmd_vel</p>
-<p>什么都没有，正常，因为还没有node发布消息。我们操控一下turtle，随便输入一个方向，再看输出：</p>
-<h2 id="linear-x-2-0-y-0-0-z-0-0angular-x-0-0-y-0-0-z-0-0"><a href="#linear-x-2-0-y-0-0-z-0-0angular-x-0-0-y-0-0-z-0-0" class="headerlink" title="linear:  x: 2.0  y: 0.0  z: 0.0angular:  x: 0.0  y: 0.0  z: 0.0"></a>linear:<br>  x: 2.0<br>  y: 0.0<br>  z: 0.0<br>angular:<br>  x: 0.0<br>  y: 0.0<br>  z: 0.0</h2><p>这时候我们回到rqt刷新一下，发现多了个node：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-39-1024x533.png"></p>
-<p>这个node就是刚刚我们命令创造的node，它接受topic传来的信息，但是只是显示出来而不传输给任何topic。如果我们想通过命令行查看一个Topic传输信息给哪些nodes，使用这个命令：ros2 topic info &#x2F;turtle1&#x2F;cmd_vel</p>
-<p>Type: geometry_msgs&#x2F;msg&#x2F;Twist<br>Publisher count: 1<br>Subscription count: 2</p>
-<p>这个Topic有一个发布者和两个订阅者，就像rqt图中现实的一样。注意，这里还显示了Topic的类型。如果我们还想知道Topic类型意味着要发布什么格式的信息，可以输入ros2 interface show TOPIC_NAME，比如ros2 interface show geometry_msgs&#x2F;msg&#x2F;Twist</p>
-<p># This expresses velocity in free space broken into its linear and angular parts.</p>
-<p>Vector3  linear<br>Vector3  angular</p>
-<p>联系一下上面echo的命令，会发现linear和angular都是Vector的格式。</p>
-<h3 id="直接向Topic发布消息"><a href="#直接向Topic发布消息" class="headerlink" title="直接向Topic发布消息"></a>直接向Topic发布消息</h3><p>Node可以在Topic上发布消息，其实也可以直接通过命令行向特定的Topic发布消息，效果是差不多的，格式是ros2 topic pub &lt;topic_name&gt; &lt;msg_type&gt; ‘<args>‘。比如这个命令：</p>
-<p>ros2 topic pub –once &#x2F;turtle1&#x2F;cmd_vel geometry_msgs&#x2F;msg&#x2F;Twist “{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}”</p>
-<p>小乌龟会画一个弧形，像这样：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-40.png"></p>
-<p>--once意味着执行一次就退出，也可以改成loop的形式：</p>
-<p>ros2 topic pub –rate 1 &#x2F;turtle1&#x2F;cmd_vel geometry_msgs&#x2F;msg&#x2F;Twist “{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}”</p>
-<p>这样小乌龟就开始打转了。当然，你肯定想到了，这会创造一个新的Node来向Topic发送信息，看看rqt中是否如此：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-41-1024x533.png"></p>
-<p>确实如此。Topic这个机制还是很形象的，可以把ROS想象成一个论坛，有许多发布者与订阅者。下面来看services。</p>
-<h2 id="Services（服务）"><a href="#Services（服务）" class="headerlink" title="Services（服务）"></a>Services（服务）</h2><p>Services是除Topic以外的另一种沟通方式，其基于call-and-response的机制，而不是Topic那种publisher-subscriber的机制。区别在哪里呢？Topic允许所有节点来订阅它，从而自动地更新信息，但是Services只在client进行呼叫的时候才给予信息。</p>
-<p><img src="https://docs.ros.org/en/foxy/_images/Service-MultipleServiceClient.gif" alt="..&#x2F;..&#x2F;_images&#x2F;Service-MultipleServiceClient.gif"></p>
-<p>我们还是运行turtlesim和控制台节点，然后输入ros2 service list：</p>
-<p>&#x2F;clear<br>&#x2F;kill<br>&#x2F;reset<br>&#x2F;spawn<br>&#x2F;teleop_turtle&#x2F;describe_parameters<br>&#x2F;teleop_turtle&#x2F;get_parameter_types<br>&#x2F;teleop_turtle&#x2F;get_parameters<br>&#x2F;teleop_turtle&#x2F;list_parameters<br>&#x2F;teleop_turtle&#x2F;set_parameters<br>&#x2F;teleop_turtle&#x2F;set_parameters_atomically<br>&#x2F;turtle1&#x2F;set_pen<br>&#x2F;turtle1&#x2F;teleport_absolute<br>&#x2F;turtle1&#x2F;teleport_relative<br>&#x2F;turtlesim&#x2F;describe_parameters<br>&#x2F;turtlesim&#x2F;get_parameter_types<br>&#x2F;turtlesim&#x2F;get_parameters<br>&#x2F;turtlesim&#x2F;list_parameters<br>&#x2F;turtlesim&#x2F;set_parameters<br>&#x2F;turtlesim&#x2F;set_parameters_atomically</p>
-<p>每个节点都有6个services。这些服务基本上是所有Node都会有的。可以通过在ros2 service list -t来查看service的类别。我们可以通过向特定的service进行call来进行一些操作，格式如下：</p>
-<p>ros2 service call &lt;service_name&gt; &lt;service_type&gt; <arguments></p>
-<p>问题来了，我们怎么知道service的名称、类别和参数？名称和类别我们知道如何去找，参数需要用到这条命令：</p>
-<p>ros2 interface show &lt;type_name&gt;.srv</p>
-<p>比如ros2 interface show turtlesim&#x2F;srv&#x2F;Spawn：</p>
-<h2 id="float32-xfloat32-yfloat32-thetastring-name-Optional-A-unique-name-will-be-created-and-returned-if-this-is-empty"><a href="#float32-xfloat32-yfloat32-thetastring-name-Optional-A-unique-name-will-be-created-and-returned-if-this-is-empty" class="headerlink" title="float32 xfloat32 yfloat32 thetastring name # Optional.  A unique name will be created and returned if this is empty"></a>float32 x<br>float32 y<br>float32 theta<br>string name # Optional.  A unique name will be created and returned if this is empty</h2><p>string name</p>
-<p>-–上写明了我们需要的参数，下面是service回复的内容类型。那么我们来试试向&#x2F;clear服务发送一条call来增加一只乌龟：</p>
-<p>ros2 service call &#x2F;spawn turtlesim&#x2F;srv&#x2F;Spawn “{x: 2, y: 2, theta: 0.2, name: ‘’}”</p>
-<p>返回：</p>
-<p>waiting for service to become available…<br>requester: making request: turtlesim.srv.Spawn_Request(x&#x3D;2.0, y&#x3D;2.0, theta&#x3D;0.2, name&#x3D;’None’)</p>
-<p>response:<br>turtlesim.srv.Spawn_Response(name&#x3D;’None’)</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-42.png"></p>
-<p>这样就多了一只乌龟。接下来来认识一下参数：</p>
-<h2 id="Parameter（参数）"><a href="#Parameter（参数）" class="headerlink" title="Parameter（参数）"></a>Parameter（参数）</h2><p>参数是节点的一些可调节值。在新的控制台里输入ros2 param list：</p>
-<p>&#x2F;rqt_gui_py_node_35429:<br>  use_sim_time<br>&#x2F;teleop_turtle:<br>  scale_angular<br>  scale_linear<br>  use_sim_time<br>&#x2F;turtlesim:<br>  background_b<br>  background_g<br>  background_r<br>  use_sim_time</p>
-<p>这些参数还是很好理解的。接下来看看如何读取参数，比如说&#x2F;turtlesim的backgorund_g：ros2 param get &#x2F;turtlesim background_g</p>
-<p>Integer value is: 86</p>
-<p>顺便你还知道了参数的类型。接下来就可以设置参数，形式：ros2 param set &lt;node_name&gt; &lt;parameter_name&gt; <value></p>
-<p>试着修改一下：ros2 param set &#x2F;turtlesim background_r 150</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-43.png"></p>
-<p>这种修改都是暂时的，不过可以用dump来储存配置。比如保存当前turtlesim的参数：</p>
-<p>ros2 param dump &#x2F;turtlesim</p>
-<p>Saving to:  .&#x2F;turtlesim.yaml</p>
-<p>下次运行turtlesim的时候，就可以加载参数了，格式：</p>
-<p>ros2 run &lt;package_name&gt; &lt;executable_name&gt; –ros-args –params-file &lt;file_name&gt;</p>
-<p>接下来了解ROS2的最后一个概念：action。</p>
-<h2 id="Action（活动）："><a href="#Action（活动）：" class="headerlink" title="Action（活动）："></a>Action（活动）：</h2><p>Action是一个上层的沟通机制，建立在Topic和Services上。它包括三个部分：目标、结果和反馈。</p>
-<p><img src="https://docs.ros.org/en/foxy/_images/Action-SingleActionClient.gif" alt="..&#x2F;_images&#x2F;Action-SingleActionClient.gif"></p>
-<p>请出我们的小海龟来解释一下这个机制。</p>
-<h2 id="shaw-shaw-BIM-ros2-run-turtlesim-turtle-teleop-keyReading-from-keyboard"><a href="#shaw-shaw-BIM-ros2-run-turtlesim-turtle-teleop-keyReading-from-keyboard" class="headerlink" title="shaw@shaw-BIM:~$ ros2 run turtlesim turtle_teleop_keyReading from keyboard"></a>shaw@shaw-BIM:~$ ros2 run turtlesim turtle_teleop_key<br>Reading from keyboard</h2><p>Use arrow keys to move the turtle.<br>Use GBVCDERT keys to rotate to absolute orientations. ‘F’ to cancel a rotation.<br>‘Q’ to quit.</p>
-<p>注意这一句：Use GBVCDERT keys to rotate to absolute orientations. ‘F’ to cancel a rotation.</p>
-<p>这其实就是一个action。action的特殊之处在于它可以在执行过程中被叫停，例如先输入v来让海龟头朝下，在这个过程中按下r使其头朝上。</p>
-<p>[WARN] [1618995435.309175305] [turtlesim]: Rotation goal received before a previous goal finished. Aborting previous goal<br>[INFO] [1618995437.885072665] [turtlesim]: Rotation goal completed successfully</p>
-<p>可以看到第一个目标在达到前被取消了。</p>
-<h3 id="读取action的信息"><a href="#读取action的信息" class="headerlink" title="读取action的信息"></a>读取action的信息</h3><p>首先输入ros2 node info &#x2F;turtlesim：</p>
-<p>&#x2F;turtlesim<br>  Subscribers:<br>    &#x2F;parameter_events: rcl_interfaces&#x2F;msg&#x2F;ParameterEvent<br>    &#x2F;turtle1&#x2F;cmd_vel: geometry_msgs&#x2F;msg&#x2F;Twist<br>  Publishers:<br>    &#x2F;parameter_events: rcl_interfaces&#x2F;msg&#x2F;ParameterEvent<br>    &#x2F;rosout: rcl_interfaces&#x2F;msg&#x2F;Log<br>    &#x2F;turtle1&#x2F;color_sensor: turtlesim&#x2F;msg&#x2F;Color<br>    &#x2F;turtle1&#x2F;pose: turtlesim&#x2F;msg&#x2F;Pose<br>  Service Servers:<br>    &#x2F;clear: std_srvs&#x2F;srv&#x2F;Empty<br>    &#x2F;kill: turtlesim&#x2F;srv&#x2F;Kill<br>    &#x2F;reset: std_srvs&#x2F;srv&#x2F;Empty<br>    &#x2F;spawn: turtlesim&#x2F;srv&#x2F;Spawn<br>    &#x2F;turtle1&#x2F;set_pen: turtlesim&#x2F;srv&#x2F;SetPen<br>    &#x2F;turtle1&#x2F;teleport_absolute: turtlesim&#x2F;srv&#x2F;TeleportAbsolute<br>    &#x2F;turtle1&#x2F;teleport_relative: turtlesim&#x2F;srv&#x2F;TeleportRelative<br>    &#x2F;turtlesim&#x2F;describe_parameters: rcl_interfaces&#x2F;srv&#x2F;DescribeParameters<br>    &#x2F;turtlesim&#x2F;get_parameter_types: rcl_interfaces&#x2F;srv&#x2F;GetParameterTypes<br>    &#x2F;turtlesim&#x2F;get_parameters: rcl_interfaces&#x2F;srv&#x2F;GetParameters<br>    &#x2F;turtlesim&#x2F;list_parameters: rcl_interfaces&#x2F;srv&#x2F;ListParameters<br>    &#x2F;turtlesim&#x2F;set_parameters: rcl_interfaces&#x2F;srv&#x2F;SetParameters<br>    &#x2F;turtlesim&#x2F;set_parameters_atomically: rcl_interfaces&#x2F;srv&#x2F;SetParametersAtomically<br>  Service Clients:</p>
-<p>  Action Servers:<br>    &#x2F;turtle1&#x2F;rotate_absolute: turtlesim&#x2F;action&#x2F;RotateAbsolute<br>  Action Clients:</p>
-<p>Action Servers:<br>&#x2F;turtle1&#x2F;rotate_absolute: turtlesim&#x2F;action&#x2F;RotateAbsolute：这条说明turtlesim是一个action servers，也就是其会对&#x2F;turtle1&#x2F;rotate_absolute这个活动相应并提供反馈。另一边，我们来看看teleop_turtle的：</p>
-<p>  Action Clients:<br>    &#x2F;turtle1&#x2F;rotate_absolute: turtlesim&#x2F;action&#x2F;RotateAbsolute</p>
-<p>意味着它将对这个活动服务器发送目标。我们来进一步查看这个活动：</p>
-<p>shaw@shaw-BIM:~$ ros2 action info &#x2F;turtle1&#x2F;rotate_absolute<br>Action: &#x2F;turtle1&#x2F;rotate_absolute<br>Action clients: 1<br>    &#x2F;teleop_turtle<br>Action servers: 1<br>&#x2F;turtlesim</p>
-<hr>
-<p>shaw@shaw-BIM:~$ ros2 interface show turtlesim&#x2F;action&#x2F;RotateAbsolute</p>
-<h1 id="The-desired-heading-in-radians"><a href="#The-desired-heading-in-radians" class="headerlink" title="The desired heading in radians"></a>The desired heading in radians</h1><h2 id="float32-theta"><a href="#float32-theta" class="headerlink" title="float32 theta"></a>float32 theta</h2><h1 id="The-angular-displacement-in-radians-to-the-starting-position"><a href="#The-angular-displacement-in-radians-to-the-starting-position" class="headerlink" title="The angular displacement in radians to the starting position"></a>The angular displacement in radians to the starting position</h1><h2 id="float32-delta"><a href="#float32-delta" class="headerlink" title="float32 delta"></a>float32 delta</h2><h1 id="The-remaining-rotation-in-radians"><a href="#The-remaining-rotation-in-radians" class="headerlink" title="The remaining rotation in radians"></a>The remaining rotation in radians</h1><p>float32 remaining</p>
-<p>上面我们查看了ROS2中一共有那些活动，下面我们查看了action的结构，总共分为三部分，第一部分是目标的结构，第二部分是结果的结构，第三部分是反馈的结构。知道了结构后，我们向action server提出一个目标请求：</p>
-<p>ros2 action send_goal &#x2F;turtle1&#x2F;rotate_absolute turtlesim&#x2F;action&#x2F;RotateAbsolute “{theta: 1.57}”</p>
-<p>返回：</p>
-<p>Waiting for an action server to become available…<br>Sending goal:<br>     theta: 1.57</p>
-<p>Goal accepted with ID: 314e4c3cf94649f7b8fd1a4cd591f5a7</p>
-<p>Result:<br>    delta: 0.0</p>
-<p>Goal finished with status: SUCCEEDED</p>
-<p>小海龟也旋转了。每一个目标都有一个单独的ID，我们也可以看到结果，结构和interface中显示的相同。在发送目标的时候，可以加上选项 –feedback，这样可以不断地从topic接受feedback。</p>
-<p>使用action的好处主要包括：</p>
-<ol>
-<li>可终止；</li>
-<li>不断的反馈；</li>
-<li>明确的停止信号。</li>
-</ol>
-<p>到此为止介绍了ROS的主要基本概念。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/20/ros%E5%AE%89%E8%A3%85%E4%B8%ADrosdep-update%E6%97%A0%E6%B3%95%E8%BF%9B%E8%A1%8C%E7%9A%84%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/20/ros%E5%AE%89%E8%A3%85%E4%B8%ADrosdep-update%E6%97%A0%E6%B3%95%E8%BF%9B%E8%A1%8C%E7%9A%84%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">ROS2安装中rosdep update无法进行的问题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-20 15:18:22" itemprop="dateCreated datePublished" datetime="2021-04-20T15:18:22+08:00">2021-04-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>吐槽一下，我能理解长城的意义，但是好歹给科研人员一个官方工具或者官方地点来连接外网吧，一个ROS2安装搞了我两三天，这真的合理吗？</p>
-<p>这个问题在外网搜不到，因为外网没有网络问题。即使是使用了科学上网，也会出现无法获取完整内容报错的情况。修改host和ip的方法都宣告无效。最省事的处理办法是使用ROS melodic，并参照<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39730025/article/details/113348458">https://blog.csdn.net/weixin_39730025&#x2F;article&#x2F;details&#x2F;113348458</a>中的资源，直接拷贝下来。但是也得保证上的去github。</p>
-<p>另一种方式就是修改脑残的rosdep机制，一次失败就跳出，也太没有恒心了吧？不过也是，在外网哪有这些烦恼呢……在&#x2F;usr&#x2F;lib&#x2F;python2.7&#x2F;dist-packages&#x2F;rosdep2&#x2F;下的三个文件sources_list.py、gbpdistro_support.py、rep3.py中搜索含有f &#x3D; urlopen的地方，修改成下面这样：</p>
-<p>is_ok&#x3D;False<br>count&#x3D;0<br>while(not is_ok):<br>    try:<br>        f &#x3D; urlopen(url_request, timeout&#x3D;DOWNLOAD_TIMEOUT) #这里是需要网络连接的函数区，url_request在三个文件中命名不一样<br>        is_ok&#x3D;True<br>    except:<br>        count&#x3D;count+1 #进行重试<br>        print(‘Retry:’,count)<br>        if count&gt;MAX_RETRY: #超过最大次数MAX_RETRY则跳出<br>            is_ok&#x3D;True</p>
-<p>除此之外，搜索DOWNLOAD_TIMEOUT &#x3D; 15.0，把数值改高一点，比如30或者60.再声明一下MAX_RETRY的值，比如10.做完之后，rosdep update，然后该干嘛干嘛去吧。</p>
-<p>这个方法也不保证成功，只能说减少了敲rosdep update的次数。</p>
-<p>当然这个问题可能也只是长城误伤了，因为多试几次还是能够hit到的。但是不管怎么说，都很让人恼火。我也把ROS2的source.list传到了云盘上，希望能帮到人。</p>
-<p>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1YM6zmgSIzw/_2D9Artg4kPw">https://pan.baidu.com/s/1YM6zmgSIzw\_2D9Artg4kPw</a><br>提取码：oxzp</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/20/%E5%9C%A8ubuntu20-04%E4%B8%8B%E5%AE%89%E8%A3%85ardupilot/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/20/%E5%9C%A8ubuntu20-04%E4%B8%8B%E5%AE%89%E8%A3%85ardupilot/" class="post-title-link" itemprop="url">在Ubuntu20.04下安装ArduPilot</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-20 11:17:48" itemprop="dateCreated datePublished" datetime="2021-04-20T11:17:48+08:00">2021-04-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1006,19 +327,424 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Python2已经不再更新且被支持了，所以迁移到Python3是迟早的事情。好在ArduPilot顺应潮流，也已经将代码迁移到Python3上了。Ubuntu20.04默认的Python就是Python3，所以在Ubuntu20.04下，安装的过程会有一些不一样。</p>
-<p>首先，还是从github克隆ArduPilot：</p>
-<p>cd ~<br>sudo apt install git<br>git clone <a target="_blank" rel="noopener" href="https://github.com/ArduPilot/ardupilot.git">https://github.com/ArduPilot/ardupilot.git</a><br>cd ardupilot<br>git submodule init<br>git submodule update –init –recursive</p>
-<p>然后运行ArduPilot自带的依赖安装脚本：</p>
-<p>Tools&#x2F;environment_install&#x2F;install-prereqs-ubuntu.sh -y<br>. ~&#x2F;.profile</p>
-<p>接下来检查一下是否安装成功：</p>
-<p>cd YOUR_PATH&#x2F;ardupilot&#x2F;Tools&#x2F;autotest<br>sim_vehicle.py -v ArduCopter –map –console</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-34-1024x391.png"></p>
-<p>控制台出现，安装成功！接下来安装mavproxy，使用pip3安装：</p>
-<p>pip3 install mavproxy</p>
-<p>但是非常遗憾的是，dronekit还不支持python3，比较它最后一次更新是2017年。因此我们用conda新建一个环境安装dronekit。</p>
-<p>conda create py27 python&#x3D;2.7<br>conda activate py27<br>pip install dronekit<br>pip install dronekit-sitl</p>
-<p>然后我们测试一个以前试过的脚本：</p>
+          <p>至今为止，我们都没有见过实体化的无人机，除了地面站中简单地标出了无人机的位置和飞行姿态。一直没能看着自己的无人机真正升空，实在是有一点遗憾。在你尝试在真实的无人机上实验之前，还有一个选择：无人机仿真。如果你只是想让无人机飞到一个地方再飞回来，那么前面的教程就足够你参考了；但是如果你想让无人机进行一些更为精细的操作的话，无人机仿真是很有必要的。</p>
+<p>Gazebo是一个很有效的仿真工具，可以用来测试算法、设计机器人、进行测试，提供一个三维视窗来让你观察机器人的表现。在这一章，我们会安装gazebo并进行简单的测试。</p>
+<h2 id="安装Gazebo"><a href="#安装Gazebo" class="headerlink" title="安装Gazebo"></a>安装Gazebo</h2><p>安装之前，我们需要对环境变量进行一下设置。Gazebo对虚拟机的3D硬件加速支持有BUG，会出现闪退的情形。因此我们先关闭硬件加速：</p>
+<p>echo “ export SVGA_VGPU10&#x3D;0” &gt;&gt; ~&#x2F;.bashrc<br>source ~&#x2F;.bashrc</p>
+<p>然后我们将 <a target="_blank" rel="noopener" href="http://packages.osrfoundation.org/">http://packages.osrfoundation.org</a>加入到系统的源列表里，这样我们用apt install就可以安装Gazebo了。：</p>
+<p>sudo sh -c ‘echo “deb <a target="_blank" rel="noopener" href="http://packages.osrfoundation.org/gazebo/ubuntu-stable">http://packages.osrfoundation.org/gazebo/ubuntu-stable</a> `lsb_release -cs` main” &gt; &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;gazebo-stable.list’<br>wget <a target="_blank" rel="noopener" href="http://packages.osrfoundation.org/gazebo.key">http://packages.osrfoundation.org/gazebo.key</a> -O -  sudo apt-key add -<br>sudo apt update</p>
+<p>接下来安装gazebo9：</p>
+<p>sudo apt install gazebo9 libgazebo9-dev</p>
+<p>我们打开Gazebo的界面看看安装是否成功：</p>
+<p>gazebo –verbose</p>
+<p>如果界面能成功打开，并且没有闪退，说明安装没有问题。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-31-1024x970.png"></p>
+<h2 id="安装Ardupilot-gazebo插件"><a href="#安装Ardupilot-gazebo插件" class="headerlink" title="安装Ardupilot-gazebo插件"></a>安装Ardupilot-gazebo插件</h2><p>这个插件允许你在Gazebo中对ArduPilot控制的无人机进行仿真，他也提供了一个无人机模型和场景用于观察。</p>
+<p>cd $courseRoot<br>git clone <a target="_blank" rel="noopener" href="https://github.com/khancyr/ardupilot/_gazebo">https://github.com/khancyr/ardupilot\_gazebo</a><br>cd ardupilot_gazebo<br>mkdir build<br>cd build<br>cmake ..<br>make -j4<br>sudo make install<br>echo ‘source &#x2F;usr&#x2F;share&#x2F;gazebo&#x2F;setup.sh’ &gt;&gt; ~&#x2F;.bashrc</p>
+<p>在这个过程中无人机的模型和默认场景也被下载下来，我们把模型和场景坐在的文件夹也加入环境变量，这样加载时不需要输入完整的模型路径名称。</p>
+<p>echo ‘export GAZEBO_MODEL_PATH&#x3D;<del>&#x2F;courseRoot&#x2F;ardupilot_gazebo&#x2F;models’ &gt;&gt; ~&#x2F;.bashrc<br>echo ‘export GAZEBO_RESOURCE_PATH&#x3D;</del>&#x2F;courseRoot&#x2F;ardupilot_gazebo&#x2F;worlds:${GAZEBO_RESOURCE_PATH}’ &gt;&gt; ~&#x2F;.bashrc<br>source ~&#x2F;.bashrc</p>
+<h2 id="Gazebo测试"><a href="#Gazebo测试" class="headerlink" title="Gazebo测试"></a>Gazebo测试</h2><p>安装完毕后，我们对Gazebo进行测试。首先，我们运行一个SITL：</p>
+<p>sim_vehicle.py -v ArduCopter -f gazebo-iris –map –console</p>
+<p>然后，我们运行gazebo：</p>
+<p>gazebo –verbose worlds&#x2F;iris_arducopter_runway.world</p>
+<p>这时候会卡很久一段时间（我是这样），这是因为gazebo正在下载模型，耐心等待即可，偶尔敲一敲空格（可能有用）。你应该可以看到这样的界面：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-32.png"></p>
+<p>然后在控制台里控制无人机起飞，看看会发生什么吧：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-33.png"></p>
+<p>芜湖起飞！下一章，我们来看看如何把Gazebo和我们之前学习的知识联系到一起。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/12/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AB%EF%BC%89%EF%BC%9Adronekit%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/12/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AB%EF%BC%89%EF%BC%9Adronekit%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">无人机编程入门（八）：DroneKit使用（二）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-12 17:19:34" itemprop="dateCreated datePublished" datetime="2021-04-12T17:19:34+08:00">2021-04-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="使用DroneKit制作起飞python脚本"><a href="#使用DroneKit制作起飞python脚本" class="headerlink" title="使用DroneKit制作起飞python脚本"></a>使用DroneKit制作起飞python脚本</h2><p>在这一节中我们来看如何用DroneKit控制SITL起飞，进入dk文件夹，新建一个python文件，输入以下内容：</p>
+<p>cd $courseRoot&#x2F;dk<br>gedit basic_template.py<br>—————————–输入以下内容<br>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse</p>
+<p>def connectMyCopter():</p>
+<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
+parser.add\_argument(&#39;--connect&#39;)
+args = parser.parse\_args()
+
+connection\_string = args.connect
+
+if not connection\_string:
+    import dronekit\_sitl
+    sitl = dronekit\_sitl.start\_default()
+    connection\_string = sitl.connection\_string()
+
+vehicle = connect(connection\_string, wait\_ready=True)
+
+return vehicle
+</code></pre>
+<p>def arm_and_takeoff(targetHeight):<br>while vehicle.is_armable!&#x3D;True:<br>    print(“Waiting for vehicle to become aramable”)<br>    time.sleep(1)<br>print(“Vehicle is now armable”)</p>
+<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
+<p>while vehicle.mode!&#x3D;”GUIDED”:<br>    print(“Waiting for drone to enter GUIDED flight mode”)<br>    time.sleep(1)<br>print(“Vehicle now in GUIDED MODE. Have fun!!”)</p>
+<p>vehicle.armed &#x3D; True<br>while vehicle.armed&#x3D;&#x3D;False:<br>    print(“Waiting for drone to become armed”)<br>    time.sleep(1)<br>print(“Look out! Virtual props are spinning!”)</p>
+<p>vehicle.simple_takeoff(targetHeight) ##meters</p>
+<p>while True:<br>print(“Current Altitude:”, vehicle.location.global_relative_frame.alt)<br>if vehicle.location.global_relative_frame.alt&gt;&#x3D;.95*targetHeight:<br>break<br>time.sleep(1)<br>print(“Target altitude reached!!”)<br>return None</p>
+<p>vehicle &#x3D; connectMyCopter()<br>arm_and_takeoff(10)</p>
+<p>观察一下arm_and_takeoff这个函数，你会发现起飞是如何进行的：启动和飞行模式修改通过改变无人机的参数实现，起飞到固定高度则通过调用simple_takeoff方法实现。<strong>同时，每进行下一步操作前，都要确保无人机的状态已经满足操作要求，或者上一步操作已经完成。在虚拟环境下运行这个脚本</strong>，观察一下输出：</p>
+<p>Starting copter simulator (SITL)<br>SITL already Downloaded and Extracted.<br>Ready to boot.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>APM:Copter V3.3 (d6053245)<br>Frame: QUAD<br>Calibrating barometer<br>Initialising APM…<br>barometer calibration complete<br>GROUND START<br>Waiting for vehicle to become aramable<br>Waiting for vehicle to become aramable<br>Waiting for vehicle to become aramable<br>Waiting for vehicle to become aramable<br>Waiting for vehicle to become aramable<br>Vehicle is now armable<br>Waiting for drone to enter GUIDED flight mode<br>Vehicle now in GUIDED MODE. Have fun!!<br>Waiting for drone to become armed<br>Waiting for drone to become armed<br>Waiting for drone to become armed<br>Waiting for drone to become armed</p>
+<blockquote>
+<blockquote>
+<p>ARMING MOTORS<br>GROUND START<br>Waiting for drone to become armed</p>
+<blockquote>
+<blockquote>
+<p>Link timeout, no heartbeat in last 5 seconds<br>…link restored.<br>Initialising APM…<br>Look out! Virtual props are spinning!<br>(‘Current Altitude:’, 0.0)<br>(‘Current Altitude:’, 0.0)<br>(‘Current Altitude:’, 0.34)<br>(‘Current Altitude:’, 1.73)<br>(‘Current Altitude:’, 3.62)<br>(‘Current Altitude:’, 5.71)<br>(‘Current Altitude:’, 7.78)<br>(‘Current Altitude:’, 9.19)<br>(‘Current Altitude:’, 9.69)<br>Target altitude reached!!</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="连接到外部SITL与QGC"><a href="#连接到外部SITL与QGC" class="headerlink" title="连接到外部SITL与QGC"></a>连接到外部SITL与QGC</h2><p>我们一直在使用dronekit自带的SITL进行测试，但是最终我们应当在外部SITL上进行测试，这样才能把代码更方便地迁移到真实无人机上。为了做到这一点，我们要做的事情包括：</p>
+<ol>
+<li>启动SITL</li>
+<li>启动MAVProxy进行消息转发</li>
+<li>启动地面站</li>
+<li>启动python脚本</li>
+</ol>
+<p>如果每次测试都要手动去启动上面这么多程序，显然是比较麻烦的。我们可以写一个bash脚本，来自动完成上面这些操作。新建一个launchSITL文件，然后进行以下操作：</p>
+<p>gedit launchSitl<br>—————————输入以下内容<br>#!&#x2F;bin&#x2F;bash</p>
+<p>kill -9 $(ps -eF  grep QG  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep ardu  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep mav  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep apm  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1</p>
+<p>#########</p>
+<h2 id="Launch-a-Sitl-drone"><a href="#Launch-a-Sitl-drone" class="headerlink" title="Launch a Sitl drone"></a>Launch a Sitl drone</h2><p>&#x2F;home&#x2F;shaw&#x2F;courseRoot&#x2F;apm&#x2F;ardupilot&#x2F;build&#x2F;sitl&#x2F;bin&#x2F;arducopter -S -I0 –home 44.501293,-88.062176,177,180 –model “+” –speedup 1 –defaults $apm&#x2F;ardupilot&#x2F;Tools&#x2F;autotest&#x2F;default_params&#x2F;copter.parm&amp;</p>
+<p>sleep 5</p>
+<h2 id="Launch-QGC"><a href="#Launch-QGC" class="headerlink" title="Launch QGC"></a>Launch QGC</h2><p>&#x2F;usr&#x2F;local&#x2F;bin&#x2F;QGC.AppImage 2&gt;&#x2F;dev&#x2F;null&amp;</p>
+<p>sleep 5</p>
+<h2 id="Start-MAVProxy"><a href="#Start-MAVProxy" class="headerlink" title="Start MAVProxy"></a>Start MAVProxy</h2><p>screen -dm mavproxy.py –master&#x3D;tcp:127.0.0.1:5760 –out&#x3D;127.0.0.1:14550 –out&#x3D;127.0.0.1:5762</p>
+<p>##Launch the dronekit-python script<br>&#x2F;usr&#x2F;bin&#x2F;python “$1” –connect 127.0.0.1:5762</p>
+<p>function finish {<br>kill -9 $(ps -eF  grep QG  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep ardu  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep mav  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep apm  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>}</p>
+<p>trap finish EXIT<br>——————————保存并退出<br>chmod +x launchSitl<br>sudo cp launchSitl &#x2F;usr&#x2F;local&#x2F;bin&#x2F;launchSitl</p>
+<p>我们来看一看这段脚本做了什么：</p>
+<ol>
+<li>首先，文件开头声明了这是一个可以被bash执行的文件，运行这个文件时默认使用bash运行它；</li>
+<li>杀死所有含有以下名字的程序：QG、ardu、mav、apm，保证这些应用不会被占用；</li>
+<li>运行一个SITL，&amp;意味着运行过程放到后台，不会在当前控制台中打印输出；</li>
+<li>运行QGC，如果有错误输出，把它扔到&#x2F;dev&#x2F;null里（也就是忽略），也在后台运行；</li>
+<li>运行MAVProxy，与无人机进行双向通信，并且把消息转发到14550（QGC的端口）和5762（python使用的端口）</li>
+<li>运行python脚本，<strong>$1</strong>是你给脚本传入的第一个参数，这个参数就是我们的python文件名</li>
+<li>执行完成后，像2中那样杀死所有被脚本开启的进程</li>
+<li>退出脚本</li>
+</ol>
+<p>我们把这个脚本复制到bin文件夹里，这样可以全局调用它。我们试着用这个脚本运行basic_template.py，来让外部SITL起飞（如果你还在虚拟环境里，现在可以退出来了），外部SITL的启动时间会比较长，耐心等待一段时间：</p>
+<p>launchSitl basic_template.py</p>
+<p>你应该能看到QGC里出现无人机的位置，并且上升到10m后程序结束，窗口全部关闭。</p>
+<h2 id="控制SITL行进"><a href="#控制SITL行进" class="headerlink" title="控制SITL行进"></a>控制SITL行进</h2><p>我们先来看第一种行进方式，也就是让无人机飞到固定的经纬度。新建一个python文件，输入以下内容：</p>
+<h2 id="cd-courseRoot-dkgedit-location-based-movement-py"><a href="#cd-courseRoot-dkgedit-location-based-movement-py" class="headerlink" title="cd $courseRoot&#x2F;dkgedit location_based_movement.py"></a>cd $courseRoot&#x2F;dk<br>gedit location_based_movement.py</h2><p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse</p>
+<p>def connectMyCopter():</p>
+<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
+parser.add\_argument(&#39;--connect&#39;)
+args = parser.parse\_args()
+
+connection\_string = args.connect
+
+if not connection\_string:
+    import dronekit\_sitl
+    sitl = dronekit\_sitl.start\_default()
+    connection\_string = sitl.connection\_string()
+
+vehicle = connect(connection\_string, wait\_ready=True)
+
+return vehicle
+</code></pre>
+<p>def arm_and_takeoff(targetHeight):<br>while vehicle.is_armable!&#x3D;True:<br>    print(“Waiting for vehicle to become aramable”)<br>    time.sleep(1)<br>print(“Vehicle is now armable”)</p>
+<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
+<p>while vehicle.mode!&#x3D;”GUIDED”:<br>    print(“Waiting for drone to enter GUIDED flight mode”)<br>    time.sleep(1)<br>print(“Vehicle now in GUIDED MODE. Have fun!!”)</p>
+<p>vehicle.armed &#x3D; True<br>while vehicle.armed&#x3D;&#x3D;False:<br>    print(“Waiting for drone to become armed”)<br>    time.sleep(1)<br>print(“Look out! Virtual props are spinning!”)</p>
+<p>vehicle.simple_takeoff(targetHeight) ##meters</p>
+<p>while True:<br>print(“Current Altitude:”, vehicle.location.global_relative_frame.alt)<br>if vehicle.location.global_relative_frame.alt&gt;&#x3D;.95*targetHeight:<br>break<br>time.sleep(1)<br>print(“Target altitude reached!!”)<br>return None</p>
+<p>def get_distance_meters(targetLocation, currentLocation):<br>dLat &#x3D; targetLocation.lat - currentLocation.lat<br>dLon &#x3D; targetLocation.lon - currentLocation.lon</p>
+<p>return math.sqrt((dLon*dLon)+(dLat*dLat))*1.113195e5</p>
+<p>def goto(targetLocation):<br>distanceToTargetLocation &#x3D; get_distance_meters(targetLocation, vehicle.location.global_relative_frame)</p>
+<p>vehicle.simple_goto(targetLocation)</p>
+<p>while vehicle.mode.name &#x3D;&#x3D; “GUIDED”:<br>currentDistance &#x3D; get_distance_meters(targetLocation,vehicle.location.global_relative_frame)<br>if currentDistance &lt; distanceToTargetLocation*.01:<br>print(“Reached target waypoint”)<br>time.sleep(2)<br>break<br>time.sleep(1)<br>return None</p>
+<p>wp1 &#x3D; LocationGlobalRelative(44.50202, -88.060316, 10)</p>
+<p>vehicle &#x3D; connectMyCopter()<br>arm_and_takeoff(10)</p>
+<p>goto(wp1)</p>
+<p>vehicle.mode &#x3D; VehicleMode(“LAND”)<br>while vehicle.mode !&#x3D; ‘LAND’<br>print(“Waiting for drone to enter LAND mode”)<br>time.sleep(1)<br>print(“Vehicle in LAND mode”)</p>
+<p>while True:<br>time.sleep(1)</p>
+<p>首先来看get_distance_meters这个函数，这个函数计算了当前位置和指定位置的距离，距离是我们来用来判断是否继续执行下一步的准则。时刻记住，使用脚本对GUIDED模式的SITL进行操控时，上一步操作结束后才能进行下一步。</p>
+<p>我们使用vehicle.simple_goto这个方法来操控无人机到达指定位置，在goto函数里，用距离来判断是否到达指定位置。</p>
+<p>在main函数中，我们制定了一个目标位置，让无人机飞往指定位置后切换到LAND降落。运行这个python脚本，看看效果如何：</p>
+<p>launchSitl location_based_movement.py</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-24.png"></p>
+<h2 id="在AUTO模式下控制无人机"><a href="#在AUTO模式下控制无人机" class="headerlink" title="在AUTO模式下控制无人机"></a>在AUTO模式下控制无人机</h2><p>在GUIDED模式下操控无人机就像你在手控制无人机一样，需要你不断地向无人机发送指令来操控无人机。而在AUTO模式下，你可以直接将你的飞行计划上传到无人机（也是通过MAVLink），这样无人机可以持续执行飞行计划，而不需要一直发送信息。所以AUTO模式非常适合你要让无人机执行一些自动化任务时。而GUIDED模式比较适合你需要让无人机根据环境来改变飞行状态等动态性较高的任务，比如精准降落等。</p>
+<p>简单来说在AUTO模式下，我们给无人机一个任务列表，无人机就会自动执行列表中的任务。这个任务列表是通过MAVLink发送的，如果你还有印象的话，MAVLink发送的数据包都遵循一定的组织格式。下面我们来看看如何用DroneKit来发送MAVLink命令。你可以在<a target="_blank" rel="noopener" href="http://ardupilot.org/copter/docs/common-mavlink-mission-command-messages-mav_cmd.html">这里找到更多的mavlink命令</a>。</p>
+<p>我们使用dronekit.Command()这个命令来发送MAVLink。你可能还记得MAVLink中的long命令，其实Command()的效果和它基本一样，它包含以下参数：</p>
+<p>Command(0,0,0,FrameOfReference, MAVLinkCommand,CurrentWP,AutoContinue,param1,param2,param3,param4,param5,param6,param7)</p>
+<p>前面的三个0一般不变；FrameOfReference代表我们使用的坐标系；MAVLinkCommand就是它的字面意思，可以根据文档查看命令名称；CurrentWP一般是0；AutoContinue一般是0；下面的七个参数和MAVLink中的long命令用法是一样的。例如，如果我们要发送WAY_POINT命令，可以到文档里找到对应的参数：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-25-1024x993.png"></p>
+<p>也就是说我们在param5\6\7中分别填入纬度、经度和高度，其他参数都填0（默认）.</p>
+<p>了解了这些之后，我们来写一个自动飞行的脚本：</p>
+<h2 id="cd-courseRoot-dkgedit-auto-mission-py"><a href="#cd-courseRoot-dkgedit-auto-mission-py" class="headerlink" title="cd $courseRoot&#x2F;dkgedit auto_mission.py"></a>cd $courseRoot&#x2F;dk<br>gedit auto_mission.py</h2><p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException, Command<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse<br>from pymavlink import mavutil</p>
+<p>def connectMyCopter():</p>
+<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
+parser.add\_argument(&#39;--connect&#39;)
+args = parser.parse\_args()
+
+connection\_string = args.connect
+
+if not connection\_string:
+    import dronekit\_sitl
+    sitl = dronekit\_sitl.start\_default()
+    connection\_string = sitl.connection\_string()
+
+vehicle = connect(connection\_string, wait\_ready=True)
+
+return vehicle
+</code></pre>
+<p>def arm_and_takeoff(targetHeight):<br>while vehicle.is_armable!&#x3D;True:<br>    print(“Waiting for vehicle to become aramable”)<br>    time.sleep(1)<br>print(“Vehicle is now armable”)</p>
+<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
+<p>while vehicle.mode!&#x3D;”GUIDED”:<br>    print(“Waiting for drone to enter GUIDED flight mode”)<br>    time.sleep(1)<br>print(“Vehicle now in GUIDED MODE. Have fun!!”)</p>
+<p>vehicle.armed &#x3D; True<br>while vehicle.armed&#x3D;&#x3D;False:<br>    print(“Waiting for drone to become armed”)<br>    time.sleep(1)<br>print(“Look out! Virtual props are spinning!”)</p>
+<p>vehicle.simple_takeoff(targetHeight) ##meters</p>
+<p>while True:<br>print(“Current Altitude:”, vehicle.location.global_relative_frame.alt)<br>if vehicle.location.global_relative_frame.alt&gt;&#x3D;.95*targetHeight:<br>break<br>time.sleep(1)<br>print(“Target altitude reached!!”)<br>return None</p>
+<p>vehicle &#x3D; connectMyCopter()</p>
+<p>wphome &#x3D; vehicle.location.global_relative_frame</p>
+<p>cmd1 &#x3D; Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,0,0,0,0,wphome.lat,wphome.lon,wphome.alt)<br>cmd2 &#x3D; Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,0,0,0,0,44.501375,-88.062645,15)<br>cmd3 &#x3D; Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,0,0,0,0,44.501746,-88.062242,10)<br>cmd4 &#x3D; Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH,0,0,0,0,0,0,0,0,0)</p>
+<p>cmds &#x3D; vehicle.commands<br>cmds.download()<br>cmds.wait_ready()</p>
+<p>cmds.clear()</p>
+<p>cmds.add(cmd1)<br>cmds.add(cmd2)<br>cmds.add(cmd3)<br>cmds.add(cmd4)</p>
+<p>vehicle.commands.upload()</p>
+<p>arm_and_takeoff(10)</p>
+<p>print(“after arm and takeoff”)<br>vehicle.mode &#x3D; VehicleMode(“AUTO”)<br>while vehicle.mode !&#x3D; “AUTO”:<br>time.sleep(.2)</p>
+<p>while vehicle.location.global_relative_frame.alt &gt; 2:<br>print(“Drone is executing mission, but we can still run code”)<br>time.sleep(2)</p>
+<p>我们来看一下这个流程，首先我们编写了几个command，前三个都是WAYPOIN，也就是飞往指定地点，最后一个是LAND。随后，我们下载目前无人机的命令列表，并清空，随后我们逐个在列表中增加命令，随后上传。无人机起飞后，我们将无人机设置为AUTO模式，无人机就会开始执行任务，直到最后一个命令降落。运行这个脚本，看看效果如何：</p>
+<p>launchSitl auto_mission.py</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-26.png"></p>
+<p>无人机画了一个三角形后降落。</p>
+<h2 id="使用DroneKit基于速度控制无人机"><a href="#使用DroneKit基于速度控制无人机" class="headerlink" title="使用DroneKit基于速度控制无人机"></a>使用DroneKit基于速度控制无人机</h2><p>接下来我们使用基于速度的方式来控制无人机，在此之前，我们要明确一下无人机的方位。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-27.png"></p>
+<p>在全球坐标系下，正北方是正x轴，正东方是正y轴，正下方是正z轴，反之亦然。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-28.png"></p>
+<p>在本地坐标系下，无人机的正方向是x轴，右侧是正y轴，下方是正z轴。无人机虽然是中心对称的，但是安装飞控硬件的时候都会指明无人机的正方向。接下来我们来写一个python脚本来让无人机根据速度移动。我们要在GUIDED模式下对无人机发送自定义的MAVLink指令，对于多数MAVLink指令，生成相应指令的函数为“小写指令名”+“_encode”。如果你在上面的MAVLink文档里找不到对应的command，可以<a target="_blank" rel="noopener" href="https://ardupilot.org/dev/docs/copter-commands-in-guided-mode.html">到这里再找找</a>。我们使用SET_POSITION_TARGET_LOCAL_NED这个命令，它的参数如下：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-29-769x1024.png"></p>
+<p>前面三个参数一般就取0，第四个参数指参考系，第五个参数是Bitmask，剩下几个参数写的都很明确了。这个Bitmask是什么呢？位掩码是一种用来定义状态的一串二进制数字，通过与目标数字串进行逻辑运算来达到控制状态的目的。位掩码可以占用很少资源实现丰富的状态标识。这里给出了三种位掩码，我们需要用表示速度的那个，也就是0b110111000111.我们开始写脚本：</p>
+<h2 id="cd-courseRoot-dkgedit-velocity-based-movement-py"><a href="#cd-courseRoot-dkgedit-velocity-based-movement-py" class="headerlink" title="cd $courseRoot&#x2F;dkgedit velocity_based_movement.py"></a>cd $courseRoot&#x2F;dk<br>gedit velocity_based_movement.py</h2><p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException, Command<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse<br>from pymavlink import mavutil</p>
+<p>def connectMyCopter():</p>
+<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
+parser.add\_argument(&#39;--connect&#39;)
+args = parser.parse\_args()
+
+connection\_string = args.connect
+
+if not connection\_string:
+    import dronekit\_sitl
+    sitl = dronekit\_sitl.start\_default()
+    connection\_string = sitl.connection\_string()
+
+vehicle = connect(connection\_string, wait\_ready=True)
+
+return vehicle
+</code></pre>
+<p>def arm_and_takeoff(targetHeight):<br>while vehicle.is_armable!&#x3D;True:<br>    print(“Waiting for vehicle to become aramable”)<br>    time.sleep(1)<br>print(“Vehicle is now armable”)</p>
+<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
+<p>while vehicle.mode!&#x3D;”GUIDED”:<br>    print(“Waiting for drone to enter GUIDED flight mode”)<br>    time.sleep(1)<br>print(“Vehicle now in GUIDED MODE. Have fun!!”)</p>
+<p>vehicle.armed &#x3D; True<br>while vehicle.armed&#x3D;&#x3D;False:<br>    print(“Waiting for drone to become armed”)<br>    time.sleep(1)<br>print(“Look out! Virtual props are spinning!”)</p>
+<p>vehicle.simple_takeoff(targetHeight) ##meters</p>
+<p>while True:<br>print(“Current Altitude:”, vehicle.location.global_relative_frame.alt)<br>if vehicle.location.global_relative_frame.alt&gt;&#x3D;.95*targetHeight:<br>break<br>time.sleep(1)<br>print(“Target altitude reached!!”)<br>return None</p>
+<p>def send_global_ned_velocity(vx, vy, vz):<br>msg &#x3D; vehicle.message_factory.set_position_target_local_ned_encode(<br>0,0,0,mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED,<br>0b110111000111,<br>0,0,0,<br>vx,vy,vz,<br>0,0,0,<br>0,0)<br>vehicle.send_mavlink(msg)<br>vehicle.flush()</p>
+<p>def send_local_ned_velocity(vx, vy, vz):<br>msg &#x3D; vehicle.message_factory.set_position_target_local_ned_encode(<br>0,0,0,mavutil.mavlink.MAV_FRAME_LOCAL_NED,<br>0b110111000111,<br>0,0,0,<br>vx,vy,vz,<br>0,0,0,<br>0,0)<br>vehicle.send_mavlink(msg)<br>vehicle.flush()</p>
+<p>vehicle &#x3D; connectMyCopter()<br>arm_and_takeoff(10)<br>time.sleep(2)</p>
+<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_global_ned_velocity(5,0,0)<br>time.sleep(1)<br>print(“Moving TRUE NORTH”)<br>i +&#x3D; 1</p>
+<p>time.sleep(2)</p>
+<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_global_ned_velocity(0,-5,0)<br>time.sleep(1)<br>print(“Moving TRUE WEST”)<br>i +&#x3D; 1</p>
+<p>time.sleep(2)</p>
+<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_local_ned_velocity(5,0,0)<br>time.sleep(1)<br>print(“Moving NORTH relative to front of drone”)<br>i +&#x3D; 1</p>
+<p>time.sleep(2)</p>
+<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_local_ned_velocity(0,-5,0)<br>time.sleep(1)<br>print(“Moving NORTH relative to front of drone”)<br>i +&#x3D; 1</p>
+<p>time.sleep(2)</p>
+<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_local_ned_velocity(0,0,5)<br>time.sleep(1)<br>print(“Moving DOWN”)<br>i +&#x3D; 1</p>
+<p>time.sleep(2)</p>
+<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_global_ned_velocity(0,0,-5)<br>time.sleep(1)<br>print(“Moving UP”)<br>i +&#x3D; 1</p>
+<p>while True:<br>time.sleep(1)<br>———————–保存后退出<br>launchSitl velocity_based_movement.py</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-30-882x1024.png"></p>
+<p>飞行器绕圈成功，这里有个bug没注意到，脚本里控制无人机下降的时候触底了，所以自动变成disarmed的状态，飞不起来了。</p>
+<h2 id="用Dronekit控制无人机的朝向（yaw角）"><a href="#用Dronekit控制无人机的朝向（yaw角）" class="headerlink" title="用Dronekit控制无人机的朝向（yaw角）"></a>用Dronekit控制无人机的朝向（yaw角）</h2><p>这个脚本和前面大同小异，我在这里不做详细示范，你可以试着自己去实现它。这需要用到这个MAVLink命令：<a target="_blank" rel="noopener" href="https://ardupilot.org/copter/docs/common-mavlink-mission-command-messages-mav_cmd.html#mav-cmd-condition-yaw">MAV_CMD_CONDITION_YAW</a>，并且要求“These MAV_CMDs can be processed if packaged within a <a target="_blank" rel="noopener" href="https://mavlink.io/en/messages/common.html#COMMAND_LONG">COMMAND_LONG</a> message.”你可以回顾一下COMMAND_LONG的形式，结合MAV_CMD_CONDITION_YAW的参数格式来实现它。我直接给出可以使用的脚本，你可以参照一下：</p>
+<p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException, Command<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse<br>from pymavlink import mavutil</p>
+<p>def connectMyCopter():</p>
+<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
+parser.add\_argument(&#39;--connect&#39;)
+args = parser.parse\_args()
+
+connection\_string = args.connect
+
+if not connection\_string:
+    import dronekit\_sitl
+    sitl = dronekit\_sitl.start\_default()
+    connection\_string = sitl.connection\_string()
+
+vehicle = connect(connection\_string, wait\_ready=True)
+
+return vehicle
+</code></pre>
+<p>def arm_and_takeoff(targetHeight):<br>while vehicle.is_armable!&#x3D;True:<br>    print(“Waiting for vehicle to become aramable”)<br>    time.sleep(1)<br>print(“Vehicle is now armable”)</p>
+<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
+<p>while vehicle.mode!&#x3D;”GUIDED”:<br>    print(“Waiting for drone to enter GUIDED flight mode”)<br>    time.sleep(1)<br>print(“Vehicle now in GUIDED MODE. Have fun!!”)</p>
+<p>vehicle.armed &#x3D; True<br>while vehicle.armed&#x3D;&#x3D;False:<br>    print(“Waiting for drone to become armed”)<br>    time.sleep(1)<br>print(“Look out! Virtual props are spinning!”)</p>
+<p>vehicle.simple_takeoff(targetHeight) ##meters</p>
+<p>while True:<br>print(“Current Altitude:”, vehicle.location.global_relative_frame.alt)<br>if vehicle.location.global_relative_frame.alt&gt;&#x3D;.95*targetHeight:<br>break<br>time.sleep(1)<br>print(“Target altitude reached!!”)<br>return None</p>
+<p>def condition_yaw(degrees, relative):<br>if relative:<br>is_relative &#x3D; 1<br>else:<br>is_relative &#x3D; 0<br>msg &#x3D; vehicle.message_factory.command_long_encode(<br>0,0,<br>mavutil.mavlink.MAV_CMD_CONDITION_YAW,<br>0,<br>degrees,<br>0,1,<br>is_relative,<br>0,0,0)<br>vehicle.send_mavlink(msg)<br>vehicle.flush()</p>
+<p>vehicle &#x3D; connectMyCopter()<br>arm_and_takeoff(10)<br>condition_yaw(30,1)<br>time.sleep(7)<br>condition_yaw(0,0)<br>time.sleep(7)<br>condition_yaw(270,0)<br>while True:<br>time.sleep(1)</p>
+<p>DroneKit的使用就介绍到这里，下一章我会介绍如何在Gazebo中对无人机进行仿真（可能要鸽很久，我自己也还在学）。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9Adronekit%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9Adronekit%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-title-link" itemprop="url">无人机编程入门（七）：DroneKit使用（一）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-11 22:53:41" itemprop="dateCreated datePublished" datetime="2021-04-11T22:53:41+08:00">2021-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在这一章里我们会学习DroneKit的基本使用方法，内容会比较多，请坐稳：</p>
+<h2 id="使用DroneKit连接到SITL无人机"><a href="#使用DroneKit连接到SITL无人机" class="headerlink" title="使用DroneKit连接到SITL无人机"></a>使用DroneKit连接到SITL无人机</h2><p>首先我们在courseRoot下再创建一个文件夹来，来放置我们接下来所有的python脚本：</p>
+<p>cd $courseRoot<br>mkdir dk<br>cd dk<br>sudo gedit connection_template.py</p>
+<p>在窗口中输入以下内容：</p>
 <p>#####DEPENDENCIES#####</p>
 <p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse</p>
 <p>#####FUNCTIONS#####</p>
@@ -1035,8 +761,99 @@ return vehicle
 </code></pre>
 <p>#####MAIN EXECUTABLE#####</p>
 <p>vehicle &#x3D; connectMyCopter()</p>
-<p>-————————-在原始环境中<br>sim_vehicle.py -v ArduCopter<br>————————–在python2.7环境中<br>python basic.py –connect 127.0.0.1:14450<br>————————–输出<br>APM: ArduCopter V4.0.4 (40502bd9)<br>APM: 57abfa0455754b7d96ccef8a5456e276<br>APM: Frame: QUAD</p>
-<p>连接成功。也就是说，我们在python3环境下运行sitl，在python2环境下运行python脚本。</p>
+<p>我们使用argpars定义了一个命令行接口，你可以从–connect来输入参数，脚本会解析参数，随后我们基于IP参数来连接SITL。如果你不输入参数，则运行一个dronekit自带的SITL。wait_ready指等待连接成功后再进行下一步。接下来我们新建一个Terminal运行SITL：</p>
+<p>sim_vehicle.py -v ArduCopter<br>—————–output<br>…<br>SIM_VEHICLE: “mavproxy.py” “–master” “tcp:127.0.0.1:5760” “–sitl” “127.0.0.1:5501” “–out” “127.0.0.1:14550” “–out” “127.0.0.1:14551”<br>…</p>
+<p>你可以看到SITL开启了一个对外监听的端口127.0.0.1:14550，我们用它来链接python脚本：</p>
+<p>python connection_template.py –connect 127.0.0.1:14550</p>
+<p>运行这个脚本不会在当前控制台产生任何输出，但是你应该可以在MAVProxy的控制台里看到以下输出：</p>
+<p>APM: ArduCopter V4.0.3 (ffd08628)<br>APM: a44d06f73482473d8d26d9c8407b175e #这个序列码可能不一样<br>APM: Frame: QUAD</p>
+<p>如果你看到了以上输出，说明操作没有问题。</p>
+<h2 id="用DroneKit获取无人机的飞行参数"><a href="#用DroneKit获取无人机的飞行参数" class="headerlink" title="用DroneKit获取无人机的飞行参数"></a>用DroneKit获取无人机的飞行参数</h2><p>你可以在<a target="_blank" rel="noopener" href="https://dronekit-python.readthedocs.io/en/latest/guide/vehicle_state_and_parameters.html#vehicle-state-parameters">dronekit的文档</a>中了解更多无人机的参数，我们这里只获取一些经常会用到的参数。这个过程很简单，因为我们链接到无人机后会生成一个vehicle对象，我们只需要获取对象的属性即可。我们新建一个python脚本文件，输入以下内容（前面我们建立的python脚本一部分内容可以复用）</p>
+<p>cd $courseRoot&#x2F;dk<br>gedit attribute_fetcher.py<br>————————————以下为内容<br>#####DEPENDENCIES#####</p>
+<p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse</p>
+<p>#####FUNCTIONS#####</p>
+<p>def connectMyCopter():</p>
+<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
+parser.add\_argument(&#39;--connect&#39;)
+args = parser.parse\_args()
+connection\_string = args.connect
+
+if not connection\_string:
+import dronekit\_sitl
+sitl = dronekit\_sitl.start\_default()
+connection\_string = sitl.connection\_string()
+
+vehicle = connect(connection\_string, wait\_ready=True)
+
+return vehicle
+</code></pre>
+<p>#####MAIN EXECUTABLE#####</p>
+<p>vehicle &#x3D; connectMyCopter()</p>
+<p>#Version of the autopilot<br>vehicle.wait_ready(‘autopilot_version’)<br>print(‘AutoPilot version: %s’ % vehicle.version)</p>
+<p>#Position<br>print(‘Position: %s’ % vehicle.location.global_relative_frame)</p>
+<p>#Attitude<br>print(‘Attitude: %s’ % vehicle.attitude)</p>
+<p>#Velocity<br>print(‘Velocity: %s’ % vehicle.velocity)</p>
+<p>#Last heartbeat<br>print(‘Last heartbeat: %s’ % vehicle.last_heartbeat)</p>
+<p>#Is the vehicle good to arm<br>print(‘Is the vehicle good to arm: %s’ % vehicle.is_armable)</p>
+<p>#Flight mode<br>print(‘Flight mode: %s’ % vehicle.mode.name)</p>
+<p>#Is the vehicle armed<br>print(‘Armed: %s’ % vehicle.armed)</p>
+<p>vehicle.close()</p>
+<p>直接不带参数运行这个python文件，你应该可以看到以下输出：</p>
+<p>Starting copter simulator (SITL)<br>SITL already Downloaded and Extracted.<br>Ready to boot.<br>CRITICAL:autopilot:APM:Copter V3.3 (d6053245)<br>CRITICAL:autopilot:Frame: QUAD<br>CRITICAL:autopilot:Calibrating barometer<br>CRITICAL:autopilot:Initialising APM…<br>CRITICAL:autopilot:barometer calibration complete<br>CRITICAL:autopilot:GROUND START<br>AutoPilot version: APM:Copter-3.3.0<br>Position: LocationGlobalRelative:lat&#x3D;-35.363261,lon&#x3D;149.1652299,alt&#x3D;0.0<br>Attitude: Attitude:pitch&#x3D;0.000484587973915,yaw&#x3D;-0.121489435434,roll&#x3D;0.000107868516352<br>Velocity: [0.0, 0.0, 0.0]<br>Last heartbeat: 0.786125409999<br>Is the vehicle good to arm: False<br>Flight mode: STABILIZE<br>Armed: False</p>
+<h2 id="通过DroneKit设置SITL的参数"><a href="#通过DroneKit设置SITL的参数" class="headerlink" title="通过DroneKit设置SITL的参数"></a>通过DroneKit设置SITL的参数</h2><p>在这一节里我们开始通过DroneKit向SITL发出命令来让无人机的螺旋桨开始旋转，以及改变飞行模式等。**在此之前，现在我们使用的dronekit版本似乎有一个bug，不能正确地修改drone_sitl无人机的飞行模式（手动创建的SITL不受影响）。因此，我们额外创建一个虚拟环境来进行这个实验。**输入以下命令：</p>
+<p>cd $courseRoot<br>mkdir env<br>cd env<br>sudo apt install virtualenv<br>virtualenv dksitl –system-site-packages<br>source dksitl&#x2F;bin&#x2F;activate<br>pip install dronekit&#x3D;&#x3D;2.9.1<br>pip install MAVProxy&#x3D;&#x3D;1.6.2</p>
+<p>输入deactivate，就可以退出虚拟环境；输入source dksitl&#x2F;bin&#x2F;activate，则进入虚拟环境。我们在虚拟环境下新建一个python文件，输入以下内容：</p>
+<h2 id="cd-courseRoot-dkgedit-mode-setter-py"><a href="#cd-courseRoot-dkgedit-mode-setter-py" class="headerlink" title="cd $courseRoot&#x2F;dkgedit mode_setter.py"></a>cd $courseRoot&#x2F;dk<br>gedit mode_setter.py</h2><p>#####DEPENDENCIES#####</p>
+<p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse</p>
+<p>#####FUNCTIONS#####</p>
+<p>def connectMyCopter():</p>
+<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
+parser.add\_argument(&#39;--connect&#39;)
+args = parser.parse\_args()
+connection\_string = args.connect
+
+if not connection\_string:
+import dronekit\_sitl
+sitl = dronekit\_sitl.start\_default()
+connection\_string = sitl.connection\_string()
+
+vehicle = connect(connection\_string, wait\_ready=True)
+
+return vehicle
+</code></pre>
+<p>#####MAIN EXECUTABLE#####</p>
+<p>vehicle &#x3D; connectMyCopter()</p>
+<p>while vehicle.is_armable !&#x3D; True:<br>print(“Waiting for vehicle to be armable”)<br>time.sleep(1)<br>print(‘Vehicle is now armable’)</p>
+<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
+<p>while vehicle.mode !&#x3D; ‘GUIDED’:<br>print(“Waiting for vehicle to enter GUIDED mode”)<br>time.sleep(1)<br>print(‘Vehicle is now in GUIDED MODE, ready to fly!’)</p>
+<p>vehicle.armed &#x3D; True<br>while vehicle.armed !&#x3D; True:<br>print(“Waiting for vehicle to be armed”)<br>time.sleep(1)<br>print(‘The virtual props are spinning!’)</p>
+<p>我们首先检查无人机是否能够起飞，随后设置无人机的飞行模式，以及螺旋桨状态。需要注意的是，无人机开机后需要进行自检，处理MAVProxy命令也需要一定时间，所以每一步命令都需要等待命令传输并执行完成后再进行下一步。保存后运行脚本，你应该可以看到以下输出：</p>
+<p>Starting copter simulator (SITL)<br>SITL already Downloaded and Extracted.<br>Ready to boot.</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>APM:Copter V3.3 (d6053245)<br>Frame: QUAD<br>Calibrating barometer<br>Initialising APM…<br>barometer calibration complete<br>GROUND START<br>Waiting for vehicle to be armable<br>Waiting for vehicle to be armable<br>Waiting for vehicle to be armable<br>Waiting for vehicle to be armable<br>Waiting for vehicle to be armable<br>Vehicle is now armable<br>Waiting for vehicle to enter GUIDED mode<br>Vehicle is now in GUIDED MODE, ready to fly!<br>Waiting for vehicle to be armed<br>Waiting for vehicle to be armed<br>Waiting for vehicle to be armed<br>Waiting for vehicle to be armed</p>
+<blockquote>
+<blockquote>
+<p>ARMING MOTORS<br>GROUND START<br>Waiting for vehicle to be armed</p>
+<blockquote>
+<blockquote>
+<p>Link timeout, no heartbeat in last 5 seconds<br>…link restored.<br>Initialising APM…<br>The virtual props are spinning!</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>如果输出显示上述内容，说明操作没有问题。</p>
+<h2 id="另一种查看并修改参数的方式"><a href="#另一种查看并修改参数的方式" class="headerlink" title="另一种查看并修改参数的方式"></a>另一种查看并修改参数的方式</h2><p>我们也可以通过修改vehicle对象的parameter属性（这是一个字典）来修改参数。同样，你可以在<a target="_blank" rel="noopener" href="https://dronekit-python.readthedocs.io/en/latest/guide/vehicle_state_and_parameters.html#vehicle-state-parameters">ArduPilot的文档</a>中了解更多无人机的参数。打开mode_setter.py文件，我们在里面再加上一些语句：</p>
+<p>gps_type &#x3D; vehicle.parameters[‘GPS_TYPE’]<br>print(“GPS_TYPE param value is “, gps_type)<br>vehicle.parameters[‘GPS_TYPE’]&#x3D;3<br>gps_type &#x3D; vehicle.parameters[‘GPS_TYPE’]<br>print(“GPS_TYPE param value is “, gps_type)</p>
+<p>这段语句的作用是获取并更改GPS的类型，在文档里GPS的类型包括：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-23-539x1024.png"></p>
+<p>再次运行这个脚本，观察输出：</p>
+<p>(‘GPS_TYPE param value is ‘, 1.0)<br>(‘GPS_TYPE param value is ‘, 3.0)</p>
+<p>通过这种方式，我们将GPS的类型从AUTO（自动识别）改为了MTK。DroneKit的使用先告一段落，我们在下一篇继续学习DroneKit。</p>
 
       
     </div>
@@ -1056,7 +873,7 @@ return vehicle
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/17/ubuntu18-04-%E4%B8%8B%E6%97%A0%E6%B3%95%E8%B0%83%E8%8A%82%E5%B1%8F%E5%B9%95%E4%BA%AE%E5%BA%A6/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9Amavlink%E5%92%8Cdronekit%E7%AE%80%E4%BB%8B%E5%92%8C%E5%AE%89%E8%A3%85/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1070,7 +887,7 @@ return vehicle
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/04/17/ubuntu18-04-%E4%B8%8B%E6%97%A0%E6%B3%95%E8%B0%83%E8%8A%82%E5%B1%8F%E5%B9%95%E4%BA%AE%E5%BA%A6/" class="post-title-link" itemprop="url">ubuntu18.04 下无法调节屏幕亮度</a>
+            <a href="/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9Amavlink%E5%92%8Cdronekit%E7%AE%80%E4%BB%8B%E5%92%8C%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">无人机编程入门（六）：MAVLink和DroneKit简介和安装</a>
         </h2>
 
         <div class="post-meta">
@@ -1080,7 +897,7 @@ return vehicle
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-04-17 23:01:27" itemprop="dateCreated datePublished" datetime="2021-04-17T23:01:27+08:00">2021-04-17</time>
+              <time title="创建时间：2021-04-11 11:46:55" itemprop="dateCreated datePublished" datetime="2021-04-11T11:46:55+08:00">2021-04-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -1095,11 +912,11 @@ return vehicle
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
                 </span>
             </span>
 
@@ -1114,229 +931,543 @@ return vehicle
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>ubuntu的老毛病了，先说下问题怎么来的，基本上就是我调节了一下屏幕分辨率，亮度调节功能就嗝屁了。但是亮度调节bar还是在的，也可以调整。我的电脑是Intel UHD 630和Nvidia GTX 1650的组合，安装了Nvidia的闭源驱动，目前开启了Nvidia on-demand模式。</p>
-<p>首先进入&#x2F;sys&#x2F;class&#x2F;backlight&#x2F;intel_backlight，看一下亮度文件。发现调整亮度时，brightness是会发生变动的，在1-255之间。那问题可能出在Nvidia驱动上，万恶的黄世勋！！！我把模式改成Only Intel后重启，发现问题依旧。那么，到底哪个文件是控制屏幕亮度的呢？</p>
-<p>按理来说，我这台电脑是不支持独显直出的，所以就算是只用nvidia卡，也应该是nvidia渲染后intel显卡输出。我再次进入&#x2F;sys&#x2F;class&#x2F;backlight&#x2F;intel_backlight，发现还有一个文件actual_brightness，发现它一直保持255！难道是它的原因吗？使用sudo gedit对其进行修改，发现居然不能修改？这是为什么呢？输入ll命令，发现这个文件是一个只读文件：</p>
-<p>-r–r–r– 1 root root 4096 4月  17 15:41 actual_brightness<br>-rw-r–r– 1 root root 4096 4月  17 15:41 bl_power<br>-rw-r–r– 1 root root 4096 4月  17 15:38 brightness</p>
-<p>问题可能出在这里。我们修改一下它的权限，参考这个表：</p>
-<h1 id=""><a href="#" class="headerlink" title=""></a></h1><p>权限</p>
-<p>rwx</p>
-<p>二进制</p>
-<p>7</p>
-<p>读 + 写 + 执行</p>
-<p>rwx</p>
-<p>111</p>
-<p>6</p>
-<p>读 + 写</p>
-<p>rw-</p>
-<p>110</p>
-<p>5</p>
-<p>读 + 执行</p>
-<p>r-x</p>
-<p>101</p>
-<p>4</p>
-<p>只读</p>
-<p>r–</p>
-<p>100</p>
-<p>3</p>
-<p>写 + 执行</p>
-<p>-wx</p>
-<p>011</p>
-<p>2</p>
-<p>只写</p>
-<p>-w-</p>
-<p>010</p>
-<p>1</p>
-<p>只执行</p>
-<p>--x</p>
-<p>001</p>
-<p>0</p>
-<p>无</p>
-<p>-–</p>
-<p>000</p>
-<p>修改成和brightness相同的权限，也就是644.再次修改这个文件，发现还是无法直接修改，直接报错error:input&#x2F;output.</p>
-<p>我又参照了这篇文章<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xby1993/p/3133033.html">https://www.cnblogs.com/xby1993/p/3133033.html</a>来进行修复，这篇文章指出在一些有双显卡的机子上acpi控制机制会失灵。重新开机后，虽然还是不能调节亮度，但是有所变化，那就是backlight下多了一个dell_backlight. 这个文件夹里的brightness和actual_brightness是会随着控制条变化的，但是intel_backlight中的actual_brightness还是不可以。</p>
-<p>最后我也没有解决这个问题，只能使用xrandr来控制了。xrandr可以降低像素的伽马值，但是不会降低实际的亮度，所以只是看起来舒服一点，但是不能降低能耗。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/15/windows%E4%B8%8B%E5%AE%89%E8%A3%85ubuntu%E5%8F%8C%E7%B3%BB%E7%BB%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/15/windows%E4%B8%8B%E5%AE%89%E8%A3%85ubuntu%E5%8F%8C%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">Windows下安装Ubuntu双系统</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-15 12:27:24" itemprop="dateCreated datePublished" datetime="2021-04-15T12:27:24+08:00">2021-04-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>不想搞科研，就来折腾了。不得不说，从接触Ubuntu开始，我就很喜欢Ubuntu的界面和简洁。Ubuntu支持没有Windows那么好，这是肯定的，很多东西都需要自己去设置。在这里放一些必要的安装方法。</p>
-<p>不知道自己的电脑能不能装Ubuntu？<a target="_blank" rel="noopener" href="https://certification.ubuntu.com/desktop">到Ubuntu官网验证自己的机型</a></p>
-<p>一般的安装流程：<a target="_blank" rel="noopener" href="https://www.dell.com/support/kbdoc/zh-cn/000131655/%e5%a6%82%e4%bd%95%e5%9c%a8-dell-pc-%e4%b8%8a%e5%ae%89%e8%a3%85-ubuntu-linux">戴尔电脑安装Ubuntu的方法</a></p>
-<p>往U盘里烧录镜像：<a target="_blank" rel="noopener" href="http://rufus.ie/en_US/">不要再用老毛桃了！</a></p>
-<p>分好了磁盘，安装时却找不到？<a target="_blank" rel="noopener" href="https://jingyan.baidu.com/article/49ad8bce9ea89d5834d8fa9e.html">RAID的锅！</a></p>
-<p>改成ACHI后原系统也进不去了？<a target="_blank" rel="noopener" href="https://blog.csdn.net/hikkilover/article/details/82289070">看这里</a></p>
-<p>应用商店空白一片？更新成国内源（可以参照我的无人机教程二环境配置中的一小节）</p>
-<p>应用字体太小瞎了狗眼？<a target="_blank" rel="noopener" href="https://blog.csdn.net/a1171936767/article/details/114324666">这个方法适用所有QT应用！</a></p>
-<p>Ubuntu上不能用微信？不要在Ubuntu上用除了网页版以外的微信了，会破坏Ubuntu的简洁。</p>
-<p>如何愉快地在Ubuntu上使用Google Scholar？下载Astar+Chrome或者Edge</p>
-<p>无法调节亮度？<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43599336/article/details/85981442">试试这个</a></p>
-<p>你需要哪些软件来让你的Ubuntu可以胜任日常工作？</p>
-<ul>
-<li>Typora</li>
-<li>WPS</li>
-<li>VScode</li>
-<li>网易云音乐</li>
-<li>Seafile</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/14/%E8%A6%81%E5%8F%8A%E6%97%B6%E8%AE%B0%E5%BE%97%E6%B3%A8%E9%94%80%E5%A4%87%E6%A1%88%E4%B8%BB%E4%BD%93%EF%BC%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/14/%E8%A6%81%E5%8F%8A%E6%97%B6%E8%AE%B0%E5%BE%97%E6%B3%A8%E9%94%80%E5%A4%87%E6%A1%88%E4%B8%BB%E4%BD%93%EF%BC%81/" class="post-title-link" itemprop="url">要及时记得注销备案主体！</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-14 21:47:37" itemprop="dateCreated datePublished" datetime="2021-04-14T21:47:37+08:00">2021-04-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>我去年在阿里云的服务器到期了，那个时候没啥心思经营网站，所以也没去管它。现在想想，还是挺后悔的，至少要把文章备份下来呀，虽然我也忘了我都写了些啥了。这几天心血来潮，想把自己在腾讯云上的服务器备案一下，却被告知自己因为之前有一个备案，不能正常进行备案了。</p>
-<p>去了解了一下备案的相关规则，才发现：</p>
+          <h2 id="MAVLink"><a href="#MAVLink" class="headerlink" title="MAVLink"></a>MAVLink</h2><p>简单地说，MAVLink是无人机和地面站直接通信的标准信息协议，就像任何一门语言一样，你需要把你发出的声音按照语言规则组织，才能让对方理解。MAVLink也要求信息以规定的架构组织，才能被双方所理解。</p>
+<p>一条MAVLink的大小在8字节到263字节之间，总是包含以下内容并且按照顺序排布：</p>
 <ol>
-<li>网站不续费的话，是会被收回的，但是你的备案信息如果没有撤回，又被别人抢注了的话，就好像别人挂着你的招牌做生意。没出什么事儿还好，要是出了什么事儿，可就麻烦了。而且，如果其他人用这个域名搭建的网站和你原来申请的用途不一样，也会被管局找上。</li>
-<li>注销备案的话，还是先联系服务商比较好。不然像我这样，自己在阿里云上操作，把网站注销了，自己就成了空壳主体。需要写一份表格，邮寄到管局请求撤销。</li>
+<li>开始位，总是以0xFE开始，不以这个开始的字节包都不是MAVLink且不会被无人机解析</li>
+<li>Payload length，表达了包的长度</li>
+<li>Packet sequence，可以用于探测包丢失</li>
+<li>System ID，一般来说1指无人机，255指地面站，取值范围可以是1-255</li>
+<li>Component ID，用来区分传输来的信息所属的传感器</li>
+<li>Message ID，代表信息的类型，这样可以用对应的解析方式解析</li>
+<li>Data，信息的内容</li>
+<li>校验位</li>
 </ol>
-<p>所以说，一定要记得及时注销备案！否则后患无穷。</p>
+<p>上面是我的个人理解，可能有误。想要了解更多，可以参考<a target="_blank" rel="noopener" href="https://mavlink.io/zh/messages/common.html">mavlink的文档</a>.使用MAVLink的时候，一般只需要关注6和7项，你可以理解成，分别代表了函数名和参数。例如之前我们使用的调整参数的MAVProxy命令，在MAVLink中，对应的Message ID是#23，代表PARAM_SET命令，其参数包含在Data中。</p>
+<p>另一种重要的MAVLink是Command Long，这种命令可以把其他命令包含在数据包里，并额外发送最多七个参数。下面是一个使用Command Long发送LAND命令的例子：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-21-1024x555.png"></p>
+<p>Command_Long中的command包括所有MAV_CMD，包括各种飞行任务，你可以在文档里查阅他们。所以，Command_Long是我们使用MAVLink执行飞行任务的主要方式。下面是一个飞向指定地点的MAV_CMD形式。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-22-1024x483.png"></p>
+<p>还有一些其他有趣的MAVLink命令，包括设置飞行区、获取参数等等，等待你自己去发掘。</p>
+<h2 id="DroneKit"><a href="#DroneKit" class="headerlink" title="DroneKit"></a>DroneKit</h2><p>DroneKit是一个python包，你可以用DroneKit简单地生成MAVLink。DroneKit的强大之处在于其基于Python，你可以把MAVLink和其他python任务结合起来，从而为你的无人机编写复杂的任务，比如巡逻、送货、多无人机编队等等。</p>
+<h2 id="MAVLink与DroneKit安装"><a href="#MAVLink与DroneKit安装" class="headerlink" title="MAVLink与DroneKit安装"></a>MAVLink与DroneKit安装</h2><p>首先我们安装特定版本的dronkit和dronkit-sitl，这个过程中会自动安装pymavlink：</p>
+<p>pip install dronekit&#x3D;&#x3D;2.9.2<br>pip install dronekit-sitl&#x3D;&#x3D;3.3.0</p>
+<p>安装完毕后，检查一下你的版本是否与文章中一致：</p>
+<h2 id="pip-freeze-grep-dronekit"><a href="#pip-freeze-grep-dronekit" class="headerlink" title="pip freeze  grep dronekit"></a>pip freeze  grep dronekit</h2><p>dronekit&#x3D;&#x3D;2.9.2<br>dronekit-sitl&#x3D;&#x3D;3.3.0</p>
+<p>下一章我们会开始使用DroneKit来编写一些简单的无人机操控python脚本。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E5%9C%B0%E9%9D%A2%E7%AB%99%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E5%9C%B0%E9%9D%A2%E7%AB%99%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">无人机编程入门（五）：地面站介绍与使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-11 11:11:22" itemprop="dateCreated datePublished" datetime="2021-04-11T11:11:22+08:00">2021-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="什么是地面站？"><a href="#什么是地面站？" class="headerlink" title="什么是地面站？"></a>什么是地面站？</h2><p>在无人机基础知识中，已经介绍过地面站，其实就是一类可以与无人机双向交流的软硬件。地面站既可以指可以发送特定指令和接受并解析无人机回传信息的软件，也可以指搭载这类软件的硬件。在使用SITL的时候，其实我们就已经在使用地面站了，不过我们使用的是命令行界面的，有一些GUI更加精美的地面站软件，比如QStation，可以更方便地查看并操控无人机。从地面站向无人机发送讯息时，信息流向如下图所示：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-15-1024x360.png"></p>
+<h2 id="MAVProxy"><a href="#MAVProxy" class="headerlink" title="MAVProxy"></a>MAVProxy</h2><p>首先我们来了解MAVProxy，这是一种命令行式的地面站，非常轻量，但是包含了地面站应当用的大部分功能。你可以从ardupilot的文档中了解更多MAVProxy的知识。地面站可以通过无线网络与无人机通信，由于MAVProxy和SITL都运行在同一台电脑上，可以通过本地连接的方式进行通信，只需要指定通信端口即可。对于SITL来说，这个端口是5760，因此开启地面站并连接的方式如下：</p>
+<p>首先我们手动启动一个SITL，这一步的好处在于这样不会加载默认配置参数，你可以创建自己的配置来调整你无人机的参数，这样不用每次启动无人机都要重新调整参数（如果你有调整参数的需求的话）。启动的时候，你还可以指定启动的位置，就好像你真的在现实中放置了一个无人机一样（记得修改参数文件位置）：</p>
+<p>cd $apm&#x2F;ardupilot<br>cd build<br>cd sitl<br>cd bin<br>.&#x2F;arducopter -S -I0 –home -35.363261,149.165230,584,353 –model “+” –speedup 1 –defaults &#x2F;home&#x2F;shaw&#x2F;courseRoot&#x2F;apm&#x2F;ardupilot&#x2F;Tools&#x2F;autotest&#x2F;default_params&#x2F;copter.parm</p>
+<p>启动之后，你应当能看到Serial port 0 on TCP port 5760，Waiting for connection的返回。接下来我们启动MAVProxy来连接无人机，新建一个Terminal：</p>
+<p>mavproxy.py –master tcp:120.0.0.1:5760</p>
+<p>连接成功，你可以在MAVProxy里向无人机发送信息了，就和之前教程中的一样。</p>
+<h2 id="QGroundControl安装"><a href="#QGroundControl安装" class="headerlink" title="QGroundControl安装"></a>QGroundControl安装</h2><p>QGC是一款有着精美GUI界面的地面站，可以方便用户的操作，在之后的无人机编程中，我们会首选QGC作为我们的地面站。首先从官网<a target="_blank" rel="noopener" href="https://docs.qgroundcontrol.com/master/en/getting_started/download_and_install.html">下载QGC</a>到本地，然后我们再创建一个src文件夹来放QGC和我们以后编写的程序，向QGC授权后将其拷贝到环境变量中，这样可以从任何地方运行QGC：</p>
+<p>cd $courseRoot<br>mkdir src<br>cd src<br>cp ~&#x2F;Downloads&#x2F;QGroundControl.AppImage QGroundControl.AppImage<br>sudo chmod +x QGroundControl.AppImage<br>sudo cp QGroundControl.AppImage &#x2F;usr&#x2F;local&#x2F;bin&#x2F;QGC.AppImage</p>
+<p>然后运行QGC.AppImage打开界面，选项如图设置：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-16.png"></p>
+<p>此时地面站已开启，等待无人机连接。下一步我们连接SITL和地面站。</p>
+<h2 id="连接SITL和QGroundControl"><a href="#连接SITL和QGroundControl" class="headerlink" title="连接SITL和QGroundControl"></a>连接SITL和QGroundControl</h2><p>我们通过mavproxy来做到这一点。具体而言，我们先使用mavproxy来连接SITL，然后再用mavproxy将信息转发给QGC，从而实现SITL和QGroundControl的连接，如下：</p>
+<p>$apm&#x2F;ardupilot&#x2F;build&#x2F;sitl&#x2F;bin&#x2F;arducopter -S -I0 –home -35.363261,149.165230,584,353 –model “+” –speedup 1 –defaults &#x2F;home&#x2F;shaw&#x2F;courseRoot&#x2F;apm&#x2F;ardupilot&#x2F;Tools&#x2F;autotest&#x2F;default_params&#x2F;copter.parm<br>#############开启一个新Terminal<br>QGC.AppImage<br>#############开启一个新Terminal<br>mavproxy.py –master tcp:127.0.0.1:5760 –out udp:127.0.0.1:14550</p>
+<p>为什么使用udp？这里不多说网络知识，简单地说，mavproxy和QGC不需要双向沟通，只QGC只需要接受mavproxy传输来的数据就行，因此使用udp即可。QGC的端口默认是14550. 你应该可以在QGC中看到你的无人机位置了：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-17-1024x976.png"></p>
+<p>QGC当然也支持连接到其他端口，如下设置：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-18.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-19.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-20.png"></p>
+<p>SITL开了5760、5762、5763三个端口，所以使用tcp连接，可以把端口设置成以上的任何一个。设置完毕后，可以直接点击connect，就可以连接到无人机。</p>
+<h2 id="更多的MAVProxy命令"><a href="#更多的MAVProxy命令" class="headerlink" title="更多的MAVProxy命令"></a>更多的MAVProxy命令</h2><p>在之前我们接触了mode GUIDED, takeoff这些非常简单的MAVProxy命令，不仅如此你还可以使用MAVProxy指示无人机飞行固定的距离、指定速度、转向等等。MAVProxy命令可以用dronekit来生成，并通过mavlink发送，这是下一章的主要内容。查看更多的mavproxy命令，可以到<a target="_blank" rel="noopener" href="https://ardupilot.github.io/MAVProxy/html/modules/index.html">ardupilot的相关文档</a>。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9Asitl%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9Asitl%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">无人机编程入门（四）：SITL的使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-10 23:42:45" itemprop="dateCreated datePublished" datetime="2021-04-10T23:42:45+08:00">2021-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>SITL是这篇教程使用的主力“机型”。对SITL的操作和对真实无人机的操作是相同的，在结果上也是相同的。当然，现实中无人机飞行所需要处理的不确定更多，但是炸SITL比炸真无人机便宜得多，所以虽然不能完全模拟现实环境，SITL的重要性也不言而喻。</p>
+<h3 id="你的第一架SITL"><a href="#你的第一架SITL" class="headerlink" title="你的第一架SITL"></a>你的第一架SITL</h3><p>由于我们已经把autotest路径加入了环境，所以直接运行：</p>
+<p>sim_vehicle.py -v ArduCopter –map –console</p>
+<p>这会开启一个地图让你观察无人机的位置，以及一个控制台来让你控制无人机，第一次运行会进行编译，需要一定的时间，之后就不需要了：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-12-1024x486.png"></p>
+<p>我们会与左边三个窗口进行交互，分别是地图、状态窗与控制台。地图显示了当前无人机的位置和朝向，状态窗显示无人机的高程、电池容量、飞行状态、GPS状态等，控制台允许你向无人机发送指令。在控制台中输入以下指令，试着让无人机起飞：</p>
+<p>mode GUIDED<br>arm throttle<br>takeoff 10</p>
+<p>观察状态窗，你会发现无人机上升到高度为10m时停止了。接下来让无人机飞向一个特定位置，在地图上右键选择一点，选择Fly to：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-13-1024x486.png"></p>
+<p>最后让无人机降落：</p>
+<p>mode LAND</p>
+<p>这样，你就完成了你的第一次SITL飞行！</p>
+<h3 id="SITL的参数"><a href="#SITL的参数" class="headerlink" title="SITL的参数"></a>SITL的参数</h3><p>接下来会介绍SITL的相关参数，我们进入ArduCopter查看SITL都有哪些参数：</p>
+<p>cd $apm&#x2F;ardupilot&#x2F;ArduCopter<br>cat mav.parm</p>
+<p>你会看到各种各样的预设参数。如果找不到mav.parm这个文件，在当前目录下再运行一次sim_vehicle.py试试。大部分参数都是可读的，例如RTL_ALT，指的是无人机返航时的巡航高度；BATT_CAPACITY，就是电池容量，等等。你可以从<a target="_blank" rel="noopener" href="http://ardupilot.org/copter/docs/parameters.html">ardupilot的参数文档</a>获取更多参数信息（可能需要科学上网）。接下来我们尝试在控制台中设置参数，首先运行：</p>
+<p>sim_vehicle.py –map –console</p>
+<p>然后在控制台里设置无人机的返回巡航高度参数（RTL_ALT)：</p>
+<p>param show rtl_alt #查看当前的参数<br>param set rtl_alt 2100<br>mode RTL</p>
+<p>可以看到，设置之后，返航巡航高度保持在了21m。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-14.png"></p>
+<p>SITL的基本使用和参数就介绍到这里，下一章将会介绍地面站以及其在SITL上的使用方法。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9Aardupilot%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9Aardupilot%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">无人机编程入门（三）：ArduPilot简介与安装</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-10 23:14:25" itemprop="dateCreated datePublished" datetime="2021-04-10T23:14:25+08:00">2021-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="ArduPilot简介"><a href="#ArduPilot简介" class="headerlink" title="ArduPilot简介"></a>ArduPilot简介</h2><p>ArduPilot通过多种传感器的数据（GPS、加速度计、气压计、磁场计）等来估计飞行器的姿态，从而使飞行器能够保持稳定。被称为APM的飞控硬件，其实全程就是Ardu Pilot Mega，但是2013年后，这个系列的飞控硬件改名为Pixhawk，ArduPilot只用来指特定的飞控软件，但是约定俗称地也可以用APM来指ArduPilot（一点轶闻）。ArduPilot含有超过七十万条代码，所以很幸运我们不用自己去写飞控代码，直接用就可以了，大大降低了入门门槛。</p>
+<h2 id="ArduPilot安装"><a href="#ArduPilot安装" class="headerlink" title="ArduPilot安装"></a>ArduPilot安装</h2><p>我们在课程文件夹下新建一个apm文件夹，并安装ArduPilot（4.0.3版本）：</p>
+<p>cd $courseRoot<br>mkdir apm<br>cd apm<br>git clone -b Copter-4.0.3 <a target="_blank" rel="noopener" href="https://github.com/ardupilot/ardupilot">https://github.com/ardupilot/ardupilot</a></p>
+<p>安装完成后，进入ardupilot文件夹，并安装一些子模块：</p>
+<p>cd ardupilot<br>git submodule init<br>git submodule update  –init –recursive</p>
+<p>完成后，我们将ArduPilot的一些工具加入环境变量，这样不用每次运行到进入对应的路径，方便测试：</p>
+<p>sudo nano ~&#x2F;.bashrc</p>
+<p>在文件中加入（记得把路径改成你自己的用户名）：</p>
+<p>export PATH&#x3D;”&#x2F;home&#x2F;shaw&#x2F;courseRoot&#x2F;apm&#x2F;ardupilot&#x2F;Tools&#x2F;autotest”:$PATH<br>export apm&#x3D;&#x2F;home&#x2F;shaw&#x2F;courseRoot&#x2F;apm</p>
+<p>然后source ~&#x2F;.bashrc。输入sim_后按tab键，如果可以自动补全为sim_vehicle.py，说明设置成功了。</p>
+<h2 id="认识ArduPilot"><a href="#认识ArduPilot" class="headerlink" title="认识ArduPilot"></a>认识ArduPilot</h2><h3 id="ArduPilot支持的飞控"><a href="#ArduPilot支持的飞控" class="headerlink" title="ArduPilot支持的飞控"></a>ArduPilot支持的飞控</h3><p>我们回到ardupilot文减价，查看一下ardupilot的飞控硬件：</p>
+<h2 id="cd-apm-ardupilot-waf-list-boards"><a href="#cd-apm-ardupilot-waf-list-boards" class="headerlink" title="cd $apm&#x2F;ardupilot.&#x2F;waf list_boards"></a>cd $apm&#x2F;ardupilot<br>.&#x2F;waf list_boards</h2><p>aero airbotf4 bbbmini bebop bhat blue crazyflie2 CUAV_GPS CUAVv5 CUAVv5Nano CubeBlack CubeBlack+ CubeGreen-solo CubeOrange CubePurple CubeSolo CubeYellow dark disco DrotekP3Pro Durandal edge erleboard erlebrain2 f103-ADSB f103-GPS f103-periph f103-RangeFinder F35Lightning F4BY fmuv2 fmuv3 fmuv4 fmuv4-beta fmuv5 iomcu KakuteF4 KakuteF7 KakuteF7Mini linux MatekF405 MatekF405-STD MatekF405-Wing MatekF765-Wing mindpx-v2 mini-pix mRoControlZeroF7 mRoX21 mRoX21-777 navio navio2 NucleoH743 ocpoc_zynq omnibusf4 omnibusf4pro omnibusf4v6 OMNIBUSF7V2 OmnibusNanoV6 PH4-mini Pixhawk1 Pixhawk1-1M Pixhawk4 Pixracer pocket pxf pxfmini revo-mini rst_zynq sitl SITL_arm_linux_gnueabihf SITL_static SITL_x86_64_linux_gnu skyviper-f412-rev1 skyviper-journey skyviper-v2450 sparky2 speedybeef4 TBS-Colibri-F7 VRBrain-v51 VRBrain-v52 VRBrain-v54 VRCore-v10 VRUBrain-v51 ZubaxGNSS zynq</p>
+<p>基本上，ardupilot支持所有常见的飞控硬件，其中值得关注的是SITL，这是我们接下来要使用的虚拟无人机。</p>
+<h3 id="ArduPilot支持的飞行模式"><a href="#ArduPilot支持的飞行模式" class="headerlink" title="ArduPilot支持的飞行模式"></a>ArduPilot支持的飞行模式</h3><p>经常会使用的飞行模式包括：</p>
+<ol>
+<li>GUIDED，这是最常使用的飞行模式，无人机会根据实时的指令进行飞行；</li>
+<li>AUTO，无人机会根据预先设定的指令进行飞行，这个过程中也可以实时发送新的指令；</li>
+<li>RTL，return to land的缩写，无人机会返回起飞点；</li>
+<li>LAND，无人机降落。</li>
+</ol>
+<p>这几个模式可以支持大部分的飞行需求。</p>
+<p>下一章，会主要介绍SITL的使用方式。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">无人机编程入门（二）：环境配置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-10 00:01:22" itemprop="dateCreated datePublished" datetime="2021-04-10T00:01:22+08:00">2021-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在这一期中，我会展示无人机编程需要的环境，以及软件版本。整体而言，整个教程是在Ubuntu18.04下进行的，所以这要求你有必要的Linux操作系统知识。</p>
+<h2 id="软件版本"><a href="#软件版本" class="headerlink" title="软件版本"></a>软件版本</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1MtOoxVRp98QYFxXgMVZaqA">VMware Pro 16</a> （这里给出学习版本的，密码在教程（一）中找）</li>
+<li><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/18.04/ubuntu-18.04.5-desktop-amd64.iso">Ubuntu 18.04</a>（这里给出清华大学镜像站的安装文件，加快下载速度）</li>
+<li>Dronekit 2.9.2</li>
+<li>ArduCopter 4.0.4</li>
+<li>MAVProxy 1.8.17</li>
+<li>Pymavlink 2.4.10</li>
+</ul>
+<p>强烈建议你使用相同的软件和操作系统版本，这样出现问题的概率会小一些。</p>
+<h2 id="虚拟机安装"><a href="#虚拟机安装" class="headerlink" title="虚拟机安装"></a>虚拟机安装</h2><p>我们希望能在一个尽可能纯净的环境下进行实验，此外ArduCopter、MAVProxy这些软件也对Linux有更好的支持，所以需要安装一个Ubuntu虚拟机。在安装之前，在任务管理器下检查一下你的虚拟化功能是否启用了。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-3.png"></p>
+<p>如果没有，参照<a target="_blank" rel="noopener" href="http://www.xitongcheng.com/jiaocheng/win10_article_53803.html">这篇教程</a>来开启虚拟化。</p>
+<p>随后我们下载VMware安装包与Ubunutu 18.04安装镜像。安装完毕VMware之后，进入程序界面，选择创建新的虚拟机：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-4-1024x509.png"></p>
+<p>选择经典安装，下一步安装操作系统，选择刚刚下载的Ubuntu 18.04：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-5.png"></p>
+<p>下一步设置虚拟机的名称和用户密码，按自己的喜好即可：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-6.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-7.png"></p>
+<p>下一步选择磁盘大小、分配CPU和内存。磁盘分配20GB基本足够，保险起见可以分配40GB。不用担心它占据大量的原存储空间，它刚开始占用空间很小，随着你往虚拟机里增加内容，它会逐渐变大，最大不超过40GB。分配CPU与内存的时候，分配你的宿主机的25%是一个比较好的选择，也就是说，如果你的宿主机有4个核心，那么就给虚拟机分配一个核心；如果你有16GB的内存，给虚拟机分配4GB的内存。我的电脑有6个核心32GB内存，我在这里给虚拟机分配了2个核心和8GB的内存。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-8.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-9.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-10-914x1024.png"></p>
+<p>完成之后打开虚拟机。打开虚拟机后，会询问是否下载VMware Tools，点击是。然后坐等Ubuntu安装完毕即可。<strong>安装完毕进入界面后，会询问你是否更新到Ubuntu20，请选择否！</strong></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-11-1024x614.png"></p>
+<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><h3 id="更改源"><a href="#更改源" class="headerlink" title="更改源"></a>更改源</h3><p>在安装软件前，更改一下下载源，否则下载的速度会慢的让你怀疑人生。</p>
+<p>sudo cp &#x2F;etc&#x2F;apt&#x2F;sources.list &#x2F;etc&#x2F;apt&#x2F;sources.list.bak<br>sudo gedit &#x2F;etc&#x2F;apt&#x2F;sources.list</p>
+<p>把文件内容换成下面的内容：</p>
+<p>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic main restricted universe multiverse</p>
+<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic main restricted universe multiverse</h1><p>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-updates main restricted universe multiverse</p>
+<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-updates-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-updates-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-updates main restricted universe multiverse</h1><p>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-backports main restricted universe multiverse</p>
+<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-backports-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-backports-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-backports main restricted universe multiverse</h1><p>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-security main restricted universe multiverse</p>
+<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-security-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-security-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-security main restricted universe multiverse</h1><p>保存后更新一下源：</p>
+<p>sudo apt-get update</p>
+<h3 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h3><p>首先安装一些依赖项：</p>
+<p>sudo apt-get install python-dev python-opencv python-wxgtk3.0 python-matplotlib python-pygame python-lxml python-yaml vim git screen -y</p>
+<p>然后安装pip来自动安装和管理一些python的包：</p>
+<p>sudo apt-get install python-pip</p>
+<p>安装完毕后，检查一下pip是否安装成功以及版本：</p>
+<p>pip –version<br>pip 9.0.1 from &#x2F;usr&#x2F;lib&#x2F;python2.7&#x2F;dist-packages (python 2.7)</p>
+<p>然后我们安装MAVProxy，这是一个python的模块，在这个过程中还会安装一些其他的包例如pymavlink等。完成后，运行两行命令删除一些不需要的包：</p>
+<p>sudo pip install MAVProxy&#x3D;&#x3D;1.8.17<br>sudo usermod -a -G dialout $USER<br>sudo apt-get remove modemmanager</p>
+<p>在开始安装ArduPilot之前，我建议把所有的程序放在一个文件夹里以便管理，像下面这样：</p>
+<p>cd ~<br>mkdir courseRoot<br>sudo echo “export courseRoot&#x3D;&#x2F;home&#x2F;$USER&#x2F;courseRoot” &gt;&gt; ~&#x2F;.bashrc<br>source .bashrc</p>
+<p>上面的命令创建了一个courseRoot文件夹，并将其置入环境变量，这样你可以使用<code>cd $courseRoot</code> 从任何地方进入此文件夹。环境布置到这里结束，下一章会介绍ArduPilot以及其使用方法。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%89%8D%E8%A8%80%E4%BB%A5%E5%8F%8A%E6%97%A0%E4%BA%BA%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/09/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%89%8D%E8%A8%80%E4%BB%A5%E5%8F%8A%E6%97%A0%E4%BA%BA%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">无人机编程入门（一）：前言以及无人机基础知识</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 23:48:18" itemprop="dateCreated datePublished" datetime="2021-04-09T23:48:18+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇教程是给那些对无人机有所兴趣，不仅想要操控无人机，更想要对无人机进行编程的开发者和创客的。这篇教程是我通过在Drone Dojo的付费课程<a target="_blank" rel="noopener" href="https://courses.dojofordrones.com/p/drone-programming-primer-for-software-development">Drone Programming Primer</a>学习后写下的，基本涵盖了其课程的大部分内容。如果你想要了解更多细节，可以自己购买（49美元），或者在回复中发表你的意见。</p>
+<p>这篇教程的优势在于：</p>
+<ul>
+<li>并不要求学习者掌握太多编程技巧，了解Python和Linux命令行就可以开始学习；</li>
+<li>并不要求学习者拥有一架真正的无人机，所有的操作都是在虚拟环境中实现的，但是也可以方便地迁移到真实地无人机上；</li>
+<li>极其详细的步骤说明，复现Drone Dojo课程中的操作，但是不需要几个小时的时间去学习课程</li>
+<li>完全免费</li>
+</ul>
+<p>闲话不多说，下面进入正题。</p>
+<h2 id="无人机系统"><a href="#无人机系统" class="headerlink" title="无人机系统"></a>无人机系统</h2><p>除了常见的四旋翼无人机，无人机还包括很多其他形态，但是他们的系统都大同小异。无人机系统主要组成有三块：无人机，地面站，以及沟通层。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-1-1024x547.png"></p>
+<h3 id="无人机"><a href="#无人机" class="headerlink" title="无人机"></a>无人机</h3><p>无人机的组成主要为三块，飞控软件、飞控硬件以及无人机硬件。无人机硬件包括GPS、螺旋桨、机架等组成无人机的基础硬件，你可以在橙色软件上很方便地买到。飞控硬件是包含了陀螺仪等传感器，以及具有一定处理能力的微处理器，比较著名的开源飞控是pixhawk，Daft Punk是【】年解散的。当然，你也完全可以用树莓派做一个自己的飞控，橙色软件上也有相应的开发板卖。常见的飞控软件主要有两个，ArduPilot与px4。这两个都是开源软件，不同的是ArduPilot遵循GPL协议，也就是说如果你使用ArduPilot开发你的程序，你的程序也必须是开源的。而PX4遵循BDS协议，不要求你对自己的程序也进行开源，所以很多商用开发会使用PX4.不管是哪一种飞控软件，都有很庞大的社区和完善的文档以供学习。这是一架真实无人机的主要组成，但是在本课程中，<strong>你可以用SITL（Software In The Loop）来代替飞控硬件和无人机硬件</strong>，这也是为什么本课程不需要真实无人机的原因。</p>
+<h3 id="沟通层"><a href="#沟通层" class="headerlink" title="沟通层"></a>沟通层</h3><p>沟通层允许地面站和无人机之间双向发送信息，这样地面站可以接受无人机的信息，同时也可以向无人机发送信息。实际上只要使用的信息是两者都可以解析的，就可以作为沟通方式。不过最常见的沟通方式是MAVLINK，这是一种标准传输协议，可以同时被无人机和地面站理解。</p>
+<h3 id="地面站"><a href="#地面站" class="headerlink" title="地面站"></a>地面站</h3><p>这个名字可能会让人误解，但是地面站可以是任何能与无人机传输信息的设备，可以是电脑，手机，遥控器。地面站的硬件只需要满足能够发送与接受MAVLINK信息即可。地面站软件一般是可视化的界面，常见的地面站软件包括Mission Planner，APM Planner，QControl，他们的功能大同小异。</p>
+<p>在本课程中，我们会使用的技术栈如图所示：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-2.png"></p>
 
       
     </div>
@@ -1355,7 +1486,7 @@ return vehicle
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1421,12 +1552,12 @@ return vehicle
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">162</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">分类</span>
       </div>
   </nav>

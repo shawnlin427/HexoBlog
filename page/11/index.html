@@ -170,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/13/%E5%92%8Cdolly%E4%B8%80%E8%B5%B7%E6%8E%A2%E7%B4%A2ros2%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%90%AF%E5%8A%A8%E6%A8%A1%E6%8B%9F/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/22/%E7%BB%99%E8%B1%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -184,7 +184,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/09/13/%E5%92%8Cdolly%E4%B8%80%E8%B5%B7%E6%8E%A2%E7%B4%A2ros2%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%90%AF%E5%8A%A8%E6%A8%A1%E6%8B%9F/" class="post-title-link" itemprop="url">和Dolly一起探索ROS2（一）：启动模拟</a>
+            <a href="/2021/07/22/%E7%BB%99%E8%B1%86/" class="post-title-link" itemprop="url">给豆</a>
         </h2>
 
         <div class="post-meta">
@@ -194,917 +194,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-09-13 21:36:07" itemprop="dateCreated datePublished" datetime="2021-09-13T21:36:07+08:00">2021-09-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://www.theconstructsim.com/">https://www.theconstructsim.com/</a></p>
-<p>我们使用the construct，这是一个学习ROS的很好平台，免去了配置平台的烦恼，还可以跨平台。登陆并注册，然后在My Project里点击新建一个Rosjects：</p>
-<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/image-2-1024x640.png"></p>
-<p>启动后稍等一下，就能看到界面了，下面从左到右分别是bash、code、jupyter、gazebo、可视化工具（rviz2一类的），还有课程notebook，这里用不到。</p>
-<p>首先查看一下当前路径：</p>
-<p>user:~$ ls<br>ai_ws  catkin_ws  notebook_ws  ros2_ws  simulation_ws  webpage_ws</p>
-<p>进入ros2_ws再看一眼：</p>
-<p>user:<del>$ cd ros2_ws&#x2F;<br>user:</del>&#x2F;ros2_ws$ ls -l<br>total 16<br>drwxr-xr-x 2 user user 4096 Sep 13 12:26 build<br>drwxr-xr-x 2 user user 4096 Sep 13 12:26 install<br>drwxr-xr-x 5 user user 4096 Sep 13 12:26 log<br>drwxr-xr-x 2 user user 4096 Dec  7  2020 src</p>
-<p>这就是ros2的文件架构了，先不管其他文件夹，进入src，git clone 多利：</p>
-<p>user:<del>&#x2F;ros2_ws$ cd src<br>user:</del>&#x2F;ros2_ws&#x2F;src$ git clone <a target="_blank" rel="noopener" href="https://github.com/chapulina/dolly.git">https://github.com/chapulina/dolly.git</a></p>
-<p>git clone之后自然是要编译了，在此之前首先source一下ros2 foxy。每开启一个新控制台都要source，或者把它写到bashrc里，否则就用不了ros2的功能。</p>
-<p>user:<del>&#x2F;ros2_ws$ source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>user:</del>&#x2F;ros2_ws$ colcon build –symlink-install –packages-ignore dolly_ignition</p>
-<p>这里ignore了dolly_ignition这个包，因为这个包依赖ignition library，但是平台里默认没有安装。</p>
-<p>编译成功后，打开code。下一步我们要做的是创建自己的ros2 package，这样能把ros2工作流走一遍。</p>
-<p>user:~&#x2F;ros2_ws&#x2F;src$ ros2 pkg create my_package –build-type ament_cmake –dependencies rclcpp</p>
-<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/image-3.png"></p>
-<p>实际上可以理解为创建了一个project，这个项目所有的模型啊运行脚本啊都在这里管理。下一步创建一个launch file，它是py格式的，也没有什么稀奇的，就是一个脚本文件。</p>
-<p>首先要定义一个启动描述函数，它返回的就是启动描述。实际上launch file并不一定是为ros2服务的，可以将其看作是执行一系列命令的一个脚本。在my_package下创建一个launch文件夹，然后创建一个dolly.launch.py文件。</p>
-<p>import os</p>
-<p>from ament_index_python.packages import get_package_share_directory<br>from launch import LaunchDescription<br>from launch.actions import DeclareLaunchArgument<br>from launch.actions import IncludeLaunchDescription<br>from launch.launch_description_sources import PythonLaunchDescriptionSource</p>
-<p>def generate_launch_description():</p>
-<pre><code>pkg\_gazebo\_ros = get\_package\_share\_directory(&#39;gazebo\_ros&#39;)
-pkg\_dolly\_gazebo = get\_package\_share\_directory(&#39;dolly\_gazebo&#39;)
-
-# Gazebo launch
-gazebo = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(
-        os.path.join(pkg\_gazebo\_ros, &#39;launch&#39;, &#39;gazebo.launch.py&#39;),
-    )
-)
-
-return LaunchDescription(\[
-    DeclareLaunchArgument(
-      &#39;world&#39;,
-      default\_value=\[os.path.join(pkg\_dolly\_gazebo, &#39;worlds&#39;, &#39;dolly\_empty.world&#39;), &#39;&#39;\],
-      description=&#39;SDF world file&#39;),
-    gazebo,
-\])
-</code></pre>
-<p>实际上，这个脚本文件就做了三件事：找到gazebo_ros、dolly_gazebo这两个包的路径，启动gazebo，把dolly_empty.word作为参数传入gazebo launch，和gazebo dolly_empty.world效果其实是一样的。</p>
-<p>之后还需要修改一下cmakelist，在最后一行前面加入这么一行：</p>
-<p>install(DIRECTORY<br>  launch<br>  DESTINATION share&#x2F;${PROJECT_NAME}<br>)</p>
-<p>修改之后退出来编译一下：</p>
-<p>user:~&#x2F;ros2_ws$ colcon build –symlink-install –packages-select my_package</p>
-<p>接下来就可以运行了：</p>
-<p>user:~&#x2F;ros2_ws$ ros2 launch  my_package dolly.launch.py<br>[INFO] [launch]: All log files can be found below &#x2F;home&#x2F;user&#x2F;.ros&#x2F;log&#x2F;2021-09-13-13-20-07-318871-2_xterm-15456<br>[INFO] [launch]: Default logging verbosity is set to INFO<br>[INFO] [gzserver-1]: process started with pid [15458]<br>[INFO] [gzclient   -2]: process started with pid [15460]<br>[gzclient   -2] ++ ls &#x2F;usr&#x2F;bin&#x2F;gzclient-11.1.0<br>[gzclient   -2] + gzclient_path&#x3D;&#x2F;usr&#x2F;bin&#x2F;gzclient-11.1.0<br>[gzclient   -2] + DISPLAY&#x3D;:2<br>[gzclient   -2] + &#x2F;usr&#x2F;bin&#x2F;gzclient-11.1.0<br>[gzserver-1] [INFO] [1631539209.561754647] [dolly.diff_drive]: Wheel pair 1 separation set to [1.250000m]<br>[gzserver-1] [INFO] [1631539209.562577250] [dolly.diff_drive]: Wheel pair 1 diameter set to [0.300000m]<br>[gzserver-1] [INFO] [1631539209.564346299] [dolly.diff_drive]: Subscribed to [&#x2F;dolly&#x2F;cmd_vel]<br>[gzserver-1] [INFO] [1631539209.566206561] [dolly.diff_drive]: Advertise odometry on [&#x2F;dolly&#x2F;odom]<br>[gzserver-1] [INFO] [1631539209.568098315] [dolly.diff_drive]: Publishing odom transforms between [odom_demo] and [chassis]</p>
-<p>这个时候gazebo实际已经开始运行了，点击下面的gazebo：</p>
-<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/image-4-1024x615.png"></p>
-<p>这样，我们就用ROS2启动了一个仿真。真的是用ROS2启动的吗？实际上应该说是用python脚本启动的，但是在此过程中，我们用ROS2创建了一个ros package方便项目管理，修改了cmakelist并编译从而使得ros2 launch能够找到启动路径。不仅如此，我们还同时启动了gazebo_ros，这是一个topic映射工具，可以将gazebo的topic和ros的topic互相映射。</p>
-<p>user:~&#x2F;ros2_ws$ ros2 topic pub &#x2F;dolly&#x2F;cmd_vel geometry_msgs&#x2F;msg&#x2F;Twist “ { linear: {x: 0.2}, angular: {z: 0.3} }”</p>
-<p>小车就能赚起来了，输入命令的时候注意标点符号后面都要空格，不然会报错。也可以查看传感器数据：</p>
-<p>user:~&#x2F;ros2_ws$ ros2 topic echo &#x2F;dolly&#x2F;laser_scan</p>
-<p>那么这一章就到这里结束了，下一章来看如何在ros2中手动订阅话题。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/05/blender%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%BC%96%E8%BE%91%E6%A8%A1%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/05/blender%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%BC%96%E8%BE%91%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">Blender入门（二）：编辑模式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-09-05 00:14:56" itemprop="dateCreated datePublished" datetime="2021-09-05T00:14:56+08:00">2021-09-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/Blender/" itemprop="url" rel="index"><span itemprop="name">Blender</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="1，2，3"><a href="#1，2，3" class="headerlink" title="1，2，3"></a>1，2，3</h2><p>编辑模式下，选择1，2，3可以分别进入点、线、面选择模式</p>
-<h2 id="E"><a href="#E" class="headerlink" title="E"></a>E</h2><p>从一个面拉出一个面，或者从一条线拉出一条线，很强大。如果E之后接S，可以闭合洞口之类的</p>
-<h2 id="Ctrl-R"><a href="#Ctrl-R" class="headerlink" title="Ctrl+R"></a>Ctrl+R</h2><p>切分模型，可以几等分，或者随意分割</p>
-<h2 id="Ctrl-B"><a href="#Ctrl-B" class="headerlink" title="Ctrl+B"></a>Ctrl+B</h2><p>倒角，选择一个面，然后拉伸，滚轮设置精细度</p>
-<h2 id="细分模型"><a href="#细分模型" class="headerlink" title="细分模型"></a>细分模型</h2><p>把粗糙的线框模型细分为光滑曲面。</p>
-<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/image.png"></p>
-<h2 id="L"><a href="#L" class="headerlink" title="L"></a>L</h2><p>选择和一个面相连的所有面</p>
-<h2 id="按比例编辑"><a href="#按比例编辑" class="headerlink" title="按比例编辑"></a>按比例编辑</h2><p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/image-1.png"></p>
-<p>拖动一个面时，可以产生更为平滑的变形效果（很搞笑）</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/04/blender%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%B8%83%E5%B1%80%E4%B8%8E%E5%BF%AB%E6%8D%B7%E9%94%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/04/blender%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%B8%83%E5%B1%80%E4%B8%8E%E5%BF%AB%E6%8D%B7%E9%94%AE/" class="post-title-link" itemprop="url">Blender入门（一）：布局与快捷键</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-09-04 16:07:31" itemprop="dateCreated datePublished" datetime="2021-09-04T16:07:31+08:00">2021-09-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/Blender/" itemprop="url" rel="index"><span itemprop="name">Blender</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="分屏"><a href="#分屏" class="headerlink" title="分屏"></a>分屏</h2><p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-2-1024x592.png"></p>
-<p>鼠标移动到“选项”按钮右上方，也就是当前界面右上角落，光标发生变化后，可以拖拽分屏。合并屏幕，也是将鼠标移动到相同位置，然后向需要被合并的界面移动。</p>
-<h2 id="鼠标左键、右键"><a href="#鼠标左键、右键" class="headerlink" title="鼠标左键、右键"></a>鼠标左键、右键</h2><p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-3-1024x867.png"></p>
-<p>建议将键位映射改为上述。鼠标左键点击可以设置3D游标，也可以框选。右键选择物体，也可以移动。空格键位可以搜索命令。</p>
-<h2 id="小键盘"><a href="#小键盘" class="headerlink" title="小键盘"></a>小键盘</h2><p>小键盘123456789可以调整视角。</p>
-<h2 id="斜杠"><a href="#斜杠" class="headerlink" title="&#x2F;斜杠"></a>&#x2F;斜杠</h2><p>用于专注某一个模型。</p>
-<h2 id="G"><a href="#G" class="headerlink" title="G"></a>G</h2><p>移动物体。</p>
-<h2 id="R"><a href="#R" class="headerlink" title="R"></a>R</h2><p>旋转物体</p>
-<h2 id="S"><a href="#S" class="headerlink" title="S"></a>S</h2><p>缩放物体</p>
-<h2 id="X-Y-Z"><a href="#X-Y-Z" class="headerlink" title="X,Y,Z"></a>X,Y,Z</h2><p>在执行R\G\S操作时，使用XYZ可以制定操作在哪一条轴上进行。再按一次，可以从全局坐标转换到局部坐标。</p>
-<h2 id="Shift-A"><a href="#Shift-A" class="headerlink" title="Shift+A"></a>Shift+A</h2><p>创建新物体。</p>
-<h2 id="Shift-S"><a href="#Shift-S" class="headerlink" title="Shift+S"></a>Shift+S</h2><p>可以用于吸附游标到原点。</p>
-<h2 id="Shift-D"><a href="#Shift-D" class="headerlink" title="Shift+D"></a>Shift+D</h2><p>复制物体。</p>
-<h2 id="坐标系，吸附"><a href="#坐标系，吸附" class="headerlink" title="坐标系，吸附"></a>坐标系，吸附</h2><p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-4.png"></p>
-<h2 id="Z"><a href="#Z" class="headerlink" title="Z"></a>Z</h2><p>视图选项，可以查看线框、材质或者渲染视图。</p>
-<h2 id="设置物体的质心（旋转中心）"><a href="#设置物体的质心（旋转中心）" class="headerlink" title="设置物体的质心（旋转中心）"></a>设置物体的质心（旋转中心）</h2><p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-5.png"></p>
-<p>点击物体，然后选择设置原点。</p>
-<h2 id="Ctrl-J"><a href="#Ctrl-J" class="headerlink" title="Ctrl+J"></a>Ctrl+J</h2><p>聚合所有选中的物体。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/03/ignition%E6%8F%92%E4%BB%B6%EF%BC%9Aopenjoint/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/03/ignition%E6%8F%92%E4%BB%B6%EF%BC%9Aopenjoint/" class="post-title-link" itemprop="url">Ignition插件：OpenJoint</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-09-03 23:25:17" itemprop="dateCreated datePublished" datetime="2021-09-03T23:25:17+08:00">2021-09-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>OpenJoint是我自创的一个Ignition插件。他的功能是，在安装了插件的model中的指定link与其他物体碰撞时，生成一个fixed joint，链接物体。并在接受特定指令后（通过topic发布），删除该joint，释放物体。</p>
-<p>github链接如下：</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/0smile/OpenJoint">https://github.com/0smile/OpenJoint</a></p>
-<p>通过写这个插件，也总结了一些写这种插件的心得：</p>
-<ol>
-<li>对仿真世界的操作，统一写在PreUpdate里；</li>
-<li>创建话题、订阅话题，统一写在Configure里；</li>
-<li>订阅topic的时候，需要绑定函数，函数的变量就是topic的消息类型。函数内容一般是赋值、改值。</li>
-<li>EntityComponentManager，增加Entity、删除Entity、查找Entity的名称、父级、某个属性，都要靠它；</li>
-<li>SDF中的标签可以用于Get里面的值。</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/02/revit-blender-ignition-%E5%B7%A5%E4%BD%9C%E6%B5%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/02/revit-blender-ignition-%E5%B7%A5%E4%BD%9C%E6%B5%81/" class="post-title-link" itemprop="url">Revit-Blender-Ignition 工作流</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-09-02 12:28:34" itemprop="dateCreated datePublished" datetime="2021-09-02T12:28:34+08:00">2021-09-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/BIM/" itemprop="url" rel="index"><span itemprop="name">BIM</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bim/" itemprop="url" rel="index"><span itemprop="name">bim</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bim/IFC/" itemprop="url" rel="index"><span itemprop="name">IFC</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>下面这个工作流能够导出携带材质的Revit模型到Ignition中（应该如此）</p>
-<p>环境与软件版本：</p>
-<ol>
-<li>IFC：随意</li>
-<li>blender 2.93.4</li>
-<li>IFCBlender：随意</li>
-</ol>
-<h2 id="Revit-IFC"><a href="#Revit-IFC" class="headerlink" title="Revit-&gt;IFC"></a>Revit-&gt;IFC</h2><p>从Revit中导出IFC，IFC会携带材质。</p>
-<h2 id="IFC-Blender"><a href="#IFC-Blender" class="headerlink" title="IFC-&gt;Blender"></a>IFC-&gt;Blender</h2><p>将IFC导入到Blender中，需要一个IFCBlender插件，前往ifcopenshell网站下载：</p>
-<p><a target="_blank" rel="noopener" href="http://ifcopenshell.org/ifcblender">http://ifcopenshell.org/ifcblender</a></p>
-<p>下载好后，到Blender内启用并安装，就可以导入IFC模型了。</p>
-<h2 id="IFC-DAE"><a href="#IFC-DAE" class="headerlink" title="IFC-&gt;DAE"></a>IFC-&gt;DAE</h2><p>这一步是为了调整文件的组织结构，IFC的组织结构是会划分楼层的，这使得下一步中无法识别。</p>
-<p>要做到这一步，只需要导入IFC模型后（时间比较长），将当前模型导出为dae一次即可，然后再次读取dae文件。</p>
-<h2 id="DAE-SDF"><a href="#DAE-SDF" class="headerlink" title="DAE-&gt;SDF"></a>DAE-&gt;SDF</h2><p>这一步需要Ignition提供的一个脚本：</p>
-<p>import bpy<br>import os.path<br>from bpy_extras.io_utils import ImportHelper<br>from bpy.props import StringProperty, BoolProperty<br>from bpy.types import Operator</p>
-<p>import xml.etree.ElementTree as ET<br>from xml.dom import minidom</p>
-<h1 id="Target-blender-version-2-82"><a href="#Target-blender-version-2-82" class="headerlink" title="Target blender version: 2.82"></a>Target blender version: 2.82</h1><p>########################################################################################################################</p>
-<h3 id="Exports-model-dae-of-the-scene-with-textures-its-corresponding-model-sdf-file-and-a-default-model-config-file"><a href="#Exports-model-dae-of-the-scene-with-textures-its-corresponding-model-sdf-file-and-a-default-model-config-file" class="headerlink" title="Exports model.dae of the scene with textures, its corresponding model.sdf file, and a default model.config file"></a>Exports model.dae of the scene with textures, its corresponding model.sdf file, and a default model.config file</h3><p>########################################################################################################################<br>def export_sdf(prefix_path):</p>
-<pre><code>dae\_filename = &#39;model.dae&#39;
-sdf\_filename = &#39;model.sdf&#39;
-model\_config\_filename = &#39;model.config&#39;
-lightmap\_filename = &#39;LightmapBaked.png&#39;
-model\_name = &#39;my\_model&#39;
-meshes\_folder\_prefix = &#39;meshes/&#39;
-
-# Exports the dae file and its associated textures
-bpy.ops.wm.collada\_export(filepath=prefix\_path+meshes\_folder\_prefix+dae\_filename, check\_existing=False, filter\_blender=False, filter\_image=False, filter\_movie=False, filter\_python=False, filter\_font=False, filter\_sound=False, filter\_text=False, filter\_btx=False, filter\_collada=True, filter\_folder=True, filemode=8)
-
-# objects = bpy.context.selected\_objects
-objects = bpy.context.selectable\_objects
-mesh\_objects = \[ o for o in objects if o.type == &#39;MESH&#39; \]
-light\_objects = \[ o for o in objects if o.type == &#39;LIGHT&#39; \]
-
-#############################################
-#### export sdf xml based off the scene #####
-#############################################
-sdf = ET.Element(&#39;sdf&#39;, attrib=&#123;&#39;version&#39;:&#39;1.8&#39;&#125;)
-
-# 1 model and 1 link
-model = ET.SubElement(sdf, &quot;model&quot;, attrib=&#123;&quot;name&quot;:&quot;test&quot;&#125;)
-static = ET.SubElement(sdf, &quot;static&quot;)
-static.text = &quot;true&quot;
-link = ET.SubElement(model, &quot;link&quot;, attrib=&#123;&quot;name&quot;:&quot;testlink&quot;&#125;)
-# for each geometry in geometry library add a &lt;visual&gt; tag
-for o in mesh\_objects:
-    visual = ET.SubElement(link, &quot;visual&quot;, attrib=&#123;&quot;name&quot;:o.name&#125;)
-
-    geometry = ET.SubElement(visual, &quot;geometry&quot;)
-    mesh = ET.SubElement(geometry, &quot;mesh&quot;)
-    uri = ET.SubElement(mesh, &quot;uri&quot;)
-    uri.text = meshes\_folder\_prefix+dae\_filename
-    submesh = ET.SubElement(mesh, &quot;submesh&quot;)
-    submesh\_name = ET.SubElement(submesh, &quot;name&quot;)
-    submesh\_name.text = o.name
-    
-    # grab diffuse/albedo map
-    diffuse\_map = &quot;&quot;    
-    nodes = o.active\_material.node\_tree.nodes
-    principled = next(n for n in nodes if n.type == &#39;BSDF\_PRINCIPLED&#39;)
-    if principled is not None:
-        base\_color = principled.inputs\[&#39;Base Color&#39;\] #Or principled.inputs\[0\]
-        value = base\_color.default\_value
-        if len(base\_color.links):
-            link\_node = base\_color.links\[0\].from\_node
-            diffuse\_map = link\_node.image.name
-    
-    # setup diffuse/specular color
-    material = ET.SubElement(visual, &quot;material&quot;)
-    diffuse = ET.SubElement(material, &quot;diffuse&quot;)
-    diffuse.text = &quot;1.0 1.0 1.0 1.0&quot;
-    specular = ET.SubElement(material, &quot;specular&quot;)
-    specular.text = &quot;0.0 0.0 0.0 1.0&quot;
-    pbr = ET.SubElement(material, &quot;pbr&quot;)
-    metal = ET.SubElement(pbr, &quot;metal&quot;)
-    if diffuse\_map != &quot;&quot;:
-        albedo\_map = ET.SubElement(metal, &quot;albedo\_map&quot;)
-        albedo\_map.text = meshes\_folder\_prefix + diffuse\_map
-    
-    # for lightmapping, add the UV and turn off casting of shadows
-    if os.path.isfile(lightmap\_filename):
-        light\_map = ET.SubElement(metal, &quot;light\_map&quot;, attrib=&#123;&quot;uv\_set&quot;:&quot;1&quot;&#125;)
-        light\_map.text = meshes\_folder\_prefix + lightmap\_filename
-        
-        cast\_shadows = ET.SubElement(visual, &quot;cast\_shadows&quot;)
-        cast\_shadows.text = &quot;0&quot;
-    
-def add\_attenuation\_tags(light\_tag, blender\_light):
-    attenuation = ET.SubElement(light, &quot;attenuation&quot;)
-    range = ET.SubElement(attenuation, &quot;range&quot;)
-    range.text = str(blender\_light.cutoff\_distance)
-    linear\_attenuation = ET.SubElement(attenuation, &quot;linear&quot;)
-    linear\_attenuation.text = str(blender\_pointlight.linear\_attenuation)
-    quad\_attenuation = ET.SubElement(attenuation, &quot;quadratic&quot;)
-    quad\_attenuation.text = str(blender\_pointlight.quadratic\_coefficient)
-    const\_attenuation = ET.SubElement(attenuation, &quot;constant&quot;)
-    const\_attenuation.text = str(blender\_pointlight.constant\_coefficient)
-
-# export lights
-for l in light\_objects:
-    blender\_light = l.data
-    
-    if blender\_light.type == &quot;POINT&quot;:
-        light = ET.SubElement(link, &quot;light&quot;, attrib=&#123;&quot;name&quot;:l.name, &quot;type&quot;:&quot;point&quot;&#125;)
-        diffuse = ET.SubElement(light, &quot;diffuse&quot;)
-        diffuse.text = str(blender\_light.color.r) + &quot; &quot; + str(blender\_light.color.g) + &quot; &quot; + str(blender\_light.color.b) + &quot; 1.0&quot;
-        blender\_pointlight = bpy.types.PointLight(blender\_light)
-        
-        add\_attenuation\_tags(light, blender\_pointlight)
-        
-    if blender\_light.type == &quot;SPOT&quot;:
-        light = ET.SubElement(link, &quot;light&quot;, attrib=&#123;&quot;name&quot;:l.name, &quot;type&quot;:&quot;spot&quot;&#125;)
-        diffuse = ET.SubElement(light, &quot;diffuse&quot;)
-        diffuse.text = str(blender\_light.color.r) + &quot; &quot; + str(blender\_light.color.g) + &quot; &quot; + str(blender\_light.color.b) + &quot; 1.0&quot;
-        blender\_spotlight = bpy.types.SpotLight(blender\_light)
-        
-        add\_attenuation\_tags(light, blender\_spotlight)
-        # note: unsupported &lt;spot&gt; tags in blender
-        
-    if blender\_light.type == &quot;SUN&quot;:
-        light = ET.SubElement(link, &quot;light&quot;, attrib=&#123;&quot;name&quot;:l.name, &quot;type&quot;:&quot;directional&quot;&#125;)
-        diffuse = ET.SubElement(light, &quot;diffuse&quot;)
-        diffuse.text = str(blender\_light.color.r) + &quot; &quot; + str(blender\_light.color.g) + &quot; &quot; + str(blender\_light.color.b) + &quot; 1.0&quot;
-        blender\_pointlight = bpy.types.SunLight(blender\_light)
-        
-    if blender\_light.type == &quot;SUN&quot; or blender\_light.type == &quot;SPOT&quot;:
-        direction = ET.SubElement(light, &quot;direction&quot;)
-        direction.text = str(l.matrix\_world\[0\]\[2\]) + &quot; &quot; + str(l.matrix\_world\[1\]\[2\]) + &quot; &quot; + str(l.matrix\_world\[2\]\[2\])
-        
-    # unsupported: AREA lights
-
-    cast\_shadows = ET.SubElement(light, &quot;cast\_shadows&quot;)
-    cast\_shadows.text = &quot;true&quot;
-    
-    # todo : bpy.types.light script api lacks an intensity value, possible candidate is energy/power(Watts)?
-    intensity = ET.SubElement(light, &quot;intensity&quot;)
-    intensity.text = &quot;1.0&quot;
-
-## sdf collision tags
-collision = ET.SubElement(link, &quot;collision&quot;, attrib=&#123;&quot;name&quot;:&quot;collision&quot;&#125;)
-
-geometry = ET.SubElement(collision, &quot;geometry&quot;)
-mesh = ET.SubElement(geometry, &quot;mesh&quot;)
-uri = ET.SubElement(mesh, &quot;uri&quot;)
-uri.text = meshes\_folder\_prefix+dae\_filename
-
-surface = ET.SubElement(collision, &quot;surface&quot;)
-contact = ET.SubElement(collision, &quot;contact&quot;)
-collide\_bitmask = ET.SubElement(collision, &quot;collide\_bitmask&quot;)
-collide\_bitmask.text = &quot;0x01&quot;
-
-## sdf write to file
-xml\_string = ET.tostring(sdf, encoding=&#39;unicode&#39;)
-reparsed = minidom.parseString(xml\_string)
-
-sdf\_file = open(prefix\_path+sdf\_filename, &quot;w&quot;)
-sdf\_file.write(reparsed.toprettyxml(indent=&quot;  &quot;))
-sdf\_file.close()
-
-##############################
-### generate model.config ####
-##############################
-model = ET.Element(&#39;model&#39;)
-name = ET.SubElement(model, &#39;name&#39;)
-name.text = model\_name
-version = ET.SubElement(model, &#39;version&#39;)
-version.text = &quot;1.0&quot;
-sdf\_tag = ET.SubElement(model, &quot;sdf&quot;, attrib=&#123;&quot;sdf&quot;:&quot;1.8&quot;&#125;)
-sdf\_tag.text = sdf\_filename
-
-author = ET.SubElement(model, &#39;author&#39;)
-name = ET.SubElement(author, &#39;name&#39;)
-name.text = &quot;Generated by blender SDF tools&quot;
-
-xml\_string = ET.tostring(model, encoding=&#39;unicode&#39;)
-reparsed = minidom.parseString(xml\_string)
-
-config\_file = open(prefix\_path+model\_config\_filename, &quot;w&quot;)
-config\_file.write(reparsed.toprettyxml(indent=&quot;  &quot;))
-config\_file.close()
-</code></pre>
-<h4 id="UI-Handling"><a href="#UI-Handling" class="headerlink" title="UI Handling"></a>UI Handling</h4><p>class OT_TestOpenFilebrowser(Operator, ImportHelper):<br>  bl_idname &#x3D; “test.open_filebrowser”<br>  bl_label &#x3D; “Save”</p>
-<p>  directory : bpy.props.StringProperty(name&#x3D;”Outdir Path”)</p>
-<p>  def execute(self, context):<br>    “””Do the export with the selected file.”””</p>
-<pre><code>if not os.path.isdir(self.directory):
-    print(self.directory + &quot; is not a directory!&quot;)
-else:
-    print(&quot;exporting to directory: &quot; + self.directory)
-    export\_sdf(self.directory)
-return &#123;&#39;FINISHED&#39;&#125;
-</code></pre>
-<p>def register():<br>    bpy.utils.register_class(OT_TestOpenFilebrowser)<br>def unregister():<br>    bpy.utils.unregister_class(OT_TestOpenFilebrowser)</p>
-<p>if __name__ &#x3D;&#x3D; “__main__“:<br>    register()<br>    bpy.ops.test.open_filebrowser(‘INVOKE_DEFAULT’)</p>
-<h1 id="alternatively-comment-the-main-code-block-and-do-a-function-call-without-going-through-all-the-ui"><a href="#alternatively-comment-the-main-code-block-and-do-a-function-call-without-going-through-all-the-ui" class="headerlink" title="alternatively comment the main code block and do a function call without going through all the ui"></a>alternatively comment the main code block and do a function call without going through all the ui</h1><h1 id="prefix-path-‘-home-ddeng-blender-lightmap-final-office-office-‘"><a href="#prefix-path-‘-home-ddeng-blender-lightmap-final-office-office-‘" class="headerlink" title="prefix_path &#x3D; ‘&#x2F;home&#x2F;ddeng&#x2F;blender_lightmap&#x2F;final_office&#x2F;office&#x2F;‘"></a>prefix_path &#x3D; ‘&#x2F;home&#x2F;ddeng&#x2F;blender_lightmap&#x2F;final_office&#x2F;office&#x2F;‘</h1><h1 id="export-sdf-prefix-path"><a href="#export-sdf-prefix-path" class="headerlink" title="export_sdf(prefix_path)"></a>export_sdf(prefix_path)</h1><p>复制上面文本保存为一个py文件，在Blender中，点击最左下角的编辑器类型，选择Scripting下的文本编辑器，点击打开，选择上述py文件，然后点击运行按钮。选择一个保存路径后，就会生成dae文件、model.config、model.sdf。</p>
-<p>但是我个人发现这个插件因为是吧每个部分分别插入sdf文件中，所以经常出问题，不如直接自己手动插入：</p>
-<sdf version="1.7">
-  <world name="demo">
-    
-<pre><code>&lt;include&gt;
-  &lt;uri&gt;https://fuel.ignitionrobotics.org/1.0/OpenRobotics/models/Sun&lt;/uri&gt;
-&lt;/include&gt;
-
-&lt;include&gt;
-  &lt;uri&gt;https://fuel.ignitionrobotics.org/1.0/OpenRobotics/models/Ground Plane&lt;/uri&gt;
-&lt;/include&gt;
-&lt;model name=&quot;myModel&quot;&gt;
-  &lt;pose&gt;0 0 0 0 0 0&lt;/pose&gt;
-  &lt;static&gt;true&lt;/static&gt;
-  &lt;link name=&quot;link&quot;&gt;
-    &lt;collision name=&quot;collision&quot;&gt;
-      &lt;geometry&gt;
-        
-        &lt;mesh&gt;
-          &lt;uri&gt;untitled.dae&lt;/uri&gt;
-        &lt;/mesh&gt;
-      &lt;/geometry&gt;
-    &lt;/collision&gt;
-    &lt;visual name=&quot;visual&quot;&gt;
-      &lt;geometry&gt;
-        
-        &lt;mesh&gt;
-          &lt;uri&gt;untitled.dae&lt;/uri&gt;
-        &lt;/mesh&gt;
-      &lt;/geometry&gt;
-    &lt;/visual&gt;
-  &lt;/link&gt;
-&lt;/model&gt;
-</code></pre>
-  </world>
-</sdf>
-
-<p>不如像这样直接导入，倒是一点问题也没有。</p>
-<p>这个工作流的好处在于他保存了材质，让场景看起来更加真实。下面这个颜色是我在Blender里随便加的。</p>
-<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-1-1024x562.png"></p>
-<p>但是这个方法虽然快，也有弊端。比如，如果我想在这个模型的某颗树下加一个物体，如果sdf是按照部件逐个导入dae的，那么可以根据名称直接找到树所在的sdf模型，然后相对位置放置即可，但是，如果是整个导入的，就只能按照世界绝对坐标系放置了。在之后的与IFC结合的工作中，这实际上是非常关键的。因此，还是得想办法把这个完整的工作流跑通。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/01/ignition%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB%EF%BC%9A%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B8%8Eignition%E7%9A%84%E7%BB%93%E5%90%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/01/ignition%E8%B5%84%E6%BA%90%E5%88%86%E4%BA%AB%EF%BC%9A%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E4%B8%8Eignition%E7%9A%84%E7%BB%93%E5%90%88/" class="post-title-link" itemprop="url">Ignition资源分享：强化学习与Ignition的结合</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-09-01 14:56:53" itemprop="dateCreated datePublished" datetime="2021-09-01T14:56:53+08:00">2021-09-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Ignition communication meeting (June 2021)</p>
-<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1jh411W7NJ/">https://www.bilibili.com/video/BV1jh411W7NJ/</a></p>
-<p>本次会议介绍了Ignition与强化学习结合的应用，主要使用了Gym-ignition。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/robotology/gym-ignition">https://github.com/robotology/gym-ignition</a></p>
-<p>Gym-ignition是一个用于强化学习的ignition拓展程序。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/08/30/ignition-contact-sensor%E6%8E%A5%E8%A7%A6%E4%BC%A0%E6%84%9F%E5%99%A8%E6%95%B0%E6%8D%AE%E6%8F%90%E5%8F%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/30/ignition-contact-sensor%E6%8E%A5%E8%A7%A6%E4%BC%A0%E6%84%9F%E5%99%A8%E6%95%B0%E6%8D%AE%E6%8F%90%E5%8F%96/" class="post-title-link" itemprop="url">Ignition contact sensor接触传感器数据提取</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-08-30 16:47:29" itemprop="dateCreated datePublished" datetime="2021-08-30T16:47:29+08:00">2021-08-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>void ContactPrivate::UpdateSensors(const UpdateInfo &amp;_info,<br>                                   const EntityComponentManager &amp;_ecm)<br>{<br>    IGN_PROFILE(“ContactPrivate::UpdateSensors”);<br>    for (const auto &amp;item : this-&gt;entitySensorMap)<br>    {<br>        for (const Entity &amp;entity : item.second-&gt;collisionEntities)<br>        {</p>
-<pre><code>        auto contacts = \_ecm.Component&lt;components::ContactSensorData&gt;(entity);//这一句应该是重点
-
-        // We will assume that the ContactData component will have been created if
-        // this entity is in the collisionEntities list
-        if (contacts-&gt;Data().contact\_size() &gt; 0)
-        &#123;
-            auto names = \_ecm.Component&lt;components::Name&gt;(entity);
-            ignmsg &lt;&lt; &quot;collision object:&quot; &lt;&lt; contacts-&gt;Data().contact().Get(0).collision2().id() &lt;&lt; std::endl;
-            item.second-&gt;AddContacts(\_info.simTime, contacts-&gt;Data());
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<p>}</p>
-<p>ignition的接触传感器通过更新传感器来探测是否有物体碰撞。</p>
-<p>const Entity &amp;entity : item.second-&gt;collisionEntities</p>
-<p>item.second指的是传感器，collisionEntities是传感器检测碰撞的物体。</p>
-<p> auto contacts &#x3D; _ecm.Component<a href="components::ContactSensorData">components::ContactSensorData</a>(entity)</p>
-<p>contacts不太清楚是什么，个人感觉是对“接触”这一事件的描述。</p>
-<p>contacts-&gt;Data().contact().Get(0).collision2().id()</p>
-<p>这一句是我发现的如何得到接触物体的entityid的方法。更进一步地，如果不加上id()，得到的则是entity本身。但是要注意的是，这里得到的entity类型为msgs::entity，还不能直接使用。</p>
-<p>在Ignition中，Entity的表示方法就是一个数字id，也就是上一行代码中我们用id()方法得到的entityid。将msgs::Entity转化为gazebo::Entity的方法很简单：</p>
-<p>gazebo::Entity collision &#x3D; contacts-&gt;Data().contact().Get(0).collision2().id()；</p>
-<p>注意这里类型指定不能使用auto，不然类型还是long。要使用gazebo::Entity.这样就能得到可操作的Entity对象了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/08/26/%E9%AB%98%E6%97%97%E8%B6%85%E8%BD%BD%E4%B9%90%E9%98%9F-%E7%94%9F%E5%91%BD%E4%B9%8B%E8%AF%97%E6%BC%94%E5%94%B1%E4%BC%9A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/26/%E9%AB%98%E6%97%97%E8%B6%85%E8%BD%BD%E4%B9%90%E9%98%9F-%E7%94%9F%E5%91%BD%E4%B9%8B%E8%AF%97%E6%BC%94%E5%94%B1%E4%BC%9A/" class="post-title-link" itemprop="url">高旗&超载乐队——生命之诗演唱会</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-08-26 19:42:20" itemprop="dateCreated datePublished" datetime="2021-08-26T19:42:20+08:00">2021-08-26</time>
+              <time title="创建时间：2021-07-22 10:59:22" itemprop="dateCreated datePublished" datetime="2021-07-22T10:59:22+08:00">2021-07-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -1138,9 +228,17 @@ return &#123;&#39;FINISHED&#39;&#125;
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>高旗&amp;超载乐队是我最喜欢的中国乐队。</p>
-<h2 id="陈胜吴广"><a href="#陈胜吴广" class="headerlink" title="陈胜吴广"></a>陈胜吴广</h2><h2 id="感受"><a href="#感受" class="headerlink" title="感受"></a>感受</h2><h2 id="距离"><a href="#距离" class="headerlink" title="距离"></a>距离</h2><h2 id="生命之诗"><a href="#生命之诗" class="headerlink" title="生命之诗"></a>生命之诗</h2><h2 id="梦缠绕的时候"><a href="#梦缠绕的时候" class="headerlink" title="梦缠绕的时候"></a>梦缠绕的时候</h2><h2 id="不要怪我"><a href="#不要怪我" class="headerlink" title="不要怪我"></a>不要怪我</h2><h2 id="依靠"><a href="#依靠" class="headerlink" title="依靠"></a>依靠</h2><h2 id="完美夏天"><a href="#完美夏天" class="headerlink" title="完美夏天"></a>完美夏天</h2><h2 id="不要告别"><a href="#不要告别" class="headerlink" title="不要告别"></a>不要告别</h2><h2 id="如果我现在"><a href="#如果我现在" class="headerlink" title="如果我现在"></a>如果我现在</h2><h2 id="现在到永远"><a href="#现在到永远" class="headerlink" title="现在到永远"></a>现在到永远</h2><h2 id="生命是一次奇遇"><a href="#生命是一次奇遇" class="headerlink" title="生命是一次奇遇"></a>生命是一次奇遇</h2><h2 id="出发"><a href="#出发" class="headerlink" title="出发"></a>出发</h2><h2 id="太空2001遨游"><a href="#太空2001遨游" class="headerlink" title="太空2001遨游"></a>太空2001遨游</h2><h2 id="魔幻蓝天"><a href="#魔幻蓝天" class="headerlink" title="魔幻蓝天"></a>魔幻蓝天</h2><h2 id="让每一个夜晚充满爱的火焰"><a href="#让每一个夜晚充满爱的火焰" class="headerlink" title="让每一个夜晚充满爱的火焰"></a>让每一个夜晚充满爱的火焰</h2><h2 id="每次都想拥抱你"><a href="#每次都想拥抱你" class="headerlink" title="每次都想拥抱你"></a>每次都想拥抱你</h2><p>以下是完整CD内容：</p>
-<p><strong>链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/16HA5r/_92VITbGhz-3n9XKg">https://pan.baidu.com/s/16HA5r\_92VITbGhz-3n9XKg</a> 密码: uok4</strong></p>
+          <p>二零二一年七月二十二日，豆豆离开我们去喵星了。</p>
+<p>据我妈说，估计是早上门没关好，豆溜出去了。你总是那么聪明，总是跑出去也是让我们头疼不少。现在想想，你可能只是想出去玩玩吧？</p>
+<p>我妈找不到你，一直在喊你的名字。最后只听到你微弱的呜咽从我家车底下面传来。你真的很聪明！我们不怎么带你出去，带你坐车更是寥寥无几，你就记住我们家的车了。</p>
+<p>找到你的时候，你嘴巴里都是血，身子也动不了了。在去医院的路上，我妈说你一直看着她。你在想什么呢？最后你还是没有撑住，再到医院的路上就去喵星了。也许你只是想再看家人一眼吧！</p>
+<p>豆，你真的是很聪明、很通人性的一只小猫咪。在我心里你还是最漂亮的。领养你之前，我还在担心，狸花猫会不会野性太大，不好管。最后发现确实是这样，家里根本管不住你，你会抓住一切机会留出家门。但是这次不知道是怎么回事，你怎么还跑到小区大门外去了呢？人类世界很险恶的呀。</p>
+<p>你来到我家还不到两年，你也刚刚两岁。你刚来的时候，那么小，那么瘦，一个手掌就能把你托起来。过了一个学期之后再回家，你已经有成猫的体型了。再过了一个学期，你简直长成了一头猪。</p>
+<p>你真的谈不上乖，总是喜欢跳上我的床，还尿了好几次。晚上让你一只猫在客厅睡，有时候还喜欢挠门，吵着要进来。你还把我女票好几千的大衣抓了个线头出来。但是你很亲人（至少对我），喜欢跳上我的腿呼噜呼噜。我桌子旁边的猫窝是你的最爱，躺在里面蜷成一团打呼噜，别提多舒服了。这个时候就可以尽情地撸你，别的时候倒也可以，但是你总以为我在和你玩，于是和我激情互动，有的时候会忘记收爪子，给我抓了一道，害得我要去打疫苗。</p>
+<p>我最喜欢的场景是，我在桌前做自己的事情，你在我床上揣着手手看着我。据说猫盯着人是喜欢对方的意思。你应该很喜欢我们这个家吧！其实我一直怀疑你可能觉得自己只是暂住在这里。但是我想你心里是有我们的，你分得清谁对你好。我妈给你买了一个又一个猫窝，家里就摆了三四个。我爸应该和你待的时间最多，下班之后就陪着你。我和你待的时间最少，但是放假期间咱俩基本是一呆一天。我都说我和你在家里是平级的，你可以算是我弟。</p>
+<p>我只能庆幸，我今天没有在场，不然我不知道如何面对。但也后悔，如果我在家，你可能就不会跑出去了。两年，对于一只猫来说，也是很短暂的了。对于人来说，两年，只是生命中一段插曲罢了，但是你永远留在我心里。生命真的很脆弱，更显得它珍贵。</p>
+<p>写这些东西，你也看不到，你也看不懂，无非是给自己留个念想。这时候，我甚至有点想相信有轮回啊灵魂什么的一说。我妈说，之后会把你的骨灰洒在市政广场的一棵树下。市府广场够大了，你想怎么跑都行。我会经常去看看你的。</p>
+<p>豆，谢谢你两年的陪伴。</p>
 
       
     </div>
@@ -1160,7 +258,7 @@ return &#123;&#39;FINISHED&#39;&#125;
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/08/15/freecad-bim%E4%BD%BF%E7%94%A8%E6%84%9F%E5%8F%97/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/21/freecad%E4%BD%BF%E7%94%A8luxcorerender%E6%B8%B2%E6%9F%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1174,7 +272,7 @@ return &#123;&#39;FINISHED&#39;&#125;
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/08/15/freecad-bim%E4%BD%BF%E7%94%A8%E6%84%9F%E5%8F%97/" class="post-title-link" itemprop="url">FreeCAD BIM使用感受</a>
+            <a href="/2021/07/21/freecad%E4%BD%BF%E7%94%A8luxcorerender%E6%B8%B2%E6%9F%93/" class="post-title-link" itemprop="url">Freecad使用LuxCoreRender渲染</a>
         </h2>
 
         <div class="post-meta">
@@ -1184,7 +282,7 @@ return &#123;&#39;FINISHED&#39;&#125;
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-08-15 21:04:02" itemprop="dateCreated datePublished" datetime="2021-08-15T21:04:02+08:00">2021-08-15</time>
+              <time title="创建时间：2021-07-21 23:31:49" itemprop="dateCreated datePublished" datetime="2021-07-21T23:31:49+08:00">2021-07-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -1199,11 +297,7 @@ return &#123;&#39;FINISHED&#39;&#125;
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/BIM/" itemprop="url" rel="index"><span itemprop="name">BIM</span></a>
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
                 </span>
             </span>
 
@@ -1218,22 +312,35 @@ return &#123;&#39;FINISHED&#39;&#125;
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>我很喜欢FreeCAD，最主要的原因就是FreeCA是开源的。之前我尝试使用FreeCAD替代SolidWorks，效果还是不错的。我认为这有两个原因，一个原因是FreeCAD本身在零件设计上下了一定的功夫，因此功能还是比较完全；另一个原因是我对SolidWork本身掌握也不多，因此使用FreeCAD就足以替代SolidWorks中我经常使用的一些功能。</p>
-<p>自然而然的，我开始想，能否用FreeCAD来替代Revit呢？我使用Revit已经很长时间了，已经习惯了它的许多布局与操作。甚至在FreeCAD中，我也将Revit操作模式设置为默认操作模式。就我而言，使用FreeCAD来替代Revit，至少有以下好处：</p>
-<ol>
-<li>补上Ubuntu工作平台的最后一环。目前，我已经在Ubuntu上搭建了完整的科研和工作平台，除了BIM建模；</li>
-<li>开源的、不受限制的应用。我曾经试图在Revit中导出dae格式的建筑模型，然而可供选择的工具很少，有一些还需要收费。而FreeCAD本身自带这一功能；</li>
-<li>对IFC的更好支持。相比Revit，FreeCAD能够导出更为简洁的IFC文件；</li>
-<li>拓展性。在未来，甚至可能可以通过自己动手来集成一些其他功能。</li>
-</ol>
-<p>因此我对FreeCAD+BIM工作流展开了尝试。感谢**<a target="_blank" rel="noopener" href="https://github.com/yorikvanhavre">yorikvanhavre</a>**的工作，他是FreeCAD的一名核心开发人员，同时也是一名专业的建筑师。他开发的BIM workbench让这一切成为了可能。</p>
-<p>要在FreeCAD中使用BIM功能，需要下载<a target="_blank" rel="noopener" href="https://github.com/yorikvanhavre/BIM_Workbench">BIM workbench</a>。实际上这是一个将Arch和Draft功能集成的插件。具体的学习资源，可以看作者在Youtube上发布的教学视频：<a target="_blank" rel="noopener" href="https://www.youtube.com/playlist?list=PLmKdGVtV5Vnt2cj4IZIv9FM39QHaE1ZaU">https://www.youtube.com/playlist?list=PLmKdGVtV5Vnt2cj4IZIv9FM39QHaE1ZaU</a>。</p>
-<p>跟着教程学习了一段时间后，我认为FreeCAD BIM目前还无法对Revit造成任何威胁。</p>
-<p>首先从建模的难易度上来说，FreecadBIM远逊于Revit。在Revit中，所有的操作都建立在楼层平面上，这实际上是非常自然的。因此，在建模的一开始，就应该在立面图中设置标高。而在FreeCADBIM中，立面和平面本质上并没有差别。因此，在FreeCADBIM中，需要频繁切换工作面以确保模型附着在工作面上。而且，FreeCADBIM在绘制时没有提供尺寸显示和吸附，</p>
-<p>这引出第二个不足之处。在Revit中，放置窗户是非常简便的。只需要选择窗户的类型和大小，设置标高后，立面图中在墙体相应的地方点击就可以了，之后也可以在立面图中调整。这也是非常自然的。而在FreeCAD中，墙和门实际上是同一类型的洞口。因此，绘制门或者窗口必须在立面图中，或者说墙的工作面上进行绘制。这就导致很难快速地绘制大量的窗口。</p>
-<p>第三个不足之处是材质上的。在FreeCADBIM中，材质功能很少，近似没有。只能设置颜色、反光率等，只能做为区分使用。而在Revit中，不仅能够设置表面材质，还能设置夹层、夹层材质。在这一点上，FreeCADBIM远逊于Revit，而且暂时也没有解决方法。</p>
-<p>因此，FreeCADBIM的用途可能仅局限于输出高兼容度的IFC、DAE，以及作为一种可能的开源方法进行BIM建模。同时，对于建筑师来说，FreeCADBIM的操作难度又明显大于SketchUp，库的数量也远远低于SketchUp，渲染也有很大的局限性。</p>
-<p>综上所处，FreeCADBIM目前的发展情况并不理想。除非FreeCADBIM能够脱离它为工业设计的蹩脚逻辑，或者增加大量的基于用户体验考虑的操作逻辑，否则FreeCADBIM只能是一个可能性而不是一个工具。</p>
+          <p>Freecad上手后，发现真的挺好用的，随手建模个小零件打印出来，甚至还可以实现一部分BIM的功能。不过不足之处在于没有内建的渲染功能。</p>
+<p>实际上也不能说这是它的不足之处，Freecad的许多功能都是以插件的形式实现的，这也是它强大的原因。本文将介绍如何使用一款开源的渲染工具：LuxCoreRender来配合Freecad进行渲染。</p>
+<p>本文环境为Ubuntu20.04，FreeCAD版本0.19.</p>
+<h2 id="安装LuxCoreRender"><a href="#安装LuxCoreRender" class="headerlink" title="安装LuxCoreRender"></a>安装LuxCoreRender</h2><p><a target="_blank" rel="noopener" href="https://luxcorerender.org/download/">https://luxcorerender.org/download/</a></p>
+<p>到官网下载界面下载<strong>Standalone release</strong>。下载完成后解压，如下图：</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/07/image-11-1024x491.png"></p>
+<p>完成后，将所有动态链接库文件拷贝到&#x2F;usr&#x2F;lib下，一共有下面这些。</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/07/image-12-1024x316.png"></p>
+<p>在命令行下运行luxcoreui程序。测试一下，点击rendering-load，加载自带的scenes文件夹中的cornell.cfg：</p>
+<p><img src="blob:http://www.lxshaw.com/459ae9cc-a6bd-4664-a338-2769e6d6b588"></p>
+<p>LuxCoreRender的渲染模式很特别，是即时渲染的。也就是说，渲染过程不会停止，除非用户主动暂停。所以如果给予足够长的时间，LuxCoreRender能给出非常高质量的渲染。同时，在渲染过程中，还可以拖动视角（不过可能要降低渲染分辨率来提高帧率）。</p>
+<p>下面来配置FreeCAD。</p>
+<h2 id="FreeCAD配置"><a href="#FreeCAD配置" class="headerlink" title="FreeCAD配置"></a>FreeCAD配置</h2><p>首先，在插件管理器中安装Render插件（需要梯子）。</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/07/image-14-1024x826.png"></p>
+<p>下载后，打开Preference进行配置。需要配置的东西很少，在一栏中，填入luxcoreui的路径即可。</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/07/image-15-708x1024.png"></p>
+<h2 id="渲染方式"><a href="#渲染方式" class="headerlink" title="渲染方式"></a>渲染方式</h2><p>以FreeCAD自带建筑例程为例。</p>
+<p>首先在WorkBench中选择Render。然后点击Render-Projects-Luxcore projects。由于是建筑，选择一个sunlight模板效果好一点。</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/07/image-16-1024x695.png"></p>
+<p>左边组合浏览器会出现一个Luxcore Project。</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/07/image-17.png"></p>
+<p>接下来选择要导入Luxcore Project的物体。在这里，我们按住ctrl键选择Model文件夹和Luxcore Project，然后选择Render view。</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/07/image-18.png"></p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/07/image-19.png"></p>
+<p>可以看到Luxcore Project下生成了许多模型。</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/07/image-20.png"></p>
+<p>最后选择luxcore project，再点击渲染，就可以开始渲染了。</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/07/image-21-1024x576.png"></p>
+<p>点击film-save output可以保存渲染结果，默认保存在用户主文件夹下。</p>
 
       
     </div>
@@ -1253,7 +360,7 @@ return &#123;&#39;FINISHED&#39;&#125;
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/08/13/ignition-gazebo%E5%AD%A6%E4%B9%A0-entitycomponentmanager%E7%9A%84%E4%BD%BF%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/14/revit-freecad-ignition%E5%B7%A5%E4%BD%9C%E6%B5%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1267,7 +374,7 @@ return &#123;&#39;FINISHED&#39;&#125;
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/08/13/ignition-gazebo%E5%AD%A6%E4%B9%A0-entitycomponentmanager%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Ignition Gazebo学习: 阅读DetachableJoint代码</a>
+            <a href="/2021/07/14/revit-freecad-ignition%E5%B7%A5%E4%BD%9C%E6%B5%81/" class="post-title-link" itemprop="url">Revit-FreeCAD-Ignition工作流</a>
         </h2>
 
         <div class="post-meta">
@@ -1277,7 +384,7 @@ return &#123;&#39;FINISHED&#39;&#125;
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-08-13 20:13:21" itemprop="dateCreated datePublished" datetime="2021-08-13T20:13:21+08:00">2021-08-13</time>
+              <time title="创建时间：2021-07-14 18:37:37" itemprop="dateCreated datePublished" datetime="2021-07-14T18:37:37+08:00">2021-07-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -1296,7 +403,95 @@ return &#123;&#39;FINISHED&#39;&#125;
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>之前有写过将Revit的模型导入Gazebo的博客，那里面使用的是Lumion Livesync插件来导出的dae文件，但是只能保留模型外观。后来找到一个更为优秀的工作流，并且经过验证在Ignition上可用。大致流程为：</p>
+<ol>
+<li>Revit: rvt-&gt;ifc</li>
+<li>FreeCAD: ifc-&gt;dae</li>
+<li>Ignition: dae导入</li>
+</ol>
+<p>这个工作流的好处在于，整个过程中只用到了FreeCAD这个开源工具，不会被限制。同时，IFC能够保留一部分材质信息（用颜色区分）。但是这个工作流只能应用在比较小的revit文件里。</p>
+<p>整个流程基本没有什么难点，需要注意的是在ubuntu下需要下载AppImage版本的FreeCAD，通过apt安装或者snap安装的FreeCad不知道为何无法读取dae文件，可能是python解释器的问题，懒得搞了，贯彻“能用就行主义”。</p>
+<p>我们用Revit的两个样例文件来测试一下这个过程，第一个是经典的RevitSample，一个建在山坡上的小房子，有太阳能和风能供能，还有露台、停车库等等，简直是人间仙境啊。我也想住这样的房子。模型文件大小为17.6MB。转化为IFC后，大小为13.1MB，转换时间10分钟不到。使用FreeCad打开过程中一直是CPU跑满的状态，40分钟后也没有打开，非常夸张。所以这个工作流对于大规模场景是不适用的。对于大规模场景，以下工作流：</p>
+<ol>
+<li>Lumion Livesync: rvt-&gt;dae</li>
+<li>blender: dae-&gt;dae</li>
+<li>FreeCAD: dae-&gt;dae</li>
+</ol>
+<p>如此一来能够保留能够区分出材质的模型。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/13/igntion-gazebo%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/13/igntion-gazebo%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Igntion-Gazebo：插件的使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-13 23:58:59" itemprop="dateCreated datePublished" datetime="2021-07-13T23:58:59+08:00">2021-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1315,34 +510,949 @@ return &#123;&#39;FINISHED&#39;&#125;
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>EntityComponentManager是一个用于控制sdf世界中实体增加和删除的功能，之所以把这个功能单独拿出来说，是因为基于它可以实现许多功能，比如说解除链接功能，或者是增加链接功能。ign官方有一个DetachableJoint插件，就使用了这个功能。</p>
-<p>我们来看看，官方给出的插件中是如何运用这个功能的。这个插件主要由三个函数组成：</p>
+          <p>在Ignition里，插件和系统的意义逐渐靠拢。Ignition和Gazebo比起来，就好像中国空间站和国际空间站，前者模块化程度更高，即使是Ignition的核心功能，说白了也就是一个主要插件。比如加载一个默认世界的时候，Ignition会加载Physcis Engine插件，用来物理仿真；加载Rendering插件，用来渲染3D世界；加载GUI插件，用来可视化仿真。</p>
+<p>这一章主要展示如何综合使用Ignition自定义的一些插件，可以直接参照<a target="_blank" rel="noopener" href="https://ignitionrobotics.org/api/gazebo/5.1/triggeredpublisher.html%E3%80%82">https://ignitionrobotics.org/api/gazebo/5.1/triggeredpublisher.html。</a></p>
+<p>范例中给出以下仿真功能：一个小车进入指定区域后，一个方块落下；前者落下后，后者也落下。主要使用了以下插件：</p>
 <ol>
-<li>Configure</li>
-<li>PreUpdate</li>
-<li>OnDetachableRequest</li>
+<li>DiffDrive，差速器系统，用来控制小车；</li>
+<li>TriggeredPublisher，触发发布系统，在从一个Topic获得一个指定命令后，向另一个Topic发布一条消息；</li>
+<li>TouchPlugin，触碰触发系统，添加在触碰传感器上，与指定model碰撞后，向一个特定Topic发布一条消息；</li>
+<li>DetachableJoint，解除链接系统，从一个指定Topic获得一个指定命令后，解除两个link之间的链接（如果有的话）。</li>
 </ol>
-<h2 id="Configure"><a href="#Configure" class="headerlink" title="Configure"></a>Configure</h2><p>void DetachableJoint::Configure(const Entity &amp;_entity,<br>                                const std::shared_ptr<const sdf::Element> &amp;_sdf,<br>                                EntityComponentManager &amp;_ecm,<br>                                EventManager &amp; &#x2F;*_eventMgr*&#x2F;)<br>&#x2F;&#x2F;函数继承自模板文件中的Configure，插件挂载在_entity之下。_ecm是一个EntityComponentManager。_sdf是插件所属的sdf区块。<br>{<br>&#x2F;&#x2F;model的初始化方法为Model(gazebo::Entity _entity&#x3D;kNullEntity)，由此将_entity所指向的model赋值给this-&gt;model。<br>  this-&gt;model &#x3D; Model(_entity);<br>&#x2F;&#x2F;model.Valid是一个用于检测model是否正确指向一个entity的方法，使用_ecm作为参数。如果不存在，那么抛出一个错误。这是为了确保插件放在model内。<br>  if (!this-&gt;model.Valid(_ecm))<br>  {<br>    ignerr &lt;&lt; “DetachableJoint should be attached to a model entity. “<br>           &lt;&lt; “Failed to initialize.” &lt;&lt; std::endl;<br>    return;<br>  }<br>&#x2F;&#x2F;如果_sdf内有parent_link这个元素：<br>  if (_sdf-&gt;HasElement(“parent_link”))<br>  {<br>&#x2F;&#x2F;则使用_sdf的Get方法获取其parentLinkName属性;<br>    auto parentLinkName &#x3D; _sdf-&gt;Get<a href="std::string">std::string</a>(“parent_link”);<br>&#x2F;&#x2F;然后，使用model的LinkByName方法，找到parentLinkName所对应的Entity;<br>    this-&gt;parentLinkEntity &#x3D; this-&gt;model.LinkByName(_ecm, parentLinkName);<br>&#x2F;&#x2F;如果parentLinkName所对应的Entity是kNullEntity（也就是无）：<br>    if (kNullEntity &#x3D;&#x3D; this-&gt;parentLinkEntity)<br>    {<br>&#x2F;&#x2F;报错，parent_link这个参数的值不对（也就是名称错误），跳出程序<br>      ignerr &lt;&lt; “Link with name “ &lt;&lt; parentLinkName<br>             &lt;&lt; “ not found in model “ &lt;&lt; this-&gt;model.Name(_ecm)<br>             &lt;&lt; “. Make sure the parameter ‘parent_link’ has the “<br>             &lt;&lt; “correct value. Failed to initialize.\n”;<br>      return;<br>    }<br>  }<br>&#x2F;&#x2F;如果没有parent_link这个元素，报错，跳出程序<br>  else<br>  {<br>    ignerr &lt;&lt; “‘parent_link’ is a required parameter for DetachableJoint. “<br>              “Failed to initialize.\n”;<br>    return;<br>  }</p>
-<p>  if (_sdf-&gt;HasElement(“child_model”))<br>  {<br>    this-&gt;childModelName &#x3D; _sdf-&gt;Get<a href="std::string">std::string</a>(“child_model”);<br>  }<br>  else<br>  {<br>    ignerr &lt;&lt; “‘child_model’ is a required parameter for DetachableJoint.”<br>              “Failed to initialize.\n”;<br>    return;<br>  }<br>&#x2F;&#x2F;如果_sdf内有child_link这个元素：<br>  if (_sdf-&gt;HasElement(“child_link”))<br>  {<br>&#x2F;&#x2F;则使用_sdf的Get方法获取其ChildLinkName属性;<br>    this-&gt;childLinkName &#x3D; _sdf-&gt;Get<a href="std::string">std::string</a>(“child_link”);<br>  }<br>&#x2F;&#x2F;否则报错，跳出<br>  else<br>  {<br>    ignerr &lt;&lt; “‘child_link’ is a required parameter for DetachableJoint.”<br>              “Failed to initialize.\n”;<br>    return;<br>  }</p>
-<p>  &#x2F;&#x2F; Setup detach topic<br>&#x2F;&#x2F;设置一个Topic，不过这里只是把这个话题的名称列出来。defalutTopic名称为&#x2F;model&#x2F;model的名称&#x2F;detachable_joint&#x2F;detach<br>  std::string defaultTopic{“&#x2F;model&#x2F;“ + this-&gt;model.Name(_ecm) +<br>                           “&#x2F;detachable_joint&#x2F;detach”};<br>&#x2F;&#x2F;把这个topic赋值给this-&gt;topic<br>  this-&gt;topic &#x3D; _sdf-&gt;Get<a href="std::string">std::string</a>(“topic”, defaultTopic).first;</p>
-<p>  this-&gt;suppressChildWarning &#x3D;<br>      _sdf-&gt;Get<bool>(“suppress_child_warning”, this-&gt;suppressChildWarning)<br>          .first;<br>&#x2F;&#x2F;上面都完成后，将this-&gt;validConfig值改为true<br>  this-&gt;validConfig &#x3D; true;<br>}</p>
-<p>Configure主要是对插件是否能够正确读取参数做一检查。</p>
-<h2 id="PreUpdate"><a href="#PreUpdate" class="headerlink" title="PreUpdate"></a>PreUpdate</h2><p>&#x2F;&#x2F;PreUpdate,是在每一个模拟帧计算前执行的任务<br>void DetachableJoint::PreUpdate(<br>    const ignition::gazebo::UpdateInfo &amp; &#x2F;*_info*&#x2F;,<br>    ignition::gazebo::EntityComponentManager &amp;_ecm)<br>{<br>  IGN_PROFILE(“DetachableJoint::PreUpdate”);<br>&#x2F;&#x2F;this-&gt;validConfig，如果Configure函数顺利执行的话值为true；initialized在一开始的状态为默认的false，如果下面这些nt，变成一个特定函数正常执行，则会变为true，也就是不会在执行这些语句，后面再看<br>  if (this-&gt;validConfig &amp;&amp; !this-&gt;initialized)<br>  {<br>    &#x2F;&#x2F; Look for the child model and link<br>&#x2F;&#x2F;先初始化一个Entity对象，默认kNullEntity也就是空对象<br>    Entity modelEntity{kNullEntity};<br>&#x2F;&#x2F;__model__也就是“this”的model属性，如果这个model就是Configure函数中初始化的childModelName（这种情况下，意味着你把插件放在了这个model里）：<br>    if (“__model__“ &#x3D;&#x3D; this-&gt;childModelName)<br>    {<br>&#x2F;&#x2F;modelEntity的值改为this-&gt;model.Entity()<br>      modelEntity &#x3D; this-&gt;model.Entity();<br>    }<br>    else<br>    {<br>&#x2F;&#x2F;否则的话，使用_cem的EntityByComponents寻找符合条件的Entity：类型为Model，名称为this-&gt;childModelName。这个时候意味着插件可能放在了model以外的地方：<br>      modelEntity &#x3D; _ecm.EntityByComponents(<br>          components::Model(), components::Name(this-&gt;childModelName));<br>    }<br>&#x2F;&#x2F;如果经过上面的操作，找到了对应的modelEntity（不为空）：<br>    if (kNullEntity !&#x3D; modelEntity)<br>    {<br>&#x2F;&#x2F;还是用_ecm.EntityByComponents找对应的Entity，这次的寻找筛选器为：类型为Link，ParentEntity为modelEntity，Name为childLinkName的对象。其实就是找到childLinkEntity对应的实体。<br>      this-&gt;childLinkEntity &#x3D; _ecm.EntityByComponents(<br>          components::Link(), components::ParentEntity(modelEntity),<br>          components::Name(this-&gt;childLinkName));<br>&#x2F;&#x2F;如果经过上面的操作，找到了对应的childLinkEntity：<br>      if (kNullEntity !&#x3D; this-&gt;childLinkEntity)<br>      {<br>        &#x2F;&#x2F; Attach the models<br>        &#x2F;&#x2F; We do this by creating a detachable joint entity.<br>&#x2F;&#x2F;用_ecm.CreateEntity方法创建一个实体。此时我们还没有指定这是一个什么实体，不过先赋值给this-&gt;detachableJointEntity<br>        this-&gt;detachableJointEntity &#x3D; _ecm.CreateEntity();<br>&#x2F;&#x2F;然后具体指定实体类型。使用_ecm.CreateComponent方法，指定为components::DetachableJoint。因为DetachableJoint这个特殊的Joint已经被加入ignition library了，所以可以直接指定。目前仅支持fixed类型的Joint。<br>        _ecm.CreateComponent(<br>            this-&gt;detachableJointEntity,<br>            components::DetachableJoint({this-&gt;parentLinkEntity,<br>                                         this-&gt;childLinkEntity, “fixed”}));<br>&#x2F;&#x2F;订阅topic，绑定OnDetachRequest函数<br>        this-&gt;node.Subscribe(<br>            this-&gt;topic, &amp;DetachableJoint::OnDetachRequest, this);<br>&#x2F;&#x2F;订阅成功后打印一条消息，然后把initialized状态改为true，上面的寻找childLinkEngity等操作不会再执行<br>        ignmsg &lt;&lt; “DetachableJoint subscribing to messages on “<br>               &lt;&lt; “[“ &lt;&lt; this-&gt;topic &lt;&lt; “]“ &lt;&lt; std::endl;</p>
-<pre><code>    this-&gt;initialized = true;
-  &#125;
-</code></pre>
-<p>&#x2F;&#x2F;如果找不到的话，报错<br>      else<br>      {<br>        ignwarn &lt;&lt; “Child Link “ &lt;&lt; this-&gt;childLinkName<br>                &lt;&lt; “ could not be found.\n”;<br>      }<br>    }<br>    else if (!this-&gt;suppressChildWarning)<br>    {<br>      ignwarn &lt;&lt; “Child Model “ &lt;&lt; this-&gt;childModelName<br>              &lt;&lt; “ could not be found.\n”;<br>    }<br>  }</p>
-<p>&#x2F;&#x2F;initialized变为true后，每次PreUpdate时执行下面的语句<br>  if (this-&gt;initialized)<br>  {<br>&#x2F;&#x2F;如果收到了detachRequested为true的消息，并且detachableJointEntity存在的话：<br>    if (this-&gt;detachRequested &amp;&amp; (kNullEntity !&#x3D; this-&gt;detachableJointEntity))<br>    {<br>      &#x2F;&#x2F; Detach the models<br>      igndbg &lt;&lt; “Removing entity: “ &lt;&lt; this-&gt;detachableJointEntity &lt;&lt; std::endl;<br>&#x2F;&#x2F;使用_ecm.RequestRemoveENtity方法移除一个Entity；<br>      _ecm.RequestRemoveEntity(this-&gt;detachableJointEntity);<br>&#x2F;&#x2F;将detachableJointEntity设为空实体，将detachRequested重设为false。<br>      this-&gt;detachableJointEntity &#x3D; kNullEntity;<br>      this-&gt;detachRequested &#x3D; false;<br>    }<br>  }<br>}</p>
-<p>PreUpdate里完成了对Entity的搜索、创建DetachableJoint、订阅Topic、删除DetachableJoint四大工作。主要运用了_ecm的几个方法：</p>
-<ol>
-<li>EntityByComponents，用来寻找符合条件的Entity</li>
-<li>CreateEntity，创建一个Entity</li>
-<li>CreateComponent给Entity创建一些Component，变成一个特定的Entity</li>
-<li>RequestRemoveEntity删除Entity</li>
-</ol>
-<h2 id="OnDetachRequests"><a href="#OnDetachRequests" class="headerlink" title="OnDetachRequests"></a>OnDetachRequests</h2><p>void DetachableJoint::OnDetachRequest(const msgs::Empty &amp;)<br>{<br>  this-&gt;detachRequested &#x3D; true;<br>}</p>
-<p>这个函数就很简单了，从参数可以看出，它接受一个Empty类型的msgs，然后就把this-&gt;detachRequested的值改为true。</p>
+<p>来看看整个SDF的代码：</p>
+<?xml version="1.0" ?>
+<!--
+Ignition Gazebo Trigger Publisher demo
 
+Send the command:
+  ign topic -t "/start" -m ignition.msgs.Empty -p " "
+
+The vehicle should start moving while the two boxes remain floating. When the
+vehicle crosses the line on the ground, the first box should start falling.
+Five simulation seconds after the box hits the ground, the second box should
+start falling.
+
+-->
+<sdf version="1.6">
+  <world name="triggered\_publisher">
+
+<pre><code>&lt;physics name=&quot;1ms&quot; type=&quot;ignored&quot;&gt;
+  &lt;max\_step\_size&gt;0.001&lt;/max\_step\_size&gt;
+  &lt;real\_time\_factor&gt;1.0&lt;/real\_time\_factor&gt;
+&lt;/physics&gt;
+&lt;plugin
+  filename=&quot;ignition-gazebo-physics-system&quot;
+  name=&quot;ignition::gazebo::systems::Physics&quot;&gt;
+&lt;/plugin&gt;
+&lt;plugin
+  filename=&quot;ignition-gazebo-contact-system&quot;
+  name=&quot;ignition::gazebo::systems::Contact&quot;&gt;
+&lt;/plugin&gt;
+&lt;plugin
+  filename=&quot;ignition-gazebo-user-commands-system&quot;
+  name=&quot;ignition::gazebo::systems::UserCommands&quot;&gt;
+&lt;/plugin&gt;
+&lt;plugin
+  filename=&quot;ignition-gazebo-scene-broadcaster-system&quot;
+  name=&quot;ignition::gazebo::systems::SceneBroadcaster&quot;&gt;
+&lt;/plugin&gt;
+&lt;plugin
+  filename=&quot;ignition-gazebo-altimeter-system&quot;
+  name=&quot;ignition::gazebo::systems::Altimeter&quot;&gt;
+&lt;/plugin&gt;
+
+&lt;gui fullscreen=&quot;0&quot;&gt;
+
+  &lt;!-- 3D scene --&gt;
+  &lt;plugin filename=&quot;GzScene3D&quot; name=&quot;3D View&quot;&gt;
+    &lt;ignition-gui&gt;
+      &lt;title&gt;3D View&lt;/title&gt;
+      &lt;property type=&quot;bool&quot; key=&quot;showTitleBar&quot;&gt;false&lt;/property&gt;
+      &lt;property type=&quot;string&quot; key=&quot;state&quot;&gt;docked&lt;/property&gt;
+    &lt;/ignition-gui&gt;
+
+    &lt;engine&gt;ogre2&lt;/engine&gt;
+    &lt;scene&gt;scene&lt;/scene&gt;
+    &lt;ambient\_light&gt;0.4 0.4 0.4&lt;/ambient\_light&gt;
+    &lt;background\_color&gt;0.8 0.8 0.8&lt;/background\_color&gt;
+    &lt;camera\_pose&gt;3 -9 9 0 0.6 1.3&lt;/camera\_pose&gt;
+  &lt;/plugin&gt;
+
+  &lt;!-- World control --&gt;
+  &lt;plugin filename=&quot;WorldControl&quot; name=&quot;World control&quot;&gt;
+    &lt;ignition-gui&gt;
+      &lt;title&gt;World control&lt;/title&gt;
+      &lt;property type=&quot;bool&quot; key=&quot;showTitleBar&quot;&gt;false&lt;/property&gt;
+      &lt;property type=&quot;bool&quot; key=&quot;resizable&quot;&gt;false&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;height&quot;&gt;72&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;width&quot;&gt;121&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;z&quot;&gt;1&lt;/property&gt;
+
+      &lt;property type=&quot;string&quot; key=&quot;state&quot;&gt;floating&lt;/property&gt;
+      &lt;anchors target=&quot;3D View&quot;&gt;
+        &lt;line own=&quot;left&quot; target=&quot;left&quot;/&gt;
+        &lt;line own=&quot;bottom&quot; target=&quot;bottom&quot;/&gt;
+      &lt;/anchors&gt;
+    &lt;/ignition-gui&gt;
+
+    &lt;play\_pause&gt;true&lt;/play\_pause&gt;
+    &lt;step&gt;true&lt;/step&gt;
+    &lt;start\_paused&gt;true&lt;/start\_paused&gt;
+
+  &lt;/plugin&gt;
+
+  &lt;!-- World statistics --&gt;
+  &lt;plugin filename=&quot;WorldStats&quot; name=&quot;World stats&quot;&gt;
+    &lt;ignition-gui&gt;
+      &lt;title&gt;World stats&lt;/title&gt;
+      &lt;property type=&quot;bool&quot; key=&quot;showTitleBar&quot;&gt;false&lt;/property&gt;
+      &lt;property type=&quot;bool&quot; key=&quot;resizable&quot;&gt;false&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;height&quot;&gt;110&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;width&quot;&gt;290&lt;/property&gt;
+      &lt;property type=&quot;double&quot; key=&quot;z&quot;&gt;1&lt;/property&gt;
+
+      &lt;property type=&quot;string&quot; key=&quot;state&quot;&gt;floating&lt;/property&gt;
+      &lt;anchors target=&quot;3D View&quot;&gt;
+        &lt;line own=&quot;right&quot; target=&quot;right&quot;/&gt;
+        &lt;line own=&quot;bottom&quot; target=&quot;bottom&quot;/&gt;
+      &lt;/anchors&gt;
+    &lt;/ignition-gui&gt;
+
+    &lt;sim\_time&gt;true&lt;/sim\_time&gt;
+    &lt;real\_time&gt;true&lt;/real\_time&gt;
+    &lt;real\_time\_factor&gt;true&lt;/real\_time\_factor&gt;
+    &lt;iterations&gt;true&lt;/iterations&gt;
+
+  &lt;/plugin&gt;
+
+&lt;/gui&gt;
+
+&lt;light type=&quot;directional&quot; name=&quot;sun&quot;&gt;
+  &lt;cast\_shadows&gt;true&lt;/cast\_shadows&gt;
+  &lt;pose&gt;0 0 10 0 0 0&lt;/pose&gt;
+  &lt;diffuse&gt;1 1 1 1&lt;/diffuse&gt;
+  &lt;specular&gt;0.5 0.5 0.5 1&lt;/specular&gt;
+  &lt;attenuation&gt;
+    &lt;range&gt;1000&lt;/range&gt;
+    &lt;constant&gt;0.9&lt;/constant&gt;
+    &lt;linear&gt;0.01&lt;/linear&gt;
+    &lt;quadratic&gt;0.001&lt;/quadratic&gt;
+  &lt;/attenuation&gt;
+  &lt;direction&gt;0.05 -0.1 -0.9&lt;/direction&gt;
+&lt;/light&gt;
+
+&lt;model name=&quot;ground\_plane&quot;&gt;
+ ......
+&lt;/model&gt;
+
+&lt;model name=&#39;vehicle\_blue&#39;&gt;
+ ......
+  &lt;plugin
+    filename=&quot;ignition-gazebo-diff-drive-system&quot;
+    name=&quot;ignition::gazebo::systems::DiffDrive&quot;&gt;
+    &lt;left\_joint&gt;front\_left\_wheel\_joint&lt;/left\_joint&gt;
+    &lt;left\_joint&gt;rear\_left\_wheel\_joint&lt;/left\_joint&gt;
+    &lt;right\_joint&gt;front\_right\_wheel\_joint&lt;/right\_joint&gt;
+    &lt;right\_joint&gt;rear\_right\_wheel\_joint&lt;/right\_joint&gt;
+    &lt;wheel\_separation&gt;1.25&lt;/wheel\_separation&gt;
+    &lt;wheel\_radius&gt;0.3&lt;/wheel\_radius&gt;
+    &lt;topic&gt;cmd\_vel&lt;/topic&gt;
+  &lt;/plugin&gt;
+&lt;/model&gt;
+
+&lt;model name=&quot;trigger&quot;&gt;
+  ......
+  &lt;plugin
+    filename=&quot;ignition-gazebo-touchplugin-system&quot;
+    name=&quot;ignition::gazebo::systems::TouchPlugin&quot;&gt;
+    &lt;target&gt;vehicle\_blue&lt;/target&gt;
+    &lt;namespace&gt;trigger&lt;/namespace&gt;
+    &lt;time&gt;0.001&lt;/time&gt;
+    &lt;enabled&gt;true&lt;/enabled&gt;
+  &lt;/plugin&gt;
+  &lt;plugin filename=&quot;ignition-gazebo-detachable-joint-system&quot; name=&quot;ignition::gazebo::systems::DetachableJoint&quot;&gt;
+    &lt;parent\_link&gt;body&lt;/parent\_link&gt;
+    &lt;child\_model&gt;box1&lt;/child\_model&gt;
+    &lt;child\_link&gt;box\_body&lt;/child\_link&gt;
+    &lt;topic&gt;/box1/detach&lt;/topic&gt;
+  &lt;/plugin&gt;
+  &lt;plugin filename=&quot;ignition-gazebo-detachable-joint-system&quot; name=&quot;ignition::gazebo::systems::DetachableJoint&quot;&gt;
+    &lt;parent\_link&gt;body&lt;/parent\_link&gt;
+    &lt;child\_model&gt;box2&lt;/child\_model&gt;
+    &lt;child\_link&gt;box\_body&lt;/child\_link&gt;
+    &lt;topic&gt;/box2/detach&lt;/topic&gt;
+  &lt;/plugin&gt;
+&lt;/model&gt;
+
+&lt;model name=&quot;box1&quot;&gt;
+  ......
+    &lt;sensor name=&quot;altimeter\_sensor&quot; type=&quot;altimeter&quot;&gt;
+      &lt;topic&gt;/altimeter&lt;/topic&gt;
+      &lt;always\_on&gt;1&lt;/always\_on&gt;
+      &lt;update\_rate&gt;30&lt;/update\_rate&gt;
+      &lt;visualize&gt;true&lt;/visualize&gt;
+    &lt;/sensor&gt;
+  &lt;/link&gt;
+&lt;/model&gt;
+
+&lt;model name=&quot;box2&quot;&gt;
+  ......
+&lt;/model&gt;
+
+&lt;plugin filename=&quot;ignition-gazebo-triggered-publisher-system&quot; name=&quot;ignition::gazebo::systems::TriggeredPublisher&quot;&gt;
+  &lt;input type=&quot;ignition.msgs.Empty&quot; topic=&quot;/start&quot;/&gt;
+  &lt;output type=&quot;ignition.msgs.Twist&quot; topic=&quot;/cmd\_vel&quot;&gt;
+      linear: &#123;x: 3&#125;
+  &lt;/output&gt;
+&lt;/plugin&gt;
+&lt;plugin filename=&quot;ignition-gazebo-triggered-publisher-system&quot; name=&quot;ignition::gazebo::systems::TriggeredPublisher&quot;&gt;
+  &lt;input type=&quot;ignition.msgs.Boolean&quot; topic=&quot;/trigger/touched&quot;&gt;
+    &lt;match&gt;data: true&lt;/match&gt;
+  &lt;/input&gt;
+  &lt;output type=&quot;ignition.msgs.Empty&quot; topic=&quot;/box1/detach&quot;/&gt;
+&lt;/plugin&gt;
+&lt;plugin filename=&quot;ignition-gazebo-triggered-publisher-system&quot; name=&quot;ignition::gazebo::systems::TriggeredPublisher&quot;&gt;
+  &lt;input type=&quot;ignition.msgs.Altimeter&quot; topic=&quot;/altimeter&quot;&gt;
+    &lt;match field=&quot;vertical\_position&quot; tol=&quot;0.2&quot;&gt;-7.5&lt;/match&gt;
+  &lt;/input&gt;
+  &lt;delay\_ms&gt;5000&lt;/delay\_ms&gt;
+  &lt;output type=&quot;ignition.msgs.Empty&quot; topic=&quot;/box2/detach&quot;/&gt;
+&lt;/plugin&gt;
+</code></pre>
+</world>
+</sdf>
+
+<p>我们需要关注的是：</p>
+<ol>
+<li>vehicle_blue下的DiffDrive插件。使用DiffDrive插件时，需要指定左右轮、左右轮间距、轮半径。该示例中，还修改了此插件subscribe的Topic，变为cmd_vel。向该话题发送消息则可以控制插件。</li>
+<li>trigger的touchplugin插件。使用时需要指定碰撞对象和namespace，示例中会在vehicle_blue碰撞时，向<strong>trigger&#x2F;touch</strong>发送一条消息。</li>
+<li>trigger的detachablejoint插件。使用时需要制定父link、子link以及子link所属的模型。同时还要制定subscribe的topic。示例中topic为&#x2F;box1&#x2F;detach，以及&#x2F;box2&#x2F;detach。</li>
+<li>放在world下的几个插件。Physics提供物理仿真功能。Usercommand提供命令行指令功能。Contact提供对contact sensor的支持。Altimeter提供对altimeter sensor的支持。</li>
+<li>TriggeredPubliser插件。TriggerPublisher需要指定input toipic，也就是subscribe的topic；output topic，也就是要publish的topic；match，也就是指定的触发消息；还可以指定delay，也就是收到触发消息多少时间后再publish消息。示例中一共有三个triggerpublisher：<ol>
+<li>input: &#x2F;start-&gt;empty; output:&#x2F;cmd_vel-&gt;linear: {x: 3}</li>
+<li>input:&#x2F;trigger&#x2F;touched-&gt;data: true; output:&#x2F;box1&#x2F;detach-&gt;empty</li>
+<li>input:&#x2F;altimeter-&gt;-7.5(field&#x3D;”vertical_position” tol&#x3D;”0.2”); output:&#x2F;box2&#x2F;detach-&gt;empty</li>
+</ol>
+</li>
+</ol>
+<p>所以其实可以把triggerpublisher当做一个if-do的工具。这三个triggerpublisher分别执行了：</p>
+<ol>
+<li>如果在&#x2F;start收到empty命令，则控制小车的速度为3；</li>
+<li>如果&#x2F;trigger&#x2F;touched收到true消息，则向&#x2F;box1&#x2F;detach发送empty命令；</li>
+<li>如果&#x2F;altimeter中数值达到-7.5，则向&#x2F;box2&#x2F;detach发送empty命令.</li>
+</ol>
+<p>结合其他插件的内键功能，则完成了示例文件中的功能。使用</p>
+<p>ign gazebo triggered_publisher.sdf</p>
+<p>开启模拟。新开一个终端，输入：</p>
+<p>ign topic -t “&#x2F;start” -m ignition.msgs.Empty -p “ “</p>
+<p>则小车开始运动。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/12/ignition-gazebo%EF%BC%881%EF%BC%89%E6%8F%92%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/12/ignition-gazebo%EF%BC%881%EF%BC%89%E6%8F%92%E4%BB%B6/" class="post-title-link" itemprop="url">Ignition-Gazebo（1）插件</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-12 11:35:49" itemprop="dateCreated datePublished" datetime="2021-07-12T11:35:49+08:00">2021-07-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Ignition Gazebo的插件和Gazebo基本相同。不同点在于，在Gazebo中区分为Actor、Model、World等的插件类型，统一被归为SystemPlugin。除此之外，支持RenderPlugin，也就是在用户端的界面上可以自行增加插件。</p>
+<h2 id="System-Plugin"><a href="#System-Plugin" class="headerlink" title="System Plugin"></a>System Plugin</h2><p>首先编写一个System Plugin模板，在里面定义Plugin的各种方法。</p>
+<p>#include &lt;ignition&#x2F;gazebo&#x2F;System.hh&gt;<br>namespace sample_system<br>{<br>  class SampleSystem:<br>    &#x2F;&#x2F; This class is a system.<br>    public ignition::gazebo::System,<br>    &#x2F;&#x2F; This class also implements the ISystemPostUpdate interface.<br>    public ignition::gazebo::ISystemPostUpdate</p>
+<p>首先要确定Plugin要从哪些父类中继承。除了system是必须要继承的以外，还有四种类型可选：</p>
+<ol>
+<li>ISystemConfigure，载入PLugin时执行一些任务，可以用来读SDF等；</li>
+<li>ISystemPreUpdate，在每一个模拟帧之前执行一些任务；</li>
+<li>ISystemUpdate，在每一个模拟帧内执行任务，这是物理仿真的核心；</li>
+<li>ISystemPostUpdate，在每一个模拟帧之后捕捉所有指定数据，这是交互-调整从而进行控制的核心。</li>
+</ol>
+<p>可以看到上面这个插件只继承PostUpdate。然后写入方法：</p>
+<p>  {<br>    public: SampleSystem();<br>    public: ~SampleSystem() override;<br>    public: void PostUpdate(const ignition::gazebo::UpdateInfo &amp;_info,<br>                const ignition::gazebo::EntityComponentManager &amp;_ecm) override;<br>  };</p>
+<p>如果继承多个的，则像下面这样写：</p>
+<p>  class SampleSystem2:<br>    &#x2F;&#x2F; This class is a system.<br>    public ignition::gazebo::System,<br>    &#x2F;&#x2F; This class also implements the ISystemPreUpdate, ISystemUpdate,<br>    &#x2F;&#x2F; and ISystemPostUpdate interfaces.<br>    public ignition::gazebo::ISystemPreUpdate,<br>    public ignition::gazebo::ISystemUpdate,<br>    public ignition::gazebo::ISystemPostUpdate<br>  {<br>    public: SampleSystem2();<br>    public: ~SampleSystem2() override;<br>    public: void PreUpdate(const ignition::gazebo::UpdateInfo &amp;_info,<br>                ignition::gazebo::EntityComponentManager &amp;_ecm) override;<br>    public: void Update(const ignition::gazebo::UpdateInfo &amp;_info,<br>                ignition::gazebo::EntityComponentManager &amp;_ecm) override;<br>    public: void PostUpdate(const ignition::gazebo::UpdateInfo &amp;_info,<br>                const ignition::gazebo::EntityComponentManager &amp;_ecm) override;<br>  };<br>}</p>
+<p>把上面三段复制到一起完成SampleSystem.hh文件。</p>
+<p>在cpp原文件中，如果Plugin只继承一种类型，则include Register.hh这个模板：</p>
+<p>#include “SampleSystem.hh”<br>#include &lt;ignition&#x2F;plugin&#x2F;Register.hh&gt;<br>&#x2F;&#x2F; Include a line in your source file for each interface implemented.<br>IGNITION_ADD_PLUGIN(<br>    sample_system::SampleSystem,<br>    ignition::gazebo::System,<br>    sample_system::SampleSystem::ISystemPostUpdate)</p>
+<p>using namespace sample_system;<br>SampleSystem::SampleSystem()<br>{<br>}<br>SampleSystem::~SampleSystem()<br>{<br>}<br>void SampleSystem::PostUpdate(const ignition::gazebo::UpdateInfo &amp;_info,<br>    const ignition::gazebo::EntityComponentManager &amp;_ecm)<br>{<br>  ignmsg &lt;&lt; “SampleSystem::PostUpdate” &lt;&lt; std::endl;<br>}</p>
+<p>使用IGNITION_ADD_PLUGIN来注册plugin，并且编写函数内容。上面这个插件在每次模拟帧之后打印一个语句。</p>
+<p>CMakeLists文件如下：</p>
+<p>cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)</p>
+<p>find_package(ignition-cmake2 REQUIRED)</p>
+<p>project(SampleSystem)</p>
+<p>find_package(ignition-plugin1 REQUIRED COMPONENTS register)<br>set(CMAKE_PREFIX_PATH)<br>set(IGN_PLUGIN_VER ${ignition-plugin1_VERSION_MAJOR})</p>
+<p>find_package(ignition-gazebo6 REQUIRED)<br>add_library(SampleSystem SHARED SampleSystem.cpp SampleSystem2.cpp)<br>set_property(TARGET SampleSystem PROPERTY CXX_STANDARD 17)<br>target_link_libraries(SampleSystem<br>  PRIVATE ignition-plugin${IGN_PLUGIN_VER}::ignition-plugin${IGN_PLUGIN_VER}<br>  PRIVATE ignition-gazebo6::ignition-gazebo6)</p>
+<p>在运行前，使用命令export IGN_GAZEBO_SYSTEM_PLUGIN_PATH&#x3D;<code>pwd</code>&#x2F;build来将插件加入环境变量。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/12/%E6%88%91%E7%9A%84ubuntu%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/12/%E6%88%91%E7%9A%84ubuntu%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">我的Ubuntu操作系统</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-12 11:12:02" itemprop="dateCreated datePublished" datetime="2021-07-12T11:12:02+08:00">2021-07-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/thought/" itemprop="url" rel="index"><span itemprop="name">thought</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/thought/%E6%96%B0%E9%B2%9C%E4%BA%8B/" itemprop="url" rel="index"><span itemprop="name">新鲜事</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>先上图：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/07/1.png"></p>
+<p>这不比windows好看？</p>
+<p>原生Linux软件：</p>
+<ol>
+<li>网易云音乐</li>
+<li>搜狗拼音</li>
+<li>VS Code</li>
+<li>Blender</li>
+<li>Matlab</li>
+<li>Steam</li>
+</ol>
+<p>替代软件：</p>
+<ol>
+<li>GNU Imager - Photoshop</li>
+<li>FreeCAD - Solidworks</li>
+<li>Libreoffice - MS Office</li>
+<li>Zotero - EndNote</li>
+<li>Wonderwall - wallpaper engine</li>
+</ol>
+<p>在wine中运行的Windows软件：</p>
+<ol>
+<li>deepin-wine+微信</li>
+<li>WineGame+Battlenet（效果一般）</li>
+<li>Proton+几乎所有Steam游戏</li>
+</ol>
+<p>无法替代的Windows软件：</p>
+<ol>
+<li>AutoDesk系列</li>
+</ol>
+<p>Gnome插件：</p>
+<ol>
+<li>Dash to dock</li>
+<li>Desktop icons</li>
+<li>Simple net speed</li>
+<li>Sound input chooser</li>
+<li>Topicon Plus</li>
+<li>Transparent top bar</li>
+<li>Application menu</li>
+<li>User thems</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/10/ignition-math%EF%BC%88%E4%B8%8A%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/10/ignition-math%EF%BC%88%E4%B8%8A%EF%BC%89/" class="post-title-link" itemprop="url">Ignition-math（上）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-10 18:37:17" itemprop="dateCreated datePublished" datetime="2021-07-10T18:37:17+08:00">2021-07-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>介绍Ignition Math Library的类使用方法。这一章里，主要介绍几何体与向量、矩阵，包括立体几何体、平面几何体，以及向量、矩阵的使用。</p>
+<h1 id="立体几何体"><a href="#立体几何体" class="headerlink" title="立体几何体"></a>立体几何体</h1><h2 id="AxisAlignedBox"><a href="#AxisAlignedBox" class="headerlink" title="AxisAlignedBox"></a>AxisAlignedBox</h2><p>AxisAlignedBox用于生成一个立方体。</p>
+<h3 id="声明方式"><a href="#声明方式" class="headerlink" title="声明方式"></a>声明方式</h3><p>ignition::math::AxisAlignedBox abox &#x3D; ignition::math::AxisAlignedBox(0,0,0,1,1,1);</p>
+<p>0，0，0和1，1，1是立方体的两个对角。</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>AxisAlignedBox.Center() 返回立方体的中心点坐标</li>
+<li>AxisAlignedBox.Contains() 返回一个bool量，是否有一点存在于立方体区域中</li>
+<li>AxisAlignedBox.IntersectCheck() 返回一个bool量，是否有射线穿过立方体区域，可以设定最小值“安全区域”，进入距离立方体安全区域的范围内则返回1. 另，参阅IntersectDist方法。</li>
+<li>AxisAlignedBox.Intersects() 返回一个bool量，是否两个立方体存在重叠。</li>
+<li>AxisAlignedBox.Merge() void函数，将两个立方体融合，分别取两者MIn中的最小值和Max中的最大值。</li>
+<li>Max、Min、Size、Volume、XLength、YLength、ZLength，各类属性</li>
+</ol>
+<h2 id="Box"><a href="#Box" class="headerlink" title="Box"></a>Box</h2><h3 id="声明方式-1"><a href="#声明方式-1" class="headerlink" title="声明方式"></a>声明方式</h3><p>ignition::math::Box box &#x3D; ignition::math::Box(3,4,5)</p>
+<p>声明一个长方体，三个数值分别为长宽高。</p>
+<h3 id="方法-1"><a href="#方法-1" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>Box.SetDensityFromMass() 基于指定质量设定密度，如果成功设置，返回bool值1.</li>
+<li>Box.DensityFromMass()基于指定质量计算密度，返回密度值.</li>
+<li>Box.SetSize() void函数，重设长宽高.</li>
+<li>Size，Volume，各类属性</li>
+</ol>
+<h2 id="Capsule"><a href="#Capsule" class="headerlink" title="Capsule"></a>Capsule</h2><h3 id="声明方式-2"><a href="#声明方式-2" class="headerlink" title="声明方式"></a>声明方式</h3><p>声明一个胶囊体。</p>
+<p>ignition::math::Capsule cap &#x3D; ignition::math::Capsule(5, 2)</p>
+<p>5为胶囊提的长度，2为半径。</p>
+<h3 id="方法-2"><a href="#方法-2" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>SetDensityFromMass，DensityFromMass，与box类似；</li>
+<li>Length, Radius, Volume各类属性</li>
+<li>SetLength，SetRadius，重设属性</li>
+</ol>
+<h2 id="Sphere"><a href="#Sphere" class="headerlink" title="Sphere"></a>Sphere</h2><h3 id="声明方式-3"><a href="#声明方式-3" class="headerlink" title="声明方式"></a>声明方式</h3><p>声明一个球几何体。</p>
+<p>ignition::math::Sphere sph &#x3D; ignition::math::Sphere(5)</p>
+<h3 id="方法-3"><a href="#方法-3" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>SetDensityFromMass，DensityFromMass，与box类似；</li>
+<li>Radius, Volume各类属性</li>
+<li>SetRadius，重设属性</li>
+</ol>
+<h2 id="Cylinder"><a href="#Cylinder" class="headerlink" title="Cylinder"></a>Cylinder</h2><h3 id="声明方式-4"><a href="#声明方式-4" class="headerlink" title="声明方式"></a>声明方式</h3><p>声明一个圆柱体几何体。</p>
+<p>ignition::math::Cylinder cyli &#x3D; ignition::math::Cylinder(5, 2)</p>
+<p>5为圆柱体的长度，2为半径。</p>
+<h3 id="方法-4"><a href="#方法-4" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>SetDensityFromMass，DensityFromMass，与box类似；</li>
+<li>Length, Radius, Volume各类属性</li>
+<li>SetLength，SetRadius，重设属性</li>
+</ol>
+<h2 id="Ellipsoid"><a href="#Ellipsoid" class="headerlink" title="Ellipsoid"></a>Ellipsoid</h2><h3 id="声明方式-5"><a href="#声明方式-5" class="headerlink" title="声明方式"></a>声明方式</h3><p>声明一个椭圆体。</p>
+<p>ignition::math::Ellipsoid ellip &#x3D; ignition::math::Ellipsoid(ignition::math::Vector3(3,4,5))</p>
+<p>3,4,5分别为xyz三轴的半径。需要嵌套在一个Vector3类中使用。</p>
+<h3 id="方法-5"><a href="#方法-5" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>SetDensityFromMass，DensityFromMass，与box类似；</li>
+<li>Radii, Volume各类属性</li>
+<li>SetRadii，重设属性</li>
+</ol>
+<h1 id="平面几何"><a href="#平面几何" class="headerlink" title="平面几何"></a>平面几何</h1><h2 id="Angle"><a href="#Angle" class="headerlink" title="Angle"></a>Angle</h2><p>Angle用于表达角度。</p>
+<h3 id="声明方式-6"><a href="#声明方式-6" class="headerlink" title="声明方式"></a>声明方式</h3><p>ignition::math::Angle a;</p>
+<p>默认角度值为0，以弧度表示。</p>
+<h3 id="静态属性"><a href="#静态属性" class="headerlink" title="静态属性"></a>静态属性</h3><ol>
+<li>ignition::math::Angle::HalfPi 一个值为pi&#x2F;2的Angle对象，下同。</li>
+<li>ignition::math::Angle::Pi</li>
+<li>ignition::math::Angle::TwoPi</li>
+<li>ignition::math::Angle::Zero</li>
+</ol>
+<h3 id="方法-6"><a href="#方法-6" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>Angle.Degree() 返回角度的角度值；</li>
+<li>Angle.Normalized() 将超出180°的角度归化到-180°到180°的范围内；</li>
+<li>Angle.SetRadian() 修改角度值；</li>
+</ol>
+<h2 id="Line2"><a href="#Line2" class="headerlink" title="Line2"></a>Line2</h2><p>一条二维平面上的直线，用两点定义。</p>
+<h3 id="声明方式-7"><a href="#声明方式-7" class="headerlink" title="声明方式"></a>声明方式</h3><p>ignition::math::Line2 line &#x3D; ignition::math::Line2(0,0,1,1);</p>
+<h3 id="方法-7"><a href="#方法-7" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>CrossProduct，返回线与线或点的向量积，返回double类型的数值。</li>
+<li>Collinear, 判断线和线或点是否贡献。这个方法有bug，因为它使用CrossProduct返回的double数值与0比较，会发生对象类型与函数预设不同的错误。</li>
+<li>Intersect，判断两条线是否交叉，返回布尔值。</li>
+<li>OnSegment，判断点是否在线段上，返回布尔值。这个方法也有2中的bug。</li>
+<li>Parallel，判断线是否平行，返回布尔值。也有2bug。</li>
+<li>Set，重设线。</li>
+<li>Slope，返回斜度。</li>
+<li>Within，判断一个点是否在线段所属的长方形内，返回布尔值。</li>
+</ol>
+<h2 id="Line3"><a href="#Line3" class="headerlink" title="Line3"></a>Line3</h2><p>三维空间里的线。</p>
+<h3 id="声明方式-8"><a href="#声明方式-8" class="headerlink" title="声明方式"></a>声明方式</h3><p>Line3 line1 &#x3D; Line3(Vector3(0,0,0),Vector3(2,2,2));</p>
+<h3 id="方法-8"><a href="#方法-8" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>Coplanar，判断两条线是否共面，返回布尔值。</li>
+<li>Direction，返回线的方向（移动到原点后另一端的坐标），返回Vector3。</li>
+<li>Distance，参数为1.需要比较的另一条线；2.需要寻找的最短的线；3.允许误差。如果能够找到，返回True，否则返回False。</li>
+<li>其他方法和Line2类似。</li>
+</ol>
+<h2 id="Plane"><a href="#Plane" class="headerlink" title="Plane"></a>Plane</h2><p>平面。</p>
+<h3 id="声明方式-9"><a href="#声明方式-9" class="headerlink" title="声明方式"></a>声明方式</h3><ol>
+<li>Plane plane &#x3D; Plane(Vector3(1,1,1), Vector2(5,5),1)，(1,1,1)为法线，5为平面大小，1为平面偏移量。这样生成的平面面积是有限的。</li>
+<li>Plane plane &#x3D; Plane(Vector3(1,1,1)) 此时生成的平面是无限大小的。</li>
+</ol>
+<h3 id="方法-9"><a href="#方法-9" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>Distance，返回一个Vector3点距离平面的位置。</li>
+<li>Side，返回一个Vector3点或者AlignAxisBox在平面的哪一侧，返回类型为PlaneSide。</li>
+<li>Offset, Size，偏移值、尺寸等属性。</li>
+</ol>
+<h1 id="向量与矩阵"><a href="#向量与矩阵" class="headerlink" title="向量与矩阵"></a>向量与矩阵</h1><h3 id="Vector2"><a href="#Vector2" class="headerlink" title="Vector2"></a>Vector2</h3><p>一个二维向量。二维向量可以用在平面移动上。</p>
+<h3 id="声明方法"><a href="#声明方法" class="headerlink" title="声明方法"></a>声明方法</h3><p>Vector2 vec &#x3D; Vector2<int>(2,1); 默认类型为int。</p>
+<h3 id="方法-10"><a href="#方法-10" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>Abs，返回绝对值；</li>
+<li>AbsDot，返回绝对值的向量积；</li>
+<li>Dot，返回向量积；</li>
+<li>Distance，返回两个向量之间的距离；</li>
+<li>Equal，判断两个向量是否相等（在误差范围内）；</li>
+<li>Normalized，返回归一化后的向量值；</li>
+<li>Normalize，void函数，归一化向量；</li>
+<li>Correct，void函数，清除Nan值；</li>
+<li>IsFinite，判断向量是否有Nan值，没有则返回1；</li>
+<li>Length（长度），Max（最大值），Min（最小值），Sum（相加），X（X值），SquaredLength（长度的平方），各类属性；</li>
+</ol>
+<h3 id="成员"><a href="#成员" class="headerlink" title="成员"></a>成员</h3><ol>
+<li>ignition::math::Vector2<int> vec0 &#x3D; ignition::math::Vector2<int>::Zero；</li>
+<li>ignition::math::Vector2<int> vec0 &#x3D; ignition::math::Vector2<int>::One;</li>
+</ol>
+<h2 id="Vector3"><a href="#Vector3" class="headerlink" title="Vector3"></a>Vector3</h2><p>三维向量，可以用于空间中的移动。</p>
+<h3 id="方法-11"><a href="#方法-11" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>Cross，返回叉乘后的数值。</li>
+</ol>
+<p>其他方法类似Vector2.</p>
+<h3 id="成员-1"><a href="#成员-1" class="headerlink" title="成员"></a>成员</h3><ol>
+<li>Vector3::UnitX，一个在X分量为1其他都为零的向量。类似的，有UnitY，UnitZ。</li>
+</ol>
+<p>其他类似Vector2.</p>
+<h2 id="Vector4"><a href="#Vector4" class="headerlink" title="Vector4"></a>Vector4</h2><p>四维向量。最后一个量可能用于表示其他属性，比如速度、光照等有矢量性的。</p>
+<p>方法和成员均可参考Vector2。</p>
+<p>待补完</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/07/linux%E4%B8%8B%E4%BD%BF%E7%94%A8vscode%E4%B8%8Eg%E7%BC%96%E8%AF%91%E6%97%B6%E6%8C%87%E5%AE%9Ac%E7%89%88%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/07/linux%E4%B8%8B%E4%BD%BF%E7%94%A8vscode%E4%B8%8Eg%E7%BC%96%E8%AF%91%E6%97%B6%E6%8C%87%E5%AE%9Ac%E7%89%88%E6%9C%AC/" class="post-title-link" itemprop="url">Linux下使用VScode与g++编译时指定C++版本</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-07 21:29:47" itemprop="dateCreated datePublished" datetime="2021-07-07T21:29:47+08:00">2021-07-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在Vscode的插件商店里找到Code Runner这个插件，可以快速地编译并运行cpp文件。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/07/image-5-1024x290.png"></p>
+<p>但是编译时出现下面这个问题：</p>
+<p>&#x2F;usr&#x2F;include&#x2F;ignition&#x2F;math&#x2F;Capsule.hh:91:20: error: ‘optional’ in namespace ‘std’ does not name a template type<br>   91        public: std::optional&lt; MassMatrix3<Precision> &gt; MassMatrix() const;<br>&#x2F;usr&#x2F;include&#x2F;ignition&#x2F;math&#x2F;Capsule.hh:91:15: note: ‘std::optional’ is only available from C++17 onwards<br>   91        public: std::optional&lt; MassMatrix3<Precision> &gt; MassMatrix() const;</p>
+<p>也就是说代码里有g++识别不出来的新特性。我的g++版本为9，理论上是肯定支持c++17的：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/07/image-6-1024x461.png"></p>
+<p>所以需要对code runner的配置进行修改。在插件的设置页面里找到Executor Map：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/07/image-7-1024x164.png"></p>
+<p>在cpp这一行加入std&#x3D;c++17即可：</p>
+<p>“cpp”: “cd $dir &amp;&amp; g++ -std&#x3D;c++17 $fileName -o $fileNameWithoutExt &amp;&amp; $dir$fileNameWithoutExt”,</p>
+<p>成功运行：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/07/image-8-1024x78.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/05/%E5%9C%A8ubuntu%E4%B8%8A%E6%84%89%E5%BF%AB%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/05/%E5%9C%A8ubuntu%E4%B8%8A%E6%84%89%E5%BF%AB%E5%9C%B0%E4%BD%BF%E7%94%A8%E5%BE%AE%E4%BF%A1/" class="post-title-link" itemprop="url">在Ubuntu上愉快地使用微信</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-05 11:13:56" itemprop="dateCreated datePublished" datetime="2021-07-05T11:13:56+08:00">2021-07-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>很多时候Ubuntu与Windows的差距就只有一个微信。下面带来如何在Ubuntu上愉快地使用deepin-wine wechat。</p>
+<h2 id="安装deepin-wine"><a href="#安装deepin-wine" class="headerlink" title="安装deepin-wine"></a>安装deepin-wine</h2><p>deepin-wine可以在Ubuntu系统中创建一个WIndows容器，来运行win32地应用程序。所以其实我们安装的是windows版本的微信。安装deepin-wine的教程，参考项目制作人<a target="_blank" rel="noopener" href="https://gitee.com/wszqkzqk">星外之神</a> &#x2F; <a target="_blank" rel="noopener" href="https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu">deepin-wine-for-ubuntu</a>的原版教程。</p>
+<h4 id="本地安装-Ubuntu-Debian通用"><a href="#本地安装-Ubuntu-Debian通用" class="headerlink" title="本地安装(Ubuntu&#x2F;Debian通用)"></a>本地安装(Ubuntu&#x2F;Debian通用)</h4><ul>
+<li>克隆 (<code>git clone https://github.com/wszqkzqk/deepin-wine-ubuntu.git</code>) 或<a target="_blank" rel="noopener" href="https://github.com/wszqkzqk/deepin-wine-ubuntu/archive/master.zip">下载</a>到本地。</li>
+<li>在中国推荐用下面的地址，速度更快： (<code>git clone https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu.git</code>)</li>
+<li>当然也可以选择下载releases：<a target="_blank" rel="noopener" href="https://github.com/wszqkzqk/deepin-wine-ubuntu/releases">Github</a> 或者 <a target="_blank" rel="noopener" href="https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu/releases">Gitee</a></li>
+<li>解压后切换到解压文件目录，在终端中运行（授予可执行权限后）： <code>./install.sh</code> KDE或其他按照普通安装方式安装后运行出现X错误的桌面环境执行 <code>./KDE-install.sh</code> ）。</li>
+</ul>
+<h2 id="安装wechat"><a href="#安装wechat" class="headerlink" title="安装wechat"></a>安装wechat</h2><p>点击下面的链接下载wechat：</p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu#https://gitee.com/wszqkzqk/deepin-wine-containers-for-ubuntu/raw/master/deepin.com.wechat\_2.6.8.65deepin0\_i386.deb">https://gitee.com/wszqkzqk/deepin-wine-for-ubuntu#https://gitee.com/wszqkzqk/deepin-wine-containers-for-ubuntu/raw/master/deepin.com.wechat\_2.6.8.65deepin0\_i386.deb</a></p>
+<p>微信的版本还是比较低的，不支持小程序、朋友圈。下载deb安装包后，不要直接用自带软件安装，使用dpkg命令，例如</p>
+<p>sudo dpkg -i deepin.com.wechat_2.6.8.65deepin0_i386.deb</p>
+<h2 id="配置wechat"><a href="#配置wechat" class="headerlink" title="配置wechat"></a>配置wechat</h2><p>下面是在ubuntu20.04的系统下对wechat进行的配置。</p>
+<h3 id="中文乱码问题"><a href="#中文乱码问题" class="headerlink" title="中文乱码问题"></a>中文乱码问题</h3><p>刚安装好后，中文显示都是黑色方格。需要修改两个地方：</p>
+<p>1. 修改配置</p>
+<p>gedit &#x2F;opt&#x2F;deepinwine&#x2F;tools&#x2F;run_v2.sh</p>
+<p>找到WINE_CMD，修改为：</p>
+<p>WINE_CMD&#x3D;”LC_ALL&#x3D;zh_CN.UTF-8 deepin-wine”</p>
+<p>2. 安装字体</p>
+<p>deepin-wine默认使用文泉驿的几个字体，安装相关字体后重启微信即可。</p>
+<p>sudo apt install fonts-wqy-microhei fonts-wqy-zenhei xfonts-wqy</p>
+<h3 id="高分屏缩放问题"><a href="#高分屏缩放问题" class="headerlink" title="高分屏缩放问题"></a>高分屏缩放问题</h3><p>开启配置窗口：</p>
+<p>env WINEPREFIX&#x3D;”$HOME&#x2F;.deepinwine&#x2F;Deepin-WeChat” &#x2F;usr&#x2F;bin&#x2F;deepin-wine winecfg</p>
+<p>在Graphics选项卡中调整resolution。</p>
+<h3 id="图片无法显示问题"><a href="#图片无法显示问题" class="headerlink" title="图片无法显示问题"></a>图片无法显示问题</h3><p>安装以下库：</p>
+<p>sudo apt install libjpeg62:i386</p>
+<h3 id="隐藏wine图标"><a href="#隐藏wine图标" class="headerlink" title="隐藏wine图标"></a>隐藏wine图标</h3><p>这个问题不影响使用。开启微信后会有一个wine图标悬浮，无法最小化，有碍观瞻。解决方式是安装一个gnome插件：topicon plus。</p>
+<p>如此一来deepin-wechat就可以实现windows下wechat的大部分功能了，当然还有一些小毛病，比如不能显示emoji，还有总会有一个wine的窗口悬浮在桌面上。但是如果你想要deepin-wine wechat做到尽善尽美是不可能的，如果一定要让ubuntu做它不适合做的事情，那么就需要把你的要求降低到“能用就行”。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/07/04/%E6%90%AC%E8%BF%90%EF%BC%9Aopen-robotics-2020%E8%AE%B2%E5%BA%A7%EF%BC%8Cros2-eloquent-and-ignition-citadel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/04/%E6%90%AC%E8%BF%90%EF%BC%9Aopen-robotics-2020%E8%AE%B2%E5%BA%A7%EF%BC%8Cros2-eloquent-and-ignition-citadel/" class="post-title-link" itemprop="url">搬运：Open Robotics 2020讲座，ROS2 Eloquent and Ignition Citadel</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-04 00:01:18" itemprop="dateCreated datePublished" datetime="2021-07-04T00:01:18+08:00">2021-07-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
       
     </div>
 
@@ -1360,7 +1470,7 @@ return &#123;&#39;FINISHED&#39;&#125;
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1426,12 +1536,12 @@ return &#123;&#39;FINISHED&#39;&#125;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">162</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">分类</span>
       </div>
   </nav>

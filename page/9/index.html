@@ -170,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/11/06/excel%E4%B8%AD%E7%9A%84%E5%8C%B9%E9%85%8D%E5%87%BD%E6%95%B0%EF%BC%9Avlookup/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/10/windows11%E4%B8%8B%E4%BD%BF%E7%94%A8wslg/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -184,7 +184,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/11/06/excel%E4%B8%AD%E7%9A%84%E5%8C%B9%E9%85%8D%E5%87%BD%E6%95%B0%EF%BC%9Avlookup/" class="post-title-link" itemprop="url">Excel中的匹配函数：VLOOKUP</a>
+            <a href="/2021/10/10/windows11%E4%B8%8B%E4%BD%BF%E7%94%A8wslg/" class="post-title-link" itemprop="url">Windows11下使用wslg</a>
         </h2>
 
         <div class="post-meta">
@@ -194,7 +194,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-11-06 16:20:16" itemprop="dateCreated datePublished" datetime="2021-11-06T16:20:16+08:00">2021-11-06</time>
+              <time title="创建时间：2021-10-10 17:33:34" itemprop="dateCreated datePublished" datetime="2021-10-10T17:33:34+08:00">2021-10-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -209,1311 +209,112 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>微软不愧是最佳Linux和MacOS应用开发团队。微软推出了WSL的拓展：WSLG，可以在linux子系统下运行GUI图形程序了。原理上，依然是基于Hyper-V的虚拟机，但是因为包装的很好，性能上损失比较小，运行起来也如同Windows原生GUI图形程序一样丝滑（对于第一方软件来说），但是美中不足的在于，目前对高分屏的支持不是很好。</p>
+<h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>开始之前，首先想想为什么要用到Linux系统呢？对我来说，是因为ROS和Ignition在Ubuntu下的支持更好，所以要使用Ubuntu。但是另一方面，Autodesk全家桶只能在Windows下运行。所以，看到WSLG后我是非常兴奋的，这恰好满足了我的需求。因此，对我来说WSLG值得折腾。</p>
+<h2 id="安装Win11"><a href="#安装Win11" class="headerlink" title="安装Win11"></a>安装Win11</h2><p>目前安装Windows11要在预览计划中加入Dev渠道：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-1024x671.png"></a></p>
+<p>然后检查更新后就可以升级到Windows11.</p>
+<h2 id="安装WSL和WSLG"><a href="#安装WSL和WSLG" class="headerlink" title="安装WSL和WSLG"></a>安装WSL和WSLG</h2><p><a target="_blank" rel="noopener" href="https://github.com/microsoft/wslg">https://github.com/microsoft/wslg</a></p>
+<p>参考wslg的github页面，我这里是之前没有安装过wsl的，所以按照以下步骤：</p>
+<h2 id="Install-instructions-Fresh-Install-no-prior-WSL-installation"><a href="#Install-instructions-Fresh-Install-no-prior-WSL-installation" class="headerlink" title="Install instructions (Fresh Install - no prior WSL installation)"></a>Install instructions (Fresh Install - no prior WSL installation)</h2><p>From a command prompt with administrator privileges, run the command <code>wsl --install -d Ubuntu</code>, then reboot when prompted.</p>
+<p>After reboot the installation will continue. You’ll be asked to enter a username and password. These will be your Linux credentials, they can be anything you want and don’t have to match your Windows credentials.</p>
+<p>Voilà! WSL and WSLg are installed and ready to be used!</p>
+<p>不过这样安装后，还需要运行一次wsl –update才能正常使用WSLg。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>首先来测试一下gedit：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image-2.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-2-1024x554.png"></a></p>
+<p>瞬间启动。再来试一试Ignition：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-3-1024x576.png"></a></p>
+<p>也没有问题！很强。</p>
+<h2 id="强大的VScode"><a href="#强大的VScode" class="headerlink" title="强大的VScode"></a>强大的VScode</h2><p>VScode瞬间变得无比强大。因为只要在当前路径下输入code .就可以<strong>在Windows的VScode中</strong>打开当前路径。</p>
+<p>这还不是最强的，最强的是，<strong>在VScode的终端中，也可以打开Linux的GUI程序</strong>！</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image-4.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-4-1024x550.png"></a></p>
+<p>目前暂时没有发现什么Bug。只能说一句巨硬牛逼！</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/07/%E5%9C%A8linux%E4%B8%8A%E7%8E%A9%E8%8B%B1%E9%9B%84%E6%97%A0%E6%95%8C3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/07/%E5%9C%A8linux%E4%B8%8A%E7%8E%A9%E8%8B%B1%E9%9B%84%E6%97%A0%E6%95%8C3/" class="post-title-link" itemprop="url">在Linux上玩英雄无敌3</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-07 13:09:13" itemprop="dateCreated datePublished" datetime="2021-10-07T13:09:13+08:00">2021-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/Office/" itemprop="url" rel="index"><span itemprop="name">Office</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>VLOOKUP有点像数据库中的join操作。例如，Sheet1中，A列数据是姓名，B列数据是导师名字；Sheet2中A列数据是姓名，B列数据是报告标题，两张表的排序还不一样，那么怎么把他们合起来呢？</p>
-<p>只要在sheet1中的C列开头，写一行函数就够了：&#x3D;VLOOKUP(A1,Sheet2!A:B,2,0)</p>
-<p>其中，A1就是姓名，Sheet2!A:B意思是在Sheet2中的A到B列查找与A1匹配的项（也就是【姓名：报告标题】），2指的是返回第二列的值也就是B列（报告标题）的值，0指的是精确查找。然后，一路拖到最后一行就可以了。</p>
-<p>信息涉敏，就不做演示了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/11/05/ros2%E5%BC%80%E5%8F%91%E4%BD%93%E4%BC%9A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/05/ros2%E5%BC%80%E5%8F%91%E4%BD%93%E4%BC%9A/" class="post-title-link" itemprop="url">ROS2开发体会</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-11-05 17:15:52" itemprop="dateCreated datePublished" datetime="2021-11-05T17:15:52+08:00">2021-11-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                  <a href="/categories/bolgs/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
                 </span>
                   ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>用了一段时间的ROS2，对它也有了更深的体会。</p>
-<p>首先，如果想了解机器人，学ROS是没有用的。学习ROS的前提是你了解机器人学的最最基础的知识，比如正逆运动学推算，各类传感器，PID控制等等。如果对这些知识都基本了解，实际上，不需要ROS2也可以开发出一个可以实现功能的机器人。比如说，我们想开发一个可以自动跟随前方物体的机器人Dolly，那么想法可能就是接受激光雷达的数据，然后控制电机运动。接受激光雷达数据和控制电机运动，ROS都不是它们的前置条件。再比如，载人航天、飞行器，这些都涉及到控制，一定程度上也可以看作是机器人，但是大多都没有使用到ROS（不过NASA有计划之后使用ROS）。所以说，ROS之于机器人，就好像树莓派之于嵌入式开发，学会了树莓派，完全不同于学会了嵌入式开发，相反可能只能算摸到了门槛；而学会了ROS，也只是摸到了机器人开发的门槛。不过，如果学会了树莓派，可能可以更轻松地做一些嵌入式开发的工作，而学会了ROS，也可以更轻松地做一些机器人开发的工作。</p>
-<p>如果决定要学习ROS了，那么以下是我的一些思考：</p>
-<h2 id="ROS1还是ROS2？"><a href="#ROS1还是ROS2？" class="headerlink" title="ROS1还是ROS2？"></a>ROS1还是ROS2？</h2><p>ROS2相比ROS1，对多机器人控制的支持更好，并且实时性更好。虽然架构改变较大，但是在用户层面，API的变化并不大，许多ROS1中的教程，在适当修改后还能使用。所以说，如果之前接触过ROS1，学习ROS2并不会花太多时间，ROS2也提供了ROS1-2信息桥来传输信息。</p>
-<p>而对于没有基础过ROS的人来说，ROS2无疑是更好的选择。</p>
-<h2 id="如何学习？"><a href="#如何学习？" class="headerlink" title="如何学习？"></a>如何学习？</h2><p>我非常不建议在手头没有项目的时候去学习ROS，这样学完之后基本上只会复制粘贴代码。而且学习ROS必然会与硬件打交道，比如各类传感器和电机等，如果仅仅在仿真平台上学习ROS，到真实的开发中会显得捉襟见肘。</p>
-<p>至于如何学习，ROS本身就有很完整的文档，可以作为初步入门使用。进一步地，可以在the construct网站上学习，这是一个提供完整ROS环境平台的学习网站，适合入门之后的进阶学习。</p>
-<h2 id="平台？"><a href="#平台？" class="headerlink" title="平台？"></a>平台？</h2><p>可以供选择的平台很少，就是Ubuntu20.04.当然你也可以在其他版本的linux上从源码编译ROS2，或者在windows和macos上安装，但是…Why bother？何况windows11也支持wsl，也可以运行ros了。只有在迫不得已的情况下，只能使用其他平台，比如说手头只有Macbook，或者说使用nvidia的jetson系列（jetpack目前只有ubuntu18.04的）。</p>
-<h2 id="形象地解释ROS"><a href="#形象地解释ROS" class="headerlink" title="形象地解释ROS"></a>形象地解释ROS</h2><p>有些人可能会疑惑，既然叫做Robot Operation System，那我学会了，我就可以operate robot了咯？实际上差的很远。就好像你是一个中世纪时期投石车的小队长，手下有几个小兵，有的负责装石头，有的负责转绞盘，有的负责拉引绳。这些小兵，有的是你一手培养的（自己写的与硬件交互的功能代码），有的是外面雇佣来的（第三方代码）。未了让这些小兵都乖乖听话，你发明了一套叫ROS（Rock-catapult Operation System）的系统。方法就是，每个小兵都配一个对讲机（不要问对讲机是从哪里来的），由你发号施令，小兵们按照命令进行操作。当然了，为了让小兵们能够执行你的命令，他们也要按照ROS的要求进行一定的学习（控制节点要能够接受ROS消息）。</p>
-<p>那你可能就说了，好家伙，我这学了半天，原来就学了个发号施令？没有错，ROS就是一套消息收发机制。所以说学了ROS也不代表就能开发机器人了；甚至，不需要这一套机制也能开发机器人。</p>
-<h2 id="ROS2开发的一些原则"><a href="#ROS2开发的一些原则" class="headerlink" title="ROS2开发的一些原则"></a>ROS2开发的一些原则</h2><ol>
-<li>spin()会阻断任何后面的命令，除非被手动终止。所以要根据不同的情况使用spin_once和spin_until_future_complete；</li>
-<li>每个节点执行的任务应当尽可能少。虽然可以让一个节点同时读取多个传感器的命令并发送到不同的topic上，但是这可能会导致传感器数据时间不统一；</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/11/04/ros2realsense/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/04/ros2realsense/" class="post-title-link" itemprop="url">ROS2+Realsense</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-11-04 11:05:50" itemprop="dateCreated datePublished" datetime="2021-11-04T11:05:50+08:00">2021-11-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ROS2-Package-for-Intel®-RealSense™-Devices"><a href="#ROS2-Package-for-Intel®-RealSense™-Devices" class="headerlink" title="ROS2 Package for Intel® RealSense™ Devices"></a>ROS2 Package for Intel® RealSense™ Devices</h1><h2 id="Supported-Devices"><a href="#Supported-Devices" class="headerlink" title="Supported Devices"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#supported-devices"></a>Supported Devices</h2><ul>
-<li>Intel® RealSense™ Camera D400-Series<ul>
-<li>Intel® RealSense™ Depth Cameras D415, D435 and D435i</li>
-</ul>
-</li>
-<li>Intel® RealSense™ Tracking Camera T265</li>
-</ul>
-<h2 id="Installation-Instructions"><a href="#Installation-Instructions" class="headerlink" title="Installation Instructions"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#installation-instructions"></a>Installation Instructions</h2><p>The following instructions were verified with ROS2 Foxy on Ubuntu 20.04. The software is verified with ROS2 Dashing on Ubuntu 18.04 also, with the same instructions replacing “foxy” with “dashing”.</p>
-<h3 id="Install-Dependencies"><a href="#Install-Dependencies" class="headerlink" title="Install Dependencies"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#install-dependencies"></a>Install Dependencies</h3><h4 id="1-Install-ROS2-packages-ros-foxy-desktop"><a href="#1-Install-ROS2-packages-ros-foxy-desktop" class="headerlink" title="1. Install ROS2 packages ros-foxy-desktop"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#1-install-ros2-packages-ros-foxy-desktop"></a>1. Install ROS2 packages <a target="_blank" rel="noopener" href="https://index.ros.org/doc/ros2/Installation/Linux-Install-Debians/">ros-foxy-desktop</a></h4><h4 id="2-Install-ROS2-dependences"><a href="#2-Install-ROS2-dependences" class="headerlink" title="2. Install ROS2 dependences"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#2-install-ros2-dependences"></a>2. Install ROS2 dependences</h4><p>Currently, we support librealsense master branch.</p>
-<p>sudo apt-get install ros-foxy-librealsense2</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/IntelRealSense/librealsense.git">Intel® RealSense™ SDK 2.0</a></li>
-</ul>
-<h4 id="3-Install-other-non-ROS-debian-packages"><a href="#3-Install-other-non-ROS-debian-packages" class="headerlink" title="3. Install other non-ROS debian packages"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#3-install-other-non-ros-debian-packages"></a>3. Install other non-ROS debian packages</h4><p>sudo apt-get install -y libssl-dev libusb-1.0-0-dev pkg-config libgtk-3-dev<br>sudo apt-get install -y libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev</p>
-<h3 id="Install-ros2-intel-realsense-From-Source"><a href="#Install-ros2-intel-realsense-From-Source" class="headerlink" title="Install ros2_intel_realsense From Source"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#install-ros2_intel_realsense-from-source"></a>Install ros2_intel_realsense From Source</h3><p># fetch code<br>mkdir -p ~&#x2F;ros2_ws&#x2F;src<br>cd ~&#x2F;ros2_ws&#x2F;src<br>git clone <a target="_blank" rel="noopener" href="https://github.com/intel/ros2/_intel/_realsense.git">https://github.com/intel/ros2\_intel\_realsense.git</a><br>cd ros2_intel_realsense<br>git checkout refactor</p>
-<h1 id="build"><a href="#build" class="headerlink" title="build"></a>build</h1><p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>cd ~&#x2F;ros2_ws<br>colcon build –symlink-install</p>
-<h2 id="Usage-Instructions"><a href="#Usage-Instructions" class="headerlink" title="Usage Instructions"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#usage-instructions"></a>Usage Instructions</h2><h3 id="Start-Camera-Node"><a href="#Start-Camera-Node" class="headerlink" title="Start Camera Node"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#start-camera-node"></a>Start Camera Node</h3><p>Obtain the serial number of your device</p>
-<p>rs-enumerate-devices</p>
-<p>Change the corresponding yaml file with the specific serial number, e.g. for <a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/blob/refactor/realsense_ros/config/d435.yaml#L3">d435.yaml</a> in line3:</p>
-<blockquote>
-<p>serial_no: &lt;serial_number_of_your_device&gt; # d435</p>
-</blockquote>
-<p>To start the camera node in ROS2, plug in the camera, then type the following command:</p>
-<h4 id="Single-camera-taking-d435-for-example"><a href="#Single-camera-taking-d435-for-example" class="headerlink" title="Single camera, taking d435 for example:"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#single-camera-taking-d435-for-example"></a>Single camera, taking d435 for example:</h4><p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>source ~&#x2F;ros2_ws&#x2F;install&#x2F;local_setup.bash</p>
-<h2 id="using-ros2-run"><a href="#using-ros2-run" class="headerlink" title="using ros2 run"></a>using ros2 run</h2><p>cd ~&#x2F;ros2_ws<br>ros2 run realsense_node realsense_node __params:&#x3D;`ros2 pkg prefix realsense_examples`&#x2F;share&#x2F;realsense_ros&#x2F;config&#x2F;d435.yaml __ns:&#x3D;&#x2F;d435</p>
-<h2 id="using-ros2-launch"><a href="#using-ros2-launch" class="headerlink" title="using ros2 launch"></a>using ros2 launch</h2><p>ros2 launch realsense_examples rs_camera.launch.py</p>
-<h4 id="Multi-camera-taking-d435-and-t265-for-example"><a href="#Multi-camera-taking-d435-and-t265-for-example" class="headerlink" title="Multi camera, taking d435 and t265 for example:"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#multi-camera-taking-d435-and-t265-for-example"></a>Multi camera, taking d435 and t265 for example:</h4><ul>
-<li>Terminal 1:</li>
-</ul>
-<p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>source ~&#x2F;ros2_ws&#x2F;install&#x2F;local_setup.bash</p>
-<p>cd ~&#x2F;ros2_ws<br>ros2 run realsense_node realsense_node __params:&#x3D;`ros2 pkg prefix realsense_examples`&#x2F;share&#x2F;realsense_examples&#x2F;config&#x2F;d435.yaml __ns:&#x3D;&#x2F;d435</p>
-<ul>
-<li>Terminal 2:</li>
-</ul>
-<p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>source ~&#x2F;ros2_ws&#x2F;install&#x2F;local_setup.bash</p>
-<p>cd ~&#x2F;ros2_ws<br>ros2 run realsense_node realsense_node __params:&#x3D;`ros2 pkg prefix realsense_examples`&#x2F;share&#x2F;realsense_examples&#x2F;config&#x2F;t265.yaml __ns:&#x3D;&#x2F;t265</p>
-<ul>
-<li>Or using ros2 launch :</li>
-</ul>
-<p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>source ~&#x2F;ros2_ws&#x2F;install&#x2F;local_setup.bash</p>
-<p>cd ~&#x2F;ros2_ws</p>
-<h2 id="before-launch-all-the-cameras-serial-number-should-be-set-in-the-launch-file"><a href="#before-launch-all-the-cameras-serial-number-should-be-set-in-the-launch-file" class="headerlink" title="before launch all the cameras, serial number should be set in the launch file"></a>before launch all the cameras, serial number should be set in the launch file</h2><p>ros2 launch realsense_examples rs_multiple_devices.launch.py</p>
-<h4 id="Multi-camera-with-tf-transform-taking-d435-and-t265-for-example"><a href="#Multi-camera-with-tf-transform-taking-d435-and-t265-for-example" class="headerlink" title="Multi camera with tf(transform), taking d435 and t265 for example:"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#multi-camera-with-tftransform-taking-d435-and-t265-for-example"></a>Multi camera with tf(transform), taking d435 and t265 for example:</h4><p>source &#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;setup.bash<br>source ~&#x2F;ros2_ws&#x2F;install&#x2F;local_setup.bash</p>
-<p>cd ~&#x2F;ros2_ws</p>
-<h2 id="before-launch-all-the-cameras-serial-number-should-be-set-in-the-launch-file-1"><a href="#before-launch-all-the-cameras-serial-number-should-be-set-in-the-launch-file-1" class="headerlink" title="before launch all the cameras, serial number should be set in the launch file"></a>before launch all the cameras, serial number should be set in the launch file</h2><p>ros2 launch realsense_examples rs_t265_and_d400.launch.py</p>
-<p><em><strong>for more usage of these launch files in realsense_examples&#x2F;launch, please refer to our <a target="_blank" rel="noopener" href="https://inte.github.io/robot_devkit">robot devkit</a> project, includes SLAM and navigation etc.</strong></em></p>
-<h3 id="Configure-Parameters-at-Runtime"><a href="#Configure-Parameters-at-Runtime" class="headerlink" title="Configure Parameters at Runtime"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#configure-parameters-at-runtime"></a>Configure Parameters at Runtime</h3><p>Currently only support reconfigure parameters by <code>ros2 param</code> at runtime, e.g.</p>
-<p>Enable camera stream</p>
-<p>ros2 param list<br>ros2 param get &lt;node_name&gt; color0.enabled<br>ros2 param set &lt;node_name&gt; color0.enabled true</p>
-<p>Enable aligned depth</p>
-<p>ros2 param set &lt;node_name&gt; align_depth true</p>
-<p>Enable pointcloud</p>
-<p>ros2 param set &lt;node_name&gt; enable_pointcloud true</p>
-<h2 id="Contribution-Instructions"><a href="#Contribution-Instructions" class="headerlink" title="Contribution Instructions"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#contribution-instructions"></a>Contribution Instructions</h2><p>Contirbution to this project is welcomed! For any patches pleaes make sure regression tests passed. For new features added please add test cases also.</p>
-<h3 id="Run-Colcon-test"><a href="#Run-Colcon-test" class="headerlink" title="Run Colcon test"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#run-colcon-test"></a>Run Colcon test</h3><p># plugin the Realsense device</p>
-<h1 id="invoke-colcon-test"><a href="#invoke-colcon-test" class="headerlink" title="invoke colcon test"></a>invoke colcon test</h1><p>colcon test –packages-select realsense_msgs realsense_node realsense_ros realsense_examples</p>
-<h1 id="check-test-logs"><a href="#check-test-logs" class="headerlink" title="check test logs"></a>check test logs</h1><p>vim log&#x2F;latest_test&#x2F;&lt;package name as `realsense_xxx`&gt;&#x2F;stdout.log</p>
-<h2 id="Published-Topics"><a href="#Published-Topics" class="headerlink" title="Published Topics"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#published-topics"></a>Published Topics</h2><ul>
-<li>D435 and D415</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;color&#x2F;image_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;color&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;infra1&#x2F;image_rect_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;infra1&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;infra2&#x2F;image_rect_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;infra2&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;depth&#x2F;image_rect_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;depth&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;aligned_depth_to_color&#x2F;image_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;aligned_depth_to_color&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/PointCloud2.msg">camera&#x2F;pointcloud</a></p>
-<ul>
-<li>D435i</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;color&#x2F;image_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;color&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;infra1&#x2F;image_rect_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;infra1&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;infra2&#x2F;image_rect_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;infra2&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;depth&#x2F;image_rect_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;depth&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;aligned_depth_to_color&#x2F;image_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;aligned_depth_to_color&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/PointCloud2.msg">camera&#x2F;pointcloud</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Imu.msg">camera&#x2F;gyro&#x2F;sample</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/blob/refactor/realsense_msgs/msg/IMUInfo.msg">camera&#x2F;gyro&#x2F;imu_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Imu.msg">camera&#x2F;accel&#x2F;sample</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/blob/refactor/realsense_msgs/msg/IMUInfo.msg">camera&#x2F;accel&#x2F;imu_info</a></p>
-<ul>
-<li>T265</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;fisheye1&#x2F;image_rect_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;fisheye1&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Image.msg">camera&#x2F;fisheye2&#x2F;image_rect_raw</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/CameraInfo.msg">camera&#x2F;fisheye1&#x2F;camera_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Imu.msg">camera&#x2F;gyro&#x2F;sample</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/blob/refactor/realsense_msgs/msg/IMUInfo.msg">camera&#x2F;gyro&#x2F;imu_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/sensor_msgs/msg/Imu.msg">camera&#x2F;accel&#x2F;sample</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/blob/refactor/realsense_msgs/msg/IMUInfo.msg">camera&#x2F;accel&#x2F;imu_info</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ros2/common_interfaces/blob/master/nav_msgs/msg/Odometry.msg">camera&#x2F;odom&#x2F;sample</a></p>
-<h2 id="Known-Issues"><a href="#Known-Issues" class="headerlink" title="Known Issues"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#known-issues"></a>Known Issues</h2><ul>
-<li>Don’t support dynamic reconfigure parameters by rqt_reconfigure due to <a target="_blank" rel="noopener" href="https://github.com/ros-visualization/rqt_reconfigure/issues/53">issue#53</a> of rqt_reconfigure, but you still can reconfigure parameters by <code>ros2 param</code>.</li>
-<li>We support Ubuntu Linux Bionic Beaver 18.04 on 64-bit, but not support Mac OS X 10.12 (Sierra) and Windows 10 yet.</li>
-</ul>
-<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#todo"></a>TODO</h2><ul>
-<li>Merge sensor data from gyroscope and accelerator into one topic</li>
-<li>Support diagnostics</li>
-<li>Support reconfigure parameters by GUI</li>
-</ul>
-<h2 id="License"><a href="#License" class="headerlink" title="License"></a><a target="_blank" rel="noopener" href="https://github.com/intel/ros2_intel_realsense/tree/refactor#license"></a>License</h2><p>Copyright 2019 Intel Corporation</p>
-<p>Licensed under the Apache License, Version 2.0 (the “License”); you may not use this project except in compliance with the License. You may obtain a copy of the License at</p>
-<p><a target="_blank" rel="noopener" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
-<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
-<p>*<em>Other names and brands may be claimed as the property of others</em></p>
-<p>Any security issue should be reported using process at <a target="_blank" rel="noopener" href="https://01.org/security">https://01.org/security</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/11/03/ros2%EF%BC%9A%E5%90%8C%E6%97%B6%E8%AE%A2%E9%98%85%E5%A4%9A%E4%B8%AAtopic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/03/ros2%EF%BC%9A%E5%90%8C%E6%97%B6%E8%AE%A2%E9%98%85%E5%A4%9A%E4%B8%AAtopic/" class="post-title-link" itemprop="url">ROS2：同时订阅多个Topic</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-11-03 00:43:17" itemprop="dateCreated datePublished" datetime="2021-11-03T00:43:17+08:00">2021-11-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>有的时候我们需要同时订阅对个topic，比如说我们的tf数据可能来源于多个传感器。一种方法是在一个Node里顺序读取这些传感器，但是可能会造成代码耦合和数据互相干扰的问题。一个比较好的办法是各有一个node负责数据的读取和发送，最后使用一个节点来订阅多个话题来获取这些数据。</p>
-<p>为了做到这一点，我们需要使用message_filter。示例代码如下：</p>
-<p>from geometry_msgs.msg import TransformStamped<br>from sensor_msgs.msg import Imu<br>from sensor_msgs.msg import Range<br>import rclpy<br>from rclpy.node import Node<br>import math<br>import time<br>import message_filters<br>from tf2_ros import TransformBroadcaster<br>import VL53L0X<br>import tf_transformations<br>from turtlesim.msg import Pose</p>
-<p>class FramePublisher(Node):</p>
-<pre><code>def \_\_init\_\_(self):
-    super().\_\_init\_\_(&#39;cranebot\_frame\_publisher&#39;)
-    self.imu\_sub = message\_filters.Subscriber(self, Imu, &#39;/cranebot/imu&#39;)
-    self.tof1\_sub = message\_filters.Subscriber(self, Range, &#39;/cranebot/tof1&#39;)
-    self.tof2\_sub = message\_filters.Subscriber(self, Range, &#39;/cranebot/tof2&#39;)
-    ts = message\_filters.TimeSynchronizer(\[self.imu\_sub, self.tof1\_sub, self.tof2\_sub\], 10)
-    ts.registerCallback(self.handle\_cranebot\_pose)
-    self.br = TransformBroadcaster(self)
-
-def handle\_cranebot\_pose(self, imu, tof1, tof2):
-</code></pre>
-<p>message_filter的工作方法是同时订阅多个话题后，接收到一组完整的数据才会执行callback。</p>
-<p>不同topic传输的数据会有时间上的差别，TimeSynchronizer则可以让这些数据以近似相同的时间戳被接受。</p>
-<p>多个话题的订阅，则需要使用Subscriber方法，其参数分别为Node、消息类型和topic。</p>
-<p>最终，需要注册一个callback，也就是registerCallback，参数为回调函数。</p>
-<p>回调函数的参数顺序和数量应当和订阅的多个topic的顺序与数量一致。</p>
-<p>如上，则完成了对多个话题的订阅。很惊讶居然全网都几乎找不到相关问题的针对ros2的python解决方法。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/29/mathtype6-9%E4%BF%9D%E5%A7%86%E7%BA%A7%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B%E4%BA%B2%E6%B5%8B%E5%8F%AF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/29/mathtype6-9%E4%BF%9D%E5%A7%86%E7%BA%A7%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B%E4%BA%B2%E6%B5%8B%E5%8F%AF%E7%94%A8/" class="post-title-link" itemprop="url">Mathtype6.9保姆级安装教程亲测可用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-29 16:02:59" itemprop="dateCreated datePublished" datetime="2021-10-29T16:02:59+08:00">2021-10-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bolgs/" itemprop="url" rel="index"><span itemprop="name">Bolgs</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/390647024">https://zhuanlan.zhihu.com/p/390647024</a></p>
-<p>以野兽的心境，向着收费软件的心脏开火，，，</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/25/tf2-lookupexception%E6%9F%A5%E8%AF%A2%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/25/tf2-lookupexception%E6%9F%A5%E8%AF%A2%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">tf2.LookupException查询问题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-25 21:25:46" itemprop="dateCreated datePublished" datetime="2021-10-25T21:25:46+08:00">2021-10-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>如果直接在Python命令行里这样查询TF：</p>
-<p>a.tf_buffer.lookup_transform(‘cab’, ‘car’, now, Duration(seconds&#x3D;1.0))</p>
-<p>会报错：</p>
-<p>Traceback (most recent call last):<br>  File “<stdin>“, line 1, in <module><br>  File “&#x2F;opt&#x2F;ros&#x2F;foxy&#x2F;lib&#x2F;python3.8&#x2F;site-packages&#x2F;tf2_ros&#x2F;buffer.py”, line 112, in lookup_transform<br>    return self.lookup_transform_core(target_frame, source_frame, time)<br>tf2.LookupException: “cab” passed to lookupTransform argument target_frame does not exist.</p>
-<p>报错显示，查询的frame不存在。这是因为，now指向的ros时钟不对。如果没有spin过节点，节点时钟未同步过，那么就无法查询到frame。</p>
-<p>然而使用了spin_once后，查询其他的节点也报错。这是因为，spin_once仅接受到一条消息，剩下的tf2消息无法收到。因此，查询函数应当这样：</p>
-<p>def get_tf(j1, j2, time):<br>    future &#x3D; a.tf_buffer.wait_for_transform_async(j1, j2, time)<br>    rclpy.spin_until_future_complete(a, future)<br>    tf &#x3D;  a.tf_buffer.lookup_transform(j1, j2, time)<br>    return tf</p>
-<p>其中，time应当为a.get_clock().now()。这样就解决了这个问题。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/17/calling-parent-class-init-with-multiple-inheritance-whats-the-right-way/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/17/calling-parent-class-init-with-multiple-inheritance-whats-the-right-way/" class="post-title-link" itemprop="url">Calling parent class __init__ with multiple inheritance, what's the right way?</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-17 15:26:07" itemprop="dateCreated datePublished" datetime="2021-10-17T15:26:07+08:00">2021-10-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tech/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/9575409/calling-parent-class-init-with-multiple-inheritance-whats-the-right-way">https://stackoverflow.com/questions/9575409/calling-parent-class-init-with-multiple-inheritance-whats-the-right-way</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/17/ros2%EF%BC%9Aaction%E7%9A%84%E5%8F%96%E6%B6%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/17/ros2%EF%BC%9Aaction%E7%9A%84%E5%8F%96%E6%B6%88/" class="post-title-link" itemprop="url">ROS2：Action的取消</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-17 00:00:16" itemprop="dateCreated datePublished" datetime="2021-10-17T00:00:16+08:00">2021-10-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Action涉及到很多异步操作，尤其是取消Action。如果没有接触过异步操作的（比如我），刚开始上手会很困难。</p>
-<p>但是实际上，Action的取消只有两个关键要素：</p>
-<ol>
-<li>使用send_goal_handle进行取消；</li>
-<li>server端要声明cancel_callback&#x3D;self.cancel_callback。</li>
-</ol>
-<p>我们来看ROS2官方提供的代码：</p>
-<h2 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h2><p># Copyright 2018 Open Source Robotics Foundation, Inc.</p>
-<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="Licensed-under-the-Apache-License-Version-2-0-the-“License”"><a href="#Licensed-under-the-Apache-License-Version-2-0-the-“License”" class="headerlink" title="Licensed under the Apache License, Version 2.0 (the “License”);"></a>Licensed under the Apache License, Version 2.0 (the “License”);</h1><h1 id="you-may-not-use-this-file-except-in-compliance-with-the-License"><a href="#you-may-not-use-this-file-except-in-compliance-with-the-License" class="headerlink" title="you may not use this file except in compliance with the License."></a>you may not use this file except in compliance with the License.</h1><h1 id="You-may-obtain-a-copy-of-the-License-at"><a href="#You-may-obtain-a-copy-of-the-License-at" class="headerlink" title="You may obtain a copy of the License at"></a>You may obtain a copy of the License at</h1><h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="http-www-apache-org-licenses-LICENSE-2-0"><a href="#http-www-apache-org-licenses-LICENSE-2-0" class="headerlink" title="http://www.apache.org/licenses/LICENSE-2.0"></a><a target="_blank" rel="noopener" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></h1><h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><h1 id="Unless-required-by-applicable-law-or-agreed-to-in-writing-software"><a href="#Unless-required-by-applicable-law-or-agreed-to-in-writing-software" class="headerlink" title="Unless required by applicable law or agreed to in writing, software"></a>Unless required by applicable law or agreed to in writing, software</h1><h1 id="distributed-under-the-License-is-distributed-on-an-“AS-IS”-BASIS"><a href="#distributed-under-the-License-is-distributed-on-an-“AS-IS”-BASIS" class="headerlink" title="distributed under the License is distributed on an “AS IS” BASIS,"></a>distributed under the License is distributed on an “AS IS” BASIS,</h1><h1 id="WITHOUT-WARRANTIES-OR-CONDITIONS-OF-ANY-KIND-either-express-or-implied"><a href="#WITHOUT-WARRANTIES-OR-CONDITIONS-OF-ANY-KIND-either-express-or-implied" class="headerlink" title="WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied."></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</h1><h1 id="See-the-License-for-the-specific-language-governing-permissions-and"><a href="#See-the-License-for-the-specific-language-governing-permissions-and" class="headerlink" title="See the License for the specific language governing permissions and"></a>See the License for the specific language governing permissions and</h1><h1 id="limitations-under-the-License"><a href="#limitations-under-the-License" class="headerlink" title="limitations under the License."></a>limitations under the License.</h1><p>import time</p>
-<p>from example_interfaces.action import Fibonacci</p>
-<p>import rclpy<br>from rclpy.action import ActionServer, CancelResponse, GoalResponse<br>from rclpy.callback_groups import ReentrantCallbackGroup<br>from rclpy.executors import MultiThreadedExecutor<br>from rclpy.node import Node</p>
-<p>class MinimalActionServer(Node):</p>
-<pre><code>def \_\_init\_\_(self):
-    super().\_\_init\_\_(&#39;minimal\_action\_server&#39;)
-
-    self.\_goal\_handle = None
-
-    self.\_action\_server = ActionServer(
-        self,
-        Fibonacci,
-        &#39;fibonacci&#39;,
-        execute\_callback=self.execute\_callback,
-        callback\_group=ReentrantCallbackGroup(),
-        goal\_callback=self.goal\_callback,
-        handle\_accepted\_callback=self.handle\_accepted\_callback,
-        cancel\_callback=self.cancel\_callback)
-
-def destroy(self):
-    self.\_action\_server.destroy()
-    super().destroy\_node()
-
-def goal\_callback(self, goal\_request):
-    ...
-
-def handle\_accepted\_callback(self, goal\_handle):
-    ...
-
-def cancel\_callback(self, goal\_handle):
-    &quot;&quot;&quot;Accept or reject a client request to cancel an action.&quot;&quot;&quot;
-    self.get\_logger().info(&#39;Received cancel request&#39;)
-    return CancelResponse.ACCEPT
-
-def timer\_callback(self):
-    ...
-
-async def execute\_callback(self, goal\_handle):
-    &quot;&quot;&quot;Execute a goal.&quot;&quot;&quot;
-    self.get\_logger().info(&#39;Executing goal...&#39;)
-
-    # Append the seeds for the Fibonacci sequence
-    feedback\_msg = Fibonacci.Feedback()
-    feedback\_msg.sequence = \[0, 1\]
-
-    # Start executing the action
-    for i in range(1, goal\_handle.request.order):
-        if goal\_handle.is\_cancel\_requested:
-            goal\_handle.canceled()
-            self.get\_logger().info(&#39;Goal canceled&#39;)
-            return Fibonacci.Result()
-
-        # Update Fibonacci sequence
-        feedback\_msg.sequence.append(feedback\_msg.sequence\[i\] + feedback\_msg.sequence\[i-1\])
-
-        self.get\_logger().info(&#39;Publishing feedback: &#123;0&#125;&#39;.format(feedback\_msg.sequence))
-
-        # Publish the feedback
-        goal\_handle.publish\_feedback(feedback\_msg)
-
-        # Sleep for demonstration purposes
-        time.sleep(1)
-
-    goal\_handle.succeed()
-
-    # Populate result message
-    result = Fibonacci.Result()
-    result.sequence = feedback\_msg.sequence
-
-    self.get\_logger().info(&#39;Returning result: &#123;0&#125;&#39;.format(result.sequence))
-
-    return result
-</code></pre>
-<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
-<pre><code>minimal\_action\_server = MinimalActionServer()
-
-# Use a MultiThreadedExecutor to enable processing goals concurrently
-executor = MultiThreadedExecutor()
-
-rclpy.spin(minimal\_action\_server, executor=executor)
-
-minimal\_action\_server.destroy()
-rclpy.shutdown()
-</code></pre>
-<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
-<p>简单起见，省略了一些函数。想要知道action是如何取消的，首先要了解action的完整传递机制。我们所做的其实是从executing到canceling中间的cancel_goal。结果是会返回一个succeeded，还不太清楚如何让他返回canceled和aborted消息。</p>
-<p><img src="http://design.ros2.org/img/actions/goal_state_machine.png" alt="Action Goal State Machine"></p>
-<p>下图是另一个更为实际的例子：</p>
-<p><img src="http://design.ros2.org/img/actions/interaction_example_1.png" alt="Action Interaction Example 1"></p>
-<p>action client首先向server发送goal request，接收后server向client发送response，并向用户自定义的处理方法（控制机器人、返回参数等）发送handle_goal，用户方法会向client发送feedback。</p>
-<p>中途，client可以向server发送cancel request，server接收后，向自定义方法发送通知（用一个标识或者啥的），excution method就直接设置result，让server返回给client。这里的result就是succeed的形式。</p>
-<h2 id="Client"><a href="#Client" class="headerlink" title="Client"></a>Client</h2><p># Copyright 2019 Open Source Robotics Foundation, Inc.</p>
-<h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="Licensed-under-the-Apache-License-Version-2-0-the-“License”-1"><a href="#Licensed-under-the-Apache-License-Version-2-0-the-“License”-1" class="headerlink" title="Licensed under the Apache License, Version 2.0 (the “License”);"></a>Licensed under the Apache License, Version 2.0 (the “License”);</h1><h1 id="you-may-not-use-this-file-except-in-compliance-with-the-License-1"><a href="#you-may-not-use-this-file-except-in-compliance-with-the-License-1" class="headerlink" title="you may not use this file except in compliance with the License."></a>you may not use this file except in compliance with the License.</h1><h1 id="You-may-obtain-a-copy-of-the-License-at-1"><a href="#You-may-obtain-a-copy-of-the-License-at-1" class="headerlink" title="You may obtain a copy of the License at"></a>You may obtain a copy of the License at</h1><h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><h1 id="http-www-apache-org-licenses-LICENSE-2-0-1"><a href="#http-www-apache-org-licenses-LICENSE-2-0-1" class="headerlink" title="http://www.apache.org/licenses/LICENSE-2.0"></a><a target="_blank" rel="noopener" href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></h1><h1 id="-5"><a href="#-5" class="headerlink" title=""></a></h1><h1 id="Unless-required-by-applicable-law-or-agreed-to-in-writing-software-1"><a href="#Unless-required-by-applicable-law-or-agreed-to-in-writing-software-1" class="headerlink" title="Unless required by applicable law or agreed to in writing, software"></a>Unless required by applicable law or agreed to in writing, software</h1><h1 id="distributed-under-the-License-is-distributed-on-an-“AS-IS”-BASIS-1"><a href="#distributed-under-the-License-is-distributed-on-an-“AS-IS”-BASIS-1" class="headerlink" title="distributed under the License is distributed on an “AS IS” BASIS,"></a>distributed under the License is distributed on an “AS IS” BASIS,</h1><h1 id="WITHOUT-WARRANTIES-OR-CONDITIONS-OF-ANY-KIND-either-express-or-implied-1"><a href="#WITHOUT-WARRANTIES-OR-CONDITIONS-OF-ANY-KIND-either-express-or-implied-1" class="headerlink" title="WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied."></a>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</h1><h1 id="See-the-License-for-the-specific-language-governing-permissions-and-1"><a href="#See-the-License-for-the-specific-language-governing-permissions-and-1" class="headerlink" title="See the License for the specific language governing permissions and"></a>See the License for the specific language governing permissions and</h1><h1 id="limitations-under-the-License-1"><a href="#limitations-under-the-License-1" class="headerlink" title="limitations under the License."></a>limitations under the License.</h1><p>from action_msgs.msg import GoalStatus</p>
-<p>from example_interfaces.action import Fibonacci</p>
-<p>import rclpy<br>from rclpy.action import ActionClient</p>
-<p>def feedback_cb(logger, feedback):<br>    logger.info(‘Received feedback:’)</p>
-<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
-<pre><code>node = rclpy.create\_node(&#39;fibonacci\_action\_client&#39;)
-
-action\_client = ActionClient(node, Fibonacci, &#39;fibonacci&#39;)
-
-node.get\_logger().info(&#39;Waiting for action server...&#39;)
-
-action\_client.wait\_for\_server()
-
-goal\_msg = Fibonacci.Goal()
-goal\_msg.order = 10
-
-node.get\_logger().info(&#39;Sending goal request...&#39;)
-
-send\_goal\_future = action\_client.send\_goal\_async(
-    goal\_msg, feedback\_callback=lambda feedback: feedback\_cb(node.get\_logger(), feedback))
-
-rclpy.spin\_until\_future\_complete(node, send\_goal\_future)
-
-goal\_handle = send\_goal\_future.result()
-
-if not goal\_handle.accepted:
-    node.get\_logger().info(&#39;Goal rejected :(&#39;)
-    action\_client.destroy()
-    node.destroy\_node()
-    rclpy.shutdown()
-    return
-
-node.get\_logger().info(&#39;Goal accepted :)&#39;)
-
-
-get\_result\_future = goal\_handle.get\_result\_async()
-
-
-try:
-    rclpy.spin\_until\_future\_complete(node, get\_result\_future)
-except:
-    future = goal\_handle.cancel\_goal\_async()
-    cancel\_response = future.result()
-    print(&quot;goal canceled&quot;)
-    goal\_handle.cancel\_goal()
-    action\_client.destroy()
-    node.destroy\_node()
-    rclpy.shutdown()
-
-result = get\_result\_future.result().result
-node.get\_logger().info(&#39;Goal succeeded! Result: &#123;0&#125;&#39;.format(str(result)))
-
-action\_client.destroy()
-node.destroy\_node()
-rclpy.shutdown()
-</code></pre>
-<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
-<p>这里可以看到，client中在send_goal后，得到了一个send_goal_future。这里要使用rclpy.spin_until_future_complete，确保这个future完成，否则future为NoneType。</p>
-<p><img src="http://design.ros2.org/img/actions/interaction_example_1.png" alt="Action Interaction Example 1"></p>
-<p>可以看到，goal request完成后，会得到一个handle_goal，在client里，使用goal_handle &#x3D; send_goal_future.result()；这个handle_goal可用于result request、cancel request。</p>
-<pre><code>get\_result\_future = goal\_handle.get\_result\_async()
-
-
-try:
-    rclpy.spin\_until\_future\_complete(node, get\_result\_future)
-except:
-    future = goal\_handle.cancel\_goal\_async()
-    cancel\_response = future.result()
-    print(&quot;goal canceled&quot;)
-    action\_client.destroy()
-    node.destroy\_node()
-    rclpy.shutdown()
-</code></pre>
-<p>这里首先发送了result request。在try中，使用rclpy.spin_until_future_complete。它的效果类似于：</p>
-<pre><code>def spin\_until\_finished(self, node, future):
-    while rclpy.ok():
-        rclpy.spin\_once(node)
-        if future.done():
-            result = future.result().result
-            node.get\_logger().info(&#39;Goal succeeded! Result: &#123;0&#125;&#39;.format(result.move\_distance))
-            break
-</code></pre>
-<p>也就是，如果future没有done，就一直rclpy.spin_once。这里插一句，rclpy.spin_once非常的灵活，而rclpy.spin和rclpy.spin_until_future_complete都会阻塞主进程，如果放在qt里就必须使用其他的线程进行。</p>
-<p>回到Client的代码上来，try中的 rclpy.spin_until_future_complete 被KeyInterrupt等中断后，就会执行except里的内容。这里使用了goal_handle.cancel_goal_async()，也会得到一个future。这样就终止了任务。</p>
-<p>这也是我第一次正式接触python的多线程任务。下面的qt+ros2+action，更是让人头大。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/12/ros2%E5%85%A5%E9%97%A8%E4%B9%8Bacition%E6%93%8D%E4%BD%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/12/ros2%E5%85%A5%E9%97%A8%E4%B9%8Bacition%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">ROS2入门之Acition操作</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-12 17:11:45" itemprop="dateCreated datePublished" datetime="2021-10-12T17:11:45+08:00">2021-10-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Action简介"><a href="#Action简介" class="headerlink" title="Action简介"></a><strong>Action简介</strong></h2><p>Action字面意义上理解就是“动作”。实际上，是对消息收发机制的一个上层包装。在Dolly避障中，我们让Dolly在没有避开障碍物前，都执行一个恒定的转向动作。实际上这就是一个Action。<br>一个Acition一般由三部分组成：</p>
-<ol>
-<li>goal,目标</li>
-<li>feedback，在action执行过程中的反馈；</li>
-<li>result，结果。</li>
-</ol>
-<p>目标、反馈和结果之间不一定要相同——事实上，他们往往是不同的。例如我们去拿一个苹果，目标是苹果的位置，feedback是手的位置，result是“成功”或“失败”这样一条信息。Action也是类似的。</p>
-<p>使用Action的好处主要在于，可以随时终止Action，但保留当前的机器人状态——例如，机器人已经走了一段路，此时遇到障碍物时终止Action。有人可能会说了，用Dolly的时候也没见用Action呀？确实如此，所以说Action是一个上层包装，目的是为了配合server和client让项目架构看起来更简洁，同时feedback功能也便于调试.</p>
-<h2 id="创建自己的Action"><a href="#创建自己的Action" class="headerlink" title="创建自己的Action"></a><strong>创建自己的Action</strong></h2><p>根据目标、反馈、结果的不同，action的形式也是多种多样，以至于ROS2难以提前全部预设。因此，往往需要创建自己的action。</p>
-<p>如果是使用c++写的ROS2包，换句话说，如果在create package的时候使用了ament_cmake选项的，那么下一步就可以不用继续了。反之，如果当初创建package的时候使用了ament_python，也就是基于python写的ROS2包，那么还需要在当前工作环境下，再使用ament_cmake创建一个c++的ROS2包。原因是，现在ament_python还不支持对自定义Action的编译，只能另外创建一个c++的pkg来编译自定义Action编译。</p>
-<p>假设，现在我们使用ament_python创建了一个名为toturial的package，就像图片中你看到的那样：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-5.png"></a></p>
-<p>那么现在，将路径切换到src，输入：</p>
-<p>ros2 pkg create –build-type ament_cmake my_action</p>
-<p>然后，在my_action中创建一个名为action的文件夹，在里面新建一个.action文件，名为Fibonacci.action，也就是斐波那契数列。文件内容如下：</p>
-<h2 id="int32-order"><a href="#int32-order" class="headerlink" title="int32 order"></a>int32 order</h2><h2 id="int32-sequence"><a href="#int32-sequence" class="headerlink" title="int32[] sequence"></a>int32[] sequence</h2><p>int32[] partial_sequence</p>
-<p>你可以看到，这个action文件由三部分组成，每辆各部分之间用“—”隔开。从上到下，他们分别代表了一个action消息的goal、feedback、result数据类型。在数据类型后的，是数据的名称。类似src和msg的定义，也可以这么写：</p>
-<h2 id="int64-aint64-bint64-c"><a href="#int64-aint64-bint64-c" class="headerlink" title="int64 aint64 bint64 c"></a>int64 a<br>int64 b<br>int64 c</h2><h2 id="int32-sequence-1"><a href="#int32-sequence-1" class="headerlink" title="int32[] sequence"></a>int32[] sequence</h2><p>int32[] partial_sequence</p>
-<p>值得注意的是，不类似于msg这种有很多预设类型的数据类型，action更多可以理解为是一个函数的输入、调试输出和返回值。恐怕很少有固定输入、调试输出和返回值的函数模板吧。这又一次说明了，为什么我们要自定义action类型。</p>
-<p>完成上面的步骤后，文件夹结构应该是这样的：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/image-6.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/image-6.png"></a></p>
-<p>然后，需要对CMakeLists.txt做一些修改。在最后一行前，插入：</p>
-<p>find_package(rosidl_default_generators REQUIRED)</p>
-<p>rosidl_generate_interfaces(${PROJECT_NAME}<br>  “action&#x2F;Fibonacci.action”<br>)</p>
-<p>并且，在package.xml中，加入：</p>
-<p>  <depend>action_msgs</depend></p>
-<p>  &lt;member_of_group&gt;rosidl_interface_packages&lt;&#x2F;member_of_group&gt;<br>  &lt;test_depend&gt;ament_lint_auto&lt;&#x2F;test_depend&gt;<br>  &lt;test_depend&gt;ament_lint_common&lt;&#x2F;test_depend&gt;</p>
-<p>然后就可以编译了，在workspace的主路径下，输入：</p>
-<p>colcon build –packages-select my_action</p>
-<p>编译花费的时间会比较长，在我的电脑上花费了一分多钟，比较奇怪。编译完成后，就可以在该工作路径下的其他packages中调用action了。</p>
-<h2 id="写一个action-server"><a href="#写一个action-server" class="headerlink" title="写一个action server"></a>写一个action server</h2><p>在toturial包中创建action_server.py，内容：</p>
-<p>import rclpy<br>from rclpy.action import ActionServer<br>from rclpy.node import Node<br>import time<br>from my_action.action import Fibonacci</p>
-<p>class FibonacciActionServer(Node):</p>
-<pre><code>def \_\_init\_\_(self):
-    super().\_\_init\_\_(&#39;fibonacci\_action\_server&#39;)
-    self.\_action\_server = ActionServer(
-        self,
-        Fibonacci,
-        &#39;fibonacci&#39;,
-        self.execute\_callback)
-
-def execute\_callback(self, goal\_handle):
-    self.get\_logger().info(&#39;Executing goal...&#39;)
-
-    feedback\_msg = Fibonacci.Feedback()
-    feedback\_msg.partial\_sequence = \[0, 1\]
-
-    for i in range(1, goal\_handle.request.order):
-        feedback\_msg.partial\_sequence.append(
-            feedback\_msg.partial\_sequence\[i\] + feedback\_msg.partial\_sequence\[i-1\])
-        self.get\_logger().info(&#39;Feedback: &#123;0&#125;&#39;.format(feedback\_msg.partial\_sequence))
-        goal\_handle.publish\_feedback(feedback\_msg)
-        time.sleep(1)
-
-    goal\_handle.succeed()
-
-    result = Fibonacci.Result()
-    result.sequence = feedback\_msg.partial\_sequence
-    return result
-</code></pre>
-<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
-<pre><code>fibonacci\_action\_server = FibonacciActionServer()
-
-rclpy.spin(fibonacci\_action\_server)
-</code></pre>
-<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
-<h3 id="code-examination"><a href="#code-examination" class="headerlink" title="code examination"></a>code examination</h3><p>开头导入一些包，以及我们自定义的action数据类型。</p>
-<p>import rclpy<br>from rclpy.action import ActionServer<br>from rclpy.node import Node<br>import time<br>from my_action.action import Fibonacci</p>
-<p>在class中，初始化时，创建一个ActionServer，方式和Subscriber一类的很像，也是指定数据类型、action name（对标topic），以及绑定的函数。</p>
-<p>class FibonacciActionServer(Node):</p>
-<pre><code>def \_\_init\_\_(self):
-    super().\_\_init\_\_(&#39;fibonacci\_action\_server&#39;)
-    self.\_action\_server = ActionServer(
-        self,
-        Fibonacci,
-        &#39;fibonacci&#39;,
-        self.execute\_callback)
-</code></pre>
-<p>在绑定的函数execute_callback中，参数为goal_handle，也就是action client传入的数据。首先初始化一个feedback_msg，其类型为Fibonacci.Feedback()。实际上，就是action中三块内容的最后那一块，包含了nt32[] partial_sequence。使用Feedback所包含的数据名词进行赋值。</p>
-<pre><code>    feedback\_msg = Fibonacci.Feedback()
-    feedback\_msg.partial\_sequence = \[0, 1\]
-</code></pre>
-<p>接下来，是处理环节。这个server的作用是，接收到一个order后，给出这个数量长度的斐波那契数列。所以，可以看到order中的数据，是通过goal_handle.requests.order给出的。</p>
-<p>随后就是斐波那契数列数列的计算过程，不做赘述。</p>
-<p>接着，使用goal_handle.publish_feedback这个方法，向action client返回feedback，参数为feedback_msgs。</p>
-<pre><code>    for i in range(1, goal\_handle.request.order):
-        feedback\_msg.partial\_sequence.append(
-            feedback\_msg.partial\_sequence\[i\] + feedback\_msg.partial\_sequence\[i-1\])
-        self.get\_logger().info(&#39;Feedback: &#123;0&#125;&#39;.format(feedback\_msg.partial\_sequence))
-        goal\_handle.publish\_feedback(feedback\_msg)
-        time.sleep(1)
-</code></pre>
-<p>接下来，当action server成功完成goal后，需要讲goal_handle的状态设置为succeed，否则程序会默认goal被中止了，也就不会返回result。因此完成goal后，需要声明：</p>
-<pre><code>    goal\_handle.succeed()
-</code></pre>
-<p>最后就是返回Result了，因为action中定义的Result类型和Feedback是一样的，都是int32[]，所以可以直接赋值。</p>
-<pre><code>    result = Fibonacci.Result()
-    result.sequence = feedback\_msg.partial\_sequence
-    return result
-</code></pre>
-<p>在最后，依然是再熟悉不过的main部分。最后加入if部分使得可以直接通过python3运行：</p>
-<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
-<pre><code>fibonacci\_action\_server = FibonacciActionServer()
-
-rclpy.spin(fibonacci\_action\_server)
-</code></pre>
-<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
-<h3 id="Server总结"><a href="#Server总结" class="headerlink" title="Server总结"></a>Server总结</h3><p>小小总结一下，一个action server包括：</p>
-<ol>
-<li>创建ActionServer</li>
-<li>创建绑定函数</li>
-<li>接收信息后处理</li>
-<li>处理时发送feedback，一般用do while</li>
-<li>结束后设置goal为succeed，发送result</li>
-</ol>
-<h2 id="写一个Action-client"><a href="#写一个Action-client" class="headerlink" title="写一个Action client"></a>写一个Action client</h2><p>实际上这里的Action server已经可以用了。运行python3 action_server.py，然后在另一个控制台，输入</p>
-<p>ros2 action list</p>
-<p>就能看到&#x2F;fibonacci这个action了。那么，该如何向这个action发送命令呢？需要输入：</p>
-<p>ros2 action send_goal fibonacci my_action&#x2F;action&#x2F;Fibonacci “{order: 5}”</p>
-<p>执行前需要source一下install目录下的setup.bash。过一会儿，就能看到返回结果：</p>
-<p>Waiting for an action server to become available…<br>Sending goal:<br>     order: 5</p>
-<p>Goal accepted with ID: b8899de227e04067baaa9ffc72f61e65</p>
-<p>Result:<br>    sequence:</p>
-<ul>
-<li>0</li>
-<li>1</li>
-<li>1</li>
-<li>2</li>
-<li>3</li>
-<li>5</li>
-</ul>
-<p>Goal finished with status: SUCCEEDED</p>
-<p>那问题来了，为什么要用action client呢？原因很简单——这样我们是看不到feedback的。我们当然希望任务执行中能看到feedback，这样如果执行出现机器探测不到但是人能够察觉出的异常，就可以快速中止任务。因此，需要一个能够观察到feedback的action client。</p>
-<p>再创建一个action_client.py，内容：</p>
-<p>import rclpy<br>from rclpy.action import ActionClient<br>from rclpy.node import Node</p>
-<p>from my_action.action import Fibonacci</p>
-<p>class FibonacciActionClient(Node):</p>
-<pre><code>def \_\_init\_\_(self):
-    super().\_\_init\_\_(&#39;fibonacci\_action\_client&#39;)
-    self.\_action\_client = ActionClient(self, Fibonacci, &#39;fibonacci&#39;)
-
-def send\_goal(self, order):
-    goal\_msg = Fibonacci.Goal()
-    goal\_msg.order = order
-
-    self.\_action\_client.wait\_for\_server()
-
-    self.\_send\_goal\_future = self.\_action\_client.send\_goal\_async(goal\_msg, feedback\_callback=self.feedback\_callback)
-
-    self.\_send\_goal\_future.add\_done\_callback(self.goal\_response\_callback)
-
-def goal\_response\_callback(self, future):
-    goal\_handle = future.result()
-    if not goal\_handle.accepted:
-        self.get\_logger().info(&#39;Goal rejected :(&#39;)
-        return
-
-    self.get\_logger().info(&#39;Goal accepted :)&#39;)
-
-    self.\_get\_result\_future = goal\_handle.get\_result\_async()
-    self.\_get\_result\_future.add\_done\_callback(self.get\_result\_callback)
-
-def get\_result\_callback(self, future):
-    result = future.result().result
-    self.get\_logger().info(&#39;Result: &#123;0&#125;&#39;.format(result.sequence))
-    rclpy.shutdown()
-
-def feedback\_callback(self, feedback\_msg):
-    feedback = feedback\_msg.feedback
-    self.get\_logger().info(&#39;Received feedback: &#123;0&#125;&#39;.format(feedback.partial\_sequence))
-</code></pre>
-<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
-<pre><code>action\_client = FibonacciActionClient()
-
-action\_client.send\_goal(10)
-
-rclpy.spin(action\_client)
-</code></pre>
-<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
-<h3 id="code-examination-1"><a href="#code-examination-1" class="headerlink" title="code examination"></a>code examination</h3><p>类似的导入暂且不提，直接来看主体部分。首先，声明ActionClient需要action的类型和action topic。</p>
-<p>然后，我们定义了一个send_goal函数，这里有一些方法需要解释一下意思。首先是wait_for_server()，这个方法命令client搜寻相应action topic是否被创建，也就是相应的action server是否已经启动。如果没有，则等待。</p>
-<p>接下来，使用send_goal_async来发送goal_msg。这个方法会返回一个”future“，这个future描述了当前goal_send的状态。这里还有一个feedback_callback参数，这个下面再说。</p>
-<p>再然后，我们先为goal_send声明一个callback，使用add_done_callback这个方法，其参数为一个函数，接下来就会讲到这个goal_response_callback的原理。这个callback指代了goal_send的状态，根据server接受goal的情况，可能是reject或者是accept。</p>
-<pre><code>def send\_goal(self, order):
-    goal\_msg = Fibonacci.Goal()
-    goal\_msg.order = order
-</code></pre>
-<p>le<br>        self._action_client.wait_for_server()</p>
-<pre><code>    self.\_send\_goal\_future = self.\_action\_client.send\_goal\_async(goal\_msg, feedback\_callback=self.feedback\_callback)
-
-    self.\_send\_goal\_future.add\_done\_callback(self.goal\_response\_callback)
-</code></pre>
-<p>在goal_response_callback里，接受future作为参数。首先，获取当前goal_handle的状态。</p>
-<p>然后，根据状态来确定下一步怎么进行。如果goal被拒绝了，则直接return不再继续。如果接受了，那么和前面一块send_goal函数中相似，再创建一个future，不过这个future是描述result的状态的，使用的方法也不同，变为get_result_async()，主体则是goal_handle本身。</p>
-<p>类似的，也为result future声明一个callback，来返回处理结果。参数为get_result_callback——是的，又要有一个新的函数了。</p>
-<pre><code>def goal\_response\_callback(self, future):
-    goal\_handle = future.result()
-    if not goal\_handle.accepted:
-        self.get\_logger().info(&#39;Goal rejected :(&#39;)
-        return
-
-    self.get\_logger().info(&#39;Goal accepted :)&#39;)
-
-    self.\_get\_result\_future = goal\_handle.get\_result\_async()
-    self.\_get\_result\_future.add\_done\_callback(self.get\_result\_callback)
-</code></pre>
-<p>再get_result_callback里，写的就是goal_handle的状态了。future.result()是Fibonacci action，再后面的result则是真正返回的内容，也就是包含了int32[] sequence的action result。</p>
-<p>在这个脚本里，设置为完成goal后就关闭该client。</p>
-<pre><code>def get\_result\_callback(self, future):
-    result = future.result().result
-    self.get\_logger().info(&#39;Result: &#123;0&#125;&#39;.format(result.sequence))
-    rclpy.shutdown()
-</code></pre>
-<p>前面提到了feedback，那么我们怎么通过client来获取feedback呢？首先，创建一个函数，其参数内容为feedback_msg。这个feedback_msg的类型是 Fibonacci action 。</p>
-<p>下一步，获取feedback数据，也就是feedback_msg.feedback.partial_sequence，partial_sequance是我们自己定义的数据的名称。</p>
-<pre><code>def feedback\_callback(self, feedback\_msg):
-    feedback = feedback\_msg.feedback
-    self.get\_logger().info(&#39;Received feedback: &#123;0&#125;&#39;.format(feedback.partial\_sequence))
-</code></pre>
-<p>下面的问题是，把这个函数绑定到哪里呢？这一步看起来不太直观，绑定的位置是发送goal的函数参数，也就是self._send_goal_future &#x3D; self._action_client.send_goal_async(goal_msg, feedback_callback&#x3D;self.feedback_callback)。</p>
-<pre><code>def feedback\_callback(self, feedback\_msg):
-    feedback = feedback\_msg.feedback
-    self.get\_logger().info(&#39;Received feedback: &#123;0&#125;&#39;.format(feedback.partial\_sequence))
-</code></pre>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>写一个action client似乎比client还要复杂——其实并不，action client基本上是模板化的，修改的地方不多。写一个action client的流程是：</p>
-<ol>
-<li>创建ActionClient，声明action类型和action topic</li>
-<li>创建一个send_goal函数，参数为order，里面要包含：<ol>
-<li>声明goal_msg的类型（xxxx.Goal()）</li>
-<li>令goal_msg.order &#x3D; order</li>
-<li>wait_for_server</li>
-<li>使用action client的send_goal_async方法发送goal_msg，返回send_goal_future</li>
-<li>为send_goal_future声明callback，绑定callback函数</li>
-</ol>
-</li>
-<li>创建send_goal的callback函数，参数为future<ol>
-<li>根据future的结果决定下一步（跳出或继续）</li>
-<li>使用goal_handle的get_result_async方法获取result_future</li>
-<li>为result_future声明callback，绑定callback函数</li>
-</ol>
-</li>
-<li>创建result_future的callback函数，参数为future<ol>
-<li>根据result执行相应命令（打印到控制台或者别的什么）</li>
-</ol>
-</li>
-<li>创建feedback的callback函数，参数为feedback_msg<ol>
-<li>根据feedback_msg执行相应命令（中止action等）</li>
-<li>绑定到send_goal_async</li>
-</ol>
-</li>
-</ol>
-<p>难点主要在，难以分清楚action消息、action消息的组成、action消息各组成的数据。例如：</p>
-<ol>
-<li>goal_msg是action消息的组成，也就是Fibonacci.Goal()</li>
-<li>result的future.result()是action消息。</li>
-<li>feedback_msg是action消息。</li>
-</ol>
-<p>所以应当说这一块ROS2做的不是很好，类型不明显。修改代码的时候，应当注意各参数的类型。</p>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>打开action_server后，使用python3运行该脚本：</p>
-<p>[INFO] [1634029628.139290300] [fibonacci_action_client]: Goal accepted :)<br>[INFO] [1634029628.140118300] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1])<br>[INFO] [1634029629.128878500] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2])<br>[INFO] [1634029630.130619100] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3])<br>[INFO] [1634029631.136094700] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5])<br>[INFO] [1634029632.139388800] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5, 8])<br>[INFO] [1634029633.139042600] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5, 8, 13])<br>[INFO] [1634029634.141083400] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5, 8, 13, 21])<br>[INFO] [1634029635.143444400] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5, 8, 13, 21, 34])<br>[INFO] [1634029636.145086200] [fibonacci_action_client]: Received feedback: array(‘i’, [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])<br>[INFO] [1634029637.150578100] [fibonacci_action_client]: Result: array(‘i’, [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55])</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/12/%E9%A2%91%E5%9F%9F%E5%9B%BE%E5%83%8F%E5%8F%98%E6%8D%A2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/12/%E9%A2%91%E5%9F%9F%E5%9B%BE%E5%83%8F%E5%8F%98%E6%8D%A2/" class="post-title-link" itemprop="url">频域图像变换</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-12 11:26:44" itemprop="dateCreated datePublished" datetime="2021-10-12T11:26:44+08:00">2021-10-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/thought/" itemprop="url" rel="index"><span itemprop="name">thought</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/thought/%E8%AF%BE%E5%A0%82%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">课堂笔记</span></a>
+                  <a href="/categories/thought/%E6%96%B0%E9%B2%9C%E4%BA%8B/" itemprop="url" rel="index"><span itemprop="name">新鲜事</span></a>
                 </span>
             </span>
 
@@ -1528,63 +329,1344 @@ rclpy.spin(action\_client)
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>像素点的颜色，实际上是不同频率的光的叠加</p>
-<h2 id="傅里叶变换"><a href="#傅里叶变换" class="headerlink" title="傅里叶变换"></a>傅里叶变换</h2><ol>
-<li>周期信号可以表示为谐波关系的正弦信号的加权和</li>
-<li>非周期信号可以表示为谐波关系的正弦函数的积分的加权和</li>
-</ol>
-<p>横看成岭侧成峰</p>
-<p>在频域中没有位置空间的概念，类似于一束白光打到一幅画上，请问反射的光谱是怎样的。调换像素顺序也不会影响频域。</p>
-<p>光谱是连续的，但是傅里叶变换只能是离散的，所以傅里叶变换实际上是一种近似。</p>
-<p>在物理上光谱是一维的，但是数学上傅里叶变换完全可以用二维的，对应图像的x和y轴。</p>
-<p>主要在统计上有意义。</p>
-<h2 id="傅里叶变换的性质"><a href="#傅里叶变换的性质" class="headerlink" title="傅里叶变换的性质"></a>傅里叶变换的性质</h2><ol>
-<li>平移定理</li>
-<li>移中性</li>
-<li>旋转性：频域跟着空域转</li>
-<li>尺度性：频域和空域成反比（一个*a另一个*1&#x2F;a）</li>
-<li>均值性</li>
-<li>卷积定理，2D下也成立</li>
-</ol>
-<p>变换到频域空间后，根据需求（去除高频&#x2F;低频），得到滤波器后，再变换回到空域空间。在频域空间下指导空域空间的滤波器设计。</p>
-<h2 id="频域增强"><a href="#频域增强" class="headerlink" title="频域增强"></a>频域增强</h2><ol>
-<li>噪声一般是高频的</li>
-<li>用于去除周期性的噪声（什么时候有周期性的噪声）</li>
-<li>低通&#x2F;高通滤波</li>
-</ol>
-<h2 id="处理步骤"><a href="#处理步骤" class="headerlink" title="处理步骤"></a>处理步骤</h2><ol>
-<li>转换到频域<ol>
-<li>中心变换</li>
-<li>计算出傅里叶变换</li>
-</ol>
-</li>
-<li>在频域滤波<ol>
-<li>选择一个变换函数H(u, v)，也就是滤波器</li>
-<li>计算出函数的反傅里叶变换</li>
-</ol>
-</li>
-<li>转换回空域<ol>
-<li>用(-1)^(x+y)乘以上面结果的实部，得到目标图像</li>
-</ol>
-</li>
-</ol>
-<h2 id="低通滤波：平滑"><a href="#低通滤波：平滑" class="headerlink" title="低通滤波：平滑"></a>低通滤波：平滑</h2><p>高频对图像通道贡献很小，但是对细节贡献很大</p>
-<p>Butterworth低通滤波器（BLPF）</p>
+          <p>英雄无敌3是一款非常经典的战旗游戏，小时候的我爱不释手，但实际上对我来说这款1999年的游戏还是过老了一点，所以也不算暴露年龄了。 刚开始发行的时候英雄无敌3是面向windows的，后来也出了原生的linux版本。不过linux版本的非常老旧，而且也没有继续维护了。因此就要请出今天的主角：vicm。 VICM是面向英雄无敌3的多平台开源引擎，使用它就可以在linux上畅玩英雄无敌3了。</p>
+<h2 id="安装VICM"><a href="#安装VICM" class="headerlink" title="安装VICM"></a>安装VICM</h2><p><a target="_blank" rel="noopener" href="https://wiki.vcmi.eu/Installation/_on/_Linux">https://wiki.vcmi.eu/Installation\_on\_Linux</a> 如果不需要编译源代码进行开发的话，直接安装即可： To add PPA type in Terminal:</p>
+<p>sudo apt-add-repository ppa:vcmi&#x2F;ppa</p>
+<p>To install VCMI from repository:</p>
+<p>sudo apt-get update<br>sudo apt-get install vcmi</p>
+<h2 id="安装英雄无敌3"><a href="#安装英雄无敌3" class="headerlink" title="安装英雄无敌3"></a>安装英雄无敌3</h2><p>安装一个原版的windows英雄无敌3，资源自行寻找。然后，将原版文件中的Data、Maps、MP3三个文件夹拷贝到：</p>
+<p>&#x2F;home&#x2F;$USER&#x2F;.local&#x2F;share&#x2F;vcmi&#x2F;</p>
+<p>然后试着运行：</p>
+<p>vcmiclient</p>
+<p>如果启动了，那就恭喜你可以开始玩了！</p>
+<h2 id="安装一些MOD"><a href="#安装一些MOD" class="headerlink" title="安装一些MOD"></a>安装一些MOD</h2><p>有一些MOD可以大大提升可玩性，比如说WOG，我小时候经常玩。有一些Mod是可以直接傻瓜式安装的，输入 vcmilauncher 打开启动器界面，在启动器界面就可以安装一些mod了，其中就包括WOG。 还有一些MOD，启动器界面不提供下载，需要到官网： <a target="_blank" rel="noopener" href="https://wiki.vcmi.eu/Mod/_list">https://wiki.vcmi.eu/Mod\_list</a> 自行下载解压后，把文件拷贝到： &#x2F;home&#x2F;$USER&#x2F;.local&#x2F;share&#x2F;vcmi&#x2F;Mods 包括一些更改分辨率的Mod。不过更改分辨率并不会提高图像质量，只是可视范围大了一些。 <a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2021/10/2021-10-07-13-08-16%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png"><img src="http://www.lxshaw.com/wp-content/uploads/2021/10/2021-10-07-13-08-16%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE-300x181.png"></a> 真是慢慢的回忆啊~</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/06/git-in-15-minutes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/06/git-in-15-minutes/" class="post-title-link" itemprop="url">Git in 15 minutes</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-06 16:31:42" itemprop="dateCreated datePublished" datetime="2021-10-06T16:31:42+08:00">2021-10-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p># What is the Git? <a target="_blank" rel="noopener" href="https://www.notion.so/Introduction-to-Git-ac396a0697704709a12b6a0e545db049">https://www.notion.so/Introduction-to-Git-ac396a0697704709a12b6a0e545db049</a> Git is officially defined as a distributed version control system (VCS). It can be used by many people to efficiently work together, in realistic, it is mainly used by programmer and software developers. Knowing how to use git is a requirement for any developer nowadays - it doesn’t means that you can’t cooperate with others without git, but it refer to a more efficient way to work together on a project. And thanks to some git repository server such as github, you may use git as a synchronize tool or a code share tool. An important note: though github is the most popular git repository server nowadays, it IS NOT git itself. Git can run without github, even without network. It is just a control system, nothing else. You can use git in 15 minutes, but to connect your local repository to github, it may take 10 more minutes.</p>
+<h2 id="1-Setup-instructions"><a href="#1-Setup-instructions" class="headerlink" title="1. Setup instructions"></a>1. Setup instructions</h2><p>Install the git: <code>sudo apt install git</code> Identify yourself with Git: NOTE: we have not talk about github, what your are identifying has nothing to do with your github account, so just set with your prefer. <code>git config --global user.name &quot;Your Name&quot; git config --global user.email &quot;your@email.com&quot;</code></p>
+<h2 id="2-Repositoreis"><a href="#2-Repositoreis" class="headerlink" title="2. Repositoreis"></a>2. Repositoreis</h2><p>When working with Git, it’s important to be familiar with the term repository. A Git repository is a container for a project that is tracked by Git. There are two major types of repositories:</p>
 <ol>
-<li>物理上可实现</li>
-<li>减少振铃效应（波纹）</li>
+<li>Local repositoreis: the repositories which stored on your own local computer. You can work on it derectly.</li>
+<li>Remote repositories: the repositories which stored on a remote server, such as your own server, or some popular git server provider such as Github. You can share or work with others by remote repositories.</li>
 </ol>
-<p>高斯低通滤波器</p>
+<h2 id="3-Initializing-a-local-repository-git-init"><a href="#3-Initializing-a-local-repository-git-init" class="headerlink" title="3. Initializing a (local) repository (git init)"></a>3. Initializing a (local) repository (git init)</h2><p>To create a local repository, navigate to your work space (which means the folder storing your project), then: <code>git init</code> And it will generate a hidden .git file, which contains all data for the repository.</p>
+<h2 id="4-Staging-and-committing-code-git-add-git-commit"><a href="#4-Staging-and-committing-code-git-add-git-commit" class="headerlink" title="4. Staging and committing code (git add &#x2F; git commit)"></a>4. Staging and committing code (git add &#x2F; git commit)</h2><p>Committing is the most used function in Git, it means adding your changes to the Git repository. One powerful function of Git is that it records all of your history committing, so you can compare the past commit and current commit to see changes you make. Usually you may want to commit your code to the repository after some important modifying, such as bug fixing and feature adding, etc. Before committing, you need to stage your code.</p>
+<h2 id="4-1-Checking-the-status"><a href="#4-1-Checking-the-status" class="headerlink" title="4.1 Checking the status"></a>4.1 Checking the status</h2><p><code>git status</code> This is a command that is very often used when working with Git. It shows us which files have been changed, which files are tracked, etc. We can add the untracked project files to the <strong>staging area</strong> based on the information from the <code>git status</code> command.</p>
+<h3 id="4-2-Staging-files"><a href="#4-2-Staging-files" class="headerlink" title="4.2 Staging files"></a>4.2 Staging files</h3><p>A most comment command is: <code>git add .</code> It add all of the current files and folders inside the current path. Also you can stage specif file by refering to the file name in the command: <code>git add file.js file2.js file3.js</code></p>
+<h3 id="4-3-Making-commits"><a href="#4-3-Making-commits" class="headerlink" title="4.3 Making commits"></a>4.3 Making commits</h3><p>After adding all the files that we want to track to the staging area with the `git add` command, we are ready to make a commit. To commit the files from the staging area, we use the following command: <code>git commit -m &quot;Commit message&quot;</code> Inside the quotes, you should write a commit message. Usually, it is used to describe the changes that you make in this commit.</p>
+<h3 id="4-4-Commit-history"><a href="#4-4-Commit-history" class="headerlink" title="4.4 Commit history"></a>4.4 Commit history</h3><p>To see all the commits that were made for our project, you can use the following command: <code>git log</code> This command will show you the details of each commit, such as auther name, generated hash, date, commit message. Remember that we can refer to your past commit, right? With Git, you even can GO BACK to your past commit status: <code>git checkout &lt;commit-hash&gt;</code> Replace <code>&lt;commit-hash&gt;</code> with the actual hash for the specific commit that you want to visit, which is listed with the <code>git log</code> command. And you will get a elder version of your code, your file. To go back to the latest commit (the newest version of our project code), you can type this command: <code>git checkout master</code></p>
+<h3 id="4-5-Ignoring-files"><a href="#4-5-Ignoring-files" class="headerlink" title="4.5 Ignoring files"></a>4.5 Ignoring files</h3><p>To ignore files that you don’t want to be tracked or added to the staging area, you can create a file called <code>.gitignore</code> in your main project folder. Inside of that file, you can list all the file and folder names that you definitely do not want to track (each ignored file and folder should go to a new line inside the <strong>.gitignore</strong> file).</p>
+<h2 id="5-Branches-git-branch-git-checkout-git-merge"><a href="#5-Branches-git-branch-git-checkout-git-merge" class="headerlink" title="5. Branches (git branch &#x2F; git checkout &#x2F; git merge)"></a>5. Branches (git branch &#x2F; git checkout &#x2F; git merge)</h2><p>What is branch? Imagine you have a strong and stable code, but now you want to do some experiment with your code. It is not a good idea to do it with your stable code, so a wise choice is to make a experiment branch on your stable code (which is called as <strong>master branch</strong>) , and edit and commit on this branch. After you are sure there is no bug, you can merge it to your master branch. By default, once you commit the code, you will get a <strong>master branch</strong>.</p>
+<h3 id="5-1-Creaing-a-new-branch"><a href="#5-1-Creaing-a-new-branch" class="headerlink" title="5.1 Creaing a new branch"></a>5.1 Creaing a new branch</h3><p>You can create a new branch using the following command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch &lt;new-branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>The new branch that gets created will be the reference to the <strong>current state</strong> of your repository.</p>
+<h3 id="5-2-Changing-branches"><a href="#5-2-Changing-branches" class="headerlink" title="5.2. Changing branches"></a>5.2. Changing branches</h3><p>To switch to a different branch, you use the <strong>git checkout</strong> command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>With that, you switch to a different isolated timeline of your project by changing branches. For example, you could be working on different features in your code and have a separate branch for each feature. When you switch to a branch, you can commit code changes which only affect that particular branch. Then, you can switch to another branch to work on a different feature, which won’t be affected by the changes and commits made from the previous branch. To create a new branch and change to it at the same time, you can use the <strong>-b</strong> flag:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b &lt;new-branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>To list the branches for your project, use this command: <code>git branch</code> To go back to the <strong>master</strong> branch, use this command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-Merging-branches"><a href="#5-3-Merging-branches" class="headerlink" title="5.3. Merging branches"></a>5.3. Merging branches</h3><p>You can merge branches in situations where you want to implement the code changes that you made in an individual branch to a different branch. For example, after you fully implemented and tested a new feature in your code, you would want to merge those changes to the stable branch of your project (which is usually the default <strong>master</strong> branch). To merge the changes from a different branch into your current branch, you can use this command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<p>You would replace <code>&lt;branch-name&gt;</code> with the branch that you want to integrate into your current branch.</p>
+<h3 id="5-4-Deleting-a-branch"><a href="#5-4-Deleting-a-branch" class="headerlink" title="5.4. Deleting a branch"></a>5.4. Deleting a branch</h3><p>To delete a branch, you can run the <strong>git branch</strong> command with the <strong>-d</strong> flag:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d &lt;branch-name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-Conclusion"><a href="#6-Conclusion" class="headerlink" title="6 Conclusion"></a>6 Conclusion</h2><p>Now we have most of the knowledge to use Git on our local computer. Make sure you are familiar with below command:</p>
 <ol>
-<li>频域和空域都是高斯函数</li>
-<li>没有振铃效应</li>
-<li>优于Butterworth</li>
+<li> git init</li>
+<li>git add</li>
+<li>git commit -m “xxxxx”</li>
+<li>git status</li>
+<li>git log</li>
+<li>git checkout</li>
+<li>git branch</li>
+<li>git merge</li>
 </ol>
-<h3 id="应用："><a href="#应用：" class="headerlink" title="应用："></a>应用：</h3><ol>
-<li>字符识别</li>
-<li>平滑</li>
+<p>After that, you can learn how to link your local repository to the biggest and most popular online git repositories: Github.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/05/ros2%E4%B8%AD%E7%9A%84tf2%EF%BC%9A%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/05/ros2%E4%B8%AD%E7%9A%84tf2%EF%BC%9A%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">ROS2中的tf2：基本使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-05 22:46:49" itemprop="dateCreated datePublished" datetime="2021-10-05T22:46:49+08:00">2021-10-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="什么是TF2"><a href="#什么是TF2" class="headerlink" title="什么是TF2"></a>什么是TF2</h2><p>tf2是一个用来描述物体空间位置的工具。我们知道，用一个三维向量和一个四元数就可以描述一个物体相对于一个参考系的位置与姿态，tf2的工作属于“小而美”，它只专注于在ROS2中提供这样一个功能，就是描述一组物体之间的相对位置关系。</p>
+<h2 id="为什么要使用TF2"><a href="#为什么要使用TF2" class="headerlink" title="为什么要使用TF2"></a>为什么要使用TF2</h2><p>TF2可以用于描述机器人各关节的相对位置，大大方便了运动学求解。不仅如此，在多机器人的场景中，tf2还可以用于描述机器人之间的相对位置，从而执行跟随、避障等操作。此外，tf2也可以用于描述目标物体与机器人的相对位置。总而言之，定位是机器人控制中不可或缺的一环，而tf2大大方便了ros2中对机器人的定位。</p>
+<h2 id="如何使用TF2：发布tf消息"><a href="#如何使用TF2：发布tf消息" class="headerlink" title="如何使用TF2：发布tf消息"></a>如何使用TF2：发布tf消息</h2><p>和所有ROS应用一样，使用tf2的主体也是Node。简介起见，这里我们跳过所有的package create、build和setup.py修改环节，只来看ROS2官方的实例程序：</p>
+<p>from geometry_msgs.msg import TransformStamped</p>
+<p>import rclpy<br>from rclpy.node import Node</p>
+<p>from tf2_ros import TransformBroadcaster</p>
+<p>import tf_transformations</p>
+<p>from turtlesim.msg import Pose</p>
+<p>class FramePublisher(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;turtle\_tf2\_frame\_publisher&#39;)
+
+    # Declare and acquire \`turtlename\` parameter
+    self.declare\_parameter(&#39;turtlename&#39;, &#39;turtle&#39;)
+    self.turtlename = self.get\_parameter(
+        &#39;turtlename&#39;).get\_parameter\_value().string\_value
+
+    # Initialize the transform broadcaster
+    self.br = TransformBroadcaster(self)
+
+    # Subscribe to a turtle&#123;1&#125;&#123;2&#125;/pose topic and call handle\_turtle\_pose
+    # callback function on each message
+    self.subscription = self.create\_subscription(
+        Pose,
+        f&#39;/&#123;self.turtlename&#125;/pose&#39;,
+        self.handle\_turtle\_pose,
+        1)
+    self.subscription
+
+def handle\_turtle\_pose(self, msg):
+    t = TransformStamped()
+
+    # Read message content and assign it to
+    # corresponding tf variables
+    t.header.stamp = self.get\_clock().now().to\_msg()
+    t.header.frame\_id = &#39;world&#39;
+    t.child\_frame\_id = self.turtlename
+
+    # Turtle only exists in 2D, thus we get x and y translation
+    # coordinates from the message and set the z coordinate to 0
+    t.transform.translation.x = msg.x
+    t.transform.translation.y = msg.y
+    t.transform.translation.z = 0.0
+
+    # For the same reason, turtle can only rotate around one axis
+    # and this why we set rotation in x and y to 0 and obtain
+    # rotation in z axis from the message
+    q = tf\_transformations.quaternion\_from\_euler(0, 0, msg.theta)
+    t.transform.rotation.x = q\[0\]
+    t.transform.rotation.y = q\[1\]
+    t.transform.rotation.z = q\[2\]
+    t.transform.rotation.w = q\[3\]
+
+    # Send the transformation
+    self.br.sendTransform(t)
+</code></pre>
+<p>def main():<br>    rclpy.init()<br>    node &#x3D; FramePublisher()<br>    try:<br>        rclpy.spin(node)<br>    except KeyboardInterrupt:<br>        pass</p>
+<pre><code>rclpy.shutdown()
+</code></pre>
+<h3 id="代码导读"><a href="#代码导读" class="headerlink" title="代码导读"></a>代码导读</h3><p>from geometry_msgs.msg import TransformStamped</p>
+<p>import rclpy<br>from rclpy.node import Node</p>
+<p>from tf2_ros import TransformBroadcaster</p>
+<p>import tf_transformations</p>
+<p>from turtlesim.msg import Pose</p>
+<p>TF2的数据传递格式为geometry_msgs中的TransformStamped。</p>
+<p>此外，还需要从tf2_ros中导入TransformBroadcaster，用于发布消息，这和一般的Node不同。</p>
+<p>tf_transformations提供将方位角转化为四元数的功能。</p>
+<p>turtlesim.msg中的Pose属于自定义的数据类型，由一个Vector3和一个方位角数组组成。</p>
+<p>class FramePublisher(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;turtle\_tf2\_frame\_publisher&#39;)
+
+    # Declare and acquire \`turtlename\` parameter
+    self.declare\_parameter(&#39;turtlename&#39;, &#39;turtle&#39;)
+    self.turtlename = self.get\_parameter(
+        &#39;turtlename&#39;).get\_parameter\_value().string\_value
+
+    # Initialize the transform broadcaster
+    self.br = TransformBroadcaster(self)
+
+    # Subscribe to a turtle&#123;1&#125;&#123;2&#125;/pose topic and call handle\_turtle\_pose
+    # callback function on each message
+    self.subscription = self.create\_subscription(
+        Pose,
+        f&#39;/&#123;self.turtlename&#125;/pose&#39;,
+        self.handle\_turtle\_pose,
+        1)
+    self.subscription
+</code></pre>
+<p>首先使用self.declare_parameter(‘turtlename’, ‘turtle’)声明了一个参数，其值为“turtle”。然后赋值给self.turtlename。</p>
+<p>下一步比较特殊：self.br &#x3D; TransformBroadcaster(self)，这样声明了一个TransformBroadcaster。</p>
+<p>另一方面，这个Node订阅了turtle&#x2F;pose这个话题，在下面可以看到脚本是如何将Pose类型转化为TransformStamped类型的。</p>
+<p>def handle_turtle_pose(self, msg):<br>    t &#x3D; TransformStamped()</p>
+<pre><code># Read message content and assign it to
+# corresponding tf variables
+t.header.stamp = self.get\_clock().now().to\_msg()
+t.header.frame\_id = &#39;world&#39;
+t.child\_frame\_id = self.turtlename
+
+# Turtle only exists in 2D, thus we get x and y translation
+# coordinates from the message and set the z coordinate to 0
+t.transform.translation.x = msg.x
+t.transform.translation.y = msg.y
+t.transform.translation.z = 0.0
+
+# For the same reason, turtle can only rotate around one axis
+# and this why we set rotation in x and y to 0 and obtain
+# rotation in z axis from the message
+q = tf\_transformations.quaternion\_from\_euler(0, 0, msg.theta)
+t.transform.rotation.x = q\[0\]
+t.transform.rotation.y = q\[1\]
+t.transform.rotation.z = q\[2\]
+t.transform.rotation.w = q\[3\]
+
+# Send the transformation
+self.br.sendTransform(t)
+</code></pre>
+<p>t &#x3D; TransformStamped()初始化了一个TransformStamped消息类型。</p>
+<p>t.header.stamp &#x3D; self.get_clock().now().to_msg()指定了header中的时间戳，一般即为Node的内部时钟时间。</p>
+<p>t.header.frame_id &#x3D; ‘world’指定了header中的参照系，这里使用的是world，也就是世界参考系。</p>
+<p>t.child_frame_id &#x3D; self.turtlename指定了本征参考系，也就是turtle。</p>
+<p>接下来的操作都是将Pose转化为TransformStamped的过程，其中使用到了tf_transformations.quaternion_from_euler来将姿态角转化为四元数。</p>
+<p>最后，使用self.br.sendTransform(t)发送消息。</p>
+<p>这里有人发现了，这都没有指定向哪个话题发送消息，这怎么就发出去了呢？实际上，所有的tf消息都会发送到一个话题内：&#x2F;tf。那么，如何处理多个tf消息呢？这个之后再谈。</p>
+<h2 id="如何使用TF2：接受tf消息"><a href="#如何使用TF2：接受tf消息" class="headerlink" title="如何使用TF2：接受tf消息"></a>如何使用TF2：接受tf消息</h2><p>import math</p>
+<p>from geometry_msgs.msg import Twist</p>
+<p>import rclpy<br>from rclpy.node import Node</p>
+<p>from tf2_ros import TransformException<br>from tf2_ros.buffer import Buffer<br>from tf2_ros.transform_listener import TransformListener</p>
+<p>from turtlesim.srv import Spawn</p>
+<p>class FrameListener(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;turtle\_tf2\_frame\_listener&#39;)
+
+    # Declare and acquire \`target\_frame\` parameter
+    self.declare\_parameter(&#39;target\_frame&#39;, &#39;turtle1&#39;)
+    self.target\_frame = self.get\_parameter(
+        &#39;target\_frame&#39;).get\_parameter\_value().string\_value
+
+    self.tf\_buffer = Buffer()
+    self.tf\_listener = TransformListener(self.tf\_buffer, self)
+
+    # Create a client to spawn a turtle
+    self.spawner = self.create\_client(Spawn, &#39;spawn&#39;)
+    # Boolean values to store the information
+    # if the service for spawning turtle is available
+    self.turtle\_spawning\_service\_ready = False
+    # if the turtle was successfully spawned
+    self.turtle\_spawned = False
+
+    # Create turtle2 velocity publisher
+    self.publisher = self.create\_publisher(Twist, &#39;turtle2/cmd\_vel&#39;, 1)
+
+    # Call on\_timer function every second
+    self.timer = self.create\_timer(1.0, self.on\_timer)
+
+def on\_timer(self):
+    # Store frame names in variables that will be used to
+    # compute transformations
+    from\_frame\_rel = self.target\_frame
+    to\_frame\_rel = &#39;turtle2&#39;
+
+    if self.turtle\_spawning\_service\_ready:
+        if self.turtle\_spawned:
+            # Look up for the transformation between target\_frame and turtle2 frames
+            # and send velocity commands for turtle2 to reach target\_frame
+            try:
+                now = rclpy.time.Time()
+                trans = self.tf\_buffer.lookup\_transform(
+                    to\_frame\_rel,
+                    from\_frame\_rel,
+                    now)
+            except TransformException as ex:
+                self.get\_logger().info(
+                    f&#39;Could not transform &#123;to\_frame\_rel&#125; to &#123;from\_frame\_rel&#125;: &#123;ex&#125;&#39;)
+                return
+
+            msg = Twist()
+            scale\_rotation\_rate = 1.0
+            msg.angular.z = scale\_rotation\_rate \* math.atan2(
+                trans.transform.translation.y,
+                trans.transform.translation.x)
+
+            scale\_forward\_speed = 0.5
+            msg.linear.x = scale\_forward\_speed \* math.sqrt(
+                trans.transform.translation.x \*\* 2 +
+                trans.transform.translation.y \*\* 2)
+
+            self.publisher.publish(msg)
+        else:
+            if self.result.done():
+                self.get\_logger().info(
+                    f&#39;Successfully spawned &#123;self.result.result().name&#125;&#39;)
+                self.turtle\_spawned = True
+            else:
+                self.get\_logger().info(&#39;Spawn is not finished&#39;)
+    else:
+        if self.spawner.service\_is\_ready():
+            # Initialize request with turtle name and coordinates
+            # Note that x, y and theta are defined as floats in turtlesim/srv/Spawn
+            request = Spawn.Request()
+            request.name = &#39;turtle2&#39;
+            request.x = float(4)
+            request.y = float(2)
+            request.theta = float(0)
+            # Call request
+            self.result = self.spawner.call\_async(request)
+            self.turtle\_spawning\_service\_ready = True
+        else:
+            # Check if the service is ready
+            self.get\_logger().info(&#39;Service is not ready&#39;)
+</code></pre>
+<p>def main():<br>    rclpy.init()<br>    node &#x3D; FrameListener()<br>    try:<br>        rclpy.spin(node)<br>    except KeyboardInterrupt:<br>        pass</p>
+<pre><code>rclpy.shutdown()
+</code></pre>
+<p>主要看着两个地方：</p>
+<pre><code>self.tf\_buffer = Buffer()
+self.tf\_listener = TransformListener(self.tf\_buffer, self)
+</code></pre>
+<p>这里相当于是初始化了一个对tf的subscriber。</p>
+<pre><code>        # Look up for the transformation between target\_frame and turtle2 frames
+        # and send velocity commands for turtle2 to reach target\_frame
+        try:
+            now = rclpy.time.Time()
+            trans = self.tf\_buffer.lookup\_transform(
+                to\_frame\_rel,
+                from\_frame\_rel,
+                now)
+        except TransformException as ex:
+            self.get\_logger().info(
+                f&#39;Could not transform &#123;to\_frame\_rel&#125; to &#123;from\_frame\_rel&#125;: &#123;ex&#125;&#39;)
+            return
+</code></pre>
+<p>这里可以看到，获取transform的方式为使用tf_buffer.lookup_transform。使用的时候，要提供to_frame_rel，from_frame_rel，和当前的时间戳。</p>
+<h2 id="tf消息收发总结"><a href="#tf消息收发总结" class="headerlink" title="tf消息收发总结"></a>tf消息收发总结</h2><p>发送：</p>
+<p>self.br &#x3D; TransformBroadcaster(self)</p>
+<p>t &#x3D; TransformStamped()</p>
+<p>self.br.sendTransform(t)</p>
+<p>收取：</p>
+<p>self.tf_buffer &#x3D; Buffer()</p>
+<p>self.tf_listener &#x3D; TransformListener(self.tf_buffer, self)</p>
+<p>now &#x3D; rclpy.time.Time()</p>
+<p>trans &#x3D; self.tf_buffer.lookup_transform( to_frame_rel, from_frame_rel, now)</p>
+<h2 id="增加参考系"><a href="#增加参考系" class="headerlink" title="增加参考系"></a>增加参考系</h2><p>前面说到，所有的tf消息都发送到一个话题&#x2F;tf上，那么tf是如何处理多参考系的呢？这里就需要提到“tf tree”了，这是一种组织参考系的方式：</p>
+<p><img src="https://docs.ros.org/en/foxy/_images/turtlesim_frames.png" alt="..&#x2F;..&#x2F;_images&#x2F;turtlesim_frames.png"></p>
+<p>如图所示，这样的一颗tf tree描述了world和turtle2、turtle1之间的关系。虽然没有给出turtle2和turtle1之间直接的参考关系，但是根据word-turtle1、world-turtle2之间的关系，前者也可以很方便的计算出来。</p>
+<p>这也就是为什么TransformStamped的header中有parent_frame和child_frame了，为的就是将多个tf信息汇总到一个topic中，同时还能彼此区分。</p>
+<p>下面就来展示，如何在现有的tf消息基础上增加一个frame。</p>
+<p>from geometry_msgs.msg import TransformStamped</p>
+<p>import rclpy<br>from rclpy.node import Node</p>
+<p>from tf2_ros import TransformBroadcaster</p>
+<p>class FixedFrameBroadcaster(Node):</p>
+<p>   def __init__(self):<br>      super().__init__(‘fixed_frame_tf2_broadcaster’)<br>      self.br &#x3D; TransformBroadcaster(self)<br>      self.timer &#x3D; self.create_timer(0.1, self.broadcast_timer_callback)</p>
+<p>   def broadcast_timer_callback(self):<br>      t &#x3D; TransformStamped()<br>      t.header.stamp &#x3D; self.get_clock().now().to_msg()<br>      t.header.frame_id &#x3D; ‘turtle1’<br>      t.child_frame_id &#x3D; ‘carrot1’<br>      t.transform.translation.x &#x3D; 0.0<br>      t.transform.translation.y &#x3D; 2.0<br>      t.transform.translation.z &#x3D; 0.0<br>      t.transform.rotation.x &#x3D; 0.0<br>      t.transform.rotation.y &#x3D; 0.0<br>      t.transform.rotation.z &#x3D; 0.0<br>      t.transform.rotation.w &#x3D; 1.0</p>
+<pre><code>  self.br.sendTransform(t)
+</code></pre>
+<p>def main():<br>   rclpy.init()<br>   node &#x3D; FixedFrameBroadcaster()<br>   try:<br>      rclpy.spin(node)<br>   except KeyboardInterrupt:<br>      pass</p>
+<p>   rclpy.shutdown()</p>
+<p>如上，只要用TransformBroadcaster再发送一个TransformStamped就行了。非常的快速，非常的便捷。下一篇博客我们来看看tf2的一些高级特性和debug方法。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/05/%E7%A9%BA%E5%9F%9F%E6%BB%A4%E6%B3%A2%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/05/%E7%A9%BA%E5%9F%9F%E6%BB%A4%E6%B3%A2%E5%99%A8/" class="post-title-link" itemprop="url">空域滤波器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-05 11:27:02" itemprop="dateCreated datePublished" datetime="2021-10-05T11:27:02+08:00">2021-10-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>仅根据单个点往往无法判断其属性（噪声、边缘），因此要考虑其领域。滤波器，或者说卷积核往往用来进行领域运算。在深度学习中，这个滤波器的参数是由学习得到的；而在传统图像处理中，卷积模板一般是人工设定的。那么根据不同的目标应当如何设计卷积模板呢？</p>
+<p>滤波器可以笼统地分为两类：</p>
+<ol>
+<li>平滑&#x2F;锐化</li>
+<li>线性&#x2F;非线性</li>
 </ol>
-<h2 id="高通滤波：锐化"><a href="#高通滤波：锐化" class="headerlink" title="高通滤波：锐化"></a>高通滤波：锐化</h2><h2 id="带通和带阻滤波"><a href="#带通和带阻滤波" class="headerlink" title="带通和带阻滤波"></a>带通和带阻滤波</h2><h2 id="陷波滤波器"><a href="#陷波滤波器" class="headerlink" title="陷波滤波器"></a>陷波滤波器</h2>
+<h1 id="平滑滤波器"><a href="#平滑滤波器" class="headerlink" title="平滑滤波器"></a>平滑滤波器</h1><h2 id="线性平滑滤波器"><a href="#线性平滑滤波器" class="headerlink" title="线性平滑滤波器"></a>线性平滑滤波器</h2><p>具体地，常用的平滑滤波器（以下都默认为3x3的卷积核）有：</p>
+<ol>
+<li>领域平均（平滑滤波器），所有系数大于0</li>
+<li>加权平均（平滑滤波器），所有系数大于0<ol>
+<li>特别的，高斯滤波器，距离像素点越近，系数越大。在平滑的同时，对图像模糊的程度较小。</li>
+</ol>
+</li>
+<li>几何均值滤波器</li>
+</ol>
+<h3 id="影响线性平滑滤波器的因素"><a href="#影响线性平滑滤波器的因素" class="headerlink" title="影响线性平滑滤波器的因素"></a>影响线性平滑滤波器的因素</h3><ol>
+<li>模板的形状<ol>
+<li>方形：计算量大</li>
+<li>其他形状：十字、X、空洞卷积、JRPG移动范围形……</li>
+</ol>
+</li>
+<li>模板的尺寸，尺寸越大，丢失细节越多</li>
+<li>模板的参数</li>
+</ol>
+<h3 id="平滑滤波器的问题"><a href="#平滑滤波器的问题" class="headerlink" title="平滑滤波器的问题"></a>平滑滤波器的问题</h3><ol>
+<li>去除噪音的同时也钝化了边缘和尖锐的细节</li>
+</ol>
+<h2 id="非线性平滑滤波器"><a href="#非线性平滑滤波器" class="headerlink" title="非线性平滑滤波器"></a>非线性平滑滤波器</h2><ol>
+<li>中值滤波：用卷积核内的中值作为结果值。处理空间密度很大的椒盐噪声时效果不好。<ol>
+<li>改进：如果不太可能是椒盐噪声的，就保留当前中心点的像素值</li>
+</ol>
+</li>
+<li>自适应中值滤波器：选择中值的时候可以适应，模板大小可以自适应</li>
+<li>统计排序滤波器</li>
+<li>最大值&#x2F;最小值&#x2F;中点&#x2F;百分比滤波器</li>
+<li>自适应、局部噪声消除滤波器</li>
+</ol>
+<h2 id="双边滤波器"><a href="#双边滤波器" class="headerlink" title="双边滤波器"></a>双边滤波器</h2><h1 id="锐化滤波器"><a href="#锐化滤波器" class="headerlink" title="锐化滤波器"></a>锐化滤波器</h1><p>积分——钝化 微分——锐化</p>
+<p>Sobel梯度算子：一阶微分用的最多的算子，对噪声有抑制作用，特征保持更好</p>
+<p>Robert梯度算子</p>
+<p>锐化后与源图像叠加，解决亮度丢失问题，同时增强边缘</p>
+<p>拉普拉斯算子：二阶算子，更突出边缘</p>
+<hr>
+<h1 id="混合空间增强方法"><a href="#混合空间增强方法" class="headerlink" title="混合空间增强方法"></a>混合空间增强方法</h1><p>混合的基于空域变换的增强图片的方法</p>
+<p>拉普拉斯算子锐化时不光增强边界，还增强了噪声区域：</p>
+<p>再叠加一次sobel算子，去除噪声，然后与拉普拉斯算子处理的图像进行一次<strong>相乘</strong></p>
+<p>最后整体偏暗，则进行直方图变换。</p>
+<h2 id="边界处理"><a href="#边界处理" class="headerlink" title="边界处理"></a>边界处理</h2><ol>
+<li>补0：方便，但是会使得边缘变暗</li>
+<li>拷贝：对边缘的卷积不起作用</li>
+<li>镜像：对梯度求解效果更好</li>
+</ol>
+<p>空域滤波的所有方法都是可迭代的——嵌套，大卷积核不如多个小卷积核的组合</p>
+<p>卷积时用新值还是旧值？</p>
+<ul>
+<li>新值：节省空间，加快迭代；但是处理不平衡</li>
+<li>旧值：效果更好</li>
+</ul>
+<p>医学等领域限制使用非线性滤波器（不能改变原来像素的分布）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/10/04/%E5%9C%A8jetson-nano-raspberry-pi%E4%B8%8A%E6%90%AD%E5%BB%BAros2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/04/%E5%9C%A8jetson-nano-raspberry-pi%E4%B8%8A%E6%90%AD%E5%BB%BAros2/" class="post-title-link" itemprop="url">在Jetson nano/Raspberry Pi上搭建ROS2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-04 22:13:24" itemprop="dateCreated datePublished" datetime="2021-10-04T22:13:24+08:00">2021-10-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/embedded/" itemprop="url" rel="index"><span itemprop="name">embedded</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/embedded/%E6%A0%91%E8%8E%93%E6%B4%BE/" itemprop="url" rel="index"><span itemprop="name">树莓派</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Jetson Nano and Raspberry Pi have similar configuration and application scenario, which make it meaningful to compare these two popular single board computer to find out which is the best host for ros2.</p>
+<p>A significant difference between Jetson Nano and Raspberry Pi is that Jetson Nano has a powerful GPU computer unit, which enable Jetson Nano process some machine learning related task such as object detection and face recognization.</p>
+<p>However, another subtle difference is often overlooked, which is that Pi has a more powerful GPIO than Jetson Nano. Officially, Pi and Jetson can both output a 3.3v level through GPIO, however test shows thats Jetson Nano has lower level when pin is set to high level (1.4v-1.5v). Yes it can lit a LED, but if used to control a relay, it might won’t work. On the contrary, it is totally OK with Pi to output 3.3v precisely. Of course you can always use external control board such as Arduino to do hardware control work, but you may use a Pi to do some work which need a Jetson Nano and an Arduino.</p>
+<p>And another import difference between Pi and Jetson: Jetson officially support only ubuntu18.04, which is the base of current JetPack. However ROS2 required ubuntu20.04, so there are two ways to run ROS2 on the Jetson:</p>
+<ol>
+<li>Install the xubuntu20.04 for Jetson Nano, it is not released by Nvidia but it works: <a target="_blank" rel="noopener" href="https://forums.developer.nvidia.com/t/xubuntu-20-04-focal-fossa-l4t-r32-3-1-custom-image-for-the-jetson-nano/121768">https://forums.developer.nvidia.com/t/xubuntu-20-04-focal-fossa-l4t-r32-3-1-custom-image-for-the-jetson-nano/121768</a></li>
+<li>Use docker to install the ROS2 on a official JetPack OS: <a target="_blank" rel="noopener" href="https://developer.nvidia.com/blog/implementing-robotics-applications-with-ros-2-and-ai-on-jetson-platform-2/">https://developer.nvidia.com/blog/implementing-robotics-applications-with-ros-2-and-ai-on-jetson-platform-2/</a></li>
+</ol>
+<p>If GPIO is required, the solution 1 is suggest, because using docker may leads to a lot of permission issues.</p>
+<p>For the Pi, you can install a ubuntu mate 20.04 , which is support officially for Raspberry Pi: <a target="_blank" rel="noopener" href="https://ubuntu-mate.org/raspberry-pi/download/">https://ubuntu-mate.org/raspberry-pi/download/</a></p>
+<p>Or, you can install the official ubuntu 20.04, and install a desktop environment later. However ubuntu mate is strongly suggest, for it can minimize the configure work, in the while provide a quite stable and efficient desktop environment.</p>
+<p>So, know your demand, choose your hardware and OS, let’s start to install ROS2.</p>
+<h2 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h2><p>Assume you have a board with a ubuntu20.04, it does not matter if you use a Jetson Nano or Pi.</p>
+<h2 id="Install-Clash"><a href="#Install-Clash" class="headerlink" title="Install Clash"></a>Install Clash</h2><p>Special for Chinese user: If you visit Google and Github without any problem, just skip it.</p>
+<p>Use Clash and proxychains to view, curl and wget from Github.</p>
+<p>Release for Clash (ArmV7): <a target="_blank" rel="noopener" href="https://github.com/Dreamacro/clash/releases">https://github.com/Dreamacro/clash/releases</a></p>
+<p>You need to buy an account to use Clash: <a target="_blank" rel="noopener" href="https://shadowfly.cloud/">https://shadowfly.cloud/</a></p>
+<p>Follow the Linux installing introduction to use the Clash.</p>
+<p>After you run the clash, it will generalize two bridge in default: <a target="_blank" rel="noopener" href="http://127.0.0.1:7890/">http://127.0.0.1:7890</a>, socks5:&#x2F;&#x2F;127.0.0.1:7891. Configure the proxy regarding which operation system you are using.</p>
+<h2 id="Install-Proxychains"><a href="#Install-Proxychains" class="headerlink" title="Install Proxychains"></a>Install Proxychains</h2><p>Even if the clash or other VPN is running, the bash will not use the proxy automatically, so proxychains is needed to use proxy with the bash.</p>
+<p>First, install the proxychains:</p>
+<p>sudo apt install proxychains</p>
+<p>Then, configure the proxychains:</p>
+<p>sudo nano &#x2F;etc&#x2F;proxychains.conf</p>
+<p>Modify the last row to “http 127.0.0.1 7890”</p>
+<p>There you can use proxychains after sudo and before other command to use the proxy.</p>
+<h2 id="Install-ROS2-Package"><a href="#Install-ROS2-Package" class="headerlink" title="Install ROS2 Package"></a>Install ROS2 Package</h2><p>Follow the official document to install the ROS2. For some command, you may need to add proxychains, such as :</p>
+<p>sudo proxychains curl -sSL <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/ros/rosdistro/master/ros.key">https://raw.githubusercontent.com/ros/rosdistro/master/ros.key</a>  -o &#x2F;usr&#x2F;share&#x2F;keyrings&#x2F;ros-archive-keyring.gpg</p>
+<h2 id="Install-colcon-build"><a href="#Install-colcon-build" class="headerlink" title="Install colcon build"></a>Install colcon build</h2><p>sudo apt install python3-colcon-common-extensions</p>
+<h2 id="Ready-to-GO"><a href="#Ready-to-GO" class="headerlink" title="Ready to GO"></a>Ready to GO</h2><p>Now you can build your own ros project and run it!</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/20/%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%96%87%E4%BB%B6%E5%B0%BA%E5%AF%B8%E8%B6%85%E8%BF%87upload-max-filesize%E6%96%87%E4%BB%B6%E4%B8%AD%E5%AE%9A%E4%B9%89%E7%9A%84php-ini%E5%80%BC%E7%9A%84%E8%A7%A3%E5%86%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/20/%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%96%87%E4%BB%B6%E5%B0%BA%E5%AF%B8%E8%B6%85%E8%BF%87upload-max-filesize%E6%96%87%E4%BB%B6%E4%B8%AD%E5%AE%9A%E4%B9%89%E7%9A%84php-ini%E5%80%BC%E7%9A%84%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">上传的文件尺寸超过upload_max_filesize文件中定义的php.ini值的解决方法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-20 17:35:20" itemprop="dateCreated datePublished" datetime="2021-09-20T17:35:20+08:00">2021-09-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/wordpress/" itemprop="url" rel="index"><span itemprop="name">wordpress</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/live41/p/14736986.html">https://www.cnblogs.com/live41/p/14736986.html</a></p>
+<p>WordPress上传主题，报“上传的文件尺寸超过upload_max_filesize文件中定义的php.ini值”错误。解决方法：</p>
+<p>1.查找php.ini的位置</p>
+<p>find &#x2F; -name php.ini</p>
+<p>* 一般是&#x2F;etc&#x2F;php&#x2F;(版本号)&#x2F;apache2&#x2F;php.ini</p>
+<p>2.打开php.ini</p>
+<p>sudo vim php.ini</p>
+<p>3.输入&#x2F;，分别搜索upload_max_filesize及post_max_size属性并改大属性值。</p>
+<p>4.重启Apache</p>
+<p>sudo systemctl restart apache2</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/20/ros2ignitionpython%E5%B7%A5%E4%BD%9C%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/20/ros2ignitionpython%E5%B7%A5%E4%BD%9C%E6%B5%81/" class="post-title-link" itemprop="url">ROS2+Ignition+Python工作流</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-20 14:59:57" itemprop="dateCreated datePublished" datetime="2021-09-20T14:59:57+08:00">2021-09-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>之前和Dolly在the construction上一起探索了ROS2，下面来看看一个更加面向未来的开发工作流：ROS2+Ignition+Python。而且这次，我们从头在自己的电脑上开始配置环境。</p>
+<h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>安装以下依赖：</p>
+<p>sudo apt install python3-colcon-common-extensions<br>sudo apt install python3-catkin-pkg</p>
+<p>有时候python3-catkin-pkg虽然安装了，在编译过程中还是会显示找不到catkin_pkg。我卸载重装后就好了，仅供参考。</p>
+<h2 id="新建一个Work-space"><a href="#新建一个Work-space" class="headerlink" title="新建一个Work space"></a>新建一个Work space</h2><p>ROS的官网是这么说的：</p>
+<blockquote>
+<p>Our workspace, <code>ros2_examples_ws</code>, will be an <strong>overlay</strong> on top of the existing ROS 2 installation. In general, it is recommended to use an overlay when you plan to iterate on a small number of packages, rather than putting all of your packages into the same workspace.</p>
+</blockquote>
+<p>简单来说，就是为你的项目建立一个单独的work space，而不是把他们全部都堆在ROS2的主路径下。</p>
+<p>新建一个work space很简单，一个有标识性的ws folder，然后在里面创建一个src空文件夹。你的文件夹应该是这样的：</p>
+<p>.<br>└── src</p>
+<p>1 directory, 0 files</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-6.png"></p>
+<p>我这里已经编译过了，所以有别的文件夹。最开始时，除了src以外，不应该有其他任何文件。</p>
+<h2 id="试运行：Dolly"><a href="#试运行：Dolly" class="headerlink" title="试运行：Dolly"></a>试运行：Dolly</h2><p>进入src文件夹，所有的package都应该在这里创建、编辑。下载Dolly：</p>
+<p>git clone <a target="_blank" rel="noopener" href="https://github.com/chapulina/dolly.git">https://github.com/chapulina/dolly.git</a></p>
+<p>然后<strong>到ws的主路径下进行编译</strong>，这很重要。这里要ignore dolly_gazebo这个包，因为我们只安装了ignition：</p>
+<p>rosdep install –from-paths src –ignore-src -r -y<br>colcon build –symlink-install –packages-ignore dolly_gazebo</p>
+<p>编译完成后，试着运行dolly。首先设置环境变量（你自己的路径）：</p>
+<p> . ~&#x2F;ws&#x2F;install&#x2F;setup.bash</p>
+<p>然后使用ros2 launch运行：</p>
+<p> ros2 launch dolly_ignition dolly.launch.py</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-7-1024x361.png"></p>
+<p>可以看到rviz2和ignition gazebo的窗口。</p>
+<h2 id="创建package"><a href="#创建package" class="headerlink" title="创建package"></a>创建package</h2><p>接下来我们创建自己的package，不同之处在于，这次使用基于python的pkg。确保在ws的src文件下，新建一个pkg：</p>
+<p>ros2 pkg create –build-type ament_python my_dolly</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-8.png"></p>
+<p>python的ros2结构如上，其中launch这个文件夹一开始是没有的，这里也创建了，有用。然后在launch file里创建一个文件：</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-9.png"></p>
+<p>import os</p>
+<p>from ament_index_python.packages import get_package_share_directory<br>from launch import LaunchDescription<br>from launch.actions import DeclareLaunchArgument<br>from launch.actions import IncludeLaunchDescription<br>from launch.conditions import IfCondition<br>from launch.launch_description_sources import PythonLaunchDescriptionSource<br>from launch.substitutions import LaunchConfiguration<br>from launch_ros.actions import Node</p>
+<p>def generate_launch_description():</p>
+<pre><code>pkg\_ros\_ign\_gazebo = get\_package\_share\_directory(&#39;ros\_ign\_gazebo&#39;)
+pkg\_dolly\_ignition = get\_package\_share\_directory(&#39;dolly\_ignition&#39;)
+
+# Gazebo launch
+gazebo = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+        os.path.join(pkg\_ros\_ign\_gazebo, &#39;launch&#39;, &#39;ign\_gazebo.launch.py&#39;),
+    ),
+)
+
+spawn = Node(package=&#39;ros\_ign\_gazebo&#39;, executable=&#39;create&#39;,
+             arguments=\[
+                &#39;-name&#39;, &#39;dolly&#39;,
+                &#39;-x&#39;, &#39;5.0&#39;,
+                &#39;-z&#39;, &#39;0.46&#39;,
+                &#39;-Y&#39;, &#39;1.57&#39;,
+                &#39;-file&#39;, os.path.join(pkg\_dolly\_ignition, &#39;models&#39;, &#39;dolly\_ignition&#39;,
+                                      &#39;model.sdf&#39;)\],
+             output=&#39;screen&#39;)
+
+return LaunchDescription(\[
+    DeclareLaunchArgument(
+      &#39;ign\_args&#39;,
+      default\_value=\[os.path.join(pkg\_dolly\_ignition, &#39;worlds&#39;, &#39;station.sdf&#39;) +
+                     &#39; -v 2 --gui-config &#39; +
+                     os.path.join(pkg\_dolly\_ignition, &#39;ign&#39;, &#39;gui.config&#39;), &#39;&#39;\],
+      description=&#39;Ignition Gazebo arguments&#39;),
+    gazebo,
+    spawn,
+\])
+</code></pre>
+<p>基本上照抄dolly_ignition里的launchfile，不过把好几个Node都删掉了，保留了_Gazebo launch_和Spawn dolly。不同的是，如果是c++的架构，编译后launch file就可以用了，<strong>在python架构里，需要修改setup.py里的内容，加上一行：</strong></p>
+<p>from glob import glob</p>
+<p>setup(<br>    …<br>    data_files&#x3D;[<br>        ….<br>        (‘share&#x2F;‘ + package_name, glob(‘launch&#x2F;*.launch.py’))<br>    ],<br>    …<br>)</p>
+<p>接下来回到ws主目录，编译my_dolly：</p>
+<p>colcon build –packages-select my_dolly</p>
+<p>然后launch dolly：</p>
+<p>ros2 launch my_dolly my_dolly.launch.py</p>
+<p>效果相同。</p>
+<h2 id="Python-Subscriber"><a href="#Python-Subscriber" class="headerlink" title="Python Subscriber"></a>Python Subscriber</h2><p>类似的，创建一个Node。所有的Node源码都放在同名文件夹下，与__init__.py放在一起：</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-10.png"></p>
+<p>import rclpy<br>from rclpy.node import Node</p>
+<p>from sensor_msgs.msg import LaserScan</p>
+<p>class LaserScanner(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;laser\_scanner&#39;)
+    self.subscription = self.create\_subscription(
+        LaserScan,
+        &#39;/dolly/laser\_scan&#39;,
+        self.listener\_callback,
+        10)
+    self.subscription  # prevent unused variable warning
+
+def listener\_callback(self, msg):
+    self.get\_logger().info(&#39;I heard: &quot;%f&quot;&#39; % msg.ranges\[0\])
+</code></pre>
+<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
+<pre><code>laser\_scanner = LaserScanner()
+
+rclpy.spin(laser\_scanner)
+
+# Destroy the node explicitly
+# (optional - otherwise it will be done automatically
+# when the garbage collector destroys the node object)
+laser\_scanner.destroy\_node()
+rclpy.shutdown()
+</code></pre>
+<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
+<p>不禁感叹，python真是高级语言啊，比c++写的简介多了。前面编辑launchfile的时候，需要到setup.py里调整参数，这里也是一样的，从而让ros2 run能找到源文件。</p>
+<pre><code>entry\_points=&#123;
+    &#39;console\_scripts&#39;: \[
+        &#39;laser\_scan = my\_dolly.laser\_scan:main&#39;,
+    \],
+&#125;,
+</code></pre>
+<p>然后，我们再试试把它加到launch file里，让他和其他Node一起启动：（此时还需要启动ign_ros_bridge，怎么写参考dolly_ignition的Node）</p>
+<pre><code>#laser
+laser = Node(
+    package=&#39;my\_dolly&#39;,
+    executable=&#39;laser\_scan&#39;,
+    output=&#39;screen&#39;,
+)
+
+return LaunchDescription(\[
+    DeclareLaunchArgument(
+      &#39;ign\_args&#39;,
+      default\_value=\[os.path.join(pkg\_dolly\_ignition, &#39;worlds&#39;, &#39;station.sdf&#39;) +
+                     &#39; -v 2 --gui-config &#39; +
+                     os.path.join(pkg\_dolly\_ignition, &#39;ign&#39;, &#39;gui.config&#39;), &#39;&#39;\],
+      description=&#39;Ignition Gazebo arguments&#39;),
+    gazebo,
+    spawn,
+    bridge,
+    laser,
+\])
+</code></pre>
+<p>编译后启动，可以看到打印出来的传感器数据：</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-11-1024x806.png"></p>
+<p>总结一下，Node放在同名文件夹里，在setup.py里修改entry_point来让ros2找到启动路径。</p>
+<h2 id="Python-Publisher"><a href="#Python-Publisher" class="headerlink" title="Python Publisher"></a>Python Publisher</h2><p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-13.png"></p>
+<p>import rclpy<br>from rclpy.node import Node</p>
+<p>from geometry_msgs.msg import Twist</p>
+<p>class MovingRobot(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;moving\_robot&#39;)
+    self.publisher\_ = self.create\_publisher(Twist, &#39;/dolly/cmd\_vel&#39;, 10)
+    timer\_period = 0.5  # seconds
+    self.timer = self.create\_timer(timer\_period, self.timer\_callback)
+    self.i = 0
+
+def timer\_callback(self):
+    msg = Twist()
+    msg.linear.x = 0.5
+    msg.angular.z = 0.3
+    self.publisher\_.publish(msg)
+    self.get\_logger().info(str(msg))
+    self.i += 1
+</code></pre>
+<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
+<pre><code>moving\_robot = MovingRobot()
+
+rclpy.spin(moving\_robot)
+
+# Destroy the node explicitly
+# (optional - otherwise it will be done automatically
+# when the garbage collector destroys the node object)
+moving\_robot.destroy\_node()
+rclpy.shutdown()
+</code></pre>
+<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
+<p>过于简单，感觉没有什么要讲的。setup.py里：</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-14.png"></p>
+<p>运行：</p>
+<p>shaw@shaw-Inspiron-7590:<del>&#x2F;Data&#x2F;Seafile&#x2F;robot&#x2F;ros2_ws$ ros2 launch my_dolly my_dolly.launch.py<br>shaw@shaw-Inspiron-7590:</del>&#x2F;Data&#x2F;Seafile&#x2F;robot&#x2F;ros2_ws$ ros2 run my_dolly moving_robot</p>
+<h2 id="避障"><a href="#避障" class="headerlink" title="避障"></a>避障</h2><p>最后来改写一下避障：</p>
+<p>obstacle.py</p>
+<p>import rclpy<br>from rclpy.node import Node</p>
+<p>from geometry_msgs.msg import Twist<br>from sensor_msgs.msg import LaserScan</p>
+<p>class Obstacle(Node):</p>
+<pre><code>def \_\_init\_\_(self):
+    super().\_\_init\_\_(&#39;obstacle&#39;)
+    self.subscription = self.create\_subscription(
+        LaserScan,
+        &#39;/dolly/laser\_scan&#39;,
+        self.listener\_callback,
+        10)
+    self.subscription  # prevent unused variable warning
+    self.publisher\_ = self.create\_publisher(Twist, &#39;/dolly/cmd\_vel&#39;, 10)
+    
+def listener\_callback(self, msg):
+    min\_distance = 10
+    for each in msg.ranges:
+        if each &lt; min\_distance:
+            min\_distance = each
+        else:
+            continue
+    message = Twist()
+    if min\_distance &lt; 1:
+        message.linear.x = 0.0
+        message.angular.z = 0.3
+    else:
+        message.linear.x = 0.3
+        message.linear.z = 0.0
+    self.publisher\_.publish(message)
+    
+</code></pre>
+<p>def main(args&#x3D;None):<br>    rclpy.init(args&#x3D;args)</p>
+<pre><code>obstacle = Obstacle()
+
+rclpy.spin(obstacle)
+
+obstacle.destroy\_node()
+rclpy.shutdown()
+</code></pre>
+<p>if __name__ &#x3D;&#x3D; ‘__main__‘:<br>    main()</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/%E5%9B%BE%E7%89%87-15-1024x233.png"></p>
+<p>这个地方必须按照这个顺序来，否则编译不通过，具体是为什么不太清楚。其他步骤类似上面。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总结一下，使用python进行ROS2开发简单不少。首先，来分析一下ros2和ignition在仿真中的角色都是什么：</p>
+<h3 id="ROS2与Ignition的角色"><a href="#ROS2与Ignition的角色" class="headerlink" title="ROS2与Ignition的角色"></a>ROS2与Ignition的角色</h3><p>ROS2：控制。对机器人的控制，都应当使用ROS2进行，这样迁移到真实机器人上的时候，更加快速。因为ROS2并不在乎它所控制的是真实机器人还是仿真中的机器人，它只与topic进行交互。</p>
+<p>Ignition：仿真。Ignition也提供了topic一类的机制，他们的作用是与ROS2进行映射，从而使用ROS2来控制仿真中的机器人。在ROS2只关注与topic的交互时，ignition关注的是阅读topic中的信息，并基于信息对仿真机器人做出物理仿真，例如速度上的改变等。</p>
+<h3 id="Python工作流"><a href="#Python工作流" class="headerlink" title="Python工作流"></a>Python工作流</h3><ol>
+<li>建立workspace</li>
+<li>在workspace下的src文件夹中建立package：ros2 pkg create –build-type ament_python my_dolly</li>
+<li>在package同名子文件下编写Node脚本</li>
+<li>在launch文件夹下编写launch file</li>
+<li>在setup里修改data_files（for launch file）、entry_points（for node）</li>
+<li>在worksapce下编译：colcon build –packages-select my_dolly</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/18/%E5%92%8Cdolly%E4%B8%80%E8%B5%B7%E6%8E%A2%E7%B4%A2ros2%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%8F%91%E5%B8%83%E8%AF%9D%E9%A2%98%EF%BC%8C%E9%81%BF%E9%9A%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/18/%E5%92%8Cdolly%E4%B8%80%E8%B5%B7%E6%8E%A2%E7%B4%A2ros2%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9A%E5%8F%91%E5%B8%83%E8%AF%9D%E9%A2%98%EF%BC%8C%E9%81%BF%E9%9A%9C/" class="post-title-link" itemprop="url">和Dolly一起探索ROS2（三）：发布话题，避障</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-18 19:09:48" itemprop="dateCreated datePublished" datetime="2021-09-18T19:09:48+08:00">2021-09-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="发布话题"><a href="#发布话题" class="headerlink" title="发布话题"></a>发布话题</h2><p>本章我们会写一个可执行程序来向特定话题发布一个消息，简单地说，就是创建一个Node，然后控制他发送一条消息。</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/image-7.png"></p>
+<p>如图所示位置创建moving_robot.cpp，内容如下：</p>
+<p>#include <chrono><br>#include <functional><br>#include <memory></p>
+<p>#include “rclcpp&#x2F;rclcpp.hpp”<br>&#x2F;&#x2F;类型为旋转+平移的运动数值<br>#include “geometry_msgs&#x2F;msg&#x2F;twist.hpp”</p>
+<p>using namespace std::chrono_literals;</p>
+<p>&#x2F;&#x2F;创建Node<br>class MovingRobot : public rclcpp::Node {<br>public:<br>  MovingRobot() : Node(“minimal_publisher”) {<br>&#x2F;&#x2F;创建一个publisher<br>    publisher_ &#x3D; this-&gt;create_publisher&lt;geometry_msgs::msg::Twist&gt;(<br>        “&#x2F;dolly&#x2F;cmd_vel”, 10);<br>    timer_ &#x3D; this-&gt;create_wall_timer(<br>&#x2F;&#x2F;实际上，回调函数绑定在一个计时器上，500ms调用一次。如果只想发布一次的话，不用绑定计时器就行了。<br>        500ms, std::bind(&amp;MovingRobot::timer_callback, this));<br>  }</p>
+<p>private:<br>&#x2F;&#x2F;回调函数，生成一个Twist msg，然后发布<br>  void timer_callback() {<br>    auto message &#x3D; geometry_msgs::msg::Twist();<br>    message.linear.x &#x3D; 0.5;<br>    message.angular.z &#x3D; 0.3;<br>    RCLCPP_INFO(this-&gt;get_logger(), “Publishing: ‘%f’ ‘%f’”, message.linear.x, message.angular.z);<br>    publisher_-&gt;publish(message);<br>  }<br>  rclcpp::TimerBase::SharedPtr timer_;<br>  rclcpp::Publisher&lt;geometry_msgs::msg::Twist&gt;::SharedPtr publisher_;<br>};</p>
+<p>&#x2F;&#x2F;正常流程，上一章里提过了<br>int main(int argc, char *argv[]) {<br>  rclcpp::init(argc, argv);<br>  auto node &#x3D; std::make_shared<MovingRobot>();<br>  rclcpp::spin(node);<br>  rclcpp::shutdown();<br>  return 0;<br>}</p>
+<p>cmakelist里做对应修改，主要是加入了新的依赖，以及要生成新的可执行文件：</p>
+<p>find_package(geometry_msgs REQUIRED)</p>
+<p>…</p>
+<p>#moving robot<br>add_executable(moving_robot src&#x2F;moving_robot.cpp)<br>ament_target_dependencies(moving_robot rclcpp std_msgs geometry_msgs)</p>
+<p>…</p>
+<p>install(TARGETS<br>  reading_laser<br>  moving_robot<br>  DESTINATION lib&#x2F;${PROJECT_NAME}&#x2F;<br>)</p>
+<p>编译方式和上一章一模一样，运行方式也类似。ros2 run之后，就可以看到小车开始打转儿了。</p>
+<h2 id="避障"><a href="#避障" class="headerlink" title="避障"></a>避障</h2><p>写到这里发现这一张内容太少了，所以干脆把下一章的内容也写进来。接下来要做的是一个常见功能，就是避障。原理上很简单，激光雷达传感器探测到附近有物体后，控制dolly转向就好了。那么这个功能设计到对topic的subscribe和publish，而这些操作我们要在一个app里完成。</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/image-8-1024x585.png"></p>
+<p>from launch import LaunchDescription<br>from launch_ros.actions import Node</p>
+<p>def generate_launch_description():</p>
+<pre><code>obstacle\_avoidance = Node(
+    package=&#39;my\_package&#39;,
+    executable=&#39;obstacle\_avoidance&#39;,
+    output=&#39;screen&#39;,
+    remappings=\[
+        (&#39;laser\_scan&#39;, &#39;/dolly/laser\_scan&#39;),
+        (&#39;cmd\_vel&#39;, &#39;/dolly/cmd\_vel&#39;)
+    \]
+)
+
+return LaunchDescription(\[
+    obstacle\_avoidance
+\])
+</code></pre>
+<p>#include “rclcpp&#x2F;rclcpp.hpp”<br>#include “sensor_msgs&#x2F;msg&#x2F;laser_scan.hpp”<br>#include “geometry_msgs&#x2F;msg&#x2F;twist.hpp”</p>
+<p>using std::placeholders::_1;</p>
+<p>class ObstacleAvoidance : public rclcpp::Node {</p>
+<p>public:<br>  ObstacleAvoidance() : Node(“ObstacleAvoidance”) {<br>    auto default_qos &#x3D; rclcpp::QoS(rclcpp::SystemDefaultsQoS());<br>    subscription_ &#x3D; this-&gt;create_subscription&lt;sensor_msgs::msg::LaserScan&gt;(<br>        “laser_scan”, default_qos,<br>        std::bind(&amp;ObstacleAvoidance::topic_callback, this, _1));<br>    publisher_ &#x3D;<br>        this-&gt;create_publisher&lt;geometry_msgs::msg::Twist&gt;(“cmd_vel”, 10);<br>  }</p>
+<p>private:<br>  void topic_callback(const sensor_msgs::msg::LaserScan::SharedPtr _msg) {<br>    float min &#x3D; 10;<br>    for (int i &#x3D; 0; i &lt; 200; i++) {<br>        float current &#x3D; _msg-&gt;ranges[i];<br>        if (current&lt;min) {<br>            min &#x3D; current;<br>        }<br>    }<br>    auto message &#x3D; this-&gt;calculateVelMsg(min);<br>    publisher_-&gt;publish(message);<br>  }<br>  geometry_msgs::msg::Twist calculateVelMsg(float distance) {<br>      auto msg &#x3D; geometry_msgs::msg::Twist();<br>      RCLCPP_INFO(this-&gt;get_logger(), “Distance is : ‘%f’”, distance);<br>      if (distance&lt;1) {<br>          msg.linear.x &#x3D; 0;<br>          msg.angular.z &#x3D; 0.3;<br>      } else {<br>          msg.linear.x &#x3D; 0.3;<br>          msg.angular.z &#x3D; 0;<br>      }<br>      return msg;<br>  }<br>  rclcpp::Publisher&lt;geometry_msgs::msg::Twist&gt;::SharedPtr publisher_;<br>  rclcpp::Subscription&lt;sensor_msgs::msg::LaserScan&gt;::SharedPtr subscription_;<br>};</p>
+<p>int main(int argc, char *argv[]) {<br>  rclcpp::init(argc, argv);<br>  auto node &#x3D; std::make_shared<ObstacleAvoidance>();<br>  RCLCPP_INFO(node-&gt;get_logger(), “hello my friends”);<br>  rclcpp::spin(node);<br>  rclcpp::shutdown();<br>  return 0;<br>}</p>
+<p>#obstacle avoidance<br>add_executable(obstacle_avoidance src&#x2F;obstacle_avoidance.cpp)<br>ament_target_dependencies(obstacle_avoidance rclcpp std_msgs sensor_msgs geometry_msgs)</p>
+<p>install(TARGETS<br>  reading_laser<br>  moving_robot<br>  obstacle_avoidance<br>  DESTINATION lib&#x2F;${PROJECT_NAME}&#x2F;<br>)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/09/18/%E5%92%8Cdolly%E4%B8%80%E8%B5%B7%E6%8E%A2%E7%B4%A2ros2%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E8%AE%A2%E9%98%85%E8%AF%9D%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/18/%E5%92%8Cdolly%E4%B8%80%E8%B5%B7%E6%8E%A2%E7%B4%A2ros2%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E8%AE%A2%E9%98%85%E8%AF%9D%E9%A2%98/" class="post-title-link" itemprop="url">和Dolly一起探索ROS2（二）：订阅话题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-18 11:31:15" itemprop="dateCreated datePublished" datetime="2021-09-18T11:31:15+08:00">2021-09-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>订阅话题，主要是为了获取数据，从而进行其他的操作。但是，订阅话题这个工作只能由Node来完成。所以我们要做的事，使用C++编写一个可执行程序，在里面创建Node，并完成订阅话题的工作。不仅如此，我们还会创建一个launch file，用它来执行程序。</p>
+<p>本章接触两个主要命令：ros2 run和ros2 launch。ros2 run用来执行单个的服务&#x2F;应用，比如说启动一个摄像机；ros2 launch则是启动一组应用，比如摄像机+仿真+执行器。那么第一步，我们先做一个监听某个topic的应用：</p>
+<p>打开the construct，在如图位置创建以下文件：</p>
+<p>&#x2F;&#x2F;基本的ros common libraries<br>#include “rclcpp&#x2F;rclcpp.hpp”<br>&#x2F;&#x2F;读取的是laser sensor的数据<br>#include “sensor_msgs&#x2F;msg&#x2F;laser_scan.hpp”</p>
+<p>using std::placeholders::_1;</p>
+<p>&#x2F;&#x2F;继承Node<br>class ReadingLaser : public rclcpp::Node {</p>
+<p>public:<br>&#x2F;&#x2F;构造函数<br>  ReadingLaser() : Node(“reading_laser”) {<br>    auto default_qos &#x3D; rclcpp::QoS(rclcpp::SystemDefaultsQoS());<br>&#x2F;&#x2F;生成一个线程，监听数据<br>    subscription_ &#x3D; this-&gt;create_subscription&lt;sensor_msgs::msg::LaserScan&gt;(<br>        “laser_scan”, default_qos,<br>        std::bind(&amp;ReadingLaser::topic_callback, this, _1));<br>  }</p>
+<p>&#x2F;&#x2F;线程里要执行的函数放在这里<br>private:<br>  void topic_callback(const sensor_msgs::msg::LaserScan::SharedPtr _msg) {<br>    RCLCPP_INFO(this-&gt;get_logger(), “I heard: ‘%f’ ‘%f’”, _msg-&gt;ranges[0],<br>                _msg-&gt;ranges[100]);<br>  }<br>  rclcpp::Subscription&lt;sensor_msgs::msg::LaserScan&gt;::SharedPtr subscription_;<br>};</p>
+<p>&#x2F;&#x2F;init，spin，shutdown是基本的操作<br>int main(int argc, char *argv[]) {<br>  rclcpp::init(argc, argv);<br>  auto node &#x3D; std::make_shared<ReadingLaser>();<br>  RCLCPP_INFO(node-&gt;get_logger(), “hello my friends”);<br>  rclcpp::spin(node);<br>  rclcpp::shutdown();<br>  return 0;<br>}</p>
+<p>同时，因为导入了rclcpp、sensor_msgs包，也在cmake里加入相应的行：</p>
+<p>cmake_minimum_required(VERSION 3.5)<br>project(my_package)</p>
+<p>…</p>
+<h1 id="find-dependencies"><a href="#find-dependencies" class="headerlink" title="find dependencies"></a>find dependencies</h1><p>find_package(ament_cmake REQUIRED)<br>find_package(rclcpp REQUIRED)<br>find_package(sensor_msgs REQUIRED)</p>
+<p>…</p>
+<p>add_executable(reading_laser src&#x2F;reading_laser.cpp)<br>ament_target_dependencies(reading_laser rclcpp std_msgs sensor_msgs)</p>
+<p>install(DIRECTORY<br>  launch<br>  DESTINATION share&#x2F;${PROJECT_NAME}<br>)</p>
+<p>install(TARGETS<br>  reading_laser<br>  DESTINATION lib&#x2F;${PROJECT_NAME}&#x2F;<br>)</p>
+<p>ament_package()</p>
+<p>之后进行编译，编译路径为ros2的工作空间：</p>
+<p>user:~&#x2F;ros2_ws$ colcon build –symlink-install –packages-select my_package</p>
+<p>编译完成后，先用ros2 launch启动dolly（就不演示了），然后使用ros2 run执行程序：</p>
+<p>可以看到程序执行成功了，但是并没有任何的数据。这是为什么呢？很简单， 因为我们订阅的topic是laser_scan，但是dolly传感器的topic是dolly&#x2F;laser_scan。实际上在源文件里改一下话题也可以，但是如果换了一个传感器，就又要改动源文件然后编译。所以我们用另外的方式来解决这个问题。在如图所示位置新建一个launch file：</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/image-5.png"></p>
+<p>from launch import LaunchDescription<br>from launch_ros.actions import Node</p>
+<p>def generate_launch_description():</p>
+<pre><code>reading\_laser = Node(
+    package=&#39;my\_package&#39;,
+    executable=&#39;reading\_laser&#39;,
+    output=&#39;screen&#39;,
+    remappings=\[
+        (&#39;laser\_scan&#39;, &#39;/dolly/laser\_scan&#39;)
+    \]
+)
+
+return LaunchDescription(\[
+    reading\_laser
+\])
+</code></pre>
+<p>在这个launch file里，我们对topic进行了remap，使得在不改动源文件的情况下，改变订阅的topic。然后ros2 launch：</p>
+<p>user:~&#x2F;ros2_ws$ ros2 launch my_package reading_laser_launch.py</p>
+<p>[reading_laser-1] [INFO] [1631935735.554381992] [reading_laser]: I heard: ‘inf’ ‘inf’<br>[reading_laser-1] [INFO] [1631935735.556166570] [reading_laser]: I heard: ‘inf’ ‘inf’<br>[reading_laser-1] [INFO] [1631935735.557396558] [reading_laser]: I heard: ‘inf’ ‘inf’<br>[reading_laser-1] [INFO] [1631935735.560346428] [reading_laser]: I heard: ‘inf’ ‘inf’<br>[reading_laser-1] [INFO] [1631935735.562563220] [reading_laser]: I heard: ‘inf’ ‘inf’</p>
+<p>这样就能看到数据了，在仿真里放上一个障碍物：</p>
+<p><img src="http://www.lxshaw.com/wp-content/uploads/2021/09/image-6-1024x633.png"></p>
+<p>就能看到具体的数值。</p>
+
       
     </div>
 
@@ -1602,7 +1684,7 @@ rclpy.spin(action\_client)
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1668,12 +1750,12 @@ rclpy.spin(action\_client)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">162</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">分类</span>
       </div>
   </nav>

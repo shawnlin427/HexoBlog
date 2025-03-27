@@ -170,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/13/%E4%B8%93%E5%AE%B6%E7%B3%BB%E7%BB%9F%E9%87%8C%E7%9A%84%E6%8E%A8%E7%90%86%E6%9C%BA%E5%AE%9E%E7%8E%B0/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/%E5%A1%94%E7%BD%97%E7%89%8C%EF%BC%9A%E5%AE%83%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E5%A6%82%E4%BD%95%E8%B5%B7%E4%BD%9C%E7%94%A8%EF%BC%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -184,7 +184,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/04/13/%E4%B8%93%E5%AE%B6%E7%B3%BB%E7%BB%9F%E9%87%8C%E7%9A%84%E6%8E%A8%E7%90%86%E6%9C%BA%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">专家系统里的推理机实现</a>
+            <a href="/2021/04/09/%E5%A1%94%E7%BD%97%E7%89%8C%EF%BC%9A%E5%AE%83%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E5%A6%82%E4%BD%95%E8%B5%B7%E4%BD%9C%E7%94%A8%EF%BC%9F/" class="post-title-link" itemprop="url">塔罗牌：它是什么，如何起作用？</a>
         </h2>
 
         <div class="post-meta">
@@ -194,7 +194,646 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-04-13 17:06:50" itemprop="dateCreated datePublished" datetime="2021-04-13T17:06:50+08:00">2021-04-13</time>
+              <time title="创建时间：2021-04-09 14:39:17" itemprop="dateCreated datePublished" datetime="2021-04-09T14:39:17+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/thought/" itemprop="url" rel="index"><span itemprop="name">thought</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/thought/%E5%A1%94%E7%BD%97%E7%89%8C/" itemprop="url" rel="index"><span itemprop="name">塔罗牌</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>塔罗牌是一种西方的占卜工具，起源不详。塔罗牌由于和占卜的紧密关系，经常被认为是吉卜赛人创造的。塔罗牌总共有22张大阿卡那牌，56张小阿卡纳牌。大阿卡那牌想必很多人都有所耳闻，在许多文学、影视、游戏作品中都有出现，例如《赛博朋克2077》、《百变小樱》、《JOJO的奇妙冒险》等等。大阿卡那牌的象征意味比小阿卡纳牌要浓的多，当一个吉普赛老女人抽出一张死亡牌时，对面的少女一定吓得花容失色，但是如果抽出一张宝剑八，虽然意思差不多，但是难免还要再解释一下宝剑八的意思。所以说所谓“象征意味更浓”，“与灵魂联系更紧密”，无非是牌比较少大家印象比较深罢了。小阿卡纳牌则是后来扑克牌的来源，56张牌四个花色（宝剑-黑桃、圣杯-红桃、钱币-方片、权杖-梅花），以及国王、皇后、骑士、侍从的特殊牌型都直接影响了扑克牌的发展。如果你觉得对应性还是没有那么强的话，请注意宝剑和圣杯这一对富有阴阳对应以及生育意味的组合，以及黑桃和红桃这一对方向相反、形态相近的组合。</p>
+<p>和所有的宗教一样，塔罗牌也有很多分支与体系。最为热门的是维特塔罗牌，但是它是从1910年才正式发行的。现在你能买到的大部分塔罗牌都是维特塔罗牌，它印刷比较精美，并且用英文注明牌面，小阿卡纳牌也有很生动的绘画方便使用者回忆牌意。马赛塔罗牌的小阿卡纳牌则没有绘画，与扑克牌一样，“钱币四”则在牌面上画四个钱币。还有一种托特塔罗牌，由近代极具争议的神秘学家—阿来斯特·克劳利(Aleister·Crowley,1875-1947)，在与佛莱达·哈里丝女士(Frieda·Harris)的合作之下，花了五年的时间(1938-1943)，融合了占星术、卡巴拉、易经、神话、炼金术、魔法等各种神秘学元素，所创作出这副以埃及为主题的塔罗牌（此段来自百度翻译）。总而言之，塔罗牌体系的成熟也只是近代的事情，在此之前塔罗牌的释义基本上是各家念各经。可能是塔罗牌的解释空间太大，现在也允许使用者对塔罗牌有自己的理解，据称不会影响塔罗的效果。</p>
+<p>但是在追问“使用者对塔罗有自己的理解会不会影响塔罗的效果”，以及“存不存在牌灵”这种荒谬的问题前，不如先问问“塔罗牌到底有没有用？”。我的理解是，塔罗牌有用，但并不在于其“预言”的功能。或者说，塔罗牌完全没有预言的功能。为了让塔罗牌看起来有预言的功能，有许多约定俗成的规矩，比如不当面占卜就不准，间接占卜不准，太久的事情不准，直接问确切的结果不准，总而言之塔罗只能给出模棱两可的回答。心理学中有一个非常有趣的巴纳姆效应，指的就是人们常常认为一种笼统的、一般性的人格描述十分准确地揭示了自己的特点，当人们用一些普通、含糊不清、广泛的形容词来描述一个人的时候，人们往往很容易就接受这些描述，却认为描述中所说的就是自己。塔罗的一张牌存在多个释义，虽然这些释义在一定程度上存在共性，但是多张牌的组合依然能让塔罗的回答在一个很大的不确定性之间。就像雷军说小米的新车价格在10万到30万之间，最后出来发现真的是20万，但是比亚迪吉利大众丰田别克这些车企的车都在10万到30万啊，这属于几乎无效的信息。</p>
+<p>但是塔罗牌还是存在一定的价值的，其价值不在于它和科学完全沾不上边的占卜功效，而在于其在心理学上的一些辅助功能。有些心理治疗师尝试使用塔罗牌进行心理治疗，当然这很看心理治疗师的编故事功底，无论患者抽到什么牌，心里治疗师都要编一个为治疗目标服务的故事。不过由于塔罗牌上好像存在一种超自然的力量，患者会更容易介绍心理治疗师的暗示。卡尔·荣格是和塔罗牌有所关系的最大咖了，他创立了荣格人格分析心理学理论，提出“情结“的概念，把人格分为内倾和外倾两种，主张把人格分为意识、个人无意识和集体无意识三层。集体无意识能和塔罗牌扯上一点关系，但是集体无意识也还是一种假设，它假设人类在进化的过程中有一些原始意象累计在集体无意识中被所有人类共享（这是一个假设），而塔罗牌可以反映出这种集体无意识（建立在假设上的假设）。我了解的很粗浅，就不对荣格理论妄加评论了，但可以确定的是，就算塔罗牌能够反映集体无意识，作为犹太人的集体无意识结晶也没法用在中国人身上。</p>
+<p>所以你可能发现了，塔罗牌存在的价值还是在心理治疗上；或者我再说得直白一点，说对方想听的话或者自己想说的话却不让对方发现。除此之外，塔罗牌的艺术价值也是值得探讨的。《赛博朋克2077》中的塔罗牌绘画就非常精美，我非常想收藏一份。如果你真的想让别人用塔罗帮你认真地占卜，那至少找一个社会阅历丰富年龄大的，他&#x2F;她释出的牌意可能有更多的人生经验，相反你要是找个培训了一个月出来招摇的“占卜师”，ta为了赚钱可是什么都敢说，谁信谁笨蛋。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/%E5%88%B6%E4%BD%9C%E8%87%AA%E5%B7%B1%E7%9A%84%E4%B8%AD%E6%96%87%E5%AD%97%E4%BD%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/09/%E5%88%B6%E4%BD%9C%E8%87%AA%E5%B7%B1%E7%9A%84%E4%B8%AD%E6%96%87%E5%AD%97%E4%BD%93/" class="post-title-link" itemprop="url">制作自己的中文字体</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 13:54:45" itemprop="dateCreated datePublished" datetime="2021-04-09T13:54:45+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/thought/" itemprop="url" rel="index"><span itemprop="name">thought</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/thought/%E6%96%B0%E9%B2%9C%E4%BA%8B/" itemprop="url" rel="index"><span itemprop="name">新鲜事</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>北大计院的同学们做了这么个网站：<a target="_blank" rel="noopener" href="http://www.flexifont.com/">www.flexifont.com</a><br>网站提供模版下载和字体文件生成。非常的好用。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210309211359867-2145457756-1024x715.png"></p>
+<p>其他的网站要么是只针对英文，要么是需要付费。这个免费网站基本已经能够满足大部分人的需要了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8Emutt%E5%92%8Cpython%E7%88%AC%E8%99%AB%E7%9A%84%E6%AF%8F%E6%97%A5%E8%A6%81%E9%97%BB%E4%B8%8E%E5%A4%A9%E6%B0%94%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/09/%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8Emutt%E5%92%8Cpython%E7%88%AC%E8%99%AB%E7%9A%84%E6%AF%8F%E6%97%A5%E8%A6%81%E9%97%BB%E4%B8%8E%E5%A4%A9%E6%B0%94%E8%87%AA%E5%8A%A8%E5%8F%91%E9%80%81/" class="post-title-link" itemprop="url">制作一个基于mutt和python爬虫的每日要闻与天气自动发送脚本</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 13:53:12" itemprop="dateCreated datePublished" datetime="2021-04-09T13:53:12+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>脚本一开始运行在树莓派上，后来迁移到腾讯云服务器上。爬虫使用python，定时发送通过sh脚本和crontab定时任务完成，邮件发送使用mutt。一个稍微有点用的小玩意儿。</p>
+<h2 id="爬虫编写"><a href="#爬虫编写" class="headerlink" title="爬虫编写"></a>爬虫编写</h2><p>import requests<br>from lxml import etree<br>import json<br>import re<br>from ast import literal_eval<br>import datetime<br>import time<br>import random<br>from writehtml import *</p>
+<p>def get_weather():<br>    headers_weather &#x3D; {<br>        ‘Host’: ‘<a target="_blank" rel="noopener" href="http://www.weather.com.cn/">www.weather.com.cn</a>‘,<br>        ‘Referer’: ‘<a target="_blank" rel="noopener" href="http://www.weather.com.cn/">http://www.weather.com.cn/</a>‘,<br>        ‘Upgrade-Insecure-Requests’: ‘1’,<br>        ‘User-Agent’: ‘Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;88.0.4324.182 Safari&#x2F;537.36 Edg&#x2F;88.0.705.81’<br>    }<br>    url &#x3D; “<a target="_blank" rel="noopener" href="http://www.weather.com.cn/weather/101010100.shtml">http://www.weather.com.cn/weather/101010100.shtml</a>“ #海淀<br>    res &#x3D; requests.get(url, headers&#x3D;headers_weather)<br>    res.encoding &#x3D; ‘utf-8’<br>    html &#x3D; etree.HTML(res.text)<br>    weather &#x3D; re.findall(‘“1d”:(.*?),”23d”‘, res.text)[0]<br>    weather &#x3D; literal_eval(weather)<br>    weather_list &#x3D; []<br>    for each in weather:<br>        hourlist &#x3D; each.split(‘,’)<br>        weather_list.append([hourlist[0]]+hourlist[2:-1])<br>    return weather_list</p>
+<p>def get_baidutop10():<br>    headers &#x3D; {<br>        ‘Host’: ‘top.baidu.com’,<br>        ‘Referer’: ‘<a target="_blank" rel="noopener" href="https://www.baidu.com/">https://www.baidu.com/</a>‘,<br>        ‘Upgrade-Insecure-Requests’: ‘1’,<br>        ‘User-Agent’: ‘Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;88.0.4324.182 Safari&#x2F;537.36 Edg&#x2F;88.0.705.81’<br>    }<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="http://top.baidu.com/?fr=mhd%5C_card">http://top.baidu.com/?fr=mhd\_card</a>‘<br>    res &#x3D; requests.get(url, headers&#x3D;headers)<br>    res.encoding &#x3D; ‘gb2312’<br>    html &#x3D; etree.HTML(res.text)<br>    top10_title &#x3D; html.xpath(‘&#x2F;&#x2F;*[@id&#x3D;”hot-list”]&#x2F;li&#x2F;a[1]&#x2F;@title’)<br>    top10_link &#x3D; html.xpath(‘&#x2F;&#x2F;*[@id&#x3D;”hot-list”]&#x2F;li&#x2F;a[1]&#x2F;@href’)<br>    return top10_link, top10_title</p>
+<p>def get_weibotop10():<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://s.weibo.com/top/summary">https://s.weibo.com/top/summary</a>‘<br>    res &#x3D; requests.get(url)<br>    res.encoding &#x3D; ‘utf-8’<br>    html &#x3D; etree.HTML(res.text)<br>    top10_link &#x3D; html.xpath(‘&#x2F;&#x2F;*[@id&#x3D;”pl_top_realtimehot”]&#x2F;table&#x2F;tbody&#x2F;tr[position()&lt;&#x3D;11]&#x2F;td[2]&#x2F;a&#x2F;@href’)<br>    top10_title &#x3D; html.xpath(‘&#x2F;&#x2F;*[@id&#x3D;”pl_top_realtimehot”]&#x2F;table&#x2F;tbody&#x2F;tr[position()&lt;&#x3D;11]&#x2F;td[2]&#x2F;a&#x2F;text()’)<br>    top10_link &#x3D; list(map(lambda x: ‘<a target="_blank" rel="noopener" href="https://s.weibo.com/'+x">https://s.weibo.com/&#39;+x</a>, top10_link))<br>    return top10_link, top10_title</p>
+<p>def get_huputop10():<br>    headers_hupu &#x3D; {<br>        ‘Sec-Fetch-Dest’: ‘document’,<br>        ‘Sec-Fetch-Mode’: ‘navigate’,<br>        ‘Sec-Fetch-Site’: ‘none’,<br>        ‘Sec-Fetch-User’: ‘?1’,<br>        ‘Upgrade-Insecure-Requests’: ‘1’,<br>        ‘User-Agent’: ‘Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;88.0.4324.182 Safari&#x2F;537.36 Edg&#x2F;88.0.705.81’<br>    }<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://bbs.hupu.com/all-gambia">https://bbs.hupu.com/all-gambia</a>‘<br>    res &#x3D; requests.get(url, headers&#x3D;headers_hupu)<br>    res.encoding &#x3D; ‘utf-8’<br>    html &#x3D; etree.HTML(res.text)<br>    top10_title &#x3D; html.xpath(‘&#x2F;&#x2F;div[@class&#x3D;”bbsHotPit”]&#x2F;div&#x2F;ul&#x2F;li[position()&lt;&#x3D;3]&#x2F;span[1]&#x2F;a&#x2F;@title’)[:10]<br>    top10_link &#x3D; html.xpath(‘&#x2F;&#x2F;div[@class&#x3D;”bbsHotPit”]&#x2F;div&#x2F;ul&#x2F;li[position()&lt;&#x3D;3]&#x2F;span[1]&#x2F;a&#x2F;@href’)[:10]<br>    top10_link &#x3D; list(map(lambda x: ‘<a target="_blank" rel="noopener" href="https://bbs.hupu.com'+x/">https://bbs.hupu.com&#39;+x</a>, top10_link))<br>    return top10_link, top10_title</p>
+<p>def get_ezutop10():<br>    headers &#x3D; {<br>        ‘Host’: ‘<a target="_blank" rel="noopener" href="http://www.douban.com/">www.douban.com</a>‘,<br>        ‘Referer’: ‘<a target="_blank" rel="noopener" href="https://www.douban.com/group/blabla/?type=elite">https://www.douban.com/group/blabla/?type=elite</a>‘,<br>        ‘Sec-Fetch-Dest’: ‘document’,<br>        ‘Sec-Fetch-Mode’: ‘navigate’,<br>        ‘Sec-Fetch-Site’: ‘same-origin’,<br>        ‘Sec-Fetch-User’: ‘?1’,<br>        ‘Upgrade-Insecure-Requests’: ‘1’,<br>        ‘User-Agent’: ‘Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;88.0.4324.182 Safari&#x2F;537.36 Edg&#x2F;88.0.705.81’<br>    }<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://www.douban.com/group/blabla/?type=essence">https://www.douban.com/group/blabla/?type=essence</a>‘<br>    res &#x3D; requests.get(url, headers&#x3D;headers)<br>    res.encoding &#x3D; ‘utf-8’<br>    html &#x3D; etree.HTML(res.text)<br>    top10_title &#x3D; html.xpath(‘&#x2F;&#x2F;table[@class&#x3D;”olt”]&#x2F;tr[position()&lt;&#x3D;11]&#x2F;td[1]&#x2F;a&#x2F;@title’)<br>    top10_link &#x3D; html.xpath(‘&#x2F;&#x2F;table[@class&#x3D;”olt”]&#x2F;tr[position()&lt;&#x3D;11]&#x2F;td[1]&#x2F;a&#x2F;@href’)<br>    return top10_link, top10_title</p>
+<p>def get_rmtop10(date):<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="http://www.people.com.cn/GB/59476/review/'+date+'.html">http://www.people.com.cn/GB/59476/review/&#39;+date+&#39;.html</a>‘<br>    res &#x3D; requests.get(url)<br>    res.encoding &#x3D; ‘gb2312’<br>    html &#x3D; etree.HTML(res.text)<br>    top10_link &#x3D; html.xpath(‘&#x2F;&#x2F;table[@id&#x3D;”ta_1”]&#x2F;tr&#x2F;td&#x2F;li&#x2F;a&#x2F;@href’)<br>    top10_title &#x3D; html.xpath(‘&#x2F;&#x2F;table[@id&#x3D;”ta_1”]&#x2F;tr&#x2F;td&#x2F;li&#x2F;a&#x2F;text()’)<br>    return top10_link, top10_title</p>
+<p>def get_todayhistory(month, day): # month和day是字符串格式，带零。（‘03’，’08‘）<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://baike.baidu.com/cms/home/eventsOnHistory/%7B%7D.json'.format(month)">https://baike.baidu.com/cms/home/eventsOnHistory/{}.json&#39;.format(month)</a><br>    headers &#x3D; {<br>        ‘Host’: ‘baike.baidu.com’,<br>        ‘Referer’: ‘<a target="_blank" rel="noopener" href="https://baike.baidu.com/calendar/">https://baike.baidu.com/calendar/</a>‘,<br>        ‘Sec-Fetch-Dest’: ‘empty’,<br>        ‘Sec-Fetch-Mode’: ‘cors’,<br>        ‘Sec-Fetch-Site’: ‘same-origin’,<br>        ‘User-Agent’: ‘Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;88.0.4324.182 Safari&#x2F;537.36 Edg&#x2F;88.0.705.81’,<br>        ‘X-Requested-With’: ‘XMLHttpRequest’<br>    }<br>    res &#x3D; requests.get(url, headers&#x3D;headers)<br>    content &#x3D; json.loads(res.text)<br>    history_list &#x3D; []<br>    for each in content[month][month+day]:<br>        year &#x3D; each[‘year’]<br>        title &#x3D; ‘’.join(re.findall(r’[\u4e00-\u9fa5]‘, each[‘title’]))<br>        history_list.append([year, title])<br>    return history_list</p>
+<p>def get_randomsentence():<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://v2.jinrishici.com/sentence">https://v2.jinrishici.com/sentence</a>‘<br>    headers &#x3D; {<br>        ‘cookie’: ‘X-User-Token&#x3D;9cA&#x2F;6FT0nadkWlwpBAMfp8tVqHOihW0m’,<br>    }<br>    res &#x3D; requests.get(url, headers&#x3D;headers)<br>    content &#x3D; json.loads(res.text)<br>    note &#x3D; content[“data”][“content”]+’        ‘+’————‘+’《’+content[“data”][“origin”][“title”]+’》, ‘+content[“data”][“origin”][“author”]+’, ‘+content[“data”][“origin”][“dynasty”]<br>    return note</p>
+<p>def get_fastival(date): #日期格式：xx月xx日，3月8日,不带零<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="http://www.jieriya.com/">http://www.jieriya.com/</a>‘<br>    res &#x3D; requests.get(url)<br>    res.encoding &#x3D; ‘gb2312’<br>    url_list &#x3D; re.findall(‘&lt;li class&#x3D;\“sj\“&gt;%s</li>&lt;li class&#x3D;\“jr\“&gt;&lt;a target&#x3D;\“_blank\“ href&#x3D;\“..&#x2F;(.*?)\“&gt;’%(date), res.text)[:3]<br>    if (len(url_list)&#x3D;&#x3D;0):<br>        return [],[],””<br>    name_list &#x3D; re.findall(‘&lt;li class&#x3D;\“sj\“&gt;%s</li>&lt;li class&#x3D;\“jr\“&gt;&lt;a target&#x3D;\“_blank\“ href&#x3D;\“..&#x2F;jieri.asp\?id&#x3D;[0-9]*\“&gt;(.*?)</a>‘%(date), res.text)[:3]<br>    page_url &#x3D; url+url_list[0]<br>    page_res &#x3D; requests.get(page_url)<br>    page_res.encoding &#x3D; ‘gb2312’<br>    html &#x3D; etree.HTML(page_res.text)<br>    text_list &#x3D; html.xpath(‘&#x2F;&#x2F;*[@id&#x3D;”content”]&#x2F;div[2]&#x2F;p&#x2F;text()’)<br>    for each in text_list:<br>        if (len(each)&gt;&#x3D;40):<br>            return url_list, name_list, each.strip()</p>
+<p>def get_thing():<br>    url &#x3D; ‘<a target="_blank" rel="noopener" href="https://sbike.cn/">https://sbike.cn/</a>‘<br>    res &#x3D; requests.get(url)<br>    res.encoding &#x3D; ‘utf-8’<br>    order &#x3D; int(12*random.random())+1<br>    html &#x3D; etree.HTML(res.text)<br>    title &#x3D; html.xpath(‘&#x2F;&#x2F;li[%s]&#x2F;h3[1]&#x2F;a&#x2F;text()’%(order))[0]<br>    describe &#x3D; html.xpath(‘&#x2F;&#x2F;li[%s]&#x2F;h4&#x2F;text()’%(order))<br>    img_url &#x3D; url[:-1] + html.xpath(‘&#x2F;&#x2F;li[%s]&#x2F;a&#x2F;img&#x2F;@src’%(order))[0]<br>    return title, describe, img_url</p>
+<p>def write_email():<br>    today &#x3D; datetime.datetime.today()<br>    week_day_dict &#x3D; {<br>        0 : ‘星期一’,<br>        1 : ‘星期二’,<br>        2 : ‘星期三’,<br>        3 : ‘星期四’,<br>        4 : ‘星期五’,<br>        5 : ‘星期六’,<br>        6 : ‘星期天’,<br>    }<br>    week &#x3D; week_day_dict[today.weekday()]<br>    year &#x3D; time.strftime(“%Y”, time.localtime())<br>    month &#x3D; time.strftime(“%m”, time.localtime())<br>    day &#x3D; time.strftime(“%d”, time.localtime())<br>    md_date &#x3D; ‘%d月%d日’%(int(month), int(day))<br>    #with open(‘today_info’+’ ‘+today.strftime(‘%Y-%m-%d’)+’.txt’, ‘a’) as f:<br>    weather_list &#x3D; get_weather()<br>    todayhistory_list &#x3D; get_todayhistory(month, day)<br>    wbtop_list_url, wbtop_list  &#x3D; get_weibotop10()<br>    hptop_list_url, hptop_list &#x3D; get_huputop10()<br>    ezutop_list_url, ezutop_list &#x3D; get_ezutop10()<br>    bdtop_list_url, bdtop_list &#x3D; get_baidutop10()<br>    rmtop_list_url, rmtop_list &#x3D; get_rmtop10(year+month+’0’*(2-len(str(int(day))))+str(int(day)-1))<br>    fastival_list_url, fastival_list, text &#x3D; get_fastival(md_date)<br>    sentence &#x3D; get_randomsentence()<br>    thing_title, thing_describe, thing_img_url &#x3D; get_thing()<br>    html &#x3D; ‘’<br>    html +&#x3D; htmlHead()<br>    html +&#x3D; h1title(‘今日要闻’)<br>    html +&#x3D; plaintext(‘今天是%d年%d月%d日，’%(int(year), int(month), int(day))+week+’。’)<br>    html +&#x3D; ‘<br>‘<br>    if (len(fastival_list) !&#x3D; 0):<br>        html +&#x3D; plaintext(‘今天是<b>%s</b>。’%(fastival_list[0])+text)<br>    html +&#x3D; quote(sentence)<br>    html +&#x3D; br()</p>
+<pre><code>html += h2title(&#39;今日天气&#39;)
+html += table(\[&#39;时间&#39;,&#39;天气&#39;,&#39;温度&#39;,&#39;风向&#39;,&#39;风级&#39;\], weather\_list)
+html += br()
+
+html += h2title(&#39;今日热点&#39;)
+html += h3title(&#39;百度新闻&#39;)
+html += ul(bdtop\_list\_url, bdtop\_list)
+html += h3title(&#39;人民网&#39;)
+html += ul(rmtop\_list\_url, rmtop\_list)
+html += h3title(&#39;微博热搜&#39;)
+html += ul(wbtop\_list\_url, wbtop\_list)
+#html += h3title(&#39;虎扑步行街&#39;)
+#html += ul(hptop\_list\_url, hptop\_list)
+#html += h3title(&#39;豆瓣鹅组&#39;)
+#html += ul(ezutop\_list\_url, ezutop\_list)
+html += br()
+
+html += h2title(&#39;每日百科&#39;)
+html += h3title(&#39;历史上的今天&#39;)
+html += table(\[&#39;年份&#39;,&#39;事件&#39;\], todayhistory\_list)
+html += h3title(&#39;每日识物：&#39;+thing\_title)
+html += insertImg(thing\_img\_url)
+for each in thing\_describe:
+    html += plaintext(each)
+    html += &#39;&lt;br&gt;&#39;
+
+html += htmlEnd()
+return html
+</code></pre>
+<p>def main():<br>    html &#x3D; write_email()<br>    #today &#x3D; datetime.datetime.today()<br>    #with open(‘today_info’+’ ‘+today.strftime(‘%Y-%m-%d’)+’.txt’, ‘a’) as f:<br>    with open(‘&#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;today_info.html’, ‘a’) as f:<br>        f.write(html)</p>
+<p>main()</p>
+<p>整体没有什么特别难的，除了中国天气网总是抽风，以及动物百科页面有时候图片不对。后来把虎扑和豆瓣两个去掉了，只剩下人民网、百度、微博。虎扑和豆瓣鹅组热榜实在没什么营养。</p>
+<h2 id="邮件编写"><a href="#邮件编写" class="headerlink" title="邮件编写"></a>邮件编写</h2><p>如果只是发文字的话，邮件实在是不太好看。好在邮件可以支持比较基础的html，但是不支持表外样式，也就是说必须把样式嵌入到html中，邮件才可以读出来。我使用mutt连接到qq邮箱的STPM进行发送，qq邮箱也只能识别一部分的css样式。一番尝试后，写了一个脚本来对一般文字、超链接、图片、列表、表格、各级标题进行邮件排版。</p>
+<p>def h1title(string):<br>    html &#x3D; ‘<h1 style="color: var(--title-color); box-sizing: border-box; break-after: avoid-page; break-inside: avoid; orphans: 2; margin: 6rem 0px 3rem; padding: 0px; width: inherit; position: relative; font-size: 3rem; font-family: SimSun; font-weight: 800; line-height: 3rem; text-align: center; text-transform: uppercase;">{}</h1>‘.format(string)<br>    return html</p>
+<p>def h2title(string):<br>    html &#x3D; ‘<h2 style="color: var(--title-color); box-sizing: border-box; break-after: avoid-page; break-inside: avoid; orphans: 2; padding: 0px; width: inherit; position: relative; font-size: 2rem; margin: 4rem auto; font-family: SimSun; font-weight: 800; line-height: 3rem; text-align: center; text-transform: uppercase;">{}</h2>‘.format(string)<br>    return html</p>
+<p>def h3title(string):<br>    html &#x3D; ‘<h4 style="color: var(--title-color); box-sizing: border-box; break-after: avoid-page; break-inside: avoid; orphans: 2; padding: 0px; width: inherit; position: relative; font-size: 1.5rem; margin: 3rem 0px; font-family: SimSun; font-weight: 600;">{}</h4>‘.format(string)<br>    return html</p>
+<p>def plaintext(string):<br>    html &#x3D; ‘<p style="color: var(--text-color); box-sizing: border-box; line-height: inherit; orphans: 4; margin: 0px; padding: 0px; white-space: pre-wrap; width: inherit; position: relative;">{}</p>‘.format(string)<br>    return html</p>
+<p>def urltext(string, url):<br>    html &#x3D; ‘<p style="color: var(--text-color); box-sizing: border-box; line-height: inherit; orphans: 4; margin: 0px; padding: 0px; white-space: pre-wrap; width: inherit; position: relative;"><a href="{}">{}</a></p>‘.format(url, string)<br>    return html</p>
+<p>def quote(string):<br>    html &#x3D;’<blockquote style="margin: 0.8em 0px 0.8em 2em; padding: 0px 0px 0px 0.7em; border-left: 2px solid rgb(221, 221, 221);" formatblock="1"><i style=""><font color="#999999">{}</font></i></blockquote>‘.format(string)<br>    return html</p>
+<p>def tablehead(thead):<br>    html &#x3D; ‘’<br>    head &#x3D; ‘<thead style="box-sizing: border-box; display: table-header-group;"><tr style="box-sizing: border-box; break-inside: avoid; break-after: auto;">‘<br>    end &#x3D; ‘</tr></thead>‘<br>    html +&#x3D; head<br>    trtemple &#x3D; ‘<th style="box-sizing: border-box; margin: 0; border-bottom: 0px; padding: .5rem 1rem; background: var(--thead-bg); border: 1px solid var(--thead-bg);">{}</th>‘<br>    for each in thead:<br>        html +&#x3D; trtemple.format(each)<br>    html +&#x3D; end<br>    return html</p>
+<p>def tablebody(tbody):<br>    html &#x3D; ‘’<br>    head &#x3D; ‘<tbody style="box-sizing: border-box;">‘<br>    end &#x3D; ‘</tbody>‘<br>    html +&#x3D; head<br>    tdtemple &#x3D; ‘<td bgcolor="var(--tbody-bg)" style="box-sizing: border-box; margin: 0; position: relative; overflow: hidden; padding: 0.5rem 1rem; background-color: var(--tbody-bg); border: 1px solid var(--thead-bg); color: var(--text-color);">{}</td>‘<br>    for row in tbody:<br>        html +&#x3D; ‘<tr style="box-sizing: border-box; break-inside: avoid; break-after: auto;">‘<br>        for each in row:<br>            html +&#x3D; tdtemple.format(each)<br>        html +&#x3D; ‘</td>‘<br>    html +&#x3D; end<br>    return html</p>
+<p>def table(thead, tbody): #tablehead是一个一维数组，tablebody是一个二维数组<br>    html &#x3D; ‘’<br>    head &#x3D; ‘<figure style="color: var(--text-color); box-sizing: border-box; overflow-x: auto; margin: 0px; padding: 0px; display: block;"><table align="left" style="box-sizing: border-box; border-collapse: collapse; border-spacing: 0; overflow: auto; break-inside: auto; text-align: left; margin: 1.5rem auto; width: 98%;" width="98%">‘<br>    end &#x3D; ‘</table></figure>‘<br>    html +&#x3D; head<br>    html +&#x3D; tablehead(thead)<br>    html +&#x3D; tablebody(tbody)<br>    html +&#x3D; end<br>    return html</p>
+<p>def ul(urllist, stringlist):<br>    head &#x3D; ‘<ul style="color: var(--text-color); box-sizing: border-box; margin: 1.5rem auto 1.5rem 1.5rem; padding: 0px; position: relative; list-style: disc;">‘<br>    end &#x3D; ‘</ul>‘<br>    html &#x3D; ‘’<br>    html +&#x3D; head<br>    for each in zip(urllist, stringlist):<br>        html +&#x3D; li(each[0], each[1])<br>    html +&#x3D; end<br>    return html</p>
+<p>def li(url, string):<br>    if url &#x3D;&#x3D; ‘’:<br>        html &#x3D; ‘<li style="box-sizing: border-box; margin: 0; position: relative; padding: 0; white-space: pre-wrap; margin-left: 1rem;">{}</li>‘.format(string)<br>    else:<br>        html &#x3D; ‘<li style="box-sizing: border-box; margin: 0; position: relative; padding: 0; white-space: pre-wrap; margin-left: 1rem;"><a href="{}">{}</a></li>‘.format(url, string)<br>    return html</p>
+<p>def br():<br>    return ‘<hr style="box-sizing: border-box;">‘</p>
+<p>def insertImg(url):<br>    html &#x3D; ‘<p style="box-sizing: border-box; line-height: inherit; orphans: 4; margin-top: 1rem; margin-bottom: 1rem; padding: 0; margin: 1rem auto; white-space: pre-wrap; width: inherit; position: relative;"><img src="{}" referrerpolicy="no-referrer" style="box-sizing: border-box; max-width: 100%; vertical-align: middle; border: 0; display: block; margin: 1.5rem auto; box-shadow: var(--img-shadow); border-radius: 5px;"></p>‘.format(url)<br>    return html</p>
+<p>def htmlHead():<br>    return ‘<div id="original-content"><div class="is-node" id="write" style="box-sizing: border-box; margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 40px; font-family: var(--base-font); font-weight: 400; font-size: 1rem; line-height: 2rem; background: var(--write-bg); max-width: 914px; text-align: justify;">‘</p>
+<p>def htmlEnd():<br>    return ‘</div></div>‘</p>
+<p>看看效果如何：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-1024x678.png"></p>
+<h2 id="使用mutt发送邮件"><a href="#使用mutt发送邮件" class="headerlink" title="使用mutt发送邮件"></a>使用mutt发送邮件</h2><p>接下来需要配置mutt，使其可以自动发送邮件。mutt的配置过程网上教程很多，不做赘述。使用云服务器的需要注意，为了防止有人用云服务器发垃圾邮件，阿里、腾讯这些商家默认封掉了25号端口，没有解封前是无法使用mutt的。解封方式一般都是到云服务器的控制台页面操作。</p>
+<p>使用mutt发送html格式的邮件，句法如下：</p>
+<p>cat &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;today_info.html  mutt -s “今日天气与要文” -e ‘set content_type&#x3D;”text&#x2F;html”‘ $YOURADDRESS$</p>
+<p>加上一个参数-e ‘set content_type&#x3D;”text&#x2F;html”‘即可。接下来制作一个sh脚本，首先运行python脚本，然后发送html文件，最后删掉html文件节省空间。</p>
+<p>&#x2F;usr&#x2F;bin&#x2F;python3 &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;everydaynews.py<br>cat &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;today_info.html  mutt -s “今日天气与要文” -e ‘set content_type&#x3D;”text&#x2F;html”‘ $YOURADDRESS$<br>rm &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;today_info.html</p>
+<h2 id="使用crontab定时发送邮件"><a href="#使用crontab定时发送邮件" class="headerlink" title="使用crontab定时发送邮件"></a>使用crontab定时发送邮件</h2><p>crontab是一个定时执行任务的系统功能。输入<code>crontab -e</code> 来添加定时任务，如下：</p>
+<p>30 07 * * * bash &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;everydaynews.sh &gt; &#x2F;home&#x2F;ubuntu&#x2F;DayEmail&#x2F;log.txt 2&gt;&amp;1 &amp;</p>
+<p>crontab的定时方法网上有很多解释。后面的部分是为了将脚本的输出放到一个log文件里，否则如果sh有输出却无法写入，crontab会报错，&amp;意味着这个过程放在后台进行，控制台上不显示sh的输出。</p>
+<p>**还有一点非常重要：如果使用crontab，请确保你在crontab、bash、python中与文件相关的操作都使用绝对路径！**crontab无法读取相对路径，网上有一些通过修改系统环境来使得crontab能够读取相对路径的方法，如果只是简单的操作，还是使用绝对路径相对方便一些。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/ifc%E4%B8%AD%E6%9E%84%E4%BB%B6%E4%B8%8A%E6%B4%9E%E5%8F%A3%E7%9A%84%E8%A1%A8%E8%BE%BE%E6%96%B9%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/09/ifc%E4%B8%AD%E6%9E%84%E4%BB%B6%E4%B8%8A%E6%B4%9E%E5%8F%A3%E7%9A%84%E8%A1%A8%E8%BE%BE%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">IFC中构件上洞口的表达方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 13:34:03" itemprop="dateCreated datePublished" datetime="2021-04-09T13:34:03+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/" itemprop="url" rel="index"><span itemprop="name">bim</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/IFC/" itemprop="url" rel="index"><span itemprop="name">IFC</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这一篇随笔的例子如下：<br><img src="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210226161517579-1765810054.png"><br>可以看到，标高为2的楼板有一个缺口。那么这块楼板在IFC中是如何表示的呢？往下看：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210226161517579-1765810054-1024x482.png"></p>
+<h2 id="楼板形状的表示方式"><a href="#楼板形状的表示方式" class="headerlink" title="楼板形状的表示方式"></a>楼板形状的表示方式</h2><p>在Python中用ifcopenshell打开IFC文件，输入</p>
+<p>import ifcopenshell<br>f &#x3D; ifcopenshell.open(‘project1_ifc4.ifc’)<br>slab_list &#x3D; f.by_type(‘ifcslab’)<br>slab_list[1].ObjectPlacement.PlacementRelTo.RelativePlacement.Location.Coordinates<br>(0.0, 0.0, 4000.0)</p>
+<p>可以看到这块楼板的相对坐标参照点是(0.0, 0.0, 4000.0)，也就是标高2的位置。说明<code>slab_list[1]</code>就是我们想要找到的楼板。随后查看楼板的形状：</p>
+<p>In [27]: slab_list[1].Representation.Representations<br>Out[27]:<br>(#973&#x3D;IfcShapeRepresentation(#120,’Body’,’SweptSolid’,(#963)),<br> #986&#x3D;IfcShapeRepresentation(#122,’FootPrint’,’Curve2D’,(#984)))</p>
+<p>可以看出楼板的形态是通过两类IfcShapeRepresentation组成的。SweptSolid说明其Body是一个拉伸体；Curve2D说明其FootPrint（草图）是一个2D曲线。接下来分别查看这两个Individual的属性：</p>
+<p>In [67]: slab_list[1].Representation.Representations[1].Items[0].Points #查看Curve2D的坐标点<br>Out[67]:<br>(#978&#x3D;IfcCartesianPoint((0.,20200.)),<br> #980&#x3D;IfcCartesianPoint((20200.,20200.)),<br> #982&#x3D;IfcCartesianPoint((20200.,0.)),<br> #10&#x3D;IfcCartesianPoint((0.,0.)),<br> #978&#x3D;IfcCartesianPoint((0.,20200.)))<br>In [75]: slab_list[1].Representation.Representations[0].Items[0].SweptArea #查看SweptArea的拉伸横截面区域<br>Out[75]: #959&#x3D;IfcRectangleProfileDef(.AREA.,$,#958,20200.,20200.0000000001)</p>
+<p>可以看出，Curve2D中的点组成了一个闭环，构成楼板的草图；楼板的SweptArea的Xdim与Ydim则与楼板的长宽对应（如果楼板不是矩形会如何呢？之后再做研究）。然而，我们并没有看到洞口的信息在里面出现。</p>
+<h2 id="洞口的信息"><a href="#洞口的信息" class="headerlink" title="洞口的信息"></a>洞口的信息</h2><p>显然，洞口的信息并不包括在楼板中。那么洞口会在哪里呢？在Protege中打开转换后的IFC文件，在IfcProduct下找，很快就可以找到了：<br><img src="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210226163232286-1568754367.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210226163232286-1568754367-1024x993.png"></p>
+<p>原来洞口属于IfcOpeningElement类。接下来用ifcopenshell进一步查看这个实例的属性：</p>
+<p>In [98]: open_list &#x3D; f.by_type(‘IfcOpeningElement’)</p>
+<p>In [99]: open_list<br>Out[99]: [#1012&#x3D;IfcOpeningElement(‘2dW1x8jJT85xQnO5ksAdUC’,#42,’楼板:常规 - 150mm:334036:2’,$,’Opening’,#1010,#1004,’334036’,$)]</p>
+<p>In [100]: open_list[0].Representation.Representations<br>Out[100]: (#1002&#x3D;IfcShapeRepresentation(#120,’Body’,’SweptSolid’,(#996)),)</p>
+<p>发现洞孔只存在一个SweptSolid作为形状的表示，猜测可能是因为洞口的形状是简单的矩形，因此只需要SweptSolid就可以表示了（不确定）。进一步查看洞口的其他属性：</p>
+<p>In [114]: open_list[0].Representation.Representations[0].Items[0].Depth<br>Out[114]: 150.0</p>
+<p>In [128]: open_list[0].ObjectPlacement.RelativePlacement.Location.Coordinates<br>Out[128]: (13000.0, 13000.0, 150.0)</p>
+<p>In [136]: open_list[0].Representation.Representations[0].Items[0].SweptArea<br>Out[136]: #994&#x3D;IfcRectangleProfileDef(.AREA.,$,#993,4000.,4000.)</p>
+<p>洞口深度为150，位置在(13000.0, 13000.0, 150.0)，SweptArea面积为（4000.,4000.)。这与我们的洞口是完全一致的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/ifc%E4%B8%AD%E6%9E%84%E4%BB%B6%E4%BD%8D%E7%BD%AE%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/09/ifc%E4%B8%AD%E6%9E%84%E4%BB%B6%E4%BD%8D%E7%BD%AE%E7%9A%84%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">IFC中构件位置的表示方法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 13:32:09" itemprop="dateCreated datePublished" datetime="2021-04-09T13:32:09+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/BIM/" itemprop="url" rel="index"><span itemprop="name">BIM</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/" itemprop="url" rel="index"><span itemprop="name">bim</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/IFC/" itemprop="url" rel="index"><span itemprop="name">IFC</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/IFC/%E6%9C%AC%E4%BD%93/" itemprop="url" rel="index"><span itemprop="name">本体</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>以STEP格式呈现的IFC文件可读性不强，但是转化为OWL后，可以在Protege中可视化IFC的组织模式。下面将通过Protege的OntoGragph功能显示一个墙实例是如何在IFC中进行位置表示的。</p>
+<p>IFC通过相对位置来表示物体的位置：<br><img src="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210222141600579-1518141270.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210222141600579-1518141270-1024x501.png"></p>
+<p>可以看出，IfcWallStandardCase_278通过以下相对位置确定：Wall相对BuildingStorey（楼层）的位置——BuildingStorey相对Building的位置——Building相对Site的位置。那么相对位置的数值是如何表示的呢？如图：<br><img src="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210222142042165-1372247468.png"><br>物体的位置通过IfcAxis2Placement3D来表示。IfcAxis2Placement3D提供在三维空间中放置项目的位置和方向。Axis定义Z方向，RefDirection定义X方向，Y方向通过右手定则得到。不过Wall278不存在Axis和RefDirection两个Object Properties，如果未给出Axis和RefDirection的属性值，则放置默认为P[1]（x轴）为[1,0,0.]，P[2]（y轴）为[0,1,0.]，P[3]（z轴）为[0,0,1]。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210222142042165-1372247468-1024x478.png"></p>
+<p>进一步地，Location的属性通过笛卡尔点来表示。笛卡尔点的含义是：An IfcCartesianPoint defines a point by coordinates in an orthogonal, right-handed Cartesian coordinate system.也就是常规意义上的坐标点。不过在转化为OWL后，失去了直接表示一对多关系的能力，因此OWL通过一个类似链表的数据结构来表示这样一个三维坐标点，每个点保存在IfcLengthMeasureList中，前一个通过hasNext链接下一个。<br><img src="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210222142816443-280782701.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210222142816443-280782701-1024x417.png"></p>
+<p>通过相对位置关系和坐标点，其实也就可以推出物体在绝对坐标系下的位置了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/ifc%E8%BD%AC%E6%8D%A2%E4%B8%BArdf%E5%B9%B6%E5%9C%A8protege%E4%B8%AD%E6%9F%A5%E7%9C%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/09/ifc%E8%BD%AC%E6%8D%A2%E4%B8%BArdf%E5%B9%B6%E5%9C%A8protege%E4%B8%AD%E6%9F%A5%E7%9C%8B/" class="post-title-link" itemprop="url">IFC转换为RDF并在Protege中查看</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 13:30:32" itemprop="dateCreated datePublished" datetime="2021-04-09T13:30:32+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/BIM/" itemprop="url" rel="index"><span itemprop="name">BIM</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/" itemprop="url" rel="index"><span itemprop="name">bim</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/IFC/" itemprop="url" rel="index"><span itemprop="name">IFC</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bim/IFC/%E6%9C%AC%E4%BD%93/" itemprop="url" rel="index"><span itemprop="name">本体</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>IFC为建筑信息模型的存储提供了一个准则。IFC文件有许多表述模式，例如STEP、RDF、OWL。理论上来说，这些格式都是可以互相转化的。STEP的可读性不佳，但是转化成RDF&#x2F;OWL后，就可以在Protege中进行查看，从而进一步了解IFC文件的组织格式。</p>
+<h2 id="创建一个IFC文件并导出"><a href="#创建一个IFC文件并导出" class="headerlink" title="创建一个IFC文件并导出"></a>创建一个IFC文件并导出</h2><p>最快捷的方式：在Revit中创建一个项目并导出为IFC，这个模型包括四面墙，两个自定义族，导出格式为IFC2X3。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210208143314485-610428827-1024x487.png"></p>
+<h2 id="IFC2RDF"><a href="#IFC2RDF" class="headerlink" title="IFC2RDF"></a>IFC2RDF</h2><p><a target="_blank" rel="noopener" href="https://github.com/pipauwel/IFCtoRDF">https://github.com/pipauwel/IFCtoRDF</a> 提供了一个将IFC转化为RDF的工具。这个工具可以将.IFC后缀的文件转化为.TTL，支持以下IFC格式：</p>
+<ul>
+<li>IFC2X3_TC1</li>
+<li>IFC4_ADD1</li>
+<li>IFC4_ADD2</li>
+<li>IFC4_ADD2_TC1</li>
+<li>IFC4x1</li>
+<li>IFC4</li>
+<li>IFC4x3_RC1<br>下载其jar包后，与ifc文件放在同一目录下，打开当前目录的cmd输入：<br><code>java -jar .\IFCtoRDF-0.4-shaded.jar .\test.ifc .\testrdf.ttl</code><br>即在目录下生成了RDF文件。</li>
+</ul>
+<h2 id="在Protege下查看RDF文件"><a href="#在Protege下查看RDF文件" class="headerlink" title="在Protege下查看RDF文件"></a>在Protege下查看RDF文件</h2><p>用Protege打开RDF文件后，可以看到此文件包含的类与属性。</p>
+<h3 id="IFC2RDF：消失的属性"><a href="#IFC2RDF：消失的属性" class="headerlink" title="IFC2RDF：消失的属性"></a>IFC2RDF：消失的属性</h3><p>在类下可以看到该文件包括的所有ifc类，以及它们的实例。如IfcWallStandardCase就有四个实例，对应四堵墙：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210208143807637-1159831714-1024x534.png"></p>
+<p>然而看不到任何的Object properties和Data properties。所以所有的properties都以Annotation properties的方式呈现，如图：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210208153404433-1654703081-1024x534.png"></p>
+<h3 id="IFC中原先定义了Object和data-properties吗？"><a href="#IFC中原先定义了Object和data-properties吗？" class="headerlink" title="IFC中原先定义了Object和data properties吗？"></a>IFC中原先定义了Object和data properties吗？</h3><p>答案是肯定的。从buildingSMART中下载ISO标准版本、TTL格式的IFC文档并用Protege打开，可以看到各类属性。首先是Data Property：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210208153603799-1783262978-1024x534.png"></p>
+<p>以及Object Properties：<br><img src="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210208153624263-2072343321.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210208153624263-2072343321-1024x534.png"></p>
+<p>那么就有一个问题：IFC2RDF得到的RDF文件，annotation properties和标准版本的IFC中是否是一一对应的呢？</p>
+<h2 id="IFC2RDF的缺陷，是否能够改正？"><a href="#IFC2RDF的缺陷，是否能够改正？" class="headerlink" title="IFC2RDF的缺陷，是否能够改正？"></a>IFC2RDF的缺陷，是否能够改正？</h2><h3 id="Data-properties的对应"><a href="#Data-properties的对应" class="headerlink" title="Data properties的对应"></a>Data properties的对应</h3><p>首先是hasInteger一类的Data properties，答案是：yes。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210208154048037-1726307516-1024x534.png"></p>
+<h3 id="Object-properties的对应"><a href="#Object-properties的对应" class="headerlink" title="Object properties的对应"></a>Object properties的对应</h3><p>Object properties的对应稍微复杂一点。以ifwallstandardcase中一堵墙的objectPlacement_IfcProduct作为例子，返回在IFC标准文件的Object properties搜索对应项。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210208154348812-118908687-1024x362.png"></p>
+<p>我们发现，确实有一项称为ObjectPlacement的object properties，其domain为IfcProduct，Ranges为IfcObjectPlacement。<br>其他的properites大抵相同，也就是说_之前的是该object properties的URI，_之后的是该properties的domain。了解了这一点之后，我们就可以知道如何将IFC2RDF产生的文件进一步转化为OWL了。</p>
+<h2 id="问题排查"><a href="#问题排查" class="headerlink" title="问题排查"></a>问题排查</h2><h3 id="问题之一：错误的前缀"><a href="#问题之一：错误的前缀" class="headerlink" title="问题之一：错误的前缀"></a>问题之一：错误的前缀</h3><p>IFC2RDF错误地使用了前缀，经过转换后，ttl文件中会有这样的前缀声明：</p>
+<p># baseURI: <a target="_blank" rel="noopener" href="http://linkedbuildingdata.net/ifc/resources20210221/_142133/">http://linkedbuildingdata.net/ifc/resources20210221\_142133/</a></p>
+<h1 id="imports-http-standards-buildingsmart-org-IFC-DEV-IFC2x3-TC1-OWL"><a href="#imports-http-standards-buildingsmart-org-IFC-DEV-IFC2x3-TC1-OWL" class="headerlink" title="imports: http://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL"></a>imports: <a target="_blank" rel="noopener" href="http://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL">http://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL</a></h1><p>@prefix ifc:  <a target="_blank" rel="noopener" href="http://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL#">http://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL#</a> .<br>@prefix inst:  <a target="_blank" rel="noopener" href="http://linkedbuildingdata.net/ifc/resources20210221/_142133/">http://linkedbuildingdata.net/ifc/resources20210221\_142133/</a> .<br>@prefix list:  <a target="_blank" rel="noopener" href="https://w3id.org/list#">https://w3id.org/list#</a> .<br>@prefix express:  <a target="_blank" rel="noopener" href="https://w3id.org/express#">https://w3id.org/express#</a> .<br>@prefix rdf:  <a target="_blank" rel="noopener" href="http://www.w3.org/1999/02/22-rdf-syntax-ns#">http://www.w3.org/1999/02/22-rdf-syntax-ns#</a> .<br>@prefix xsd:  <a target="_blank" rel="noopener" href="http://www.w3.org/2001/XMLSchema#">http://www.w3.org/2001/XMLSchema#</a> .<br>@prefix owl:  <a target="_blank" rel="noopener" href="http://www.w3.org/2002/07/owl#">http://www.w3.org/2002/07/owl#</a> .</p>
+<p>需要注意的是<code>@prefix ifc: &lt;http://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL#&gt; .</code>在官方的IFCOWL定义中，其URI为<code>https://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL#</code>。http和https的差别会使得预先定义好的OWL无法被导入。结局方法是把遗漏的“s”加上。</p>
+<h3 id="问题之二：遗漏的导入"><a href="#问题之二：遗漏的导入" class="headerlink" title="问题之二：遗漏的导入"></a>问题之二：遗漏的导入</h3><p>IFC2RDF使用了<code>@prefix expr: &lt;https://w3id.org/express#&gt; .</code>这个模块，但是没有进行导入。这个问题可以通过手动添加导入解决，如果能够成功导入<a target="_blank" rel="noopener" href="https://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL#">https://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL#</a>的话，由于后者对前者存在依赖，也会间接导入。</p>
+<h3 id="问题之三：无法从网络资源导入"><a href="#问题之三：无法从网络资源导入" class="headerlink" title="问题之三：无法从网络资源导入"></a>问题之三：无法从网络资源导入</h3><p>在导入<a target="_blank" rel="noopener" href="https://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL#">https://standards.buildingsmart.org/IFC/DEV/IFC2x3/TC1/OWL#</a>时报错。这可能是对方服务器导致的，结局方法是从SMARTbuiding上保存TTL格式的IFC文件到本地，然后在Protege中进行手动导入。<br><img src="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210221213033660-2081728904.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210221213033660-2081728904-1024x551.png"></p>
+<p>以上步骤完成后，可以看到Object Properties和Data Properties都能正确地显示了。<br><img src="https://img2020.cnblogs.com/blog/2289857/202102/2289857-20210221213220995-1870717529.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210221213220995-1870717529-1024x322.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/protege%E4%B8%AD%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%E7%9A%84%E6%B5%8B%E8%AF%95%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/09/protege%E4%B8%AD%E6%8E%A8%E7%90%86%E5%BC%95%E6%93%8E%E7%9A%84%E6%B5%8B%E8%AF%95%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Protege中推理引擎的测试使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 13:25:27" itemprop="dateCreated datePublished" datetime="2021-04-09T13:25:27+08:00">2021-04-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -228,733 +867,164 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="专家系统"><a href="#专家系统" class="headerlink" title="专家系统"></a>专家系统</h1><p>专家系统：模仿人类专家的思维方式进行决策的人工智能算法，算法核心是“知识库（knowledge base）”和“推理机（inference engine）”。专家系统通常包括6个部分：人机交互界面、知识库、综合数据库、推理机、解释器、知识获取。</p>
+          <h2 id="Hermit简介"><a href="#Hermit简介" class="headerlink" title="Hermit简介"></a>Hermit简介</h2><p>（以下来自百度翻译）</p>
+<blockquote>
+<p>HermiT是使用Web本体语言（OWL）编写本体的推理机。给定一个OWL文件，HermiT可以确定本体是否一致，识别类之间的包容关系，等等。<br>HermiT是第一个公开的OWL推理机，它基于一个新的“hypertableau”演算，提供了比任何已知算法更有效的推理。以前需要几分钟或几小时来分类的本体通常可以在几秒钟内被HermiT分类，而HermiT是第一个能够对许多本体进行分类的推理者，这些本体以前被证明过于复杂，任何可用的系统都无法处理。<br>HermiT使用直接语义，并通过了所有owl2对直接语义推理器的一致性测试。</p>
+</blockquote>
+<p>HermiT是由牛津大学计算机科学数据与知识研究组开发的一款基于OWL的本体推理机。官网位于<a target="_blank" rel="noopener" href="http://www.hermit-reasoner.com/">http://www.hermit-reasoner.com/</a>。你可以通过Protege使用HermiT，这是最简单的方式；也可以使用HermiT提供的Java API来开发你自己的程序。这里主要展示如何在Protege中简单地使用HermiT进行推理。</p>
+<h2 id="安装HermiT"><a href="#安装HermiT" class="headerlink" title="安装HermiT"></a>安装HermiT</h2><p>在最新版本的Protege中，HermiT是随Protege安装的，不需要手动安装。</p>
+<h2 id="创建一个本体"><a href="#创建一个本体" class="headerlink" title="创建一个本体"></a>创建一个本体</h2><p>在测试集中，我建立了一个简单的亲属关系本体来进行测试。这个本体描述了几个人之间的亲属关系，以及年龄属性。我希望HermiT能基于规则（Rule）做到：</p>
+<ol>
+<li>推断并填补关系（Object properties），例如B是A的弟弟，A是C的母亲，则B是C的舅舅；</li>
+<li>推断并赋予属性（Data properties），例如B的年龄是43（40-55），则B的年龄段是中年；<br>这个本体的视图如下：</li>
+</ol>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210205230031604-2045046453-1024x687.png"></p>
+<h2 id="SWRL"><a href="#SWRL" class="headerlink" title="SWRL"></a>SWRL</h2><p>SWRL（Semantic Web Rule Language）是由以语义的方式呈现规则的一种语言，SWRL的规则部分概念是由RuleML所演变而来，再结合OWL本体论形成。SWRL已经是W3C规范中的一员。SWRL相关的内容在中文网上比较难找到，最完善的学习资料是w3c自己在2004年发布的<a target="_blank" rel="noopener" href="https://www.w3.org/Submission/SWRL/">SWRL语言指导</a>。一段SWRL语言通过简单的“IF-THEN”语句来定义一串规则，其中IF和THEN都是通过Atom组成的，Atom描述了最为简单的一种假设，例如“XX是XX”、“XX的YY是ZZ”等。SWRL提供了七种Atom，分别是：</p>
+<ol>
+<li>描述，对应class；description ‘(‘ i-object ‘)’</li>
+<li>数据，dataRange ‘(‘ d-object ‘)’</li>
+<li>实体关系，对应Object properties；individualvaluedPropertyID ‘(‘ i-object i-object ‘)’</li>
+<li>数据属性，对应Data properties；datavaluedPropertyID ‘(‘ i-object d-object ‘)’</li>
+<li>相同，sameAs ‘(‘ i-object i-object ‘)’</li>
+<li>相异，differentFrom ‘(‘ i-object i-object ‘)’</li>
+<li>其他内建功能，builtIn ‘(‘ builtinID { d-object } ‘)’<br>内建功能提供了一些针对数字、字符串、日期的基础操作，在SWRL文档的8.1节有详细描述，这里不再赘述。（注意！HermiT不支持builtIn SWRL，所以虽然前面说了用HermiT，其实使用的是Drools一般推理引擎，前面懒得再修改了）</li>
+</ol>
+<p>SWRL的格式遵从<code>rule ::= &#39;Implies(&#39; [ URIreference ] &#123; annotation &#125; antecedent consequent &#39;)&#39;</code>的格式，其中atom之间通过‘&amp;’连接，antecedent和consequent之间用‘-&gt;’连接。一个例子如下：<br><code>hasParent(?x1,?x2) ∧ hasBrother(?x2,?x3) ⇒ hasUncle(?x1,?x3)</code><br>他描述了x1有x2作为家长，并且x2有x3作为兄弟，则x1有x3作为uncle（国外的uncle可以代表伯叔舅丈）。</p>
+<h2 id="SWRL在Protege中的使用"><a href="#SWRL在Protege中的使用" class="headerlink" title="SWRL在Protege中的使用"></a>SWRL在Protege中的使用</h2><p>Protege内建了SWRLtab页面，在window-tab-swrltab中打开即可。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206110931283-1723409561-1024x576.png"></p>
+<p>选择new新建一个规则（年龄在40-55之间的年龄段为中年）：</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206111715881-395938940-1024x792.png"></p>
+<p>依次点击OWL+SRWL-&gt;Doorls，Run Doorls，Drools-&gt;OWL。分别执行了解析SRWL语言、推断和将知识保存到原来的知识图谱中。在知识图谱中，可以看到成功推断出王德法的年龄段是中年，作为男人也是人，龙傲天是小明的舅舅（同时也是亲属）等等。</p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206111924837-2100724845-1024x551.png"></p>
+<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210206111933016-1796700196-1024x551.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/java%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB%E7%BC%96%E5%86%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/09/java%E7%BD%91%E7%BB%9C%E7%88%AC%E8%99%AB%E7%BC%96%E5%86%99/" class="post-title-link" itemprop="url">Java网络爬虫编写</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 13:17:56" itemprop="dateCreated datePublished" datetime="2021-04-09T13:17:56+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>我最初刚学习Python时，对编程基本一窍不通，当时的想法很简单，只是为了学点简单的编程方便自己做点小玩意儿。当时自己编写的第一个应用就是爬虫，写完之后对Python的语法、模块安装、数据结构（虽然Python就不存在什么数据结构）等各种方面都有了入门级的了解。我个人认为，直接从一个项目开始学习比按部就班地按照课程学习会来的快得多，当然这是比较功利的，如果是真的想好好掌握Java这门语言的，应当还是按照课程慢慢学习。这篇文章主要参考了<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_36146275/article/details/54974359">https://blog.csdn.net/weixin_36146275&#x2F;article&#x2F;details&#x2F;54974359</a>。</p>
+<h2 id="新建一个Java项目"><a href="#新建一个Java项目" class="headerlink" title="新建一个Java项目"></a>新建一个Java项目</h2><p>在vscode中新建一个Java项目，会看到选择项目类型这个下拉框，里面有几种类型：Maven、Spring Boot、Quarkus、MicroProfile。他们的解释如下：</p>
 <ul>
-<li>知识库：包含解决问题相关的领域知识。在基于规则的专家系统中，<strong>知识用一组规则</strong>来表达。其具有IF（条件）THEN（行为）结构，当规则的条件被满足时，触发规则，继而执行行为。</li>
-<li>数据库：包含一组<strong>事实</strong>，用于匹配知识库中的IF（条件）。</li>
-<li>推理机：<strong>执行</strong>推理，专家系统由此找到解决方案。推理引擎链接知识库中的规则和数据库中的事实。</li>
-<li>解释器：用户使用解释器查看专家系统怎样得出解决方案的过程。</li>
-<li>人机交互界面：人机交互界面是实现用户（查询问题解决方案）和专家系统之间交流的途径。</li>
+<li>Maven：Apache Maven是一个软件项目管理的综合工具。基于项目对象模型（POM）的概念，提供了帮助管理构建、文档、报告、依赖、发布等方法，Maven简化和标准化项目建设过程。Maven的基本原理是采用远程仓库和本地仓库以及一个核心的配置文件pom.xml，pom.xml中定义的jar文件从远程仓库下载到本地仓库，各个项目使用同一个本地仓库的jar，同一个版本的jar只需下载一次，而且避免每个应用都去拷贝jar。同时它采用了现在流行的插件体系架构，所以maven的核心非常的小，只有几兆大小的文件，在执行maven任务时，才会自动下载需要的插件。</li>
+<li>Spring Boot：是由Pivotal团队提供的全新框架，其设计目的是用来简化新Spring应用的初始搭建以及开发过程。Spring的一个最大的目的就是使JAVA EE开发更加容易。JavaEE：全称Java平台企业版（Java Platform Enterprise Edition），是Sun公司为企业级应用推出的标准平台。JavaEE是个大杂烩，包括Applet、EJB、JDBC、JNDI、Servlet、JSP等技术的标准，运行在一个完整的应用服务器上，用来开发大规模、分布式、健壮的网络应用。</li>
+<li>Quarkus：一个针对OpenJDK HotSpot和GraalVM量身定制的Kubernetes本机Java堆栈，它是从最佳Java库和标准中精制而成的。</li>
+<li>Eclipse MicroProfile：和Spring类似，是一个Jave EE的微服务框架。</li>
 </ul>
-<p>一个完整的专家系统图示如下：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/9861E122-6FDC-4D39-AEB3-8AD4D10495EA.png"></p>
-<h1 id="推理机"><a href="#推理机" class="headerlink" title="推理机"></a>推理机</h1><p>“推理机”根据“知识库”对“数据库”做出决策的基本原理图如下：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/72B3B600-6C96-4073-84DA-C4F7970AAAC4.png"></p>
-<p>CLIPS（C Language Integrated Production System）是一类推理机，原则上可以处理各种领域的推理任务，只要系统能够为CLIPS提供这个领域的特有领域规则(知识库)和事实信息(数据库)。</p>
-<h2 id="Jess"><a href="#Jess" class="headerlink" title="Jess"></a>Jess</h2><p>Jess(Java Expert Shell System)是基于Java语言的CLISP推理机。Jess(CLIPS)的优点是：推理机是开放的，用户提供不同的规则系统，就可以进行不同领域的推理工作，用户可以对推理机的推理能力进行扩展。但，作为前向推理系统，Jess用空间换时间，推理会产生大量的中间数据，空间效率很低；同时，由于Jess(CLIPS)是通用推理引擎，不可能提供针对各种具体领域的优化能力，使得这种推理机制的效率很难优化。</p>
-<h1 id="针对本体的几类推理机"><a href="#针对本体的几类推理机" class="headerlink" title="针对本体的几类推理机"></a>针对本体的几类推理机</h1><p>针对本体的推理一般集中在集中标准的本体语言上，如OWL、RDFS&#x2F;RDF、DAML等。针对本体的推理机，如Jena、Pellet、FaCT、RACER等，效率较高，但推理能力局限在以上的本体语言中。</p>
-<h2 id="Jena"><a href="#Jena" class="headerlink" title="Jena"></a>Jena</h2><p>Jena是面向语义Web的应用开发包，包含的内容比较全面，推理机只是其中一部分。但Jena本身并不是‘推理机设计专家’，它自身包含的推理机基本上就是一种CLIPS配合本体领域产生式规则的前向推理系统。因此，它的运行效率不是很高。好在现在有DIG接口，DIG有点象数据库中的ODBC，允许前端挂接到后台不同的推理引擎上。</p>
-<h2 id="Pellet"><a href="#Pellet" class="headerlink" title="Pellet"></a>Pellet</h2><p>Pellet是一个较为“专业”的推理机，由美国马里兰大学（College Park分校）的MindSwap实验室开发。Pellet是基于Java的开放源码系统。Pellet效率较高，但是缺乏对本体规则语言SWRL的支持并且支持的查询语言不够全面，一般只是进行A-Box推理的时候使用Pellet，如果牵涉到T-Box则推荐使用Racer。</p>
-<h2 id="RACER"><a href="#RACER" class="headerlink" title="RACER"></a>RACER</h2><p>Racer由德国汉堡大学开发，采用Tableaux算法。给定一个Tbox后，Racer可以完成各种查询服务，在Tbox方面推理能力较强，对大本体文件支持良好。但是Racer不支持对枚举类和用户自定义数据类型的推理。</p>
-<h2 id="FaCT"><a href="#FaCT" class="headerlink" title="FaCT++"></a>FaCT++</h2><p>FaCT++是FaCT的新一代产品，由英国曼城斯特大学开发，采用Tableaux算法。Fact++采用了c++语言，但是没有提供OWL接口，不支持对实例的查询。</p>
-<h2 id="Hermit"><a href="#Hermit" class="headerlink" title="Hermit"></a>Hermit</h2><p>HermiT支持OWL2本体语言的所有特性，包括OWL 2的所有数据类型，并且它正确地执行对象和数据属性分类，其中有些推理任务并不完全由其他OWL推理器支持。</p>
-<p>在Protege中，常用的OWL推理机主要包括HermiT、FaCT、Pellet。</p>
-<p>[1] 潘超, 古辉. 本体推理机及应用[J]. 计算机系统应用, 2010, 19(009):163-167.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/13/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B9%9D%EF%BC%89%EF%BC%9Agazebo%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E6%B5%8B%E8%AF%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/13/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B9%9D%EF%BC%89%EF%BC%9Agazebo%E7%AE%80%E4%BB%8B%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%8E%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">无人机编程入门（九）：Gazebo简介、安装与测试</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-13 10:44:20" itemprop="dateCreated datePublished" datetime="2021-04-13T10:44:20+08:00">2021-04-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>至今为止，我们都没有见过实体化的无人机，除了地面站中简单地标出了无人机的位置和飞行姿态。一直没能看着自己的无人机真正升空，实在是有一点遗憾。在你尝试在真实的无人机上实验之前，还有一个选择：无人机仿真。如果你只是想让无人机飞到一个地方再飞回来，那么前面的教程就足够你参考了；但是如果你想让无人机进行一些更为精细的操作的话，无人机仿真是很有必要的。</p>
-<p>Gazebo是一个很有效的仿真工具，可以用来测试算法、设计机器人、进行测试，提供一个三维视窗来让你观察机器人的表现。在这一章，我们会安装gazebo并进行简单的测试。</p>
-<h2 id="安装Gazebo"><a href="#安装Gazebo" class="headerlink" title="安装Gazebo"></a>安装Gazebo</h2><p>安装之前，我们需要对环境变量进行一下设置。Gazebo对虚拟机的3D硬件加速支持有BUG，会出现闪退的情形。因此我们先关闭硬件加速：</p>
-<p>echo “ export SVGA_VGPU10&#x3D;0” &gt;&gt; ~&#x2F;.bashrc<br>source ~&#x2F;.bashrc</p>
-<p>然后我们将 <a target="_blank" rel="noopener" href="http://packages.osrfoundation.org/">http://packages.osrfoundation.org</a>加入到系统的源列表里，这样我们用apt install就可以安装Gazebo了。：</p>
-<p>sudo sh -c ‘echo “deb <a target="_blank" rel="noopener" href="http://packages.osrfoundation.org/gazebo/ubuntu-stable">http://packages.osrfoundation.org/gazebo/ubuntu-stable</a> `lsb_release -cs` main” &gt; &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;gazebo-stable.list’<br>wget <a target="_blank" rel="noopener" href="http://packages.osrfoundation.org/gazebo.key">http://packages.osrfoundation.org/gazebo.key</a> -O -  sudo apt-key add -<br>sudo apt update</p>
-<p>接下来安装gazebo9：</p>
-<p>sudo apt install gazebo9 libgazebo9-dev</p>
-<p>我们打开Gazebo的界面看看安装是否成功：</p>
-<p>gazebo –verbose</p>
-<p>如果界面能成功打开，并且没有闪退，说明安装没有问题。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-31-1024x970.png"></p>
-<h2 id="安装Ardupilot-gazebo插件"><a href="#安装Ardupilot-gazebo插件" class="headerlink" title="安装Ardupilot-gazebo插件"></a>安装Ardupilot-gazebo插件</h2><p>这个插件允许你在Gazebo中对ArduPilot控制的无人机进行仿真，他也提供了一个无人机模型和场景用于观察。</p>
-<p>cd $courseRoot<br>git clone <a target="_blank" rel="noopener" href="https://github.com/khancyr/ardupilot/_gazebo">https://github.com/khancyr/ardupilot\_gazebo</a><br>cd ardupilot_gazebo<br>mkdir build<br>cd build<br>cmake ..<br>make -j4<br>sudo make install<br>echo ‘source &#x2F;usr&#x2F;share&#x2F;gazebo&#x2F;setup.sh’ &gt;&gt; ~&#x2F;.bashrc</p>
-<p>在这个过程中无人机的模型和默认场景也被下载下来，我们把模型和场景坐在的文件夹也加入环境变量，这样加载时不需要输入完整的模型路径名称。</p>
-<p>echo ‘export GAZEBO_MODEL_PATH&#x3D;<del>&#x2F;courseRoot&#x2F;ardupilot_gazebo&#x2F;models’ &gt;&gt; ~&#x2F;.bashrc<br>echo ‘export GAZEBO_RESOURCE_PATH&#x3D;</del>&#x2F;courseRoot&#x2F;ardupilot_gazebo&#x2F;worlds:${GAZEBO_RESOURCE_PATH}’ &gt;&gt; ~&#x2F;.bashrc<br>source ~&#x2F;.bashrc</p>
-<h2 id="Gazebo测试"><a href="#Gazebo测试" class="headerlink" title="Gazebo测试"></a>Gazebo测试</h2><p>安装完毕后，我们对Gazebo进行测试。首先，我们运行一个SITL：</p>
-<p>sim_vehicle.py -v ArduCopter -f gazebo-iris –map –console</p>
-<p>然后，我们运行gazebo：</p>
-<p>gazebo –verbose worlds&#x2F;iris_arducopter_runway.world</p>
-<p>这时候会卡很久一段时间（我是这样），这是因为gazebo正在下载模型，耐心等待即可，偶尔敲一敲空格（可能有用）。你应该可以看到这样的界面：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-32.png"></p>
-<p>然后在控制台里控制无人机起飞，看看会发生什么吧：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-33.png"></p>
-<p>芜湖起飞！下一章，我们来看看如何把Gazebo和我们之前学习的知识联系到一起。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/12/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AB%EF%BC%89%EF%BC%9Adronekit%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/12/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AB%EF%BC%89%EF%BC%9Adronekit%E4%BD%BF%E7%94%A8%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">无人机编程入门（八）：DroneKit使用（二）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-12 17:19:34" itemprop="dateCreated datePublished" datetime="2021-04-12T17:19:34+08:00">2021-04-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="使用DroneKit制作起飞python脚本"><a href="#使用DroneKit制作起飞python脚本" class="headerlink" title="使用DroneKit制作起飞python脚本"></a>使用DroneKit制作起飞python脚本</h2><p>在这一节中我们来看如何用DroneKit控制SITL起飞，进入dk文件夹，新建一个python文件，输入以下内容：</p>
-<p>cd $courseRoot&#x2F;dk<br>gedit basic_template.py<br>—————————–输入以下内容<br>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse</p>
-<p>def connectMyCopter():</p>
-<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
-parser.add\_argument(&#39;--connect&#39;)
-args = parser.parse\_args()
-
-connection\_string = args.connect
-
-if not connection\_string:
-    import dronekit\_sitl
-    sitl = dronekit\_sitl.start\_default()
-    connection\_string = sitl.connection\_string()
-
-vehicle = connect(connection\_string, wait\_ready=True)
-
-return vehicle
-</code></pre>
-<p>def arm_and_takeoff(targetHeight):<br>while vehicle.is_armable!&#x3D;True:<br>    print(“Waiting for vehicle to become aramable”)<br>    time.sleep(1)<br>print(“Vehicle is now armable”)</p>
-<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
-<p>while vehicle.mode!&#x3D;”GUIDED”:<br>    print(“Waiting for drone to enter GUIDED flight mode”)<br>    time.sleep(1)<br>print(“Vehicle now in GUIDED MODE. Have fun!!”)</p>
-<p>vehicle.armed &#x3D; True<br>while vehicle.armed&#x3D;&#x3D;False:<br>    print(“Waiting for drone to become armed”)<br>    time.sleep(1)<br>print(“Look out! Virtual props are spinning!”)</p>
-<p>vehicle.simple_takeoff(targetHeight) ##meters</p>
-<p>while True:<br>print(“Current Altitude:”, vehicle.location.global_relative_frame.alt)<br>if vehicle.location.global_relative_frame.alt&gt;&#x3D;.95*targetHeight:<br>break<br>time.sleep(1)<br>print(“Target altitude reached!!”)<br>return None</p>
-<p>vehicle &#x3D; connectMyCopter()<br>arm_and_takeoff(10)</p>
-<p>观察一下arm_and_takeoff这个函数，你会发现起飞是如何进行的：启动和飞行模式修改通过改变无人机的参数实现，起飞到固定高度则通过调用simple_takeoff方法实现。<strong>同时，每进行下一步操作前，都要确保无人机的状态已经满足操作要求，或者上一步操作已经完成。在虚拟环境下运行这个脚本</strong>，观察一下输出：</p>
-<p>Starting copter simulator (SITL)<br>SITL already Downloaded and Extracted.<br>Ready to boot.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>APM:Copter V3.3 (d6053245)<br>Frame: QUAD<br>Calibrating barometer<br>Initialising APM…<br>barometer calibration complete<br>GROUND START<br>Waiting for vehicle to become aramable<br>Waiting for vehicle to become aramable<br>Waiting for vehicle to become aramable<br>Waiting for vehicle to become aramable<br>Waiting for vehicle to become aramable<br>Vehicle is now armable<br>Waiting for drone to enter GUIDED flight mode<br>Vehicle now in GUIDED MODE. Have fun!!<br>Waiting for drone to become armed<br>Waiting for drone to become armed<br>Waiting for drone to become armed<br>Waiting for drone to become armed</p>
-<blockquote>
-<blockquote>
-<p>ARMING MOTORS<br>GROUND START<br>Waiting for drone to become armed</p>
-<blockquote>
-<blockquote>
-<p>Link timeout, no heartbeat in last 5 seconds<br>…link restored.<br>Initialising APM…<br>Look out! Virtual props are spinning!<br>(‘Current Altitude:’, 0.0)<br>(‘Current Altitude:’, 0.0)<br>(‘Current Altitude:’, 0.34)<br>(‘Current Altitude:’, 1.73)<br>(‘Current Altitude:’, 3.62)<br>(‘Current Altitude:’, 5.71)<br>(‘Current Altitude:’, 7.78)<br>(‘Current Altitude:’, 9.19)<br>(‘Current Altitude:’, 9.69)<br>Target altitude reached!!</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<h2 id="连接到外部SITL与QGC"><a href="#连接到外部SITL与QGC" class="headerlink" title="连接到外部SITL与QGC"></a>连接到外部SITL与QGC</h2><p>我们一直在使用dronekit自带的SITL进行测试，但是最终我们应当在外部SITL上进行测试，这样才能把代码更方便地迁移到真实无人机上。为了做到这一点，我们要做的事情包括：</p>
+<p>实际上初学者应该迟一些再接触这些框架。这里选择Maven进入下一步，Maven介绍和入门<a target="_blank" rel="noopener" href="https://www.cnblogs.com/OverloadBachPunk/p/14339962.html">传送门在这里</a>。</p>
+<h2 id="Java模块（Jsoup）安装与导入"><a href="#Java模块（Jsoup）安装与导入" class="headerlink" title="Java模块（Jsoup）安装与导入"></a>Java模块（Jsoup）安装与导入</h2><p>Jsoup可以用于编写Java网络爬虫。官方介绍：Open source Java HTML parser, with the best of HTML5 DOM methods and CSS selectors, for easy data extraction.</p>
+<p>在Maven+vscode的开发环境下中导入外部包非常方便。同样参照<a target="_blank" rel="noopener" href="https://www.cnblogs.com/OverloadBachPunk/p/14339962.html">Maven介绍和入门</a>。</p>
+<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><p>简便起见，将所有的功能都先写在main方法里。</p>
+<h3 id="连接目标网页并获取内容"><a href="#连接目标网页并获取内容" class="headerlink" title="连接目标网页并获取内容"></a>连接目标网页并获取内容</h3><p>链接目标网页通过Jsoup的connect方法实现，参数为网页的url。Connection 接口还提供一个方法链来解决特殊请求，具体如下：</p>
+<p> Document doc &#x3D; Jsoup.connect(“<a target="_blank" rel="noopener" href="http://example.com/">http://example.com</a>“;)<br>  .data(“query”, “Java”)<br>  .userAgent(“Mozilla”)<br>  .cookie(“auth”, “token”)<br>  .timeout(3000)<br>  .post();</p>
+<p>最简单的例子（也是此爬虫使用的例子如下）：<br><code>Document doc = Jsoup.connect(&quot;http://news.sohu.com/&quot;).get();</code><br>这里需要使用到Jsoup的Document类。Document是一个装载html的文档类，它是Jsoup一个非常重要的类。所有的HTML文件都应该被声明为Document类才能被Jsoup进一步处理。</p>
+<h4 id="Java的异常处理机制"><a href="#Java的异常处理机制" class="headerlink" title="Java的异常处理机制"></a>Java的异常处理机制</h4><p>注意，因为get取得和解析一个HTML文件。如果从该URL获取HTML时发生错误，便会抛出 IOException，应适当处理。处理的方法之一是在定义方法时，将这个异常抛出，如下：<br><code>public static void main( String[] args ) throws IOException</code><br>这种方法在方法签名中，用于声明该方法可能抛出的异常。还有其他的异常处理机制有：</p>
 <ol>
-<li>启动SITL</li>
-<li>启动MAVProxy进行消息转发</li>
-<li>启动地面站</li>
-<li>启动python脚本</li>
+<li>try：它里面放置可能引发异常的代码</li>
+<li>catch：后面对应异常类型和一个代码块，用于表明该catch块用于处理这种类型的代码块，可以有多个catch块。</li>
+<li>finally：主要用于回收在try块里打开的物力资源（如数据库连接、网络连接和磁盘文件），异常机制总是保证finally块总是被执行。只有finally块，执行完成之后，才会回来执行try或者catch块中的return或者throw语句，如果finally中使用了return或者 throw等终止方法的语句，则就不会跳回执行，直接停止。</li>
+<li>throw：用于抛出一个实际的异常，可以单独作为语句使用，抛出一个具体的异常对象。</li>
 </ol>
-<p>如果每次测试都要手动去启动上面这么多程序，显然是比较麻烦的。我们可以写一个bash脚本，来自动完成上面这些操作。新建一个launchSITL文件，然后进行以下操作：</p>
-<p>gedit launchSitl<br>—————————输入以下内容<br>#!&#x2F;bin&#x2F;bash</p>
-<p>kill -9 $(ps -eF  grep QG  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep ardu  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep mav  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep apm  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1</p>
-<p>#########</p>
-<h2 id="Launch-a-Sitl-drone"><a href="#Launch-a-Sitl-drone" class="headerlink" title="Launch a Sitl drone"></a>Launch a Sitl drone</h2><p>&#x2F;home&#x2F;shaw&#x2F;courseRoot&#x2F;apm&#x2F;ardupilot&#x2F;build&#x2F;sitl&#x2F;bin&#x2F;arducopter -S -I0 –home 44.501293,-88.062176,177,180 –model “+” –speedup 1 –defaults $apm&#x2F;ardupilot&#x2F;Tools&#x2F;autotest&#x2F;default_params&#x2F;copter.parm&amp;</p>
-<p>sleep 5</p>
-<h2 id="Launch-QGC"><a href="#Launch-QGC" class="headerlink" title="Launch QGC"></a>Launch QGC</h2><p>&#x2F;usr&#x2F;local&#x2F;bin&#x2F;QGC.AppImage 2&gt;&#x2F;dev&#x2F;null&amp;</p>
-<p>sleep 5</p>
-<h2 id="Start-MAVProxy"><a href="#Start-MAVProxy" class="headerlink" title="Start MAVProxy"></a>Start MAVProxy</h2><p>screen -dm mavproxy.py –master&#x3D;tcp:127.0.0.1:5760 –out&#x3D;127.0.0.1:14550 –out&#x3D;127.0.0.1:5762</p>
-<p>##Launch the dronekit-python script<br>&#x2F;usr&#x2F;bin&#x2F;python “$1” –connect 127.0.0.1:5762</p>
-<p>function finish {<br>kill -9 $(ps -eF  grep QG  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep ardu  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep mav  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>kill -9 $(ps -eF  grep apm  awk -F ‘ ‘ ‘{print $2}’)&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1<br>}</p>
-<p>trap finish EXIT<br>——————————保存并退出<br>chmod +x launchSitl<br>sudo cp launchSitl &#x2F;usr&#x2F;local&#x2F;bin&#x2F;launchSitl</p>
-<p>我们来看一看这段脚本做了什么：</p>
+<h3 id="检索HTML内容"><a href="#检索HTML内容" class="headerlink" title="检索HTML内容"></a>检索HTML内容</h3><p>示例如下：<br><code>Elements newATags = doc.select(&quot;div.main-right&quot;).select(&quot;div.list16&quot;).select(&quot;ul&quot;).select(&quot;li&quot;).select(&quot;a&quot;);</code><br>Element类似Python中lxml通过xpath解析得到的“Elements”，在Jsoup中，可以通过select这个更为强大的方法直接获得所有满足检索条件的标签。这些标签被存在属于Elements类的newATags中，可以通过get方法来获取所需索引的Element，也可以通过for进行遍历。除此之外，比较常用的方法是attr()，获得相应属性名的属性值；text()获得标签内的文字。</p>
+<h3 id="Java文件读写"><a href="#Java文件读写" class="headerlink" title="Java文件读写"></a>Java文件读写</h3><p>Java中最简单的写入文件方法是通过FileWriter类，如下：</p>
+<pre><code>public void writeToFile( String str) &#123;
+    try &#123;
+        FileWriter out = new FileWriter(&quot;foobar.txt&quot;, true);
+        out.write(str);
+        out.close();
+    &#125; catch (IOException e) &#123;
+    &#125;
+&#125;
+</code></pre>
+<p>调用这个方法，就可以以附加的形式逐条写入爬取内容。如果不加参数true，默认是false，即每次写入都会覆盖上一次的记录。</p>
+<p>整体程序如下：</p>
+<p>package lx;</p>
+<p>import java.io.BufferedWriter;<br>import java.io.FileWriter;<br>import java.io.IOException;<br>import java.io.OutputStreamWriter;</p>
+<p>import org.jsoup.Jsoup;<br>import org.jsoup.nodes.Document;<br>import org.jsoup.nodes.Element;<br>import org.jsoup.select.Elements;<br>&#x2F;**<br> * Hello world!<br> *<br> *&#x2F;<br>public class MyScrapy<br>{<br>    public void writeToFile( String str) {<br>        try {<br>            FileWriter out &#x3D; new FileWriter(“foobar.txt”, true);<br>            out.write(str);<br>            out.close();<br>        } catch (IOException e) {<br>        }<br>    }<br>    public static void main( String[] args ) throws IOException<br>    {<br>        MyScrapy scrapy &#x3D; new MyScrapy();<br>        Document doc &#x3D; Jsoup.connect(“<a target="_blank" rel="noopener" href="http://news.sohu.com/%22).get()">http://news.sohu.com/&quot;).get()</a>;<br>        Elements newATags &#x3D; doc.select(“div.main-right”).select(“div.list16”).select(“ul”).select(“li”).select(“a”);<br>        for (Element element:newATags){<br>            String url &#x3D; element.attr(“href”);<br>            if(url.indexOf(“&#x2F;&#x2F;“)&#x3D;&#x3D;0  url.indexOf(“<a target="_blank" rel="noopener" href="http://www.sohu.com/a/">http://www.sohu.com/a/</a>“)&lt;0){<br>                continue;<br>            }<br>            String title &#x3D; element.attr(“title”);<br>            Document dm &#x3D; Jsoup.connect(url).get();<br>            Elements em &#x3D; dm.select(“p”).select(“img”);<br>            if(em&#x3D;&#x3D;null  em.size()&lt;1){<br>                continue;<br>            }<br>            String img &#x3D; em.get(0).attr(“src”);<br>            if(img.indexOf(“&#x2F;&#x2F;“)&#x3D;&#x3D;0){<br>                img &#x3D; img.substring(2);<br>            }<br>            String output &#x3D; “url: “+url+” title: “+title + “ image: “+img;<br>            System.out.println(output);<br>            scrapy.writeToFile(output+’\n’);<br>        }<br>    }<br>}</p>
+<h3 id="编译、运行、打包"><a href="#编译、运行、打包" class="headerlink" title="编译、运行、打包"></a>编译、运行、打包</h3><p>输入命令<code>mvn clean package</code>，然后在&#x2F;target&#x2F;classes目录下运行命令<code>java lx.MyScrapy</code>，却发现报错：</p>
+<p>Exception in thread “main” java.lang.NoClassDefFoundError: org&#x2F;jsoup&#x2F;Jsoup<br>        at lx.MyScrapy.main(MyScrapy.java:29)<br>Caused by: java.lang.ClassNotFoundException: org.jsoup.Jsoup<br>        at java.base&#x2F;jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:606)<br>        at java.base&#x2F;jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:168)<br>        at java.base&#x2F;java.lang.ClassLoader.loadClass(ClassLoader.java:522)<br>        … 1 more</p>
+<p>而在maven下直接编译运行java文件是可以运行的。经过一番搜索，发现这是因为maven在打包时就不会把外部依赖也打包进去，防止其他人在使用你的jar包时产生依赖冲突。stackoverflow上给出了通过在POM中加入插件项的解决办法，不过在vscode下，有更简单的方式将外部依赖打包到jar包中。</p>
 <ol>
-<li>首先，文件开头声明了这是一个可以被bash执行的文件，运行这个文件时默认使用bash运行它；</li>
-<li>杀死所有含有以下名字的程序：QG、ardu、mav、apm，保证这些应用不会被占用；</li>
-<li>运行一个SITL，&amp;意味着运行过程放到后台，不会在当前控制台中打印输出；</li>
-<li>运行QGC，如果有错误输出，把它扔到&#x2F;dev&#x2F;null里（也就是忽略），也在后台运行；</li>
-<li>运行MAVProxy，与无人机进行双向通信，并且把消息转发到14550（QGC的端口）和5762（python使用的端口）</li>
-<li>运行python脚本，<strong>$1</strong>是你给脚本传入的第一个参数，这个参数就是我们的python文件名</li>
-<li>执行完成后，像2中那样杀死所有被脚本开启的进程</li>
-<li>退出脚本</li>
+<li>首先用maven进行package，生成classes</li>
+<li>在左侧窗口的JAVA PROJECT中，点击导出到jar文件<img src="http://82.156.1.75/wp-content/uploads/2021/04/2289857-20210128212727521-1250703072.png"></li>
+<li>再运行<code>java -jar .\scrapy.jar</code>，此时jar文件可以运行。</li>
 </ol>
-<p>我们把这个脚本复制到bin文件夹里，这样可以全局调用它。我们试着用这个脚本运行basic_template.py，来让外部SITL起飞（如果你还在虚拟环境里，现在可以退出来了），外部SITL的启动时间会比较长，耐心等待一段时间：</p>
-<p>launchSitl basic_template.py</p>
-<p>你应该能看到QGC里出现无人机的位置，并且上升到10m后程序结束，窗口全部关闭。</p>
-<h2 id="控制SITL行进"><a href="#控制SITL行进" class="headerlink" title="控制SITL行进"></a>控制SITL行进</h2><p>我们先来看第一种行进方式，也就是让无人机飞到固定的经纬度。新建一个python文件，输入以下内容：</p>
-<h2 id="cd-courseRoot-dkgedit-location-based-movement-py"><a href="#cd-courseRoot-dkgedit-location-based-movement-py" class="headerlink" title="cd $courseRoot&#x2F;dkgedit location_based_movement.py"></a>cd $courseRoot&#x2F;dk<br>gedit location_based_movement.py</h2><p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse</p>
-<p>def connectMyCopter():</p>
-<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
-parser.add\_argument(&#39;--connect&#39;)
-args = parser.parse\_args()
-
-connection\_string = args.connect
-
-if not connection\_string:
-    import dronekit\_sitl
-    sitl = dronekit\_sitl.start\_default()
-    connection\_string = sitl.connection\_string()
-
-vehicle = connect(connection\_string, wait\_ready=True)
-
-return vehicle
-</code></pre>
-<p>def arm_and_takeoff(targetHeight):<br>while vehicle.is_armable!&#x3D;True:<br>    print(“Waiting for vehicle to become aramable”)<br>    time.sleep(1)<br>print(“Vehicle is now armable”)</p>
-<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
-<p>while vehicle.mode!&#x3D;”GUIDED”:<br>    print(“Waiting for drone to enter GUIDED flight mode”)<br>    time.sleep(1)<br>print(“Vehicle now in GUIDED MODE. Have fun!!”)</p>
-<p>vehicle.armed &#x3D; True<br>while vehicle.armed&#x3D;&#x3D;False:<br>    print(“Waiting for drone to become armed”)<br>    time.sleep(1)<br>print(“Look out! Virtual props are spinning!”)</p>
-<p>vehicle.simple_takeoff(targetHeight) ##meters</p>
-<p>while True:<br>print(“Current Altitude:”, vehicle.location.global_relative_frame.alt)<br>if vehicle.location.global_relative_frame.alt&gt;&#x3D;.95*targetHeight:<br>break<br>time.sleep(1)<br>print(“Target altitude reached!!”)<br>return None</p>
-<p>def get_distance_meters(targetLocation, currentLocation):<br>dLat &#x3D; targetLocation.lat - currentLocation.lat<br>dLon &#x3D; targetLocation.lon - currentLocation.lon</p>
-<p>return math.sqrt((dLon*dLon)+(dLat*dLat))*1.113195e5</p>
-<p>def goto(targetLocation):<br>distanceToTargetLocation &#x3D; get_distance_meters(targetLocation, vehicle.location.global_relative_frame)</p>
-<p>vehicle.simple_goto(targetLocation)</p>
-<p>while vehicle.mode.name &#x3D;&#x3D; “GUIDED”:<br>currentDistance &#x3D; get_distance_meters(targetLocation,vehicle.location.global_relative_frame)<br>if currentDistance &lt; distanceToTargetLocation*.01:<br>print(“Reached target waypoint”)<br>time.sleep(2)<br>break<br>time.sleep(1)<br>return None</p>
-<p>wp1 &#x3D; LocationGlobalRelative(44.50202, -88.060316, 10)</p>
-<p>vehicle &#x3D; connectMyCopter()<br>arm_and_takeoff(10)</p>
-<p>goto(wp1)</p>
-<p>vehicle.mode &#x3D; VehicleMode(“LAND”)<br>while vehicle.mode !&#x3D; ‘LAND’<br>print(“Waiting for drone to enter LAND mode”)<br>time.sleep(1)<br>print(“Vehicle in LAND mode”)</p>
-<p>while True:<br>time.sleep(1)</p>
-<p>首先来看get_distance_meters这个函数，这个函数计算了当前位置和指定位置的距离，距离是我们来用来判断是否继续执行下一步的准则。时刻记住，使用脚本对GUIDED模式的SITL进行操控时，上一步操作结束后才能进行下一步。</p>
-<p>我们使用vehicle.simple_goto这个方法来操控无人机到达指定位置，在goto函数里，用距离来判断是否到达指定位置。</p>
-<p>在main函数中，我们制定了一个目标位置，让无人机飞往指定位置后切换到LAND降落。运行这个python脚本，看看效果如何：</p>
-<p>launchSitl location_based_movement.py</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-24.png"></p>
-<h2 id="在AUTO模式下控制无人机"><a href="#在AUTO模式下控制无人机" class="headerlink" title="在AUTO模式下控制无人机"></a>在AUTO模式下控制无人机</h2><p>在GUIDED模式下操控无人机就像你在手控制无人机一样，需要你不断地向无人机发送指令来操控无人机。而在AUTO模式下，你可以直接将你的飞行计划上传到无人机（也是通过MAVLink），这样无人机可以持续执行飞行计划，而不需要一直发送信息。所以AUTO模式非常适合你要让无人机执行一些自动化任务时。而GUIDED模式比较适合你需要让无人机根据环境来改变飞行状态等动态性较高的任务，比如精准降落等。</p>
-<p>简单来说在AUTO模式下，我们给无人机一个任务列表，无人机就会自动执行列表中的任务。这个任务列表是通过MAVLink发送的，如果你还有印象的话，MAVLink发送的数据包都遵循一定的组织格式。下面我们来看看如何用DroneKit来发送MAVLink命令。你可以在<a target="_blank" rel="noopener" href="http://ardupilot.org/copter/docs/common-mavlink-mission-command-messages-mav_cmd.html">这里找到更多的mavlink命令</a>。</p>
-<p>我们使用dronekit.Command()这个命令来发送MAVLink。你可能还记得MAVLink中的long命令，其实Command()的效果和它基本一样，它包含以下参数：</p>
-<p>Command(0,0,0,FrameOfReference, MAVLinkCommand,CurrentWP,AutoContinue,param1,param2,param3,param4,param5,param6,param7)</p>
-<p>前面的三个0一般不变；FrameOfReference代表我们使用的坐标系；MAVLinkCommand就是它的字面意思，可以根据文档查看命令名称；CurrentWP一般是0；AutoContinue一般是0；下面的七个参数和MAVLink中的long命令用法是一样的。例如，如果我们要发送WAY_POINT命令，可以到文档里找到对应的参数：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-25-1024x993.png"></p>
-<p>也就是说我们在param5\6\7中分别填入纬度、经度和高度，其他参数都填0（默认）.</p>
-<p>了解了这些之后，我们来写一个自动飞行的脚本：</p>
-<h2 id="cd-courseRoot-dkgedit-auto-mission-py"><a href="#cd-courseRoot-dkgedit-auto-mission-py" class="headerlink" title="cd $courseRoot&#x2F;dkgedit auto_mission.py"></a>cd $courseRoot&#x2F;dk<br>gedit auto_mission.py</h2><p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException, Command<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse<br>from pymavlink import mavutil</p>
-<p>def connectMyCopter():</p>
-<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
-parser.add\_argument(&#39;--connect&#39;)
-args = parser.parse\_args()
-
-connection\_string = args.connect
-
-if not connection\_string:
-    import dronekit\_sitl
-    sitl = dronekit\_sitl.start\_default()
-    connection\_string = sitl.connection\_string()
-
-vehicle = connect(connection\_string, wait\_ready=True)
-
-return vehicle
-</code></pre>
-<p>def arm_and_takeoff(targetHeight):<br>while vehicle.is_armable!&#x3D;True:<br>    print(“Waiting for vehicle to become aramable”)<br>    time.sleep(1)<br>print(“Vehicle is now armable”)</p>
-<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
-<p>while vehicle.mode!&#x3D;”GUIDED”:<br>    print(“Waiting for drone to enter GUIDED flight mode”)<br>    time.sleep(1)<br>print(“Vehicle now in GUIDED MODE. Have fun!!”)</p>
-<p>vehicle.armed &#x3D; True<br>while vehicle.armed&#x3D;&#x3D;False:<br>    print(“Waiting for drone to become armed”)<br>    time.sleep(1)<br>print(“Look out! Virtual props are spinning!”)</p>
-<p>vehicle.simple_takeoff(targetHeight) ##meters</p>
-<p>while True:<br>print(“Current Altitude:”, vehicle.location.global_relative_frame.alt)<br>if vehicle.location.global_relative_frame.alt&gt;&#x3D;.95*targetHeight:<br>break<br>time.sleep(1)<br>print(“Target altitude reached!!”)<br>return None</p>
-<p>vehicle &#x3D; connectMyCopter()</p>
-<p>wphome &#x3D; vehicle.location.global_relative_frame</p>
-<p>cmd1 &#x3D; Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,0,0,0,0,wphome.lat,wphome.lon,wphome.alt)<br>cmd2 &#x3D; Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,0,0,0,0,44.501375,-88.062645,15)<br>cmd3 &#x3D; Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0,0,0,0,0,0,44.501746,-88.062242,10)<br>cmd4 &#x3D; Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH,0,0,0,0,0,0,0,0,0)</p>
-<p>cmds &#x3D; vehicle.commands<br>cmds.download()<br>cmds.wait_ready()</p>
-<p>cmds.clear()</p>
-<p>cmds.add(cmd1)<br>cmds.add(cmd2)<br>cmds.add(cmd3)<br>cmds.add(cmd4)</p>
-<p>vehicle.commands.upload()</p>
-<p>arm_and_takeoff(10)</p>
-<p>print(“after arm and takeoff”)<br>vehicle.mode &#x3D; VehicleMode(“AUTO”)<br>while vehicle.mode !&#x3D; “AUTO”:<br>time.sleep(.2)</p>
-<p>while vehicle.location.global_relative_frame.alt &gt; 2:<br>print(“Drone is executing mission, but we can still run code”)<br>time.sleep(2)</p>
-<p>我们来看一下这个流程，首先我们编写了几个command，前三个都是WAYPOIN，也就是飞往指定地点，最后一个是LAND。随后，我们下载目前无人机的命令列表，并清空，随后我们逐个在列表中增加命令，随后上传。无人机起飞后，我们将无人机设置为AUTO模式，无人机就会开始执行任务，直到最后一个命令降落。运行这个脚本，看看效果如何：</p>
-<p>launchSitl auto_mission.py</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-26.png"></p>
-<p>无人机画了一个三角形后降落。</p>
-<h2 id="使用DroneKit基于速度控制无人机"><a href="#使用DroneKit基于速度控制无人机" class="headerlink" title="使用DroneKit基于速度控制无人机"></a>使用DroneKit基于速度控制无人机</h2><p>接下来我们使用基于速度的方式来控制无人机，在此之前，我们要明确一下无人机的方位。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-27.png"></p>
-<p>在全球坐标系下，正北方是正x轴，正东方是正y轴，正下方是正z轴，反之亦然。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-28.png"></p>
-<p>在本地坐标系下，无人机的正方向是x轴，右侧是正y轴，下方是正z轴。无人机虽然是中心对称的，但是安装飞控硬件的时候都会指明无人机的正方向。接下来我们来写一个python脚本来让无人机根据速度移动。我们要在GUIDED模式下对无人机发送自定义的MAVLink指令，对于多数MAVLink指令，生成相应指令的函数为“小写指令名”+“_encode”。如果你在上面的MAVLink文档里找不到对应的command，可以<a target="_blank" rel="noopener" href="https://ardupilot.org/dev/docs/copter-commands-in-guided-mode.html">到这里再找找</a>。我们使用SET_POSITION_TARGET_LOCAL_NED这个命令，它的参数如下：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-29-769x1024.png"></p>
-<p>前面三个参数一般就取0，第四个参数指参考系，第五个参数是Bitmask，剩下几个参数写的都很明确了。这个Bitmask是什么呢？位掩码是一种用来定义状态的一串二进制数字，通过与目标数字串进行逻辑运算来达到控制状态的目的。位掩码可以占用很少资源实现丰富的状态标识。这里给出了三种位掩码，我们需要用表示速度的那个，也就是0b110111000111.我们开始写脚本：</p>
-<h2 id="cd-courseRoot-dkgedit-velocity-based-movement-py"><a href="#cd-courseRoot-dkgedit-velocity-based-movement-py" class="headerlink" title="cd $courseRoot&#x2F;dkgedit velocity_based_movement.py"></a>cd $courseRoot&#x2F;dk<br>gedit velocity_based_movement.py</h2><p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException, Command<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse<br>from pymavlink import mavutil</p>
-<p>def connectMyCopter():</p>
-<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
-parser.add\_argument(&#39;--connect&#39;)
-args = parser.parse\_args()
-
-connection\_string = args.connect
-
-if not connection\_string:
-    import dronekit\_sitl
-    sitl = dronekit\_sitl.start\_default()
-    connection\_string = sitl.connection\_string()
-
-vehicle = connect(connection\_string, wait\_ready=True)
-
-return vehicle
-</code></pre>
-<p>def arm_and_takeoff(targetHeight):<br>while vehicle.is_armable!&#x3D;True:<br>    print(“Waiting for vehicle to become aramable”)<br>    time.sleep(1)<br>print(“Vehicle is now armable”)</p>
-<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
-<p>while vehicle.mode!&#x3D;”GUIDED”:<br>    print(“Waiting for drone to enter GUIDED flight mode”)<br>    time.sleep(1)<br>print(“Vehicle now in GUIDED MODE. Have fun!!”)</p>
-<p>vehicle.armed &#x3D; True<br>while vehicle.armed&#x3D;&#x3D;False:<br>    print(“Waiting for drone to become armed”)<br>    time.sleep(1)<br>print(“Look out! Virtual props are spinning!”)</p>
-<p>vehicle.simple_takeoff(targetHeight) ##meters</p>
-<p>while True:<br>print(“Current Altitude:”, vehicle.location.global_relative_frame.alt)<br>if vehicle.location.global_relative_frame.alt&gt;&#x3D;.95*targetHeight:<br>break<br>time.sleep(1)<br>print(“Target altitude reached!!”)<br>return None</p>
-<p>def send_global_ned_velocity(vx, vy, vz):<br>msg &#x3D; vehicle.message_factory.set_position_target_local_ned_encode(<br>0,0,0,mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED,<br>0b110111000111,<br>0,0,0,<br>vx,vy,vz,<br>0,0,0,<br>0,0)<br>vehicle.send_mavlink(msg)<br>vehicle.flush()</p>
-<p>def send_local_ned_velocity(vx, vy, vz):<br>msg &#x3D; vehicle.message_factory.set_position_target_local_ned_encode(<br>0,0,0,mavutil.mavlink.MAV_FRAME_LOCAL_NED,<br>0b110111000111,<br>0,0,0,<br>vx,vy,vz,<br>0,0,0,<br>0,0)<br>vehicle.send_mavlink(msg)<br>vehicle.flush()</p>
-<p>vehicle &#x3D; connectMyCopter()<br>arm_and_takeoff(10)<br>time.sleep(2)</p>
-<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_global_ned_velocity(5,0,0)<br>time.sleep(1)<br>print(“Moving TRUE NORTH”)<br>i +&#x3D; 1</p>
-<p>time.sleep(2)</p>
-<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_global_ned_velocity(0,-5,0)<br>time.sleep(1)<br>print(“Moving TRUE WEST”)<br>i +&#x3D; 1</p>
-<p>time.sleep(2)</p>
-<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_local_ned_velocity(5,0,0)<br>time.sleep(1)<br>print(“Moving NORTH relative to front of drone”)<br>i +&#x3D; 1</p>
-<p>time.sleep(2)</p>
-<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_local_ned_velocity(0,-5,0)<br>time.sleep(1)<br>print(“Moving NORTH relative to front of drone”)<br>i +&#x3D; 1</p>
-<p>time.sleep(2)</p>
-<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_local_ned_velocity(0,0,5)<br>time.sleep(1)<br>print(“Moving DOWN”)<br>i +&#x3D; 1</p>
-<p>time.sleep(2)</p>
-<p>i&#x3D;0<br>while i&lt;&#x3D;5:<br>send_global_ned_velocity(0,0,-5)<br>time.sleep(1)<br>print(“Moving UP”)<br>i +&#x3D; 1</p>
-<p>while True:<br>time.sleep(1)<br>———————–保存后退出<br>launchSitl velocity_based_movement.py</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-30-882x1024.png"></p>
-<p>飞行器绕圈成功，这里有个bug没注意到，脚本里控制无人机下降的时候触底了，所以自动变成disarmed的状态，飞不起来了。</p>
-<h2 id="用Dronekit控制无人机的朝向（yaw角）"><a href="#用Dronekit控制无人机的朝向（yaw角）" class="headerlink" title="用Dronekit控制无人机的朝向（yaw角）"></a>用Dronekit控制无人机的朝向（yaw角）</h2><p>这个脚本和前面大同小异，我在这里不做详细示范，你可以试着自己去实现它。这需要用到这个MAVLink命令：<a target="_blank" rel="noopener" href="https://ardupilot.org/copter/docs/common-mavlink-mission-command-messages-mav_cmd.html#mav-cmd-condition-yaw">MAV_CMD_CONDITION_YAW</a>，并且要求“These MAV_CMDs can be processed if packaged within a <a target="_blank" rel="noopener" href="https://mavlink.io/en/messages/common.html#COMMAND_LONG">COMMAND_LONG</a> message.”你可以回顾一下COMMAND_LONG的形式，结合MAV_CMD_CONDITION_YAW的参数格式来实现它。我直接给出可以使用的脚本，你可以参照一下：</p>
-<p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException, Command<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse<br>from pymavlink import mavutil</p>
-<p>def connectMyCopter():</p>
-<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
-parser.add\_argument(&#39;--connect&#39;)
-args = parser.parse\_args()
-
-connection\_string = args.connect
-
-if not connection\_string:
-    import dronekit\_sitl
-    sitl = dronekit\_sitl.start\_default()
-    connection\_string = sitl.connection\_string()
-
-vehicle = connect(connection\_string, wait\_ready=True)
-
-return vehicle
-</code></pre>
-<p>def arm_and_takeoff(targetHeight):<br>while vehicle.is_armable!&#x3D;True:<br>    print(“Waiting for vehicle to become aramable”)<br>    time.sleep(1)<br>print(“Vehicle is now armable”)</p>
-<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
-<p>while vehicle.mode!&#x3D;”GUIDED”:<br>    print(“Waiting for drone to enter GUIDED flight mode”)<br>    time.sleep(1)<br>print(“Vehicle now in GUIDED MODE. Have fun!!”)</p>
-<p>vehicle.armed &#x3D; True<br>while vehicle.armed&#x3D;&#x3D;False:<br>    print(“Waiting for drone to become armed”)<br>    time.sleep(1)<br>print(“Look out! Virtual props are spinning!”)</p>
-<p>vehicle.simple_takeoff(targetHeight) ##meters</p>
-<p>while True:<br>print(“Current Altitude:”, vehicle.location.global_relative_frame.alt)<br>if vehicle.location.global_relative_frame.alt&gt;&#x3D;.95*targetHeight:<br>break<br>time.sleep(1)<br>print(“Target altitude reached!!”)<br>return None</p>
-<p>def condition_yaw(degrees, relative):<br>if relative:<br>is_relative &#x3D; 1<br>else:<br>is_relative &#x3D; 0<br>msg &#x3D; vehicle.message_factory.command_long_encode(<br>0,0,<br>mavutil.mavlink.MAV_CMD_CONDITION_YAW,<br>0,<br>degrees,<br>0,1,<br>is_relative,<br>0,0,0)<br>vehicle.send_mavlink(msg)<br>vehicle.flush()</p>
-<p>vehicle &#x3D; connectMyCopter()<br>arm_and_takeoff(10)<br>condition_yaw(30,1)<br>time.sleep(7)<br>condition_yaw(0,0)<br>time.sleep(7)<br>condition_yaw(270,0)<br>while True:<br>time.sleep(1)</p>
-<p>DroneKit的使用就介绍到这里，下一章我会介绍如何在Gazebo中对无人机进行仿真（可能要鸽很久，我自己也还在学）。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9Adronekit%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9Adronekit%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-title-link" itemprop="url">无人机编程入门（七）：DroneKit使用（一）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-11 22:53:41" itemprop="dateCreated datePublished" datetime="2021-04-11T22:53:41+08:00">2021-04-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在这一章里我们会学习DroneKit的基本使用方法，内容会比较多，请坐稳：</p>
-<h2 id="使用DroneKit连接到SITL无人机"><a href="#使用DroneKit连接到SITL无人机" class="headerlink" title="使用DroneKit连接到SITL无人机"></a>使用DroneKit连接到SITL无人机</h2><p>首先我们在courseRoot下再创建一个文件夹来，来放置我们接下来所有的python脚本：</p>
-<p>cd $courseRoot<br>mkdir dk<br>cd dk<br>sudo gedit connection_template.py</p>
-<p>在窗口中输入以下内容：</p>
-<p>#####DEPENDENCIES#####</p>
-<p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse</p>
-<p>#####FUNCTIONS#####</p>
-<p>def connectMyCopter():</p>
-<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
-parser.add\_argument(&#39;--connect&#39;)
-args = parser.parse\_args()
-connection\_string = args.connect
-</code></pre>
-<p>if not connection_string:<br>import dronekit_sitl<br>sitl &#x3D; dronekit_sitl.start_default()<br>connection_string &#x3D; sitl.connection_string()</p>
-<pre><code>vehicle = connect(connection\_string, wait\_ready=True)
-
-return vehicle
-</code></pre>
-<p>#####MAIN EXECUTABLE#####</p>
-<p>vehicle &#x3D; connectMyCopter()</p>
-<p>我们使用argpars定义了一个命令行接口，你可以从–connect来输入参数，脚本会解析参数，随后我们基于IP参数来连接SITL。如果你不输入参数，则运行一个dronekit自带的SITL。wait_ready指等待连接成功后再进行下一步。接下来我们新建一个Terminal运行SITL：</p>
-<p>sim_vehicle.py -v ArduCopter<br>—————–output<br>…<br>SIM_VEHICLE: “mavproxy.py” “–master” “tcp:127.0.0.1:5760” “–sitl” “127.0.0.1:5501” “–out” “127.0.0.1:14550” “–out” “127.0.0.1:14551”<br>…</p>
-<p>你可以看到SITL开启了一个对外监听的端口127.0.0.1:14550，我们用它来链接python脚本：</p>
-<p>python connection_template.py –connect 127.0.0.1:14550</p>
-<p>运行这个脚本不会在当前控制台产生任何输出，但是你应该可以在MAVProxy的控制台里看到以下输出：</p>
-<p>APM: ArduCopter V4.0.3 (ffd08628)<br>APM: a44d06f73482473d8d26d9c8407b175e #这个序列码可能不一样<br>APM: Frame: QUAD</p>
-<p>如果你看到了以上输出，说明操作没有问题。</p>
-<h2 id="用DroneKit获取无人机的飞行参数"><a href="#用DroneKit获取无人机的飞行参数" class="headerlink" title="用DroneKit获取无人机的飞行参数"></a>用DroneKit获取无人机的飞行参数</h2><p>你可以在<a target="_blank" rel="noopener" href="https://dronekit-python.readthedocs.io/en/latest/guide/vehicle_state_and_parameters.html#vehicle-state-parameters">dronekit的文档</a>中了解更多无人机的参数，我们这里只获取一些经常会用到的参数。这个过程很简单，因为我们链接到无人机后会生成一个vehicle对象，我们只需要获取对象的属性即可。我们新建一个python脚本文件，输入以下内容（前面我们建立的python脚本一部分内容可以复用）</p>
-<p>cd $courseRoot&#x2F;dk<br>gedit attribute_fetcher.py<br>————————————以下为内容<br>#####DEPENDENCIES#####</p>
-<p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse</p>
-<p>#####FUNCTIONS#####</p>
-<p>def connectMyCopter():</p>
-<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
-parser.add\_argument(&#39;--connect&#39;)
-args = parser.parse\_args()
-connection\_string = args.connect
-
-if not connection\_string:
-import dronekit\_sitl
-sitl = dronekit\_sitl.start\_default()
-connection\_string = sitl.connection\_string()
-
-vehicle = connect(connection\_string, wait\_ready=True)
-
-return vehicle
-</code></pre>
-<p>#####MAIN EXECUTABLE#####</p>
-<p>vehicle &#x3D; connectMyCopter()</p>
-<p>#Version of the autopilot<br>vehicle.wait_ready(‘autopilot_version’)<br>print(‘AutoPilot version: %s’ % vehicle.version)</p>
-<p>#Position<br>print(‘Position: %s’ % vehicle.location.global_relative_frame)</p>
-<p>#Attitude<br>print(‘Attitude: %s’ % vehicle.attitude)</p>
-<p>#Velocity<br>print(‘Velocity: %s’ % vehicle.velocity)</p>
-<p>#Last heartbeat<br>print(‘Last heartbeat: %s’ % vehicle.last_heartbeat)</p>
-<p>#Is the vehicle good to arm<br>print(‘Is the vehicle good to arm: %s’ % vehicle.is_armable)</p>
-<p>#Flight mode<br>print(‘Flight mode: %s’ % vehicle.mode.name)</p>
-<p>#Is the vehicle armed<br>print(‘Armed: %s’ % vehicle.armed)</p>
-<p>vehicle.close()</p>
-<p>直接不带参数运行这个python文件，你应该可以看到以下输出：</p>
-<p>Starting copter simulator (SITL)<br>SITL already Downloaded and Extracted.<br>Ready to boot.<br>CRITICAL:autopilot:APM:Copter V3.3 (d6053245)<br>CRITICAL:autopilot:Frame: QUAD<br>CRITICAL:autopilot:Calibrating barometer<br>CRITICAL:autopilot:Initialising APM…<br>CRITICAL:autopilot:barometer calibration complete<br>CRITICAL:autopilot:GROUND START<br>AutoPilot version: APM:Copter-3.3.0<br>Position: LocationGlobalRelative:lat&#x3D;-35.363261,lon&#x3D;149.1652299,alt&#x3D;0.0<br>Attitude: Attitude:pitch&#x3D;0.000484587973915,yaw&#x3D;-0.121489435434,roll&#x3D;0.000107868516352<br>Velocity: [0.0, 0.0, 0.0]<br>Last heartbeat: 0.786125409999<br>Is the vehicle good to arm: False<br>Flight mode: STABILIZE<br>Armed: False</p>
-<h2 id="通过DroneKit设置SITL的参数"><a href="#通过DroneKit设置SITL的参数" class="headerlink" title="通过DroneKit设置SITL的参数"></a>通过DroneKit设置SITL的参数</h2><p>在这一节里我们开始通过DroneKit向SITL发出命令来让无人机的螺旋桨开始旋转，以及改变飞行模式等。**在此之前，现在我们使用的dronekit版本似乎有一个bug，不能正确地修改drone_sitl无人机的飞行模式（手动创建的SITL不受影响）。因此，我们额外创建一个虚拟环境来进行这个实验。**输入以下命令：</p>
-<p>cd $courseRoot<br>mkdir env<br>cd env<br>sudo apt install virtualenv<br>virtualenv dksitl –system-site-packages<br>source dksitl&#x2F;bin&#x2F;activate<br>pip install dronekit&#x3D;&#x3D;2.9.1<br>pip install MAVProxy&#x3D;&#x3D;1.6.2</p>
-<p>输入deactivate，就可以退出虚拟环境；输入source dksitl&#x2F;bin&#x2F;activate，则进入虚拟环境。我们在虚拟环境下新建一个python文件，输入以下内容：</p>
-<h2 id="cd-courseRoot-dkgedit-mode-setter-py"><a href="#cd-courseRoot-dkgedit-mode-setter-py" class="headerlink" title="cd $courseRoot&#x2F;dkgedit mode_setter.py"></a>cd $courseRoot&#x2F;dk<br>gedit mode_setter.py</h2><p>#####DEPENDENCIES#####</p>
-<p>from dronekit import connect, VehicleMode, LocationGlobalRelative, APIException<br>import time<br>import socket<br>import exceptions<br>import math<br>import argparse</p>
-<p>#####FUNCTIONS#####</p>
-<p>def connectMyCopter():</p>
-<pre><code>parser = argparse.ArgumentParser(description=&#39;commands&#39;)
-parser.add\_argument(&#39;--connect&#39;)
-args = parser.parse\_args()
-connection\_string = args.connect
-
-if not connection\_string:
-import dronekit\_sitl
-sitl = dronekit\_sitl.start\_default()
-connection\_string = sitl.connection\_string()
-
-vehicle = connect(connection\_string, wait\_ready=True)
-
-return vehicle
-</code></pre>
-<p>#####MAIN EXECUTABLE#####</p>
-<p>vehicle &#x3D; connectMyCopter()</p>
-<p>while vehicle.is_armable !&#x3D; True:<br>print(“Waiting for vehicle to be armable”)<br>time.sleep(1)<br>print(‘Vehicle is now armable’)</p>
-<p>vehicle.mode &#x3D; VehicleMode(“GUIDED”)</p>
-<p>while vehicle.mode !&#x3D; ‘GUIDED’:<br>print(“Waiting for vehicle to enter GUIDED mode”)<br>time.sleep(1)<br>print(‘Vehicle is now in GUIDED MODE, ready to fly!’)</p>
-<p>vehicle.armed &#x3D; True<br>while vehicle.armed !&#x3D; True:<br>print(“Waiting for vehicle to be armed”)<br>time.sleep(1)<br>print(‘The virtual props are spinning!’)</p>
-<p>我们首先检查无人机是否能够起飞，随后设置无人机的飞行模式，以及螺旋桨状态。需要注意的是，无人机开机后需要进行自检，处理MAVProxy命令也需要一定时间，所以每一步命令都需要等待命令传输并执行完成后再进行下一步。保存后运行脚本，你应该可以看到以下输出：</p>
-<p>Starting copter simulator (SITL)<br>SITL already Downloaded and Extracted.<br>Ready to boot.</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>APM:Copter V3.3 (d6053245)<br>Frame: QUAD<br>Calibrating barometer<br>Initialising APM…<br>barometer calibration complete<br>GROUND START<br>Waiting for vehicle to be armable<br>Waiting for vehicle to be armable<br>Waiting for vehicle to be armable<br>Waiting for vehicle to be armable<br>Waiting for vehicle to be armable<br>Vehicle is now armable<br>Waiting for vehicle to enter GUIDED mode<br>Vehicle is now in GUIDED MODE, ready to fly!<br>Waiting for vehicle to be armed<br>Waiting for vehicle to be armed<br>Waiting for vehicle to be armed<br>Waiting for vehicle to be armed</p>
-<blockquote>
-<blockquote>
-<p>ARMING MOTORS<br>GROUND START<br>Waiting for vehicle to be armed</p>
-<blockquote>
-<blockquote>
-<p>Link timeout, no heartbeat in last 5 seconds<br>…link restored.<br>Initialising APM…<br>The virtual props are spinning!</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>如果输出显示上述内容，说明操作没有问题。</p>
-<h2 id="另一种查看并修改参数的方式"><a href="#另一种查看并修改参数的方式" class="headerlink" title="另一种查看并修改参数的方式"></a>另一种查看并修改参数的方式</h2><p>我们也可以通过修改vehicle对象的parameter属性（这是一个字典）来修改参数。同样，你可以在<a target="_blank" rel="noopener" href="https://dronekit-python.readthedocs.io/en/latest/guide/vehicle_state_and_parameters.html#vehicle-state-parameters">ArduPilot的文档</a>中了解更多无人机的参数。打开mode_setter.py文件，我们在里面再加上一些语句：</p>
-<p>gps_type &#x3D; vehicle.parameters[‘GPS_TYPE’]<br>print(“GPS_TYPE param value is “, gps_type)<br>vehicle.parameters[‘GPS_TYPE’]&#x3D;3<br>gps_type &#x3D; vehicle.parameters[‘GPS_TYPE’]<br>print(“GPS_TYPE param value is “, gps_type)</p>
-<p>这段语句的作用是获取并更改GPS的类型，在文档里GPS的类型包括：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-23-539x1024.png"></p>
-<p>再次运行这个脚本，观察输出：</p>
-<p>(‘GPS_TYPE param value is ‘, 1.0)<br>(‘GPS_TYPE param value is ‘, 3.0)</p>
-<p>通过这种方式，我们将GPS的类型从AUTO（自动识别）改为了MTK。DroneKit的使用先告一段落，我们在下一篇继续学习DroneKit。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9Amavlink%E5%92%8Cdronekit%E7%AE%80%E4%BB%8B%E5%92%8C%E5%AE%89%E8%A3%85/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%85%AD%EF%BC%89%EF%BC%9Amavlink%E5%92%8Cdronekit%E7%AE%80%E4%BB%8B%E5%92%8C%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">无人机编程入门（六）：MAVLink和DroneKit简介和安装</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-11 11:46:55" itemprop="dateCreated datePublished" datetime="2021-04-11T11:46:55+08:00">2021-04-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="MAVLink"><a href="#MAVLink" class="headerlink" title="MAVLink"></a>MAVLink</h2><p>简单地说，MAVLink是无人机和地面站直接通信的标准信息协议，就像任何一门语言一样，你需要把你发出的声音按照语言规则组织，才能让对方理解。MAVLink也要求信息以规定的架构组织，才能被双方所理解。</p>
-<p>一条MAVLink的大小在8字节到263字节之间，总是包含以下内容并且按照顺序排布：</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>通过这个爬虫教程，主要学习以下基础知识：</p>
 <ol>
-<li>开始位，总是以0xFE开始，不以这个开始的字节包都不是MAVLink且不会被无人机解析</li>
-<li>Payload length，表达了包的长度</li>
-<li>Packet sequence，可以用于探测包丢失</li>
-<li>System ID，一般来说1指无人机，255指地面站，取值范围可以是1-255</li>
-<li>Component ID，用来区分传输来的信息所属的传感器</li>
-<li>Message ID，代表信息的类型，这样可以用对应的解析方式解析</li>
-<li>Data，信息的内容</li>
-<li>校验位</li>
+<li>Maven+VScode的基本使用方法；</li>
+<li>Maven导入外部依赖包的基础方式；</li>
+<li>Java中异常的处理方法；</li>
+<li>Jsoup包的基本使用方式；</li>
+<li>Java中基础的文件读写操作；</li>
+<li>在VScode下对Java进行打包的简单方式。</li>
 </ol>
-<p>上面是我的个人理解，可能有误。想要了解更多，可以参考<a target="_blank" rel="noopener" href="https://mavlink.io/zh/messages/common.html">mavlink的文档</a>.使用MAVLink的时候，一般只需要关注6和7项，你可以理解成，分别代表了函数名和参数。例如之前我们使用的调整参数的MAVProxy命令，在MAVLink中，对应的Message ID是#23，代表PARAM_SET命令，其参数包含在Data中。</p>
-<p>另一种重要的MAVLink是Command Long，这种命令可以把其他命令包含在数据包里，并额外发送最多七个参数。下面是一个使用Command Long发送LAND命令的例子：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-21-1024x555.png"></p>
-<p>Command_Long中的command包括所有MAV_CMD，包括各种飞行任务，你可以在文档里查阅他们。所以，Command_Long是我们使用MAVLink执行飞行任务的主要方式。下面是一个飞向指定地点的MAV_CMD形式。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-22-1024x483.png"></p>
-<p>还有一些其他有趣的MAVLink命令，包括设置飞行区、获取参数等等，等待你自己去发掘。</p>
-<h2 id="DroneKit"><a href="#DroneKit" class="headerlink" title="DroneKit"></a>DroneKit</h2><p>DroneKit是一个python包，你可以用DroneKit简单地生成MAVLink。DroneKit的强大之处在于其基于Python，你可以把MAVLink和其他python任务结合起来，从而为你的无人机编写复杂的任务，比如巡逻、送货、多无人机编队等等。</p>
-<h2 id="MAVLink与DroneKit安装"><a href="#MAVLink与DroneKit安装" class="headerlink" title="MAVLink与DroneKit安装"></a>MAVLink与DroneKit安装</h2><p>首先我们安装特定版本的dronkit和dronkit-sitl，这个过程中会自动安装pymavlink：</p>
-<p>pip install dronekit&#x3D;&#x3D;2.9.2<br>pip install dronekit-sitl&#x3D;&#x3D;3.3.0</p>
-<p>安装完毕后，检查一下你的版本是否与文章中一致：</p>
-<h2 id="pip-freeze-grep-dronekit"><a href="#pip-freeze-grep-dronekit" class="headerlink" title="pip freeze  grep dronekit"></a>pip freeze  grep dronekit</h2><p>dronekit&#x3D;&#x3D;2.9.2<br>dronekit-sitl&#x3D;&#x3D;3.3.0</p>
-<p>下一章我们会开始使用DroneKit来编写一些简单的无人机操控python脚本。</p>
 
       
     </div>
@@ -974,7 +1044,7 @@ return vehicle
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E5%9C%B0%E9%9D%A2%E7%AB%99%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/%E4%BD%8D%E8%BF%90%E7%AE%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -988,7 +1058,7 @@ return vehicle
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/04/11/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%94%EF%BC%89%EF%BC%9A%E5%9C%B0%E9%9D%A2%E7%AB%99%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">无人机编程入门（五）：地面站介绍与使用</a>
+            <a href="/2021/04/09/%E4%BD%8D%E8%BF%90%E7%AE%97/" class="post-title-link" itemprop="url">位运算</a>
         </h2>
 
         <div class="post-meta">
@@ -998,7 +1068,7 @@ return vehicle
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-04-11 11:11:22" itemprop="dateCreated datePublished" datetime="2021-04-11T11:11:22+08:00">2021-04-11</time>
+              <time title="创建时间：2021-04-09 13:05:49" itemprop="dateCreated datePublished" datetime="2021-04-09T13:05:49+08:00">2021-04-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -1013,11 +1083,7 @@ return vehicle
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
                 </span>
             </span>
 
@@ -1032,226 +1098,36 @@ return vehicle
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="什么是地面站？"><a href="#什么是地面站？" class="headerlink" title="什么是地面站？"></a>什么是地面站？</h2><p>在无人机基础知识中，已经介绍过地面站，其实就是一类可以与无人机双向交流的软硬件。地面站既可以指可以发送特定指令和接受并解析无人机回传信息的软件，也可以指搭载这类软件的硬件。在使用SITL的时候，其实我们就已经在使用地面站了，不过我们使用的是命令行界面的，有一些GUI更加精美的地面站软件，比如QStation，可以更方便地查看并操控无人机。从地面站向无人机发送讯息时，信息流向如下图所示：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-15-1024x360.png"></p>
-<h2 id="MAVProxy"><a href="#MAVProxy" class="headerlink" title="MAVProxy"></a>MAVProxy</h2><p>首先我们来了解MAVProxy，这是一种命令行式的地面站，非常轻量，但是包含了地面站应当用的大部分功能。你可以从ardupilot的文档中了解更多MAVProxy的知识。地面站可以通过无线网络与无人机通信，由于MAVProxy和SITL都运行在同一台电脑上，可以通过本地连接的方式进行通信，只需要指定通信端口即可。对于SITL来说，这个端口是5760，因此开启地面站并连接的方式如下：</p>
-<p>首先我们手动启动一个SITL，这一步的好处在于这样不会加载默认配置参数，你可以创建自己的配置来调整你无人机的参数，这样不用每次启动无人机都要重新调整参数（如果你有调整参数的需求的话）。启动的时候，你还可以指定启动的位置，就好像你真的在现实中放置了一个无人机一样（记得修改参数文件位置）：</p>
-<p>cd $apm&#x2F;ardupilot<br>cd build<br>cd sitl<br>cd bin<br>.&#x2F;arducopter -S -I0 –home -35.363261,149.165230,584,353 –model “+” –speedup 1 –defaults &#x2F;home&#x2F;shaw&#x2F;courseRoot&#x2F;apm&#x2F;ardupilot&#x2F;Tools&#x2F;autotest&#x2F;default_params&#x2F;copter.parm</p>
-<p>启动之后，你应当能看到Serial port 0 on TCP port 5760，Waiting for connection的返回。接下来我们启动MAVProxy来连接无人机，新建一个Terminal：</p>
-<p>mavproxy.py –master tcp:120.0.0.1:5760</p>
-<p>连接成功，你可以在MAVProxy里向无人机发送信息了，就和之前教程中的一样。</p>
-<h2 id="QGroundControl安装"><a href="#QGroundControl安装" class="headerlink" title="QGroundControl安装"></a>QGroundControl安装</h2><p>QGC是一款有着精美GUI界面的地面站，可以方便用户的操作，在之后的无人机编程中，我们会首选QGC作为我们的地面站。首先从官网<a target="_blank" rel="noopener" href="https://docs.qgroundcontrol.com/master/en/getting_started/download_and_install.html">下载QGC</a>到本地，然后我们再创建一个src文件夹来放QGC和我们以后编写的程序，向QGC授权后将其拷贝到环境变量中，这样可以从任何地方运行QGC：</p>
-<p>cd $courseRoot<br>mkdir src<br>cd src<br>cp ~&#x2F;Downloads&#x2F;QGroundControl.AppImage QGroundControl.AppImage<br>sudo chmod +x QGroundControl.AppImage<br>sudo cp QGroundControl.AppImage &#x2F;usr&#x2F;local&#x2F;bin&#x2F;QGC.AppImage</p>
-<p>然后运行QGC.AppImage打开界面，选项如图设置：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-16.png"></p>
-<p>此时地面站已开启，等待无人机连接。下一步我们连接SITL和地面站。</p>
-<h2 id="连接SITL和QGroundControl"><a href="#连接SITL和QGroundControl" class="headerlink" title="连接SITL和QGroundControl"></a>连接SITL和QGroundControl</h2><p>我们通过mavproxy来做到这一点。具体而言，我们先使用mavproxy来连接SITL，然后再用mavproxy将信息转发给QGC，从而实现SITL和QGroundControl的连接，如下：</p>
-<p>$apm&#x2F;ardupilot&#x2F;build&#x2F;sitl&#x2F;bin&#x2F;arducopter -S -I0 –home -35.363261,149.165230,584,353 –model “+” –speedup 1 –defaults &#x2F;home&#x2F;shaw&#x2F;courseRoot&#x2F;apm&#x2F;ardupilot&#x2F;Tools&#x2F;autotest&#x2F;default_params&#x2F;copter.parm<br>#############开启一个新Terminal<br>QGC.AppImage<br>#############开启一个新Terminal<br>mavproxy.py –master tcp:127.0.0.1:5760 –out udp:127.0.0.1:14550</p>
-<p>为什么使用udp？这里不多说网络知识，简单地说，mavproxy和QGC不需要双向沟通，只QGC只需要接受mavproxy传输来的数据就行，因此使用udp即可。QGC的端口默认是14550. 你应该可以在QGC中看到你的无人机位置了：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-17-1024x976.png"></p>
-<p>QGC当然也支持连接到其他端口，如下设置：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-18.png"></p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-19.png"></p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-20.png"></p>
-<p>SITL开了5760、5762、5763三个端口，所以使用tcp连接，可以把端口设置成以上的任何一个。设置完毕后，可以直接点击connect，就可以连接到无人机。</p>
-<h2 id="更多的MAVProxy命令"><a href="#更多的MAVProxy命令" class="headerlink" title="更多的MAVProxy命令"></a>更多的MAVProxy命令</h2><p>在之前我们接触了mode GUIDED, takeoff这些非常简单的MAVProxy命令，不仅如此你还可以使用MAVProxy指示无人机飞行固定的距离、指定速度、转向等等。MAVProxy命令可以用dronekit来生成，并通过mavlink发送，这是下一章的主要内容。查看更多的mavproxy命令，可以到<a target="_blank" rel="noopener" href="https://ardupilot.github.io/MAVProxy/html/modules/index.html">ardupilot的相关文档</a>。</p>
+          <h2 id="位运算是什么"><a href="#位运算是什么" class="headerlink" title="位运算是什么"></a>位运算是什么</h2><p>位运算符主要针对二进制，它包括了：“与”、“非”、“或”、“异或”。从表面上看似乎有点像逻辑运算符，但逻辑运算符是针对两个关系运算符来进行逻辑运算，而位运算符主要针对两个二进制数的位进行逻辑运算。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">A = 0011 1100</span><br><span class="line">B = 0000 1101</span><br><span class="line">-----------------</span><br><span class="line">A&amp;B = 0000 1100</span><br><span class="line">A  B = 0011 1101</span><br><span class="line">A ^ B = 0011 0001</span><br><span class="line">~A= 1100 0011</span><br></pre></td></tr></table></figure>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9Asitl%E7%9A%84%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E5%9B%9B%EF%BC%89%EF%BC%9Asitl%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">无人机编程入门（四）：SITL的使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-10 23:42:45" itemprop="dateCreated datePublished" datetime="2021-04-10T23:42:45+08:00">2021-04-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>SITL是这篇教程使用的主力“机型”。对SITL的操作和对真实无人机的操作是相同的，在结果上也是相同的。当然，现实中无人机飞行所需要处理的不确定更多，但是炸SITL比炸真无人机便宜得多，所以虽然不能完全模拟现实环境，SITL的重要性也不言而喻。</p>
-<h3 id="你的第一架SITL"><a href="#你的第一架SITL" class="headerlink" title="你的第一架SITL"></a>你的第一架SITL</h3><p>由于我们已经把autotest路径加入了环境，所以直接运行：</p>
-<p>sim_vehicle.py -v ArduCopter –map –console</p>
-<p>这会开启一个地图让你观察无人机的位置，以及一个控制台来让你控制无人机，第一次运行会进行编译，需要一定的时间，之后就不需要了：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-12-1024x486.png"></p>
-<p>我们会与左边三个窗口进行交互，分别是地图、状态窗与控制台。地图显示了当前无人机的位置和朝向，状态窗显示无人机的高程、电池容量、飞行状态、GPS状态等，控制台允许你向无人机发送指令。在控制台中输入以下指令，试着让无人机起飞：</p>
-<p>mode GUIDED<br>arm throttle<br>takeoff 10</p>
-<p>观察状态窗，你会发现无人机上升到高度为10m时停止了。接下来让无人机飞向一个特定位置，在地图上右键选择一点，选择Fly to：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-13-1024x486.png"></p>
-<p>最后让无人机降落：</p>
-<p>mode LAND</p>
-<p>这样，你就完成了你的第一次SITL飞行！</p>
-<h3 id="SITL的参数"><a href="#SITL的参数" class="headerlink" title="SITL的参数"></a>SITL的参数</h3><p>接下来会介绍SITL的相关参数，我们进入ArduCopter查看SITL都有哪些参数：</p>
-<p>cd $apm&#x2F;ardupilot&#x2F;ArduCopter<br>cat mav.parm</p>
-<p>你会看到各种各样的预设参数。如果找不到mav.parm这个文件，在当前目录下再运行一次sim_vehicle.py试试。大部分参数都是可读的，例如RTL_ALT，指的是无人机返航时的巡航高度；BATT_CAPACITY，就是电池容量，等等。你可以从<a target="_blank" rel="noopener" href="http://ardupilot.org/copter/docs/parameters.html">ardupilot的参数文档</a>获取更多参数信息（可能需要科学上网）。接下来我们尝试在控制台中设置参数，首先运行：</p>
-<p>sim_vehicle.py –map –console</p>
-<p>然后在控制台里设置无人机的返回巡航高度参数（RTL_ALT)：</p>
-<p>param show rtl_alt #查看当前的参数<br>param set rtl_alt 2100<br>mode RTL</p>
-<p>可以看到，设置之后，返航巡航高度保持在了21m。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-14.png"></p>
-<p>SITL的基本使用和参数就介绍到这里，下一章将会介绍地面站以及其在SITL上的使用方法。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9Aardupilot%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%89%EF%BC%89%EF%BC%9Aardupilot%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">无人机编程入门（三）：ArduPilot简介与安装</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-10 23:14:25" itemprop="dateCreated datePublished" datetime="2021-04-10T23:14:25+08:00">2021-04-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="ArduPilot简介"><a href="#ArduPilot简介" class="headerlink" title="ArduPilot简介"></a>ArduPilot简介</h2><p>ArduPilot通过多种传感器的数据（GPS、加速度计、气压计、磁场计）等来估计飞行器的姿态，从而使飞行器能够保持稳定。被称为APM的飞控硬件，其实全程就是Ardu Pilot Mega，但是2013年后，这个系列的飞控硬件改名为Pixhawk，ArduPilot只用来指特定的飞控软件，但是约定俗称地也可以用APM来指ArduPilot（一点轶闻）。ArduPilot含有超过七十万条代码，所以很幸运我们不用自己去写飞控代码，直接用就可以了，大大降低了入门门槛。</p>
-<h2 id="ArduPilot安装"><a href="#ArduPilot安装" class="headerlink" title="ArduPilot安装"></a>ArduPilot安装</h2><p>我们在课程文件夹下新建一个apm文件夹，并安装ArduPilot（4.0.3版本）：</p>
-<p>cd $courseRoot<br>mkdir apm<br>cd apm<br>git clone -b Copter-4.0.3 <a target="_blank" rel="noopener" href="https://github.com/ardupilot/ardupilot">https://github.com/ardupilot/ardupilot</a></p>
-<p>安装完成后，进入ardupilot文件夹，并安装一些子模块：</p>
-<p>cd ardupilot<br>git submodule init<br>git submodule update  –init –recursive</p>
-<p>完成后，我们将ArduPilot的一些工具加入环境变量，这样不用每次运行到进入对应的路径，方便测试：</p>
-<p>sudo nano ~&#x2F;.bashrc</p>
-<p>在文件中加入（记得把路径改成你自己的用户名）：</p>
-<p>export PATH&#x3D;”&#x2F;home&#x2F;shaw&#x2F;courseRoot&#x2F;apm&#x2F;ardupilot&#x2F;Tools&#x2F;autotest”:$PATH<br>export apm&#x3D;&#x2F;home&#x2F;shaw&#x2F;courseRoot&#x2F;apm</p>
-<p>然后source ~&#x2F;.bashrc。输入sim_后按tab键，如果可以自动补全为sim_vehicle.py，说明设置成功了。</p>
-<h2 id="认识ArduPilot"><a href="#认识ArduPilot" class="headerlink" title="认识ArduPilot"></a>认识ArduPilot</h2><h3 id="ArduPilot支持的飞控"><a href="#ArduPilot支持的飞控" class="headerlink" title="ArduPilot支持的飞控"></a>ArduPilot支持的飞控</h3><p>我们回到ardupilot文减价，查看一下ardupilot的飞控硬件：</p>
-<h2 id="cd-apm-ardupilot-waf-list-boards"><a href="#cd-apm-ardupilot-waf-list-boards" class="headerlink" title="cd $apm&#x2F;ardupilot.&#x2F;waf list_boards"></a>cd $apm&#x2F;ardupilot<br>.&#x2F;waf list_boards</h2><p>aero airbotf4 bbbmini bebop bhat blue crazyflie2 CUAV_GPS CUAVv5 CUAVv5Nano CubeBlack CubeBlack+ CubeGreen-solo CubeOrange CubePurple CubeSolo CubeYellow dark disco DrotekP3Pro Durandal edge erleboard erlebrain2 f103-ADSB f103-GPS f103-periph f103-RangeFinder F35Lightning F4BY fmuv2 fmuv3 fmuv4 fmuv4-beta fmuv5 iomcu KakuteF4 KakuteF7 KakuteF7Mini linux MatekF405 MatekF405-STD MatekF405-Wing MatekF765-Wing mindpx-v2 mini-pix mRoControlZeroF7 mRoX21 mRoX21-777 navio navio2 NucleoH743 ocpoc_zynq omnibusf4 omnibusf4pro omnibusf4v6 OMNIBUSF7V2 OmnibusNanoV6 PH4-mini Pixhawk1 Pixhawk1-1M Pixhawk4 Pixracer pocket pxf pxfmini revo-mini rst_zynq sitl SITL_arm_linux_gnueabihf SITL_static SITL_x86_64_linux_gnu skyviper-f412-rev1 skyviper-journey skyviper-v2450 sparky2 speedybeef4 TBS-Colibri-F7 VRBrain-v51 VRBrain-v52 VRBrain-v54 VRCore-v10 VRUBrain-v51 ZubaxGNSS zynq</p>
-<p>基本上，ardupilot支持所有常见的飞控硬件，其中值得关注的是SITL，这是我们接下来要使用的虚拟无人机。</p>
-<h3 id="ArduPilot支持的飞行模式"><a href="#ArduPilot支持的飞行模式" class="headerlink" title="ArduPilot支持的飞行模式"></a>ArduPilot支持的飞行模式</h3><p>经常会使用的飞行模式包括：</p>
+<p>在这个例子中，A和B都用二进制表示，在十进制下，a &#x3D; 60，b &#x3D; 13。位运算符的定义如下：</p>
+<p>符号</p>
+<p>说明</p>
+<p>示例</p>
+<p>＆</p>
+<p>按位与操作符，当且仅当两个操作数的某一位都非0时候结果的该位才为1。</p>
+<p>（A＆B），得到12，即0000 1100</p>
+<p>按位或操作符，只要两个操作数的某一位有一个非0时候结果的该位就为1。</p>
+<p>（A B）得到61，即 0011 1101</p>
+<p>^</p>
+<p>按位补运算符翻转操作数的每一位。</p>
+<p>（〜A）得到-61，即1100 0011</p>
+<p>&lt;&lt;</p>
+<p>按位左移运算符。左操作数按位左移右操作数指定的位数。</p>
+<p>A &lt;&lt; 2得到240，即 1111 0000</p>
+<p>&gt;&gt;</p>
+<p>按位右移运算符。左操作数按位右移右操作数指定的位数。</p>
+<p>A &gt;&gt; 2得到15即 1111</p>
+<p>&gt;&gt;&gt;</p>
+<p>按位右移补零操作符。左操作数的值按右操作数指定的位数右移，移动得到的空位以零填充。</p>
+<p>A&gt;&gt;&gt;2得到15即0000 1111</p>
+<h2 id="位运算有什么用"><a href="#位运算有什么用" class="headerlink" title="位运算有什么用"></a>位运算有什么用</h2><p>在计算机上，位运算的效率要高于普通运算，因为计算机本身是基于二进制的。在某些特殊算法中，位运算可以提升程序效率。下面是几个应用场景的例子。</p>
 <ol>
-<li>GUIDED，这是最常使用的飞行模式，无人机会根据实时的指令进行飞行；</li>
-<li>AUTO，无人机会根据预先设定的指令进行飞行，这个过程中也可以实时发送新的指令；</li>
-<li>RTL，return to land的缩写，无人机会返回起飞点；</li>
-<li>LAND，无人机降落。</li>
+<li>左移<code>&lt;&lt;</code>，如果是10进制向左移动一位，就成了10倍，移两位乘100倍。所以在数字没有溢出的前提下，对于正数和负数，二进制左移左移n位就相当于乘以2的n次方。</li>
+<li><code>＆</code>运算，将一个单元与0进行位与运算结果为零；判断奇偶性：用if ((a &amp; 1) &#x3D;&#x3D; 0) 代替 if (a % 2 &#x3D;&#x3D; 0)来判断a是不是偶数。</li>
+<li><code>&gt;&gt;</code>右移，右移常被用来做 &#x2F; (2 ^ n)的运算，因为直接基于二进制运算，所以右移效率比 &#x2F; (2 ^ n)高。</li>
 </ol>
-<p>这几个模式可以支持大部分的飞行需求。</p>
-<p>下一章，会主要介绍SITL的使用方式。</p>
 
       
     </div>
@@ -1271,7 +1147,7 @@ return vehicle
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/wordpress%E6%9B%B4%E6%94%B9%E5%9B%BA%E5%AE%9A%E8%BF%9E%E6%8E%A5%E5%90%8E%E9%A1%B5%E9%9D%A2404/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -1285,7 +1161,7 @@ return vehicle
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/04/10/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BC%9A%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">无人机编程入门（二）：环境配置</a>
+            <a href="/2021/04/09/wordpress%E6%9B%B4%E6%94%B9%E5%9B%BA%E5%AE%9A%E8%BF%9E%E6%8E%A5%E5%90%8E%E9%A1%B5%E9%9D%A2404/" class="post-title-link" itemprop="url">Wordpress更改固定连接后页面404</a>
         </h2>
 
         <div class="post-meta">
@@ -1295,7 +1171,7 @@ return vehicle
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-04-10 00:01:22" itemprop="dateCreated datePublished" datetime="2021-04-10T00:01:22+08:00">2021-04-10</time>
+              <time title="创建时间：2021-04-09 12:53:23" itemprop="dateCreated datePublished" datetime="2021-04-09T12:53:23+08:00">2021-04-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -1310,11 +1186,15 @@ return vehicle
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/wordpress/" itemprop="url" rel="index"><span itemprop="name">wordpress</span></a>
                 </span>
             </span>
 
@@ -1329,145 +1209,20 @@ return vehicle
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在这一期中，我会展示无人机编程需要的环境，以及软件版本。整体而言，整个教程是在Ubuntu18.04下进行的，所以这要求你有必要的Linux操作系统知识。</p>
-<h2 id="软件版本"><a href="#软件版本" class="headerlink" title="软件版本"></a>软件版本</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1MtOoxVRp98QYFxXgMVZaqA">VMware Pro 16</a> （这里给出学习版本的，密码在教程（一）中找）</li>
-<li><a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/18.04/ubuntu-18.04.5-desktop-amd64.iso">Ubuntu 18.04</a>（这里给出清华大学镜像站的安装文件，加快下载速度）</li>
-<li>Dronekit 2.9.2</li>
-<li>ArduCopter 4.0.4</li>
-<li>MAVProxy 1.8.17</li>
-<li>Pymavlink 2.4.10</li>
-</ul>
-<p>强烈建议你使用相同的软件和操作系统版本，这样出现问题的概率会小一些。</p>
-<h2 id="虚拟机安装"><a href="#虚拟机安装" class="headerlink" title="虚拟机安装"></a>虚拟机安装</h2><p>我们希望能在一个尽可能纯净的环境下进行实验，此外ArduCopter、MAVProxy这些软件也对Linux有更好的支持，所以需要安装一个Ubuntu虚拟机。在安装之前，在任务管理器下检查一下你的虚拟化功能是否启用了。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-3.png"></p>
-<p>如果没有，参照<a target="_blank" rel="noopener" href="http://www.xitongcheng.com/jiaocheng/win10_article_53803.html">这篇教程</a>来开启虚拟化。</p>
-<p>随后我们下载VMware安装包与Ubunutu 18.04安装镜像。安装完毕VMware之后，进入程序界面，选择创建新的虚拟机：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-4-1024x509.png"></p>
-<p>选择经典安装，下一步安装操作系统，选择刚刚下载的Ubuntu 18.04：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-5.png"></p>
-<p>下一步设置虚拟机的名称和用户密码，按自己的喜好即可：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-6.png"></p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-7.png"></p>
-<p>下一步选择磁盘大小、分配CPU和内存。磁盘分配20GB基本足够，保险起见可以分配40GB。不用担心它占据大量的原存储空间，它刚开始占用空间很小，随着你往虚拟机里增加内容，它会逐渐变大，最大不超过40GB。分配CPU与内存的时候，分配你的宿主机的25%是一个比较好的选择，也就是说，如果你的宿主机有4个核心，那么就给虚拟机分配一个核心；如果你有16GB的内存，给虚拟机分配4GB的内存。我的电脑有6个核心32GB内存，我在这里给虚拟机分配了2个核心和8GB的内存。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-8.png"></p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-9.png"></p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-10-914x1024.png"></p>
-<p>完成之后打开虚拟机。打开虚拟机后，会询问是否下载VMware Tools，点击是。然后坐等Ubuntu安装完毕即可。<strong>安装完毕进入界面后，会询问你是否更新到Ubuntu20，请选择否！</strong></p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-11-1024x614.png"></p>
-<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><h3 id="更改源"><a href="#更改源" class="headerlink" title="更改源"></a>更改源</h3><p>在安装软件前，更改一下下载源，否则下载的速度会慢的让你怀疑人生。</p>
-<p>sudo cp &#x2F;etc&#x2F;apt&#x2F;sources.list &#x2F;etc&#x2F;apt&#x2F;sources.list.bak<br>sudo gedit &#x2F;etc&#x2F;apt&#x2F;sources.list</p>
-<p>把文件内容换成下面的内容：</p>
-<p>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic main restricted universe multiverse</p>
-<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic main restricted universe multiverse</h1><p>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-updates main restricted universe multiverse</p>
-<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-updates-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-updates-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-updates main restricted universe multiverse</h1><p>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-backports main restricted universe multiverse</p>
-<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-backports-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-backports-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-backports main restricted universe multiverse</h1><p>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-security main restricted universe multiverse</p>
-<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-security-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-security-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-security main restricted universe multiverse</h1><p>保存后更新一下源：</p>
-<p>sudo apt-get update</p>
-<h3 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h3><p>首先安装一些依赖项：</p>
-<p>sudo apt-get install python-dev python-opencv python-wxgtk3.0 python-matplotlib python-pygame python-lxml python-yaml vim git screen -y</p>
-<p>然后安装pip来自动安装和管理一些python的包：</p>
-<p>sudo apt-get install python-pip</p>
-<p>安装完毕后，检查一下pip是否安装成功以及版本：</p>
-<p>pip –version<br>pip 9.0.1 from &#x2F;usr&#x2F;lib&#x2F;python2.7&#x2F;dist-packages (python 2.7)</p>
-<p>然后我们安装MAVProxy，这是一个python的模块，在这个过程中还会安装一些其他的包例如pymavlink等。完成后，运行两行命令删除一些不需要的包：</p>
-<p>sudo pip install MAVProxy&#x3D;&#x3D;1.8.17<br>sudo usermod -a -G dialout $USER<br>sudo apt-get remove modemmanager</p>
-<p>在开始安装ArduPilot之前，我建议把所有的程序放在一个文件夹里以便管理，像下面这样：</p>
-<p>cd ~<br>mkdir courseRoot<br>sudo echo “export courseRoot&#x3D;&#x2F;home&#x2F;$USER&#x2F;courseRoot” &gt;&gt; ~&#x2F;.bashrc<br>source .bashrc</p>
-<p>上面的命令创建了一个courseRoot文件夹，并将其置入环境变量，这样你可以使用<code>cd $courseRoot</code> 从任何地方进入此文件夹。环境布置到这里结束，下一章会介绍ArduPilot以及其使用方法。</p>
+          <p>固定连接可以让wordpress的url显得更为美观。但是修改固定连接后，却发现原来的文章都无法访问，显示404。这是由于伪静态没有设置好造成的。</p>
+<p>伪静态也可以理解成是一个对url重写的过程，这个过程会消耗CPU资源。所以访问人数比较多的时候，还是不要用伪静态的为好。但是我这个个人博客估计没有什么人会看，所以设置一个让自己看着舒服一点也没什么所谓。</p>
+<p>环境布置如下：</p>
+<ol>
+<li>腾讯云1核2GB云服务器</li>
+<li>ubuntu18.04</li>
+<li>apache2</li>
+<li>php7.2</li>
+<li>wordpress5.7</li>
+</ol>
+<p>网上有很多针对apache的解决方法，但是apache2的方法会有一些不同。主要操作如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">sudo a2enmod rewrite #开启重写功能</span><br><span class="line">sudo nano /etc/apache2/apache2.conf</span><br><span class="line">#####在conf文件中找到下列语句</span><br><span class="line">&lt;Directory /&gt;</span><br><span class="line">        Options FollowSymLinks</span><br><span class="line">        AllowOverride None</span><br><span class="line">        Require all denied</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line">&lt;Directory /usr/share&gt;</span><br><span class="line">        AllowOverride None</span><br><span class="line">        Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line">&lt;Directory /var/www/&gt;</span><br><span class="line">        Options Indexes FollowSymLinks</span><br><span class="line">        AllowOverride None</span><br><span class="line">        Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#####把None改成All</span><br><span class="line">&lt;Directory /&gt;</span><br><span class="line">        Options FollowSymLinks</span><br><span class="line">        AllowOverride All</span><br><span class="line">        Require all denied</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line">&lt;Directory /usr/share&gt;</span><br><span class="line">        AllowOverride All</span><br><span class="line">        Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br><span class="line"></span><br><span class="line">&lt;Directory /var/www/&gt;</span><br><span class="line">        Options Indexes FollowSymLinks</span><br><span class="line">        AllowOverride All</span><br><span class="line">        Require all granted</span><br><span class="line">&lt;/Directory&gt;</span><br></pre></td></tr></table></figure>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2021/04/09/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%89%8D%E8%A8%80%E4%BB%A5%E5%8F%8A%E6%97%A0%E4%BA%BA%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/09/%E6%97%A0%E4%BA%BA%E6%9C%BA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%89%8D%E8%A8%80%E4%BB%A5%E5%8F%8A%E6%97%A0%E4%BA%BA%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-title-link" itemprop="url">无人机编程入门（一）：前言以及无人机基础知识</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-09 23:48:18" itemprop="dateCreated datePublished" datetime="2021-04-09T23:48:18+08:00">2021-04-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/%E6%97%A0%E4%BA%BA%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">无人机</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇教程是给那些对无人机有所兴趣，不仅想要操控无人机，更想要对无人机进行编程的开发者和创客的。这篇教程是我通过在Drone Dojo的付费课程<a target="_blank" rel="noopener" href="https://courses.dojofordrones.com/p/drone-programming-primer-for-software-development">Drone Programming Primer</a>学习后写下的，基本涵盖了其课程的大部分内容。如果你想要了解更多细节，可以自己购买（49美元），或者在回复中发表你的意见。</p>
-<p>这篇教程的优势在于：</p>
-<ul>
-<li>并不要求学习者掌握太多编程技巧，了解Python和Linux命令行就可以开始学习；</li>
-<li>并不要求学习者拥有一架真正的无人机，所有的操作都是在虚拟环境中实现的，但是也可以方便地迁移到真实地无人机上；</li>
-<li>极其详细的步骤说明，复现Drone Dojo课程中的操作，但是不需要几个小时的时间去学习课程</li>
-<li>完全免费</li>
-</ul>
-<p>闲话不多说，下面进入正题。</p>
-<h2 id="无人机系统"><a href="#无人机系统" class="headerlink" title="无人机系统"></a>无人机系统</h2><p>除了常见的四旋翼无人机，无人机还包括很多其他形态，但是他们的系统都大同小异。无人机系统主要组成有三块：无人机，地面站，以及沟通层。</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-1-1024x547.png"></p>
-<h3 id="无人机"><a href="#无人机" class="headerlink" title="无人机"></a>无人机</h3><p>无人机的组成主要为三块，飞控软件、飞控硬件以及无人机硬件。无人机硬件包括GPS、螺旋桨、机架等组成无人机的基础硬件，你可以在橙色软件上很方便地买到。飞控硬件是包含了陀螺仪等传感器，以及具有一定处理能力的微处理器，比较著名的开源飞控是pixhawk，Daft Punk是【】年解散的。当然，你也完全可以用树莓派做一个自己的飞控，橙色软件上也有相应的开发板卖。常见的飞控软件主要有两个，ArduPilot与px4。这两个都是开源软件，不同的是ArduPilot遵循GPL协议，也就是说如果你使用ArduPilot开发你的程序，你的程序也必须是开源的。而PX4遵循BDS协议，不要求你对自己的程序也进行开源，所以很多商用开发会使用PX4.不管是哪一种飞控软件，都有很庞大的社区和完善的文档以供学习。这是一架真实无人机的主要组成，但是在本课程中，<strong>你可以用SITL（Software In The Loop）来代替飞控硬件和无人机硬件</strong>，这也是为什么本课程不需要真实无人机的原因。</p>
-<h3 id="沟通层"><a href="#沟通层" class="headerlink" title="沟通层"></a>沟通层</h3><p>沟通层允许地面站和无人机之间双向发送信息，这样地面站可以接受无人机的信息，同时也可以向无人机发送信息。实际上只要使用的信息是两者都可以解析的，就可以作为沟通方式。不过最常见的沟通方式是MAVLINK，这是一种标准传输协议，可以同时被无人机和地面站理解。</p>
-<h3 id="地面站"><a href="#地面站" class="headerlink" title="地面站"></a>地面站</h3><p>这个名字可能会让人误解，但是地面站可以是任何能与无人机传输信息的设备，可以是电脑，手机，遥控器。地面站的硬件只需要满足能够发送与接受MAVLINK信息即可。地面站软件一般是可视化的界面，常见的地面站软件包括Mission Planner，APM Planner，QControl，他们的功能大同小异。</p>
-<p>在本课程中，我们会使用的技术栈如图所示：</p>
-<p><img src="http://82.156.1.75/wp-content/uploads/2021/04/image-2.png"></p>
+<p>完成后，输入<code>sudo systemctl restart apache2.service</code> 重启apache，问题解决，可以访问404的页面了。</p>
 
       
     </div>
@@ -1486,7 +1241,7 @@ return vehicle
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/15/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/17/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1552,12 +1307,12 @@ return vehicle
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">162</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">分类</span>
       </div>
   </nav>

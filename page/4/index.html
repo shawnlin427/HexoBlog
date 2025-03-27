@@ -170,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/11/03/%E6%9C%BA%E6%A2%B0%E8%87%82%E7%9B%AE%E6%A0%87%E8%BF%BD%E8%B8%AA%E4%BB%BF%E7%9C%9F/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/09/09/wp-global-styles-twentytwentytwo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -184,7 +184,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/11/03/%E6%9C%BA%E6%A2%B0%E8%87%82%E7%9B%AE%E6%A0%87%E8%BF%BD%E8%B8%AA%E4%BB%BF%E7%9C%9F/" class="post-title-link" itemprop="url">机械臂目标追踪仿真</a>
+            <a href="/2022/09/09/wp-global-styles-twentytwentytwo/" class="post-title-link" itemprop="url">Custom Styles</a>
         </h2>
 
         <div class="post-meta">
@@ -194,7 +194,81 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-11-03 16:02:53" itemprop="dateCreated datePublished" datetime="2022-11-03T16:02:53+08:00">2022-11-03</time>
+              <time title="创建时间：2022-09-09 13:05:28" itemprop="dateCreated datePublished" datetime="2022-09-09T13:05:28+08:00">2022-09-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/uncategorized/" itemprop="url" rel="index"><span itemprop="name">uncategorized</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>{“version”: 2, “isGlobalStylesUserThemeJSON”: true }</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/09/09/dockerfile%E6%8D%A2apt%E6%BA%90%E5%92%8Cpip%E6%BA%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/09/09/dockerfile%E6%8D%A2apt%E6%BA%90%E5%92%8Cpip%E6%BA%90/" class="post-title-link" itemprop="url">Dockerfile换apt源和pip源</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-09-09 12:58:10" itemprop="dateCreated datePublished" datetime="2022-09-09T12:58:10+08:00">2022-09-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -213,11 +287,463 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/bolgs/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Dockerfile中一般都使用默认的源，出于总所周知的原因，默认源总有各种各样的问题，因此最好是换成国内的镜像源。下面介绍怎么在Dockerfile中换apt源。</p>
+<p>首先，在Dockerfile所处的文件夹下建立一个source.list，里面填写国内镜像源，清华镜像源在此：</p>
+<p># 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释<br>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic main restricted universe multiverse</p>
+<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic main restricted universe multiverse</h1><p>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-updates main restricted universe multiverse</p>
+<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-updates-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-updates-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-updates main restricted universe multiverse</h1><p>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-backports main restricted universe multiverse</p>
+<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-backports-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-backports-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-backports main restricted universe multiverse</h1><p>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-security main restricted universe multiverse</p>
+<h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-security-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-security-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-security main restricted universe multiverse</h1><h1 id="预发布软件源，不建议启用"><a href="#预发布软件源，不建议启用" class="headerlink" title="预发布软件源，不建议启用"></a>预发布软件源，不建议启用</h1><h1 id="deb-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-proposed-main-restricted-universe-multiverse"><a href="#deb-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-proposed-main-restricted-universe-multiverse" class="headerlink" title="deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse"></a>deb <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-proposed main restricted universe multiverse</h1><h1 id="deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-proposed-main-restricted-universe-multiverse"><a href="#deb-src-https-mirrors-tuna-tsinghua-edu-cn-ubuntu-bionic-proposed-main-restricted-universe-multiverse" class="headerlink" title="deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse"></a>deb-src <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu/">https://mirrors.tuna.tsinghua.edu.cn/ubuntu/</a> bionic-proposed main restricted universe multiverse</h1><p>然后在dockerfile中加入：</p>
+<p>ADD docker&#x2F;sources.list &#x2F;etc&#x2F;apt</p>
+<p>source.list的路径是在运行docker build的目录下的相对路径。这样就完成了对apt的换源。pip更简单，在dockerfile中直接加入：</p>
+<p># Upgrade pip<br>RUN pip install –upgrade pip<br>RUN pip config set global.index-url <a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
+<p>Docker能给开发省下很多时间，国内开发者用上docker估计能比不用快个几倍把。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/05/21/%E4%BD%BF%E7%94%A8%E8%99%9A%E5%B9%BB5%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E6%A8%A1%E6%8B%9F%E5%90%8A%E8%A3%85%E5%9C%BA%E6%99%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/21/%E4%BD%BF%E7%94%A8%E8%99%9A%E5%B9%BB5%E5%88%B6%E4%BD%9C%E4%B8%80%E4%B8%AA%E6%A8%A1%E6%8B%9F%E5%90%8A%E8%A3%85%E5%9C%BA%E6%99%AF/" class="post-title-link" itemprop="url">使用虚幻5制作一个模拟吊装场景</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-21 00:34:53" itemprop="dateCreated datePublished" datetime="2022-05-21T00:34:53+08:00">2022-05-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/" itemprop="url" rel="index"><span itemprop="name">tech</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tech/%E8%99%9A%E5%B9%BB/" itemprop="url" rel="index"><span itemprop="name">虚幻</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><h3 id="吊车"><a href="#吊车" class="headerlink" title="吊车"></a>吊车</h3><p>Pawn，从FBX导入的时候检查方向。缩放存在问题，import to level后总是0.1，但是在BP里改为1之后大小正常可以使用。不带物理仿真。</p>
+<h4 id="视角切换"><a href="#视角切换" class="headerlink" title="视角切换"></a>视角切换</h4><p>放置两个摄像机，一个在驾驶舱一个在起重机操作仓，互相切换。</p>
+<h4 id="驾驶和起重操作"><a href="#驾驶和起重操作" class="headerlink" title="驾驶和起重操作"></a>驾驶和起重操作</h4><p>确保每个部件的Origin是在转轴上，然后通过add offset来旋转部件。</p>
+<h4 id="吊起"><a href="#吊起" class="headerlink" title="吊起"></a>吊起</h4><p>使用一个physical handle，配合lineScan，实现附着。</p>
+<h3 id="盒子"><a href="#盒子" class="headerlink" title="盒子"></a>盒子</h3><p>Actor，带碰撞，带物理仿真。</p>
+<h3 id="移动人员"><a href="#移动人员" class="headerlink" title="移动人员"></a>移动人员</h3><p>AI，使用Manniequin的模型</p>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><h3 id="小地图"><a href="#小地图" class="headerlink" title="小地图"></a>小地图</h3><p>Render Target，加User widget</p>
+<h3 id="切换模式"><a href="#切换模式" class="headerlink" title="切换模式"></a>切换模式</h3><p>active不同的摄像头，实现切换</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>使用虚幻，我花了大概三天时间从小白，实现了这个Demo。不说多成熟，至少证明了用虚幻能快速地实现一些东西，这对于非专业人士来说极其重要。虚幻的技术门槛之低是它应用于其他行业的优势之一。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/05/10/%E4%BD%BF%E7%94%A8google-map%E7%94%9F%E6%88%90%E4%BD%A0%E7%9A%84%E6%88%B7%E5%A4%96%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/10/%E4%BD%BF%E7%94%A8google-map%E7%94%9F%E6%88%90%E4%BD%A0%E7%9A%84%E6%88%B7%E5%A4%96%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">使用Google Map生成你的户外机器人测试环境</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-10 18:32:15" itemprop="dateCreated datePublished" datetime="2022-05-10T18:32:15+08:00">2022-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>此方法不适用于中国大陆地区的地图数据。</p>
+<h2 id="所需软件"><a href="#所需软件" class="headerlink" title="所需软件"></a>所需软件</h2><ol>
+<li>Blender 2.93</li>
+<li>RenderDoc 1.13</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/eliemichel/MapsModelsImporter/releases/tag/v0.4.1-rc1">Maps Models Importer v0.4.1</a></li>
+<li>Chrome浏览器</li>
+</ol>
+<p>请严格按照以上版本安装软件。</p>
+<h2 id="1-使用RenderDoc注入Chrome浏览器"><a href="#1-使用RenderDoc注入Chrome浏览器" class="headerlink" title="1 使用RenderDoc注入Chrome浏览器"></a>1 使用RenderDoc注入Chrome浏览器</h2><p>打开RenderDoc，在File中找到Inject to Process并打开。</p>
+<p>打开一个cmd命令行窗口，输入：</p>
+<p>set RENDERDOC_HOOK_EGL&#x3D;0<br>“C:\Program Files\Google\Chrome\Application\chrome.exe” –disable-gpu-sandbox –gpu-startup-dialog</p>
+<p>如果是32位系统，在Program Files后面加上(x86)。输入后，会打开一个Chrome窗口，还有一个小窗口：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87.png"></a></p>
+<p>在RenderDoc中点击Refresh，找到对应的pid，选中后点击inject。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-1.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-1-1024x705.png"></a></p>
+<p>注入后点击确定关闭小窗口，此时Google Chrome浏览器左上方会出现状态信息，则说明注入完成。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-2.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-2-1024x766.png"></a></p>
+<h2 id="选择感兴趣的地点"><a href="#选择感兴趣的地点" class="headerlink" title="选择感兴趣的地点"></a>选择感兴趣的地点</h2><p>谷歌地图：<a target="_blank" rel="noopener" href="https://www.google.se/maps">https://www.google.se/maps</a></p>
+<p>以香港维多利亚港为例。选中地球视图和卫星图像，这会使得地图能显示3d数据。</p>
+<p>在RenderDoc中，修改Capture after delay为1秒，然后点击Capture Frame。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-3-1024x705.png"></a></p>
+<p>**注意：点击后，快速切换到google map窗口，拖动窗口使得窗口进行渲染，直到捕捉结束。**可以多捕捉几次，直到捕捉内容的大小相对稳定。选择大小相对稳定的场景，保存至本地。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-5-1024x574.png"></a></p>
+<h2 id="导入Blender"><a href="#导入Blender" class="headerlink" title="导入Blender"></a>导入Blender</h2><p>在Blender中安装插件，然后选择导入rdc。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-6.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-6-1024x554.png"></a></p>
+<p>耐心等待直到导入完成。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-7.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/05/%E5%9B%BE%E7%89%87-7-1024x614.png"></a></p>
+<p>然后就可以对模型进行修改了。导出的模型是必定有厚度的，不用担心机器人走着走着掉了下去。</p>
+<p>对你有用的话，就点个赞吧~</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/05/06/ros2-launch%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/06/ros2-launch%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">ROS2 Launch的一些基本操作</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-06 11:32:04" itemprop="dateCreated datePublished" datetime="2022-05-06T11:32:04+08:00">2022-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/Robotics/" itemprop="url" rel="index"><span itemprop="name">Robotics</span></a>
+                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="执行操作的各种方式"><a href="#执行操作的各种方式" class="headerlink" title="执行操作的各种方式"></a>执行操作的各种方式</h2><p>在launch file中，一般操作仅限于以下几种：</p>
+<ol>
+<li>运行一个Ros Node，等同于ros2 run</li>
+<li>执行一条命令，等同于在终端中输入一行命令</li>
+<li>运行其他的launch文件，等同于ros2 launch</li>
+</ol>
+<h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p> from launch_ros.actions import Nodefrom launch_ros.actions import Node<br>   node_robot_state_publisher &#x3D; Node(<br>        package&#x3D;”robot_state_publisher”,<br>        executable&#x3D;”robot_state_publisher”,<br>        output&#x3D;”screen”,<br>        parameters&#x3D;[robot_description],<br>    )</p>
+<p>最基本的执行单元，需要提供package、executable，并制定output和parameters（有时候是arguments）。output属性有log和screen两种，screen是输出到屏幕，log是输出到一个log file中。</p>
+<p>更多信息参照<a target="_blank" rel="noopener" href="http://wiki.ros.org/roslaunch/XML/node%EF%BC%88%E6%AD%A4%E9%A1%B5%E9%9D%A2%E6%98%AFROS1%E7%89%88%E6%9C%AC%E7%9A%84%EF%BC%8C%E4%B8%8D%E5%8F%AF%E7%9B%B4%E6%8E%A5%E5%A4%8D%E7%94%A8%E5%88%B0ROS2%E4%B8%AD%EF%BC%89">http://wiki.ros.org/roslaunch/XML/node（此页面是ROS1版本的，不可直接复用到ROS2中）</a></p>
+<h3 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h3><p>from launch.substitutions import Command</p>
+<pre><code>robot\_description\_content = Command(
+    \[
+        PathJoinSubstitution(\[FindExecutable(name=&quot;xacro&quot;)\]),
+        &quot; &quot;,
+        PathJoinSubstitution(
+            \[FindPackageShare(&quot;diffbot\_description&quot;), &quot;urdf&quot;, &quot;diffbot\_system.urdf.xacro&quot;\]
+        ),
+    \]
+)
+</code></pre>
+<p>相当于执行一条命令，并将命令的输出赋予一个对象。经常会和PathJoinSubstitution配合使用，后者是返回一个路径的substitution对象（下一节讲）。需要注意的是，空格也是需要写在参数列表里的。</p>
+<h3 id="Launch"><a href="#Launch" class="headerlink" title="Launch"></a>Launch</h3><p>from launch.actions import IncludeLaunchDescription<br>from launch.launch_description_sources import PythonLaunchDescriptionSource</p>
+<pre><code>pkg\_gazebo\_ros = FindPackageShare(package=&#39;gazebo\_ros&#39;).find(&#39;gazebo\_ros&#39;)
+gazebo\_launch = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(os.path.join(pkg\_gazebo\_ros,&quot;launch&quot;,&quot;gazebo.launch.py&quot;))
+)
+</code></pre>
+<p>相当于启动另一个Launch文件，一般用于启动模拟器。需要指定launch文件的路径，使用IncludeLaunchDescription和PythonLaunchDescriptionSource嵌入launch文件。</p>
+<h2 id="表示路径的各种方式"><a href="#表示路径的各种方式" class="headerlink" title="表示路径的各种方式"></a>表示路径的各种方式</h2><h3 id="Substitution"><a href="#Substitution" class="headerlink" title="Substitution"></a>Substitution</h3><p>SuSubstitutions are variables that are only evaluated during execution of the launch description and can be used to acquire specific information like a launch configuration, an environment variable, or to evaluate an arbitrary Python expression.（官方解释）简单地说，Substitution是一类对象，可以参数化地进行调用。</p>
+<h4 id="Executable"><a href="#Executable" class="headerlink" title="Executable"></a>Executable</h4><p>from launch.substitutions import FindExecutable<br>FindExecutable(name&#x3D;”xacro”)</p>
+<p>这会搜索到一个可执行程序的路径，以launch.substitutions.find_executable.FindExecutable对象的格式返回（不是路径字符串）。要使用它，需要配合PathJoinSubstitution函数使用，后者会将其转化为PathJoinSubstitution对象，这样可以被作为路径的一部分被其他Substitution函数使用，如下：</p>
+<pre><code>robot\_description\_content = Command(
+    \[
+        PathJoinSubstitution(\[FindExecutable(name=&quot;xacro&quot;)\]), 
+        &#39; &#39;,
+        PathJoinSubstitution(\[FindPackageShare(&#39;sany&#39;), &#39;urdf&#39;, &#39;sany.xacro&#39;\]),
+    \]
+)
+</code></pre>
+<h4 id="Package"><a href="#Package" class="headerlink" title="Package"></a>Package</h4><p>from launch_ros.substitutions import FindPackageShare<br>pkg_gazebo_ros &#x3D; FindPackageShare(package&#x3D;’gazebo_ros’)</p>
+<p>这会在当前环境下尝试搜索到指定的package的share路径，以FindPackageShare的方式返回。同理，也需要配合PathJoinSubstitution函数使用，例如：</p>
+<p>IncludeLaunchDescription(<br>            PythonLaunchDescriptionSource([<br>                PathJoinSubstitution([<br>                    FindPackageShare(‘launch_tutorial’),<br>                    ‘launch’,<br>                    ‘example_substitutions.launch.py’<br>                ])<br>            ]),</p>
+<p>不仅如此，还可以使用该对象的find方法，来直接具体到这个package的share路径下的某个文件夹，此时返回的是字符串路径，可以使用os.join方式合成完整路径，如下：</p>
+<p>pkg_gazebo_ros &#x3D; FindPackageShare(package&#x3D;’gazebo_ros’).find(‘gazebo_ros’)<br>  gazebo_launch &#x3D; IncludeLaunchDescription(<br>        PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros,”launch”,”gazebo.launch.py”))<br>    )</p>
+<h4 id="Launch-1"><a href="#Launch-1" class="headerlink" title="Launch"></a>Launch</h4><p>ThisLaunchFileDir是一个快速地返回指向当前Package的Launch文件夹的Substitution对象的方式，它一般用于参数化的LaunchFile，此时会有一个base_launch，其他Launch通过引用这个launchFile并修改参数的方式达到不同的launch效果。</p>
+<h2 id="添加参数的各种方式"><a href="#添加参数的各种方式" class="headerlink" title="添加参数的各种方式"></a>添加参数的各种方式</h2><h3 id="可执行程序"><a href="#可执行程序" class="headerlink" title="可执行程序"></a>可执行程序</h3><p>使用Command时，添加参数的方式就好像在终端中一样，直接输入即可，如下：</p>
+<pre><code>robot\_description\_content = Command(
+    \[
+        PathJoinSubstitution(\[FindExecutable(name=&quot;xacro&quot;)\]),
+        &quot; &quot;,
+        PathJoinSubstitution(
+            \[FindPackageShare(description\_package), &quot;urdf&quot;, description\_file\]
+        ),
+        &quot; &quot;,
+        &quot;prefix:=&quot;,
+        prefix,
+        &quot; &quot;,
+        &quot;use\_sim:=&quot;,
+        use\_sim,
+        &quot; &quot;,
+        &quot;use\_fake\_hardware:=&quot;,
+        use\_fake\_hardware,
+        &quot; &quot;,
+        &quot;fake\_sensor\_commands:=&quot;,
+        fake\_sensor\_commands,
+        &quot; &quot;,
+        &quot;slowdown:=&quot;,
+        slowdown,
+    \]
+)
+</code></pre>
+<h3 id="Node-1"><a href="#Node-1" class="headerlink" title="Node"></a>Node</h3><p>向Node添加参数有两种方式：parameters和arguments。区别在于，parameters是通过指定Node的parameters来进行的，在Node中，会有以下对parameters的声明：</p>
+<p>this-&gt;declare_parameter<a href="std::string">std::string</a>(“my_parameter”, “world”);</p>
+<p>此时使用方式如下：</p>
+<pre><code>robot\_state\_pub\_node = Node(
+    package=&quot;robot\_state\_publisher&quot;,
+    executable=&quot;robot\_state\_publisher&quot;,
+    output=&quot;both&quot;,
+    parameters=\[robot\_description\],
+)
+</code></pre>
+<p>而arguments则类似直接在终端中通过“-xxx”的方式指定参数。此时Node中会有对命令行参数的声明。使用方式如下：</p>
+<pre><code>rviz\_node = Node(
+    package=&quot;rviz2&quot;,
+    executable=&quot;rviz2&quot;,
+    name=&quot;rviz2&quot;,
+    output=&quot;log&quot;,
+    arguments=\[&quot;-d&quot;, rviz\_config\_file\],
+)
+</code></pre>
+<p>到底要使用哪一个，实际上是和Node本身的代码相关的。因为这篇博文是说launch file的，这里就不赘述。</p>
+<h3 id="Launch-2"><a href="#Launch-2" class="headerlink" title="Launch"></a>Launch</h3><p>从Launch file本身来说，需要通过DeclareLaunchArgument来声明参数：</p>
+<p>from launch.actions import DeclareLaunchArgument<br>    arg_show_rviz &#x3D; DeclareLaunchArgument(<br>        “start_rviz”,<br>        default_value&#x3D;”false”,<br>        description&#x3D;”start RViz automatically with the launch file”,<br>    )</p>
+<p>在使用IncludeLaunchDescription调用Launch文件的时候，需要使用函数的launch_arguments参数指定这些参数：</p>
+<pre><code>base\_launch = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(\[ThisLaunchFileDir(), &quot;/rrbot\_base.launch.py&quot;\]),
+    launch\_arguments=&#123;
+        &quot;controllers\_file&quot;: &quot;rrbot\_multi\_interface\_forward\_controllers.yaml&quot;,
+        &quot;description\_file&quot;: &quot;rrbot\_system\_multi\_interface.urdf.xacro&quot;,
+        &quot;prefix&quot;: prefix,
+        &quot;use\_fake\_hardware&quot;: use\_fake\_hardware,
+        &quot;fake\_sensor\_commands&quot;: fake\_sensor\_commands,
+        &quot;slowdown&quot;: slowdown,
+        &quot;robot\_controller&quot;: robot\_controller,
+    &#125;.items(),
+)
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/05/05/%E4%BD%BF%E7%94%A8gazebo%E5%92%8Cros2%E4%BB%BF%E7%9C%9F%E9%97%AD%E7%8E%AF%E6%9C%BA%E5%99%A8%E4%BA%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/05/05/%E4%BD%BF%E7%94%A8gazebo%E5%92%8Cros2%E4%BB%BF%E7%9C%9F%E9%97%AD%E7%8E%AF%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="post-title-link" itemprop="url">使用Gazebo和ROS2仿真闭环机器人</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-05 23:49:28" itemprop="dateCreated datePublished" datetime="2022-05-05T23:49:28+08:00">2022-05-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -240,117 +766,64 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <ol>
-<li>Ubuntu 20.04</li>
-<li>ROS Noetic</li>
-<li>Gazebo11</li>
-<li>Moveit</li>
-<li>Kinova-ros</li>
-<li>Aruco-ros</li>
-<li>Blender</li>
-<li>IntelRealsense-ros</li>
+          <p>URDF的局限在于它无法表示闭环机器人：指的是结构中存在闭环的机器人。主要原因是，现在并没有有效的闭环运动学求解器，这里指的是解析解。不过SDF是支持闭环结构的，因为Gazebo支持闭环运动学求解，用的可能是一种近似算法。所以在Gazebo的帮助下，我们可以基于闭环机器人的URDF进行仿真，并在Rviz2中显示。遗憾的是Ignition尚不支持闭环结构，所以只能用Gazebo，或者用Gazebo开发组的话来说，Gazebo Classic。</p>
+<p>demo：<a target="_blank" rel="noopener" href="https://gitee.com/linx981002/closed/_loop/_kinematic/_demo">https://gitee.com/linx981002/closed\_loop\_kinematic\_demo</a></p>
+<p>这个项目还包括我自己绘制的一个吊车机器人，觉得有用的话，在这里留言或在gitee上给一个Star吧。</p>
+<h2 id="拆环"><a href="#拆环" class="headerlink" title="拆环"></a>拆环</h2><p>获得一个闭环机器人的URDF。拆掉闭环中的一个关节，让机器人变成一个开环机器人。一般来说，闭环结构中肯定会有一个无动力的关节（有的时候可能不止一个），拆掉这个关节即可。在URDF中，则体现为删除一个joint描述。</p>
+<h2 id="注入Gazebo描述"><a href="#注入Gazebo描述" class="headerlink" title="注入Gazebo描述"></a>注入Gazebo描述</h2><p>将上一步删除的joint添加上<gazebo>标签加回URDF中。这使得在我们使用gazebo_spawner通过ros topic——robot_description生成实体的时候，URDF再转换为SDF的过程中，这一块joint会被添加回生成的SDF中，从而补全闭环。如下：</p>
+  <gazebo>
+    <joint name="boom\_support" type="revolute">
+      <child>hydraulic\_rod</child>
+      <parent>main\_boom</parent> 
+    </joint>
+  </gazebo>
+
+<p>需要注意的是，在这一过程中，是无法指定旋转轴心点的，轴心点默认为子link的基准点。</p>
+<p>**注意：**由于Gazebo在寻找Mesh上存在一些不足，因此在URDF中的Mesh路径最好全部换成绝对路径。如果发现在Gazebo中生成的实体不可见，但是切换到Joint显示模式，能够看到关节的frame，那很可能是URDF中mesh路径的问题。</p>
+<h2 id="注入gazebo-ros2-control描述，添加ros2-control配置"><a href="#注入gazebo-ros2-control描述，添加ros2-control配置" class="headerlink" title="注入gazebo_ros2_control描述，添加ros2_control配置"></a>注入gazebo_ros2_control描述，添加ros2_control配置</h2><p>目前我们只在Gazebo中生成了一个闭环的机器人，我们更希望能够用Rviz监控它的状态。因此我们使用gazebo_ros2_control来将Gazebo中机器人的状态发布到ros topic中。</p>
+<p>插一句，gazebo_ros2_control的原理实际上是继承了ros2_control的hadware_interface，重写了read和write函数。一种可能的实现方式是，它不断通过Gazebo的API获取信息，然后通过write函数发布到ros的某个topic上。我么有具体看过代码，上面只是猜想。</p>
+<p>在插入描述的时候，注意被删去的关节不应当加入，因为在ros中，并不存在这个关节。这个概念需要谨记，在ros中，这个机器人依然是一个开环机器人。</p>
+<p>如果只是发布状态的话，只需要使用joint_state_broadcaster这个controller。</p>
+<p>controller_manager:<br>  ros__parameters:<br>    update_rate: 100  # H</p>
+<pre><code>joint\_state\_broadcaster:
+  type: joint\_state\_broadcaster/JointStateBroadcaster
+</code></pre>
+<p>我使用xacro来管理这块内容。简洁起见我只列了一个关节。这里的yaml文件可以使用find，因为这一块内容只在ros中起作用，不会通过Gazebo。</p>
+<?xml version="1.0"?>
+<p><robot 
+    xmlns:xacro="http://www.ros.org/wiki/xacro" >  </p>
+<pre><code>&lt;!-- Macro for gazebo simulation and ros2\_control --&gt;
+    &lt;gazebo&gt;
+        &lt;plugin filename=&quot;libgazebo\_ros2\_control.so&quot; name=&quot;gazebo\_ros2\_control&quot;&gt;
+            &lt;parameters&gt;$(find sany)/ros2\_control\_config/robot\_state\_publisher.yaml&lt;/parameters&gt;
+        &lt;/plugin&gt;
+    &lt;/gazebo&gt;
+
+    &lt;ros2\_control name=&quot;GazeboSystem&quot; type=&quot;system&quot;&gt;
+        &lt;hardware&gt;
+            &lt;plugin&gt;gazebo\_ros2\_control/GazeboSystem&lt;/plugin&gt;
+        &lt;/hardware&gt;
+    &lt;!-- Main joints --&gt;
+    &lt;joint    name=&quot;rotate\_joint&quot;    type=&quot;revolute&quot;&gt;
+        &lt;command\_interface name=&quot;position&quot;&gt;
+            &lt;param name=&quot;min&quot;&gt;-1&lt;/param&gt;
+            &lt;param name=&quot;max&quot;&gt;1&lt;/param&gt;
+        &lt;/command\_interface&gt;
+        &lt;state\_interface name=&quot;position&quot;/&gt;
+    &lt;/joint&gt;
+    &lt;/ros2\_control&gt;
+</code></pre>
+</robot>
+
+<h2 id="Launch文件"><a href="#Launch文件" class="headerlink" title="Launch文件"></a>Launch文件</h2><p>在Launch中，我们需要依次进行以下操作：</p>
+<ol>
+<li>发布URDF到&#x2F;robot_description topic；</li>
+<li>启动Gazebo</li>
+<li>在Gazebo中生成Entity</li>
+<li>生成Controller</li>
 </ol>
-<h2 id="制作追踪目标"><a href="#制作追踪目标" class="headerlink" title="制作追踪目标"></a>制作追踪目标</h2><p>Blender导入模型</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-3-1024x804.png"></a></p>
-<p>贴个图</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-4.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-4-1024x548.png"></a></p>
-<p>导出到Dae，获得dae和贴图</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-5-1024x478.png"></a></p>
-<p>文件组织</p>
-<p>.<br>└── aruco_hook<br>    ├── aruco_hook.sdf<br>    ├── materials<br>    │   └── textures<br>    │       └── aruco-582.png<br>    ├── meshes<br>    │   └── untitled.dae<br>    └── model.config</p>
-<p>Gazebo里面</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-6.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-6-1024x702.png"></a></p>
-<h2 id="Kinova机器人仿真"><a href="#Kinova机器人仿真" class="headerlink" title="Kinova机器人仿真"></a>Kinova机器人仿真</h2><p>roslaunch kinova_gazebo robot_launch.launch</p>
-<p>报错：process has died [pid 9323, exit code 255, cmd &#x2F;opt&#x2F;ros&#x2F;noetic&#x2F;lib&#x2F;gazebo_ros&#x2F;gzserver -u -e ode &#x2F;home&#x2F;lin&#x2F;kinova_ws&#x2F;src&#x2F;kinova-ros&#x2F;kinova_gazebo&#x2F;worlds&#x2F;jaco.world __name:&#x3D;gazebo __log:&#x3D;&#x2F;home&#x2F;lin&#x2F;.ros&#x2F;log&#x2F;f6f9f014-5b38-11ed-a96a-9344835dca73&#x2F;gazebo-2.log].</p>
-<p>killall gzserver</p>
-<h2 id="Realsense仿真"><a href="#Realsense仿真" class="headerlink" title="Realsense仿真"></a>Realsense仿真</h2><p><a target="_blank" rel="noopener" href="https://github.com/pal-robotics/realsense_gazebo_plugin.git">https://github.com/pal-robotics/realsense_gazebo_plugin.git</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/IntelRealSense/realsense-ros.git">https://github.com/IntelRealSense/realsense-ros.git</a></p>
-<p>编译</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/pal-robotics-forks/realsense/tree/upstream/realsense2_description/urdf">https://github.com/pal-robotics-forks/realsense/tree/upstream/realsense2_description&#x2F;urdf</a></p>
-<p>用这里的<a target="_blank" rel="noopener" href="https://github.com/pal-robotics-forks/realsense/blob/upstream/realsense2_description/urdf/_d435.urdf.xacro">_d435.urdf.xacro</a>、<a target="_blank" rel="noopener" href="https://github.com/pal-robotics-forks/realsense/blob/upstream/realsense2_description/urdf/_d435.gazebo.xacro">_d435.gazebo.xacro</a>替换<a target="_blank" rel="noopener" href="https://github.com/IntelRealSense/realsense-ros.git">realsense-ros</a>库里的xacro文件，复制<a target="_blank" rel="noopener" href="https://github.com/pal-robotics-forks/realsense/blob/upstream/realsense2_description/urdf/test_d435_camera.urdf.xacro">test_d435_camera.urdf.xacro</a>文件</p>
-<p>查看是否成功</p>
-<p>rosrun gazebo_ros spawn_model -urdf -file test_d435_camera.urdf -model realsense2_camera</p>
-<p>这里urdf要自己手动生成一下</p>
-<p><strong>BUG</strong>：没有点云数据</p>
-<p>检查_d435.gazebo.xacro里设置是否开启</p>
-<pre><code>  &lt;pointCloud&gt;true&lt;/pointCloud&gt;
-</code></pre>
-<h2 id="Realsense添加到机器人上"><a href="#Realsense添加到机器人上" class="headerlink" title="Realsense添加到机器人上"></a>Realsense添加到机器人上</h2><p>robot_launch里修改参数，用自己喜欢的Kinova机器人</p>
-  <!-- these are the arguments you can pass this launch file, for example paused:=true -->  
-  <arg name="kinova\_robotType" default="j2n7s300"/>
-  <arg name="kinova\_robotName" default="$(arg kinova\_robotType)"/>
-  <arg name="paused" default="true"/>
-  <arg name="use\_sim\_time" default="true"/>
-  <arg name="gui" default="true"/>
-  <arg name="headless" default="false"/>
-  <arg name="debug" default="false"/>
-  <arg name="use\_trajectory\_controller" default="true"/>
-  <arg name="is7dof" default="true"/>
-  <arg name="rqt" default="false"/>
-  <arg name="has2finger" default="false"/>
-  <arg name="description\_name" default="robot\_description"/> <!-- allows remapping of robot\_description into a namespace -->
-
-<p>对应的RobotDescription是j2n7s300_standalone.xacro，添加描述</p>
-<pre><code>&lt;xacro:include filename=&quot;$(find realsense2\_description)/urdf/\_d435.urdf.xacro&quot; /&gt;
-</code></pre>
-<p>&lt;xacro:sensor_d435 parent&#x3D;”j2n7s300_link_base”&gt;<br>    <origin xyz="0.3 0.4 0.5" rpy="0 0 0"/><br>  &lt;&#x2F;xacro:sensor_d435&gt;</p>
-<p>运行launchfile</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-7.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-7-1024x503.png"></a></p>
-<p>Rviz</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-8.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-8-1024x359.png"></a></p>
-<h2 id="识别Aruco"><a href="#识别Aruco" class="headerlink" title="识别Aruco"></a>识别Aruco</h2><p>新写个Launch file一起启动gazebo模拟和aruco detector</p>
-<launch>
-  <include file="$(find kinova\_gazebo)/launch/robot\_launch.launch"/>
-
-  <include file="$(find aruco\_ros)/launch/single.launch">
-    <arg name="markerId" value="582"/>
-    <arg name="markerSize" value="0.034"/>
-    <arg name="ref\_frame" value="camera\_color\_frame"/>
-  </include>
-
-</launch>
-
-<p>运行效果</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-9.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-9-1024x583.png"></a></p>
-<p>方向错了，把aruco中single launch的ref frame和camera frame改成camera_color_optical_frame</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-10.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-10-1024x555.png"></a></p>
-<p>这下对了</p>
-<h2 id="Moveit！"><a href="#Moveit！" class="headerlink" title="Moveit！"></a>Moveit！</h2><p>开启模拟</p>
-<p>roslaunch kinova_gazebo robot_launch.launch kinova_robotType:&#x3D;j2s7s300</p>
-<p>启动Moveit</p>
-<p>roslaunch j2s7s300_moveit_config j2s7s300_gazebo_demo.launch</p>
-<p><strong>报错</strong></p>
-<p>[ERROR] [1667528001.838003987, 12.500000000]: The kinematics plugin (arm) failed to load. Error: According to the loaded plugin descriptions the class trac_ik_kinematics_plugin&#x2F;TRAC_IKKinematicsPlugin with base class type kinematics::KinematicsBase does not exist. Declared types are cached_ik_kinematics_plugin&#x2F;CachedKDLKinematicsPlugin cached_ik_kinematics_plugin&#x2F;CachedSrvKinematicsPlugin j2n6s300_arm_kinematics&#x2F;IKFastKinematicsPlugin j2s6s300_arm_kinematics&#x2F;IKFastKinematicsPlugin j2s7s300_robot_arm_kinematics&#x2F;IKFastKinematicsPlugin kdl_kinematics_plugin&#x2F;KDLKinematicsPlugin lma_kinematics_plugin&#x2F;LMAKinematicsPlugin m1n6s300_mico_arm_kinematics&#x2F;IKFastKinematicsPlugin srv_kinematics_plugin&#x2F;SrvKinematicsPlugin<br>[ERROR] [1667528001.838122122, 12.500000000]: Kinematics solver could not be instantiated for joint group arm.</p>
-<p>安装Kinematics</p>
-<p>sudo apt install ros-noetic-trac-ik-kinematics-plugin</p>
-<p>报错（拖动标记规划时）</p>
-<p>[ERROR] [1667528367.276877631, 81.935000000]: Failed to fetch current robot state</p>
-<p>把Use Cartisian Path勾选取消即可。可能是个BUG</p>
-<h3 id="Python-Interface"><a href="#Python-Interface" class="headerlink" title="Python Interface"></a>Python Interface</h3><p>BUG [ WARN] [1667528713.845880249, 219.848000000]: Joint values for monitored state are requested but the full state is not known机器人的关节状态都是初始值</p>
-<p>Launchfile中remap了机器人的关节话题</p>
-<remap unless="$(arg fake\_execution)" from="/joint\_states" to="$(arg joint\_states\_ns)" />
-
-<p>在Python脚本里也要制定话题</p>
-<p>import sys<br>import copy<br>import rospy<br>import moveit_commander<br>import moveit_msgs.msg<br>import geometry_msgs.msg</p>
-<h1 id="指定话题"><a href="#指定话题" class="headerlink" title="指定话题"></a>指定话题</h1><p>joint_state_topic &#x3D; [‘joint_states:&#x3D;&#x2F;j2s7s300&#x2F;joint_states’]<br>moveit_commander.roscpp_initialize(joint_state_topic)<br>rospy.init_node(‘move_group_python_interface_tutorial’,<br>                anonymous&#x3D;True)</p>
-<p>robot &#x3D; moveit_commander.RobotCommander()<br>scene &#x3D; moveit_commander.PlanningSceneInterface()<br>group &#x3D; moveit_commander.MoveGroupCommander(“arm”)<br>print(robot.get_current_state())</p>
-<p>可以显示当前的关节状态了</p>
-<p>规划一个pose</p>
-<p>pose_target &#x3D; geometry_msgs.msg.Pose()<br>pose_target.orientation.w &#x3D; 1.0<br>pose_target.position.x &#x3D; 0.7<br>pose_target.position.y &#x3D; -0.05<br>pose_target.position.z &#x3D; 1.1<br>group.set_pose_target(pose_target)<br>plan1 group.plan()<br>group.go(wait&#x3D;True)</p>
-<p>需要知道Aruco的位置和朝向,</p>
-<p>import tf<br>listener &#x3D; tf.TransformListener()<br>(t,r) &#x3D; listener.lookupTransform(‘&#x2F;world’,’&#x2F;aruco_marker_frame’, rospy.Time(0))</p>
-<p>pose_target &#x3D; geometry_msgs.msg.Pose()<br>pose_target.orientation.x &#x3D; r[0]<br>pose_target.orientation.y &#x3D; r[1]<br>pose_target.orientation.z &#x3D; r[2]<br>pose_target.orientation.w &#x3D; r[3]<br>pose_target.position.x &#x3D; t[0]<br>pose_target.position.y &#x3D; t[1]<br>pose_target.position.z &#x3D; t[2]<br>group.set_pose_target(pose_target)   </p>
-<p>plan &#x3D; group.plan()<br>group.go(wait&#x3D;True)</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-11.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-11-1024x602.png"></a></p>
-<h2 id="抓取姿态调整"><a href="#抓取姿态调整" class="headerlink" title="抓取姿态调整"></a>抓取姿态调整</h2><p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-13.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-13-1024x654.png"></a></p>
-<p>这个姿势好，末端执行器相对marker坐标系先饶Z转90度，再绕Y转90度，RPY角为90 90 0.</p>
-<p>计算一个新的tf</p>
-<p>import transforms3d as tfs<br>m &#x3D; tfs.quaternions.quat2mat(r)<br>m1 &#x3D; tfs.euler.euler2mat(pi&#x2F;2, pi&#x2F;2, 0)<br>fq &#x3D; tfs.quaternions.mat2quat(m1.dot(m))</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-14.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-14-1024x615.png"></a></p>
-<p>不知为何，完全相反.控制爪子</p>
-<p>group2 &#x3D; moveit_commander.MoveGroupCommander(“gripper”)<br>grip_target &#x3D; [1.4, 0, 1.4]<br>group2.set_joint_value_target(grip_target)<br>group2.plan()<br>group2.go() </p>
-<p>模拟器里爪子抖的和帕金斯似的。显示Controller失败，准备用真的机械臂使一下。</p>
-<p>完结！</p>
+<p>一个已知问题是，如果直接在launch中启动rviz，会出现模型丢失的情况，手动启动就不会有这样的问题。具体的实现可见代码。</p>
+<h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><p>懒得上传了，有人看到并感兴趣的话就留言吧。</p>
 
       
     </div>
@@ -370,7 +843,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/11/02/aruco-6d%E4%BD%8D%E5%A7%BF%E6%A3%80%E6%B5%8B/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/04/30/best-practice-for-ignition-%E7%95%8C%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -384,7 +857,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/11/02/aruco-6d%E4%BD%8D%E5%A7%BF%E6%A3%80%E6%B5%8B/" class="post-title-link" itemprop="url">Aruco 6D位姿检测</a>
+            <a href="/2022/04/30/best-practice-for-ignition-%E7%95%8C%E9%9D%A2/" class="post-title-link" itemprop="url">Best practice for Ignition: 界面</a>
         </h2>
 
         <div class="post-meta">
@@ -394,7 +867,150 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-11-02 20:13:22" itemprop="dateCreated datePublished" datetime="2022-11-02T20:13:22+08:00">2022-11-02</time>
+              <time title="创建时间：2022-04-30 18:10:12" itemprop="dateCreated datePublished" datetime="2022-04-30T18:10:12+08:00">2022-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Iginition/" itemprop="url" rel="index"><span itemprop="name">Iginition</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>我一度感觉Gazebo要生生地被它的开发组玩坏了，现在的Ignition更像是UE、Unity那样的游戏引擎，基本上是物理引擎+光照引擎，同时集成了一些和ROS的互动。所有的功能都以插件的形式呈现。</p>
+<p>在Ignition Gazebo的插件中能找到许多官方的插件，其中有一个插件角Shutdown Button，是的，就是显示一个关闭按钮，点一下可以关闭窗口。这有什么意义？？更不要提各种奔溃和不稳定了。总之现在的Ignition Gazebo完全让人不知道该如何去使用它，甚至都没有一个官方教程告诉用户怎么去使用它。</p>
+<p>使用Ignition的人少之又少。这里我就介绍一下如何使用Ignition，满足正常的仿真需求。</p>
+<h1 id="界面"><a href="#界面" class="headerlink" title="界面"></a>界面</h1><p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-1024x568.png"></a></p>
+<p>Ignition Gazebo的界面，左边为模拟界面，右边为工具栏。为了正常使用，优先开启Resource Spawner插件，这样就不用傻兮兮地在sdf文件中手动加模型了，直接拖拽即可。这样至少达到了Gazebo的使用要求。左上角为基础功能，添加一些基本性质、光照和基本变换，就像UE等游戏引擎那样。左下角为开启模拟功能。总体来看，你可以把它当做一个乞丐版的游戏引擎。</p>
+<h1 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h1><p>插件是Ignition Gazebo的“创新之处”，为了全面了解其功能，以下列出所有插件的功能：</p>
+<h2 id="默认打开或建议打开的插件功能"><a href="#默认打开或建议打开的插件功能" class="headerlink" title="默认打开或建议打开的插件功能"></a>默认打开或建议打开的插件功能</h2><h3 id="Scene-3D"><a href="#Scene-3D" class="headerlink" title="Scene 3D"></a>Scene 3D</h3><p>左边的3D显示区域。</p>
+<h3 id="Component-inspector"><a href="#Component-inspector" class="headerlink" title="Component inspector"></a>Component inspector</h3><p>这会显示所选模型的各类属性。例如名称、自碰撞属性、位姿、Wind Mode（不清楚是什么）、模型路径、父对象、是否静态等。</p>
+<p>大部分属性都是不能更改的，除了位姿。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-3-1024x675.png"></a></p>
+<h3 id="Copy-Paste"><a href="#Copy-Paste" class="headerlink" title="Copy&#x2F;Paste"></a>Copy&#x2F;Paste</h3><p>粘贴复制功能，这个插件默认开启，放置在左上角。</p>
+<h3 id="Entity-Context-Menu"><a href="#Entity-Context-Menu" class="headerlink" title="Entity Context Menu"></a>Entity Context Menu</h3><p>这个插件也是默认开启的，开启后，在3D界面中右键点击实体，可以进行一些快捷操作，比如查看碰撞、关节，跟随、转到等等。</p>
+<h3 id="Select-Entity"><a href="#Select-Entity" class="headerlink" title="Select Entity"></a>Select Entity</h3><p>没想到吧，连选择一个Entity都是通过插件实现的功能。</p>
+<h3 id="Entity-Tree"><a href="#Entity-Tree" class="headerlink" title="Entity Tree"></a>Entity Tree</h3><p>显示实体树，非常实用且重要的功能，推荐默认开启。</p>
+<h3 id="Grid-3D"><a href="#Grid-3D" class="headerlink" title="Grid 3D"></a>Grid 3D</h3><p>默认开启，显示网格坐标。</p>
+<h3 id="Transform-control"><a href="#Transform-control" class="headerlink" title="Transform control"></a>Transform control</h3><p>基础变换功能，默认开启，显示在左上角。</p>
+<h3 id="World-control"><a href="#World-control" class="headerlink" title="World control"></a>World control</h3><p>开启和终止仿真，默认打开，放在左下角。</p>
+<h3 id="Scene-Manager"><a href="#Scene-Manager" class="headerlink" title="Scene Manager"></a>Scene Manager</h3><p>默认打开的功能，应该是用于组织维护仿真数据库。</p>
+<h3 id="Resource-Spawner"><a href="#Resource-Spawner" class="headerlink" title="Resource Spawner"></a>Resource Spawner</h3><p>这功能就厉害了，可以导入本地的模型和Fuel中的模型。建议默认打开。但是链接Fuel服务器要花很长时间，而且没有搜索功能，只有点进模型贡献者的分类页面，才能按照名称搜索。openrobotics有很多的资源，可以取需(下载的模型太大会卡死…)。之后可能单开一篇讲讲怎么用Resource spawner。</p>
+<h3 id="Screenshot"><a href="#Screenshot" class="headerlink" title="Screenshot"></a>Screenshot</h3><p>截屏功能，默认在左上角。</p>
+<h3 id="Interactive-View-Control"><a href="#Interactive-View-Control" class="headerlink" title="Interactive View Control"></a>Interactive View Control</h3><p>应该是视角拖拽一类的功能。</p>
+<h3 id="Shapes"><a href="#Shapes" class="headerlink" title="Shapes"></a>Shapes</h3><p>放置基础形状，有立方体、球体、圆柱、胶囊体、扁球体五种。默认在左上角。</p>
+<h3 id="Spawn"><a href="#Spawn" class="headerlink" title="Spawn"></a>Spawn</h3><p>直接写插件描述：Adding spawn functionality to the 3D scene, via events and drag and drop.</p>
+<h3 id="Lights"><a href="#Lights" class="headerlink" title="Lights"></a>Lights</h3><p>放置灯光。</p>
+<h3 id="Visualization-capabilities"><a href="#Visualization-capabilities" class="headerlink" title="Visualization capabilities"></a>Visualization capabilities</h3><p>提供查看模型关节、布线、碰撞的功能。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-10.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-10-1024x492.png"></a></p>
+<h3 id="World-stats"><a href="#World-stats" class="headerlink" title="World stats"></a>World stats</h3><p>显示仿真时间与真实时间之间的比例。默认显示在3D视图的右下角。</p>
+<h2 id="显示类插件功能"><a href="#显示类插件功能" class="headerlink" title="显示类插件功能"></a>显示类插件功能</h2><h3 id="Visualize-contacts"><a href="#Visualize-contacts" class="headerlink" title="Visualize contacts"></a>Visualize contacts</h3><p>会显示模型之间的碰撞点。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-2.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-2-1024x675.png"></a></p>
+<h3 id="Topic-echo"><a href="#Topic-echo" class="headerlink" title="Topic echo"></a>Topic echo</h3><p>读取指定话题的信息，这里读取的是ign内部的topic。</p>
+<h3 id="Image-display"><a href="#Image-display" class="headerlink" title="Image display"></a>Image display</h3><p>如果有照相机传感器的话，可以在这里看到图像。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-6.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-6-1024x577.png"></a></p>
+<h3 id="Topic-Viewer"><a href="#Topic-Viewer" class="headerlink" title="Topic Viewer"></a>Topic Viewer</h3><p>可以看到各类Topic，以及Topic数据的格式。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-9.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-9-1024x577.png"></a></p>
+<h3 id="Transport-plotting"><a href="#Transport-plotting" class="headerlink" title="Transport plotting"></a>Transport plotting</h3><p>这看起来是一个可以绘制图表的插件，但是不知道如何指定绘制对象。从名字中我认为应该是 可以绘制时间序列的一些数据。</p>
+<h3 id="Video-Recoder"><a href="#Video-Recoder" class="headerlink" title="Video Recoder"></a>Video Recoder</h3><p>内置的录屏功能。这个倒是没有默认放在左上角，我倒觉得也可以默认放在左上角。</p>
+<h3 id="Navigation-satellite-map"><a href="#Navigation-satellite-map" class="headerlink" title="Navigation satellite map"></a>Navigation satellite map</h3><p>需要一个有Navsat信息的ignition topic，可以显示地图。</p>
+<h3 id="Visualize-lidar"><a href="#Visualize-lidar" class="headerlink" title="Visualize lidar"></a>Visualize lidar</h3><p>可以可视化显示激光雷达的激光线，并且标出有扫描到实体的线。</p>
+<h3 id="Plotting"><a href="#Plotting" class="headerlink" title="Plotting"></a>Plotting</h3><p>看起来，类似Transport plotting，或者说这两者应该是一致的。需要配合Topic viewer使用，Topic中可以绘图的数据将可以被拖拽到绘图窗口中，自动地绘制一条与时间相关的数据。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-11.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-11-1024x555.png"></a></p>
+<h2 id="没有卵用的插件功能"><a href="#没有卵用的插件功能" class="headerlink" title="没有卵用的插件功能"></a>没有卵用的插件功能</h2><h3 id="Banana-for-scale"><a href="#Banana-for-scale" class="headerlink" title="Banana for scale"></a>Banana for scale</h3><p>可以插入两个香蕉模型，一个大(1m)一个小。不知所谓的功能。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-1.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-1-1024x539.png"></a></p>
+<h3 id="Shutdown-Button"><a href="#Shutdown-Button" class="headerlink" title="Shutdown Button"></a>Shutdown Button</h3><p>提供一个 关闭窗口的按钮，和最右上角那个功能一样。我只能理解是开发组人的小消遣了，非常奇葩的功能。“嘿，我给我的电脑写了一个关机程序，只需要打开它然后按一下这个按钮就可以关机了，神奇吧？”</p>
+<h2 id="输入、交互、修改类功能"><a href="#输入、交互、修改类功能" class="headerlink" title="输入、交互、修改类功能"></a>输入、交互、修改类功能</h2><h3 id="Component-inspector-editor"><a href="#Component-inspector-editor" class="headerlink" title="Component inspector editor"></a>Component inspector editor</h3><p>打开它经常会让ignition奔溃退出。它和Component inspector的区别在于提供了一个“add link or light to the model”的选项，通过这个选项，可以向模型添加更多的子link，然后在上面添加传感器等。</p>
+<p>使用它经常会导致奔溃。</p>
+<h3 id="Publisher"><a href="#Publisher" class="headerlink" title="Publisher"></a>Publisher</h3><p>向特定话题以一定频率发布消息，用于测试。</p>
+<h3 id="Tape-measure"><a href="#Tape-measure" class="headerlink" title="Tape measure"></a>Tape measure</h3><p>可以通过点击两点测量一段距离，一般在俯视图下会比较准确，其他时候准确度堪忧。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-4.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-4-1024x555.png"></a></p>
+<h3 id="Grid-config"><a href="#Grid-config" class="headerlink" title="Grid config"></a>Grid config</h3><p>可以调整网格的属性，例如大小、数量、颜色。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-5-1024x555.png"></a></p>
+<h3 id="View-Angle"><a href="#View-Angle" class="headerlink" title="View Angle"></a>View Angle</h3><p>可以用这个插件快捷地调整到某一正视图，同时可以选择正交视角还是透视视角，正交视角的视角移动方式非常奇怪，也许是BUG。</p>
+<h3 id="Joint-position-controller"><a href="#Joint-position-controller" class="headerlink" title="Joint position controller"></a>Joint position controller</h3><p>可以控制有活动关节的模型。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-7.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-7-1024x577.png"></a></p>
+<h3 id="Teleop"><a href="#Teleop" class="headerlink" title="Teleop"></a>Teleop</h3><p>可以用于控制小车。提供数值控制、键盘控制、滚动条控制三种控制方法。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-8.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-8-1024x577.png"></a></p>
+<h3 id="Align-tool"><a href="#Align-tool" class="headerlink" title="Align tool"></a>Align tool</h3><p>对其工具，和gazebo classic中的对齐工具类似。也许是配合前面的编辑修改器使用的，从而能在Ignition中建造机器人模型。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-12.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/04/%E5%9B%BE%E7%89%87-12-1024x555.png"></a></p>
+<h2 id="未知的功能"><a href="#未知的功能" class="headerlink" title="未知的功能"></a>未知的功能</h2><h3 id="Camera-tracking"><a href="#Camera-tracking" class="headerlink" title="Camera tracking"></a>Camera tracking</h3><p>未知功能，只显示空白。</p>
+<h3 id="Transport-scene-manager"><a href="#Transport-scene-manager" class="headerlink" title="Transport scene manager"></a>Transport scene manager</h3><p>这也是一个会经常导致奔溃的插件。它的作用不明，大部分情况下它只是保持空白，或者突然导致Ignition gazebo的奔溃。</p>
+<h3 id="Gz-scene-3D"><a href="#Gz-scene-3D" class="headerlink" title="Gz scene 3D"></a>Gz scene 3D</h3><p>又是一个，找不到任何功能描述，一打开就奔溃的插件。</p>
+<h3 id="Key-publisher"><a href="#Key-publisher" class="headerlink" title="Key publisher"></a>Key publisher</h3><p>不明。</p>
+<h3 id="Minimal-Scene"><a href="#Minimal-Scene" class="headerlink" title="Minimal Scene"></a>Minimal Scene</h3><p>我一打开这个插件，ignition gazebo就被橄榄了。报错如下：</p>
+<p>[GUI] [Err] [RenderEngineManager.cc:470] Failed to load plugin [] : couldn’t load library on path [&#x2F;usr&#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;].<br>[GUI] [Err] [MinimalScene.cc:525] Engine [] is not supported<br>[GUI] [Err] [MinimalScene.cc:666] Unable to initialize renderer</p>
+<h3 id="Marker-Manager"><a href="#Marker-Manager" class="headerlink" title="Marker Manager"></a>Marker Manager</h3><p>空描述，这种我一致认为是默认开启的基础功能。</p>
+<h3 id="3D-Plot"><a href="#3D-Plot" class="headerlink" title="3D Plot"></a>3D Plot</h3><p>意义不明。</p>
+<h3 id="Playback-Scrubber"><a href="#Playback-Scrubber" class="headerlink" title="Playback Scrubber"></a>Playback Scrubber</h3><p>意义不明，可能是可以看回放的插件，但是没搞懂是怎么运作的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/03/25/cp210x%E6%97%A0%E6%B3%95%E8%AF%86%E5%88%AB%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Xiao Lin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shawn Lin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/25/cp210x%E6%97%A0%E6%B3%95%E8%AF%86%E5%88%AB%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">CP210x无法识别问题解决</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-25 18:41:16" itemprop="dateCreated datePublished" datetime="2022-03-25T18:41:16+08:00">2022-03-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -413,120 +1029,15 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/Robotics/" itemprop="url" rel="index"><span itemprop="name">Robotics</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="准备一个Aruco"><a href="#准备一个Aruco" class="headerlink" title="准备一个Aruco"></a>准备一个Aruco</h2><p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-1.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-1-1024x576.png"></a></p>
-<p>ID 582，边长5cm</p>
-<h2 id="Aruco-ros"><a href="#Aruco-ros" class="headerlink" title="Aruco-ros"></a>Aruco-ros</h2><p>git clone <a target="_blank" rel="noopener" href="https://github.com/pal-robotics/aruco/_ros.git">https://github.com/pal-robotics/aruco\_ros.git</a></p>
-<p>别忘了切换到对应的ros分支再编译！</p>
-<p>检测一个Aruco</p>
-<p>使用realsense，但是任何一个标定过的rgb摄像头都可以。</p>
-<p>修改launch file</p>
-<arg name="markerId"        default="582"/>
-<arg name="markerSize"      default="0.05"/>    <!-- in m -->
-<arg name="eye"             default="left"/>
-<arg name="marker\_frame"    default="aruco\_marker\_frame"/>
-<arg name="ref\_frame"       default=""/>  <!-- leave empty and the pose will be published wrt param parent\_name -->
-<arg name="corner\_refinement" default="LINES" /> <!-- NONE, HARRIS, LINES, SUBPIX -->
-
-
-<node pkg="aruco\_ros" type="single" name="aruco\_single">
-    <remap from="/camera\_info" to="/camera/color/camera\_info" />
-    <remap from="/image" to="/camera/color/image\_raw" />
-    <param name="image\_is\_rectified" value="True"/>
-    <param name="marker\_size"        value="$(arg markerSize)"/>
-    <param name="marker\_id"          value="$(arg markerId)"/>
-    <param name="reference\_frame"    value="$(arg ref\_frame)"/>   <!-- frame in which the marker pose will be refered -->
-    <param name="camera\_frame"       value="camera\_color\_frame"/>
-    <param name="marker\_frame"       value="$(arg marker\_frame)" />
-    <param name="corner\_refinement"  value="$(arg corner\_refinement)" />
-</node>
-
-<p>仅对realsense有效！不同相机更改camera info、image、reference_frame和camera_frame</p>
-<p>运行aruco_detector</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image-2.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-2-1024x584.png"></a></p>
-<h2 id="一些测试结果"><a href="#一些测试结果" class="headerlink" title="一些测试结果"></a>一些测试结果</h2><p>5cm的Aruco在70-80cm处可以识别，realsense分辨率是1024*768</p>
-<p>Aruco辨识角在75度左右</p>
-<p>相机移动过程中无法识别，但是标记移动能够持续识别。应该是因为相机移动的时候要重新计算自适应阈值。</p>
-<p>旋转的标记比平移的标记要更容易追踪。</p>
-<p>Aruco标志旁边要保留白色边框以在黑色背景下识别。</p>
-<p>Aruco对遮挡非常非常敏感。如果场景中可能会发生遮挡，Aruco可能无法使用。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/11/02/ros-orkintelrealsense%EF%BC%88%E5%A4%B1%E8%B4%A5%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/11/02/ros-orkintelrealsense%EF%BC%88%E5%A4%B1%E8%B4%A5%EF%BC%89/" class="post-title-link" itemprop="url">ROS ORK+intelrealsense（失败）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-11-02 15:32:04" itemprop="dateCreated datePublished" datetime="2022-11-02T15:32:04+08:00">2022-11-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/" itemprop="url" rel="index"><span itemprop="name">bolgs</span></a>
+                  <a href="/categories/bolgs/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/bolgs/Robotics/" itemprop="url" rel="index"><span itemprop="name">Robotics</span></a>
+                  <a href="/categories/embedded/" itemprop="url" rel="index"><span itemprop="name">embedded</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/embedded/ESP32/" itemprop="url" rel="index"><span itemprop="name">ESP32</span></a>
                 </span>
             </span>
 
@@ -541,69 +1052,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Ubuntu16.04 安装ROS kinect</p>
-<h2 id="ORK"><a href="#ORK" class="headerlink" title="ORK"></a>ORK</h2><h3 id="安装ros-ork"><a href="#安装ros-ork" class="headerlink" title="安装ros-ork"></a>安装ros-ork</h3><p>前置</p>
-<p>#sudo apt-get install libopenni-dev ros-kinetic-catkin ros-kinetic-ecto* ros-kinetic-opencv-candidate ros-kinetic-moveit</p>
-<h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><p>sudo apt install git</p>
-<p>clone源码</p>
-<p>git clone <a target="_blank" rel="noopener" href="http://github.com/wg-perception/object/_recognition/_core">http://github.com/wg-perception/object\_recognition\_core</a><br>git clone <a target="_blank" rel="noopener" href="http://github.com/wg-perception/capture">http://github.com/wg-perception/capture</a><br>git clone <a target="_blank" rel="noopener" href="http://github.com/wg-perception/reconstruction">http://github.com/wg-perception/reconstruction</a><br>git clone <a target="_blank" rel="noopener" href="http://github.com/wg-perception/linemod">http://github.com/wg-perception/linemod</a><br>git clone <a target="_blank" rel="noopener" href="http://github.com/wg-perception/ork/_renderer">http://github.com/wg-perception/ork\_renderer</a><br>git clone <a target="_blank" rel="noopener" href="http://github.com/wg-perception/tabletop">http://github.com/wg-perception/tabletop</a><br>git clone <a target="_blank" rel="noopener" href="http://github.com/wg-perception/tod">http://github.com/wg-perception/tod</a><br>git clone <a target="_blank" rel="noopener" href="http://github.com/wg-perception/transparent/_objects">http://github.com/wg-perception/transparent\_objects</a></p>
-<p>clone ROS stuff</p>
-<p>git clone <a target="_blank" rel="noopener" href="http://github.com/wg-perception/object/_recognition/_msgs">http://github.com/wg-perception/object\_recognition\_msgs</a><br>git clone <a target="_blank" rel="noopener" href="http://github.com/wg-perception/object/_recognition/_ros">http://github.com/wg-perception/object\_recognition\_ros</a><br>git clone <a target="_blank" rel="noopener" href="http://github.com/wg-perception/object/_recognition/_ros/_visualization">http://github.com/wg-perception/object\_recognition\_ros\_visualization</a></p>
-<p>catkin make编译</p>
-<p>cd ..&#x2F; &amp;&amp; catkin_make</p>
-<p><strong>报错</strong> SDL&#x2F;SDL.h: No such file or directory GL&#x2F;osmesa.h: No such file or directory</p>
-<p>sudo apt-get install libsdl1.2-dev<br>sudo apt-get install libosmesa6-dev</p>
-<h2 id="CouchDB-建立模型库"><a href="#CouchDB-建立模型库" class="headerlink" title="CouchDB 建立模型库"></a>CouchDB 建立模型库</h2><p>安装：sudo apt-get install couchdb</p>
-<p>测试： curl -X GET <a target="_blank" rel="noopener" href="http://localhost:5984/">http://localhost:5984</a></p>
-<p>环境路径（ork文件夹下）</p>
-<p>source devel&#x2F;setup.bash</p>
-<p>添加一个物体</p>
-<p>lin@lin-Inspiron-7590:~&#x2F;library&#x2F;ork$ rosrun object_recognition_core object_add.py -n “coke” -d “A can of coke” –commit<br>Stored new object with id: 357b50964cd17d4502c92e919d0003c2</p>
-<p>通过本地web界面查看物体记录</p>
-<p><a target="_blank" rel="noopener" href="http://localhost:5984//_utils/database.html?object%5C_recognition/%5C_design/objects/%5C_view/by%5C_object%5C_name">http://localhost:5984/\_utils/database.html?object\_recognition/\_design/objects/\_view/by\_object\_name</a></p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/11/image.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/11/image-1024x207.png"></a></p>
-<h2 id="添加MESH"><a href="#添加MESH" class="headerlink" title="添加MESH"></a>添加MESH</h2><p>install pip</p>
-<p>sudo apt install python-pip</p>
-<p>install couchapp</p>
-<p>sudo pip install git+<a target="_blank" rel="noopener" href="https://github.com/couchapp/couchapp.git">https://github.com/couchapp/couchapp.git</a></p>
-<p>Add mesh, and push the mesh to the database. ID改成Couchdb数据库里的id。</p>
-<p>rosrun object_recognition_core mesh_add.py 357b50964cd17d4502c92e919d0003c2 src&#x2F;ork_tutorials&#x2F;data&#x2F;coke.stl –commit<br>rosrun object_recognition_core push.sh</p>
-<p>这里要commit两次才能显示模型，不知为何。</p>
-<p>Check the mesh in local web interface</p>
-<p><a target="_blank" rel="noopener" href="http://localhost:5984/or/_web/_ui//_design/viewer/index.html">http://localhost:5984/or\_web\_ui/\_design/viewer/index.html</a></p>
-<p>Lets Train the Model!</p>
-<p>rosrun object_recognition_core training -c `rospack find object_recognition_linemod`&#x2F;conf&#x2F;training.ork</p>
-<p>rosrun object_recognition_core training -c <code>rospack find object_recognition_linemod</code>&#x2F;conf&#x2F;training.ork</p>
-<h2 id="Realsense"><a href="#Realsense" class="headerlink" title="Realsense"></a>Realsense</h2><p>install realsense</p>
-<p>sudo apt-get install ros-kinetic-realsense2-camera</p>
-<p>Launch the realsense (D435i)</p>
-<p>roslaunch realsense2_camera rs_camera.launch</p>
-<p><strong>BUG:Device 1&#x2F;1 failed with exception: failed to set power state</strong></p>
-<p>Install the realsense SDK</p>
-<p>sudo apt-key adv –keyserver keyserver.ubuntu.com –recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE  sudo apt-key adv –keyserver hkp:&#x2F;&#x2F;keyserver.ubuntu.com:80 –recv-key F6E65AC044F831AC80A06380C8B3A55A6F3EFCDE<br>sudo add-apt-repository “deb <a target="_blank" rel="noopener" href="https://librealsense.intel.com/Debian/apt-repo">https://librealsense.intel.com/Debian/apt-repo</a> $(lsb_release -cs) main” -u<br>sudo apt-get install librealsense2-dkms<br>sudo apt-get install librealsense2-utils</p>
-<p>Try the realsense</p>
-<p>realsense-viewer</p>
-<p>Try run again</p>
-<p>[ INFO] [1667358059.365199853]: RealSense Node Is Up!</p>
-<h2 id="detect"><a href="#detect" class="headerlink" title="detect"></a>detect</h2><p>Get your self a coda can</p>
-<p>Detect</p>
-<p>rosrun object_recognition_core detection -c  `rospack find object_recognition_linemod`&#x2F;conf&#x2F;detection.ros.ork</p>
-<p>检查一下detector订阅的话题：</p>
-<h2 id="lin-lin-Inspiron-7590-rosnode-info-object-recognition-server"><a href="#lin-lin-Inspiron-7590-rosnode-info-object-recognition-server" class="headerlink" title="lin@lin-Inspiron-7590:~$ rosnode info &#x2F;object_recognition_server "></a>lin@lin-Inspiron-7590:~$ rosnode info &#x2F;object_recognition_server </h2><p>Node [&#x2F;object_recognition_server]<br>Publications:<br> * &#x2F;rosout [rosgraph_msgs&#x2F;Log]</p>
-<p>Subscriptions:<br> * &#x2F;camera&#x2F;depth_registered&#x2F;camera_info [unknown type]<br> * &#x2F;camera&#x2F;depth_registered&#x2F;image_raw [unknown type]<br> * &#x2F;camera&#x2F;rgb&#x2F;camera_info [unknown type]<br> * &#x2F;camera&#x2F;rgb&#x2F;image_rect_color [unknown type]</p>
-<p>Services:<br> * &#x2F;object_recognition_server&#x2F;get_loggers<br> * &#x2F;object_recognition_server&#x2F;set_logger_level</p>
-<p>contacting node <a target="_blank" rel="noopener" href="http://lin-inspiron-7590:34323/">http://lin-Inspiron-7590:34323/</a> …<br>Pid: 2156<br>Connections:<br> * topic: &#x2F;rosout<br>    * to: &#x2F;rosout<br>    * direction: outbound<br>    * transport: TCPROS</p>
-<p>要和realsense的话题做一下映射</p>
-<p>gedit `rospack find object_recognition_linemod`&#x2F;conf&#x2F;detection.ros.ork</p>
-<p>source1:<br>  type: RosKinect<br>  module: ‘object_recognition_ros.io’<br>  parameters:<br>    rgb_frame_id: ‘camera_color_frame’<br>    rgb_image_topic: ‘&#x2F;camera&#x2F;color&#x2F;image_raw’<br>    rgb_camera_info: ‘&#x2F;camera&#x2F;color&#x2F;camera_info’<br>    depth_frame_id: ‘camera_depth_frame’<br>    depth_image_topic: ‘&#x2F;camera&#x2F;depth&#x2F;image_rect_raw’<br>    depth_camera_info: ‘&#x2F;camera&#x2F;depth&#x2F;camera_info’</p>
-<p>BUG &#x2F;tmp&#x2F;binarydeb&#x2F;ros-kinetic-opencv3-3.3.1&#x2F;modules&#x2F;core&#x2F;src&#x2F;matrix.cpp:492: error: (-215) 0 &lt;&#x3D; _rowRange.start &amp;&amp; _rowRange.start &lt;&#x3D; _rowRange.end &amp;&amp; _rowRange.end &lt;&#x3D; m.rows in function Mat</p>
-<p>这是因为realsense的rgb和depth分辨率不一样。</p>
-<p>[ INFO] [1667365057.463705872]: depth stream is enabled - width: 848, height: 480, fps: 30, Format: Z16<br>[ INFO] [1667365057.467543566]: color stream is enabled - width: 1280, height: 720, fps: 30, Format: RGB8</p>
-<p><code>roslaunch realsense2_camera rs_camera.launch align_depth:=true depth_width:=640 depth_height:=480 depth_fps:=30 color_width:=640 color_height:=480 color_fps:=30</code></p>
-<p>BUG Rviz中找不到ORKobject</p>
-<p>运行前source ORK的workspace</p>
-<p>ORKLinemod不能训练有大空洞的模型。或者说，用一个框把模型包络起来，这个框的中间不能有很多背景图像。</p>
-<p>使用自己的mesh时会有各种各样奇怪的bug。这个库已经没有人维护了，不建议使用。</p>
+          <p>淘宝买了一个ESP32开发板，但是插电后无法识别。一度以为是电缆问题，换了一根电缆，换了linux都无法识别。最后发现，是CP2104芯片VID&#x2F;PID的问题。这块开发板由于是国外一个叫TTGO的牌子生产的，可能对CP2104芯片有改动，因为最后安装好后显示的VID&#x2F;PID不是原厂的。下面给出windows和linux的解决方法：</p>
+<h2 id="windows下解决方法"><a href="#windows下解决方法" class="headerlink" title="windows下解决方法"></a>windows下解决方法</h2><p>首先查看设备的VID&#x2F;PID值：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/03/%E5%9B%BE%E7%89%87.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/03/%E5%9B%BE%E7%89%87-897x1024.png"></a></p>
+<p>然后下载AN220套件：<a target="_blank" rel="noopener" href="https://www.silabs.com/documents/public/application-notes/an220-usb-driver-customization.pdf?msclkid=622ae635ac2511ec8e57b7c9b32974c9">https://www.silabs.com/documents/public/application-notes/an220-usb-driver-customization.pdf?msclkid=622ae635ac2511ec8e57b7c9b32974c9</a></p>
+<p>使用AN220套件生成一个包含自定义VID&#x2F;PID的驱动，参见教程：<a target="_blank" rel="noopener" href="https://whycan.com/t/_2469.html">https://whycan.com/t\_2469.html</a></p>
+<p>在windows下安装这个驱动要关闭强制驱动签名检查，参见教程：<a target="_blank" rel="noopener" href="https://jingyan.baidu.com/article/624e74594dbc8d34e8ba5aa6.html">https://jingyan.baidu.com/article/624e74594dbc8d34e8ba5aa6.html</a></p>
+<p>安装驱动后即可识别CP210x芯片。之后可以通过其他工具比如CP210xSetIDs.exe修改芯片的VID&#x2F;PID到原厂设置，用AN220中的USBXpress Device Customization Utility (AN721)工具应该也可以，但是我购买的ESP32开发板不让修改，不知道什么情况。工具是官方免费提供的，不少人拿到CSDN上骗积分，<strong>只能说CSDN nmsl，中文互联网生态真的是烂到骨子里了</strong>。在中文互联网上找教程无异于屎里淘金。</p>
+<p>官方下载页面：<a target="_blank" rel="noopener" href="https://community.silabs.com/s/article/cp210x-legacy-programming-utilities?language=en%5C_US&msclkid=23f2b0e7ac2611ecacc5f53ef9b2a838">https://community.silabs.com/s/article/cp210x-legacy-programming-utilities?language=en\_US&amp;msclkid=23f2b0e7ac2611ecacc5f53ef9b2a838</a></p>
+<h2 id="Linux下解决方法"><a href="#Linux下解决方法" class="headerlink" title="Linux下解决方法"></a>Linux下解决方法</h2><p>可以直接参考：<a target="_blank" rel="noopener" href="https://unix.stackexchange.com/questions/67936/attaching-usb-serial-device-with-custom-pid-to-ttyusb0-on-embedded?msclkid=58035a75ac2211ec92c1307bad2e8c2e">https://unix.stackexchange.com/questions/67936/attaching-usb-serial-device-with-custom-pid-to-ttyusb0-on-embedded?msclkid=58035a75ac2211ec92c1307bad2e8c2e</a></p>
+<p>最后一个回答直接针对CP210x。考虑到可能有时候上不去stackoverflow，把回答贴在下面：</p>
+<p>absolutely similar situation has happened with the eval board from SiLabs - the USB-UART chip CP2102 being provided with irregular VID&#x2F;PID:</p>
+<p><code>lsusb</code></p>
+<p><code>Bus 001 Device 002: ID 10c4:804c Cygnal Integrated Products, Inc.</code></p>
+<p>problem solved by loading module cp210x and sending VID&#x2F;PID as mentioned before:</p>
+<p><code>sudo modprobe cp210x</code></p>
+<p><code>sudo -s</code></p>
+<p><code>echo 10c4 804c &gt; /sys/bus/usb-serial/drivers/cp210x/new_id</code></p>
+<h2 id="知乎关于CSDN的回答"><a href="#知乎关于CSDN的回答" class="headerlink" title="知乎关于CSDN的回答"></a>知乎关于CSDN的回答</h2><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/52061495">https://www.zhihu.com/question/52061495</a></p>
+<p>其实天下乌鸦一般黑，CSDN也算是中文互联网里针对程序员做的最好的知识分享网站了，悲哉。</p>
 
       
     </div>
@@ -623,7 +1090,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/10/30/ubuntu20-04%E5%AE%89%E8%A3%85%E5%A4%9A%E4%B8%AAcuda/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/03/17/moveit2%E5%A4%A7%E8%B5%B7%E5%BA%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -637,7 +1104,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/10/30/ubuntu20-04%E5%AE%89%E8%A3%85%E5%A4%9A%E4%B8%AAcuda/" class="post-title-link" itemprop="url">Ubuntu20.04安装多个Cuda</a>
+            <a href="/2022/03/17/moveit2%E5%A4%A7%E8%B5%B7%E5%BA%95/" class="post-title-link" itemprop="url">Moveit2架构</a>
         </h2>
 
         <div class="post-meta">
@@ -647,7 +1114,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-10-30 11:33:08" itemprop="dateCreated datePublished" datetime="2022-10-30T11:33:08+08:00">2022-10-30</time>
+              <time title="创建时间：2022-03-17 16:54:24" itemprop="dateCreated datePublished" datetime="2022-03-17T16:54:24+08:00">2022-03-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -662,103 +1129,15 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
                 </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="安装NVIDIA驱动"><a href="#安装NVIDIA驱动" class="headerlink" title="安装NVIDIA驱动"></a>安装NVIDIA驱动</h2><p>首先，安装适当版本的nvidia driver。可以在系统自带的Driver manager中选择驱动。安装完成后，输入nvidia-smi查看支持的cuda版本。</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-17.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-17-1024x479.png"></a></p>
-<p>右上方显示CUDA Version为11.4，意味着最高支持11.4的CUDA。</p>
-<h2 id="安装适合版本的CUDA"><a href="#安装适合版本的CUDA" class="headerlink" title="安装适合版本的CUDA"></a>安装适合版本的CUDA</h2><p>如果安装的是和smi右上角前缀相同的CUDA，意味着这是直接适配系统的大版本。从<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-downloads%E5%AF%BB%E6%89%BE%E5%AF%B9%E5%BA%94%E7%89%88%E6%9C%AC%E7%9A%84CUDA%EF%BC%8C%E9%80%89%E6%8B%A9%E7%9B%B8%E5%BA%94%E7%9A%84%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%90%8E%EF%BC%8C%E4%B8%8B%E8%BD%BDrunfile%E3%80%82%E8%BF%90%E8%A1%8Crunfile%EF%BC%8C%E4%BC%9A%E8%AF%A2%E9%97%AE%E6%98%AF%E5%90%A6%E5%AE%89%E8%A3%85%E9%A9%B1%E5%8A%A8%EF%BC%8C%E9%80%89%E6%8B%A9%E5%90%A6%EF%BC%8C%E5%85%B6%E4%BB%96%E9%80%89%E6%8B%A9%E6%98%AF%E5%8D%B3%E5%8F%AF%E3%80%82">https://developer.nvidia.com/cuda-downloads寻找对应版本的CUDA，选择相应的操作系统后，下载runfile。运行runfile，会询问是否安装驱动，选择否，其他选择是即可。</a></p>
-<h2 id="安装低版本CUDA"><a href="#安装低版本CUDA" class="headerlink" title="安装低版本CUDA"></a>安装低版本CUDA</h2><h3 id="安装底版本g-gcc"><a href="#安装底版本g-gcc" class="headerlink" title="安装底版本g++ gcc"></a>安装底版本g++ gcc</h3><p>安装底版本CUDA前，需要安装对应版本的gcc和g++。对应版本的gcc和g++在对应版本的Ubuntu的apt仓库中维护，所以安装之前需要加入这些仓库。</p>
-<p>CUDA9对应了Ubuntu16.04，CUDA10对应了Ubuntu18.04.</p>
-<p>以CUDA9为例，需要加入Ubuntu16.04的仓库：</p>
-<p>deb <a target="_blank" rel="noopener" href="https://mirrors.aliyun.com/ubuntu/">https://mirrors.aliyun.com/ubuntu/</a> xenial main<br>deb-src <a target="_blank" rel="noopener" href="https://mirrors.aliyun.com/ubuntu/">https://mirrors.aliyun.com/ubuntu/</a> xenial main</p>
-<p>deb <a target="_blank" rel="noopener" href="https://mirrors.aliyun.com/ubuntu/">https://mirrors.aliyun.com/ubuntu/</a> xenial universe<br>deb-src <a target="_blank" rel="noopener" href="https://mirrors.aliyun.com/ubuntu/">https://mirrors.aliyun.com/ubuntu/</a> xenial universe</p>
-<p>apt update后，可以通过apt install gcc-5 g++-5安装。</p>
-<h3 id="切换g-和gcc"><a href="#切换g-和gcc" class="headerlink" title="切换g++和gcc"></a>切换g++和gcc</h3><p>首先将原有的和刚安装的g++和gcc设置为可切换模式。参数为优先级（可自己设定），不是版本号：</p>
-<p>sudo update-alternatives –install &#x2F;usr&#x2F;bin&#x2F;gcc gcc &#x2F;usr&#x2F;bin&#x2F;gcc-5 5<br>sudo update-alternatives –install &#x2F;usr&#x2F;bin&#x2F;g++ g++ &#x2F;usr&#x2F;bin&#x2F;g++-5 5<br>sudo update-alternatives –install &#x2F;usr&#x2F;bin&#x2F;gcc gcc &#x2F;usr&#x2F;bin&#x2F;gcc-10 10<br>sudo update-alternatives –install &#x2F;usr&#x2F;bin&#x2F;g++ g++ &#x2F;usr&#x2F;bin&#x2F;g++-10 10</p>
-<p>然后用以下命令选择切换：</p>
-<p>sudo update-alternatives –config gcc<br>sudo update-alternatives –config g++</p>
-<h3 id="安装底版本CUDA"><a href="#安装底版本CUDA" class="headerlink" title="安装底版本CUDA"></a>安装底版本CUDA</h3><p>过程和当前版本CUDA安装方式相同。</p>
-<h2 id="切换CUDA版本"><a href="#切换CUDA版本" class="headerlink" title="切换CUDA版本"></a>切换CUDA版本</h2><p>在&#x2F;usr&#x2F;local目录下，可以看到多个CUDA版本：</p>
-<p>(base) lin@lin-Inspiron-7590:&#x2F;usr&#x2F;local$ ls<br>bin  cuda  cuda-11.4  cuda-9.0  etc  games  include  lib  man  sbin  share  src</p>
-<p>让系统找到cuda，或者说将cuda的路径写入系统变量的方式有两种。一种是，切换cuda版本时，修改系统变量里cuda的路径。还有一种是，将系统变量里的cuda路径指向一个软连接，切换时修改软连接即可。</p>
-<p>上面的cuda文件夹就是一个软连接，指向你想使用的cuda版本。如果没有cuda文件夹，可以自己创建一个。切换时，这样操作：</p>
-<p>sudo rm -rf cuda<br>sudo ln -s &#x2F;usr&#x2F;local&#x2F;cuda9.0 &#x2F;usr&#x2F;local&#x2F;cuda</p>
-<p>然后，在.bashrc中写入系统变量：</p>
-<p>export PATH&#x3D;&#x2F;usr&#x2F;local&#x2F;cuda&#x2F;bin${PATH:+:${PATH}}<br>export LD_LIBRARY_PATH&#x3D;&#x2F;usr&#x2F;local&#x2F;cuda&#x2F;lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}</p>
-<p>这样，每次切换cuda的时候修改软连接即可。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/10/12/%E6%9C%80%E5%A4%A7%E6%9D%83%E9%87%8D%E4%BA%8C%E5%88%86%E5%9B%BE%E5%8C%B9%E9%85%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/10/12/%E6%9C%80%E5%A4%A7%E6%9D%83%E9%87%8D%E4%BA%8C%E5%88%86%E5%9B%BE%E5%8C%B9%E9%85%8D/" class="post-title-link" itemprop="url">最大权重二分图匹配</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-10-12 11:40:13" itemprop="dateCreated datePublished" datetime="2022-10-12T11:40:13+08:00">2022-10-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
+                  ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%80%E6%9C%AF%E8%B4%B4/" itemprop="url" rel="index"><span itemprop="name">技术贴</span></a>
+                  <a href="/categories/robotics/Moveit/" itemprop="url" rel="index"><span itemprop="name">Moveit</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/robotics/Moveit/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
                 </span>
             </span>
 
@@ -773,50 +1152,96 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=t9oESCbZvFw">https://www.youtube.com/watch?v=t9oESCbZvFw</a></p>
-<p>这老哥讲的很好，但是视频声音比较小。结合<a target="_blank" rel="noopener" href="https://blog.51cto.com/u_15127509/4789817#:~:text=%E5%8C%88%E7%89%99%E5%88%A9%E5%8C%B9%E9%85%8D%E7%AE%97%E6%B3%95%20%E5%8C%88%E7%89%99%E5%88%A9%E7%AE%97%E6%B3%95,%28Hungary%20Algorithm%29%E6%98%AF%E7%94%B1Edmonds%E5%9C%A81965%E5%B9%B4%E6%8F%90%E5%87%BA%E7%9A%84%EF%BC%8C%E6%98%AF%E6%B1%82%E8%A7%A3%E4%BA%8C%E5%88%86%E5%9B%BE%E6%9C%80%E5%A4%A7%E5%8C%B9%E9%85%8D%E7%9A%84%E7%BB%8F%E5%85%B8%E7%AE%97%E6%B3%95%EF%BC%8C%E7%AE%97%E6%B3%95%E7%9A%84%E6%A0%B8%E5%BF%83%E5%B0%B1%E6%98%AF%E6%A0%B9%E6%8D%AE%E4%B8%80%E4%B8%AA%E5%88%9D%E5%A7%8B%E5%8C%B9%E9%85%8D%E4%B8%8D%E5%81%9C%E7%9A%84%E6%89%BE%E5%A2%9E%E5%B9%BF%E8%B7%AF%EF%BC%8C%E7%9B%B4%E5%88%B0%E6%B2%A1%E6%9C%89%E5%A2%9E%E5%B9%BF%E8%B7%AF%E4%B8%BA%E6%AD%A2%E3%80%82">这个博客</a>，可以更好地理解KM算法。</p>
-<p>网上的最大权重二分图匹配大多晦涩难懂，很不适合我这样不太聪明的人，所以在这里记录一下最大权重二分图匹配的推演。</p>
-<p>对于分配问题我们知道有一个方法叫做匈牙利匹配。而最大权重二分图匹配使用的方法叫做Kuhn-Munkres Algorithm，在最初提出的时候，使用矩阵的方式求解，后来发现可以基于匈牙利匹配简化求解过程（所以有的时候也可以用匈牙利算法指代最大权重二分图的解决方法）。匈牙利匹配理解起来很简单，但是编程实现很复杂；KM法理解起来非常困难，但是编程实现反而没有那么复杂（但也不简单）。</p>
-<h2 id="二分图"><a href="#二分图" class="headerlink" title="二分图"></a>二分图</h2><p>二分图指一类特殊的图，它的顶点可以分为两类，一类之间互不相连，如下图所示。左边的点归为X集合，右边归为Y集合。</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-1.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-1.png"></a></p>
-<h2 id="二分图最大匹配"><a href="#二分图最大匹配" class="headerlink" title="二分图最大匹配"></a>二分图最大匹配</h2><p>为了理解KM法，首先要了解二分图中最大匹配的方法——匈牙利匹配。这是在无权重的二分图上进行匹配的方法，目的是得到最多的匹配对。</p>
-<p>方法是找增广路径，增广路径的特点是终点和起点都是未匹配的顶点，一个顶点属于X，另一个属于Y，并且依次经过依次经过未匹配边－匹配边－非匹配边－匹配边－未匹配边……那么不管中间路径是怎么样的，这条路径有以下特性：</p>
+          <p>很久没更新了，因为最近都在打老头环。这次来更新一下，Moveit2的架构。</p>
+<p>Moveit2是适配ROS2的运动规划包。重要性无需多言。这一篇主要讲的是Moveit2都做了些什么。</p>
+<h2 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h2><p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/03/image.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/03/image-1024x312.png"></a></p>
+<p>此流程中列出的都是Moveit2默认的求解器或算法。由于Moveit2是开源的，这些求解器和算法也都是开源的。</p>
+<h2 id="Moveit2的接口"><a href="#Moveit2的接口" class="headerlink" title="Moveit2的接口"></a>Moveit2的接口</h2><p>Moveit2的核心是move_group，实际上是一个ROS Node。这个Node提供了用户与Moveit2交互的接口，以及场景数据储存。</p>
+<h3 id="交互接口"><a href="#交互接口" class="headerlink" title="交互接口"></a>交互接口</h3><p>Moveit2提供C++接口和Rviz可视化GUI接口。Python暂时不支持（大失败）</p>
+<h2 id="规划场景"><a href="#规划场景" class="headerlink" title="规划场景"></a>规划场景</h2><p>规划路径前要获得场景数据，例如人用手摘书上的苹果的时候，要知道手、苹果、数分别在哪里。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/03/image-1.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/03/image-1-1024x804.png"></a></p>
+<p>场景数据储存在ros topic中，可以分为三类：</p>
 <ol>
-<li>肯定由奇数条路径组成</li>
-<li>含有未匹配顶点的路径肯定比两端均为匹配顶点的路径数量多1</li>
+<li>State Monitor：机器人的状态，以及与机器人附着的物体。</li>
+<li>Scene Monitor：静态的场景信息，一般提前输入。</li>
+<li>World Geometry Monitor，动态的场景信息，通过传感器获得。</li>
 </ol>
-<p>那么，把这条路径里原来的匹配边变成非匹配边，非匹配边变成匹配边，就会发现匹配对比原来多了一个。所以只要二分图中不存在增广路径了，就达到了最大匹配。具体实现运用到dfs（递归）加遍历。</p>
-<h2 id="二分图最大权重匹配"><a href="#二分图最大权重匹配" class="headerlink" title="二分图最大权重匹配"></a>二分图最大权重匹配</h2><p>考虑下面这样一个二分图，不同之处在于，现在的edge是有权重的，目标是找到一个匹配使得匹配边的权重之和最大。</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-2.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-2.png"></a></p>
-<p>事实上，这个图可以通过添加dummy edge的方式变成一个<strong>完全二分图</strong>：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-3.png"></a></p>
-<p>我们用一个现实场景来表示这个图。X是农场主所拥有的农场，Y是市场，边的权重代表了从农场将作物卖到市场的收入。比如，从x1农场卖作物到y1可以得到6元收入。那么问题变为，在农场和市场之间只能一对一的情况下，农行主怎么卖作物最挣钱。</p>
-<p>另一方面，政府希望集中收购这批粮食，那么政府需要给农场和市场分别一定的补助，好让农场愿意把作物交给政府。有意思的是，我们得到了这个问题的对偶，政府怎么发放补助才能使得补助之和最少。一个简单的起始点是，给每个农场他们可能的最大收入，如下：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-4.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-4.png"></a></p>
-<p>这样一来，农场一定愿意将作物卖给政府。但是，这显然不是最佳的补助方法。我们首先定义，政府的补助数额是关于顶点的函数，又叫顶标。这里要引入一个概念：Equal Subgraph，相等子图。他的定义是，保留原图的所有顶点，但仅保留权重等于连接的顶标之和的边。在这个定义下，上图的子图是：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-5.png"></a></p>
-<p>可以证明，当相等子图有完美匹配的时候，原图是一个最大权重匹配。这是因为，当相等子图有完美匹配的时候，（切换到现实模式），按照相等子图的匹配，政府给市场和农场的补助就等于出售农产品的总价格。之后可以看到，政府给的补助是逐渐下压的，因此没有被纳入相等子图的出售方法，获利一定低于政府的补助。（比如上图的0）因此，当相等子图有完美匹配的时候，用任何一条不在相等子图里的边替换完美匹配边，都会导致更低的出售价格。</p>
-<p>但是，现在的相等子图并没有完美匹配。为什么？从现实来讲，政府给的钱太多了，还有下压的空间。那么问题就在于，怎么下压补贴。首先，在相等子图上我们至少可以用匈牙利匹配找到一个最大匹配，有可能是这样的：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-7.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-7.png"></a></p>
-<p>此时，农场1卖到市场1，农场2卖到市场2。可以发现，农场3无法匹配。这是因为，从他出发无法找到一条新的增广路径，只能找到一条交替路，也就是农场3——市场2——农场2.将这种交替路上的农场归为R集，市场归为T集，那么这个相等子图是这样的，蓝色代表交替路：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-11.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-11.png"></a></p>
-<p>接下来，政府想一步步压低补贴，那么可以最先考虑的是，压低一些补助就可以又阻断农场主出售货物的那条路子。具体而言，计算每条权重边和补助的差值。很容易就能得到，从农场2出售到市场1，收入是2，而此时补助之和是3，差价是1.于是政府就压低对农场2的补助到2——但是，又不能影响到原来的相等子图，所以，可以给市场2增加补助1. 进一步地，还可以给农场3的补助也降1.从更为严谨的角度来说，改变顶标的策略是这样的：</p>
-<ol>
-<li>首先，找到最大匹配中未匹配的顶点。由于已经是最大匹配，从该顶点出发，只能找到一条交替路而不是增广路。将X中在交替路上的顶点记为R集，Y中在交替路上的顶点记为T集，最小差价记为d。</li>
-<li>令R中的顶标减少d，令T中的顶标增加d</li>
-</ol>
-<p>实际上就是这样：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-12.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-12.png"></a></p>
-<p>这样相等子图里多了一条边，此时，再用匈牙利进行匹配，发现还是不行。交替路在图中已经标出。</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-13.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-13-1024x594.png"></a></p>
-<p>说明还有压价的空间。x3，y2，x2，y1，x1构成了一条交替路（黑红黑红）：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-14.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-14.png"></a></p>
-<p>相等子图中新增了一条绿色的相等路径。此时，用匈牙利匹配可以得到完美匹配了：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-15.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-15.png"></a></p>
-<p>最终，最大权重匹配就是4+2+3+5+0+0&#x3D;14.</p>
-<h2 id="其他问题的转化"><a href="#其他问题的转化" class="headerlink" title="其他问题的转化"></a>其他问题的转化</h2><h3 id="最小匹配"><a href="#最小匹配" class="headerlink" title="最小匹配"></a>最小匹配</h3><p>如果求最小匹配该怎么做?很简单，找到当前最大的权重，然后用这个权重减去所有其他路径的权重作为新权重，就可以将最小匹配转化为最大匹配了。</p>
-<h3 id="非对称、非完全二分图"><a href="#非对称、非完全二分图" class="headerlink" title="非对称、非完全二分图"></a>非对称、非完全二分图</h3><p>在前面我们可以看到对于非完全的对称二分图，可以使用dummy edge补全。对于非对称的二分图，也可以使用dummy vertices补全。如下图：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/10/image-16.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/10/image-16-1024x434.png"></a></p>
+<p>其中，前两者主要通过Mesh表示。动态的场景信息通过Occupancy Map表示，依赖于Octomap库，支持点云和深度图像。</p>
+<h2 id="碰撞检测"><a href="#碰撞检测" class="headerlink" title="碰撞检测"></a>碰撞检测</h2><p>碰撞检测默认使用FCL(Flexible Collision Library) 库，本质上任务比较简单。然而，碰撞检测可能会非常耗时，有时候会占用路径中90%的计算量。为了避免这个情况，有两个方法：</p>
+<ul>
+<li>简化碰撞模型。可视化模型可以非常精美，但是碰撞模型可以简化。例如使用Bounding Box替代碰撞模型（最极端的情况），或者使用低模。</li>
+<li>使用ACM（Allowed collision matrix）。在使用moveit_assistance的时候，有一项就是生成ACM，ACM会指出在检查碰撞时忽略哪两个link之间，比如机械臂上两个永远不会相碰的link或者两个永远会接触的link。</li>
+</ul>
+<h2 id="Motion-planning：全局规划"><a href="#Motion-planning：全局规划" class="headerlink" title="Motion planning：全局规划"></a>Motion planning：全局规划</h2><p>路径规划用于规划出一条末端执行器从当前位置到最终位置的路线，注意这里在规划的时候并不考虑整个机器人，仅考虑执行器的碰撞。</p>
+<p>Moveit2支持多个路径规划库，默认的是OMPL，一个开源的规划算法库。其他的库也可以关注一下，一般来说OMPL就可以满足需求：</p>
+<ul>
+<li>Pilz, 工业运动规划器，生成圆周运动和线性运动的轨迹</li>
+<li>STOMP, 基于优化的规划期</li>
+<li>SBPL, 基于搜索</li>
+<li>CHOMP, 基于梯度优化</li>
+</ul>
+<h3 id="几种常见的路径规划算法"><a href="#几种常见的路径规划算法" class="headerlink" title="几种常见的路径规划算法"></a>几种常见的路径规划算法</h3><p>以下是OMPL包含的部分算法，完整的列表在这里：<a target="_blank" rel="noopener" href="https://ompl.kavrakilab.org/planners.html">https://ompl.kavrakilab.org/planners.html</a></p>
+<ul>
+<li>多次查询规划器<ul>
+<li>PRM : 先随机采样，构建无碰撞的无向图，然后使用A*搜索路径</li>
+<li>无向图可以复用<ul>
+<li>变体：LazyPRM，PRM*，LazyPRM*</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>单次查询规划器<ul>
+<li>RRT，EST，FMT等<ul>
+<li>变体：双向RRT，LBTRRT，稀疏RRT，等等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>默认的路劲优化是寻找最短路径，但是也可以指定其他的优化目标，比如路径间隙、路径数量等等。这些优化目标可以在C++接口中设置。（不保证能达到最优）</p>
+<h2 id="局部规划与IK"><a href="#局部规划与IK" class="headerlink" title="局部规划与IK"></a>局部规划与IK</h2><p>局部规划（location plan）基于全局规划的路径，计算当前机器人状态下应当给出何种命令使得机器人向目标移动并避免碰撞。在此过程中，需要使用IK（Inverse Kinematics）。</p>
+<h3 id="Kinematics"><a href="#Kinematics" class="headerlink" title="Kinematics"></a>Kinematics</h3><p>运动学的解释如下：the branch of mechanics concerned with the motion of objects without reference to the forces which cause the motion.Compare with <a target="_blank" rel="noopener" href="https://cn.bing.com/search?q=define+dynamics">dynamics</a>.</p>
+<p>Moveit2支持的逆运动学求解器包括：</p>
+<ul>
+<li><strong>KDL Kinematics</strong>，默认的求解器<ul>
+<li>数值解</li>
+<li>速度慢，可能找不到解</li>
+</ul>
+</li>
+<li><strong>TRAC-IK</strong><ul>
+<li>同时运行两个 IK 实现**，**一种是对 KDL 基于牛顿的收敛算法的简单扩展，第二种是 SQP（顺序二次规划）非线性优化方法</li>
+<li>优于KDL，moveit2内置</li>
+</ul>
+</li>
+<li><strong>IKFAST</strong><ul>
+<li>经测试，效果最好，但是安装比较繁琐，可能不支持Moveit2</li>
+</ul>
+</li>
+</ul>
+<h3 id="局部规划"><a href="#局部规划" class="headerlink" title="局部规划"></a>局部规划</h3><p>局部规划试图在全局规划给出的两个相邻路径点之间进行规划。主要任务：</p>
+<ul>
+<li>Processes incoming global trajectory updates 参考全局规划轨迹点</li>
+<li>Solves the local planning problem based on robot state, world and reference trajectory 根据机器人当前状态计算局部规划问题</li>
+<li>Sends position&#x2F;velocity commands to the robot driver 发送命令给机器人</li>
+</ul>
+<p>下表是一个全局规划和局部规划的对比：</p>
+<p><strong>Global Planner</strong></p>
+<p><strong>Local Planner</strong></p>
+<p>•Solve global solution trajectory<br>•Optimize trajectory path (continuously)</p>
+<p>•Follow global reference trajectory<br>•Solve local problem constraints<br>•May process sensor input<br>•Optimize solution locally<br>•Compute controller commands</p>
+<p>•Complete<br>•No restricted  computation time<br>•Not real-time safe<br>•Not necessarily deterministic</p>
+<p>•Can get stuck in local minima<br>•Low computation time<br>•Realtime-safe (depends on solver) •Deterministic</p>
+<p>•OMPL planner<br>•STOMP<br>•TrajOpt<br>•Cartesian motion planner<br>•Pilz Industrial Motion Planner<br>•MTC</p>
+<p>•IK solver, Jacobian<br>•Potential field planner<br>•Trajectory optimization algorithm<br>•Model Predictive Control (MPC)<br>•Sensor-based Optimal Control</p>
+<p>局部规划器不仅能输出具体的关节命令，还可以根据用户设定的逻辑唤起事件。例如，在靠近障碍物的时候停止运行，然后重新规划，如下图。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/03/image-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/03/image-5-1024x732.png"></a></p>
+<p>结合全局规划和局部规划后，实际上就涉及到任务的时间序列，在下一章混合规划将会描述。</p>
+<h2 id="混合规划"><a href="#混合规划" class="headerlink" title="混合规划"></a>混合规划</h2><p>混合规划实际上就是全局规划+局部规划。基于混合规划可以实现在运动过程中持续优化全局路径，或者用于方案修复（例如在碰撞时停止并重新规划路径），以及自适应运动（例如贴合凹凸不平的物体表面进行运动，焊接机器人）</p>
+<p>对于混合规划，其组成如下图所示。1-5表示了一个最基础的请求是如何促使信息流在各组件内流动的（不包括重新规划的过程）</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/03/image-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/03/image-3-1024x541.png"></a></p>
+<h3 id="重新规划：以动态障碍物避障为例"><a href="#重新规划：以动态障碍物避障为例" class="headerlink" title="重新规划：以动态障碍物避障为例"></a>重新规划：以动态障碍物避障为例</h3><p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/03/image-8.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/03/image-8-1024x370.png"></a></p>
+<p>上图非常清楚。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>以上就是在moveit2中进行路径规划的主要组件和流程。下一篇会介绍moveit2的配置方法。</p>
 
       
     </div>
@@ -836,7 +1261,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/09/29/%E4%B8%89%E7%BB%B4%E7%A9%BA%E9%97%B4%E4%BD%8D%E5%A7%BF%E6%8F%8F%E8%BF%B0/">
+    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/02/22/msa%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8A%E5%AF%B9moveit2%E7%9A%84%E9%80%82%E9%85%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -850,7 +1275,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/09/29/%E4%B8%89%E7%BB%B4%E7%A9%BA%E9%97%B4%E4%BD%8D%E5%A7%BF%E6%8F%8F%E8%BF%B0/" class="post-title-link" itemprop="url">三维空间位姿描述</a>
+            <a href="/2022/02/22/msa%E4%BD%BF%E7%94%A8%E4%BB%A5%E5%8F%8A%E5%AF%B9moveit2%E7%9A%84%E9%80%82%E9%85%8D/" class="post-title-link" itemprop="url">MSA使用以及对moveit2的适配</a>
         </h2>
 
         <div class="post-meta">
@@ -860,7 +1285,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-09-29 13:07:53" itemprop="dateCreated datePublished" datetime="2022-09-29T13:07:53+08:00">2022-09-29</time>
+              <time title="创建时间：2022-02-22 23:08:46" itemprop="dateCreated datePublished" datetime="2022-02-22T23:08:46+08:00">2022-02-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -894,373 +1319,52 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>玩机器人就像开车，你可以不知道发动机原理，可以不知道汽车的性能参数，但是不能不知道东南西北，不然连去哪里都不知道。机器人也是一样，可以不知道机器人的动力特性，可以不知道PID的具体参数，但是不能不知道三维空间位姿描述。但是三位空间位姿描述是比较复杂的，从自身经验出发，我们对xyz上的平移深有体会，对绕Z轴的转向也是身体力行，但是在X、Y轴上的旋转却缺乏生活经验（可能只有上床睡觉、做仰卧起坐的时候有），所以三维空间中的旋转很容易让人迷糊。</p>
-<p>欧拉旋转定理指出，任何两个独立的正交坐标系都可以通过不超过三次的相对于坐标系轴的旋转变换而来，但是不能连续绕同一个坐标轴旋转两次。换句话说，任何一个坐标系中的位姿都可以通过三个旋转角度来表示。三维空间中的旋转有一个特性是，旋转的顺序不同，最终结果也不同，因此有必要有一个约定俗成的顺序来表示位姿。</p>
-<h2 id="ZYZ欧拉式"><a href="#ZYZ欧拉式" class="headerlink" title="ZYZ欧拉式"></a>ZYZ欧拉式</h2><p>欧拉式的特性是，三次旋转中有两次是绕同一轴进行旋转，而ZYZ是在航空和机械动力学中最常使用的欧拉角。表示为：</p>
-<p>R&#x3D;R_z(\phi)R_y(\theta)R_z(\psi)</p>
-<h2 id="RPY-XYZ卡尔丹式"><a href="#RPY-XYZ卡尔丹式" class="headerlink" title="RPY&#x2F;XYZ卡尔丹式"></a>RPY&#x2F;XYZ卡尔丹式</h2><p>RPY是机器人中最常使用的角度表示法，实际上是XYZ卡尔丹式的角度表示法。但是实践中似乎欧拉式和卡尔丹式表示法统称为欧拉角。RPY表示为：</p>
-<p> R&#x3D;R_x(\theta_r)R_y(\theta_p)R_z(\theta_y)</p>
-<p>RPY表示法的一个特点是，一般来说这三轴是有实际物理意义的。RPY常常用来描述车辆和飞机的姿态，此时R为横滚角，围绕载具前进的方向；P为偏航角，Y为偏航角。一般来说，载具前进的方向定义为Z，但是有一些定义也将其与X轴交换。不管怎么说，Y轴的定义一般都是相同的。因此，实际上RPY可能指XYZ式的欧拉角，也可能指ZYX的欧拉角。上面的公式意味着，先绕Z旋转，再绕Y旋转，再绕X旋转，实际上是XYZ式的欧拉角。注意这里旋转顺序是和公式中xyz的从左到右顺序相反的。</p>
-<h3 id="ROS中的RPY：XYZ欧拉角"><a href="#ROS中的RPY：XYZ欧拉角" class="headerlink" title="ROS中的RPY：XYZ欧拉角"></a>ROS中的RPY：XYZ欧拉角</h3><p>ROS中的static_transform_publisher可以发布静态的transform，RPY是其中一种默认方式。参数如下：</p>
-<p>static_transform_publisher x y z <strong>yaw pitch roll</strong> frame_id child_frame_id period_in_ms</p>
-<p>进一步的，ROS wiki中解释这里的RPY指：</p>
-<p>yaw is rotation about Z, pitch is rotation about Y, and roll is rotation about X</p>
-<p>这里的定义和上面的公式是相同的，为了判断它是否遵循Z-&gt;Y-&gt;X的旋转顺序，也就是是否是一个XYZ的欧拉角，使用下面这个样例来测试。</p>
-<p>首先，确认ROS中TF的表示形式，红色轴为X，蓝色为Z，绿色为Y。</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/09/%E5%9B%BE%E7%89%87-1.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/09/%E5%9B%BE%E7%89%87-1.png"></a></p>
-<p>使用以下命令，创建一个新的TF：</p>
-<p>rosrun tf static_transform_publisher 1 1 1 1.5708 1.5708 0 map base_link 100</p>
-<p>结果如图所示：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/09/%E5%9B%BE%E7%89%87-2.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/09/%E5%9B%BE%E7%89%87-2.png"></a></p>
-<p>经过简单的判断，可以发现，**ROS中的transform遵循的是yaw、pitch、roll依次的旋转顺序，实际上顺序为Z-&gt;Y-&gt;X。**ROS中使用的是XYZ欧拉角来表达角度姿态。</p>
-<h2 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h2><blockquote>
-<p>四元数法出自于汉密尔顿出色的研究工作，然而它虽然精妙绝伦，但对那些没有接触过他的人来说却是纯粹的恶魔，包括克拉克·麦克斯韦。</p>
-<p>开尔文勋爵，1892</p>
-</blockquote>
-<p>四元数是复数的一种拓展，或者叫超复数。顾名思义，它有四个元：</p>
-<p>q&#x3D;s+v_1i+v_2j+v_3k</p>
-<p>i,j,k都是虚部。四元数也可以表示为：</p>
-<p>q&#x3D;s[v_1,v_2,v_3]</p>
-<p>四元数描述坐标系旋转的方法是，将坐标系视为绕一个单位向量n旋转theta角。单位向量和theta与四元数的关系是：</p>
-<p>s&#x3D;cos\frac{\theta}{2},~ v&#x3D;(sin\frac{\theta}{2})n</p>
-<p>在ROS中，四元数用w,x,y,z的形式表示，分别对应s,v1,v2,v3。</p>
-<p>上面仅仅介绍了什么是四元数和他怎么表示，四元数的最大作用是显著减少坐标变换的计算量，在计算机图形、动画、游戏中应用很广泛。使用四元数可以方便地计算两个姿态之间地插值。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/09/29/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%89%8B%E7%9C%BC%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%93%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/29/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%89%8B%E7%9C%BC%E6%A0%87%E5%AE%9A%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%93%8D/" class="post-title-link" itemprop="url">机器人手眼标定原理与实操</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-29 10:22:05" itemprop="dateCreated datePublished" datetime="2022-09-29T10:22:05+08:00">2022-09-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="手眼标定原理"><a href="#手眼标定原理" class="headerlink" title="手眼标定原理"></a>手眼标定原理</h2><p>手眼标定分为Eye-to-hand和Eye-in-hand两种，前者相机固定在机械臂以外的地方，后者相机一般固定在机械臂的手掌部位。</p>
-<p>关于标定的原理，这篇文章讲的很清楚了：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/103749589">https://zhuanlan.zhihu.com/p/103749589</a>。以Eye-in-Hand为例，有下图：</p>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/09/image.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/09/image.png"></a></p>
-<p>固定一个标定板，让机械臂运动到两个不同的位置，进行标定。我们知道，相机到末端执行器的变换是固定的，所以根据变换法有（对照图中的各物体首字母）：</p>
-<p>T_{E2}^{E1}T_{E1}^{C2}&#x3D;T_{E1}^{C2}T_{C2}^{C1}\\<br>AX&#x3D;XB</p>
-<p>这是一个方程，只有一个未知数X。如果能得到AB，那么X就可以解出。对于A来说，机器人末端姿态的改变显然是可以得到的，很多商业机器人都提供直接获得末端姿态的方法。对于B来说，就有一点难度了，这就是为什么要标定板，因为B实际上可以写成：</p>
-<p>T_{C2}^{C1}&#x3D;T^{B}_{C2}(T^{B}_{C1})^{-1}</p>
-<p>那么只要知道相机到标定板的位姿变化就行了，这个在数值上等价于标定板在相机坐标系中的位姿。</p>
-<h2 id="Acuro标定板"><a href="#Acuro标定板" class="headerlink" title="Acuro标定板"></a>Acuro标定板</h2><p>Acuro是一个大小已知的标志，在这个网站生成：<a target="_blank" rel="noopener" href="https://chev.me/arucogen/">https://chev.me/arucogen/</a></p>
-<p>一般的，如果已知摄像头参数的话，根据Acuro在画面中的大小，位置，就可以推算出其位姿。比如，Intel的Realsense就提前标定好了参数。如果是未标定参数的摄像头，则需要先标定参数。</p>
-<p>使用Acuro进行多次标定，就可以减少误差值，直到得到一个相对精确的X。</p>
-<h2 id="实操：在ROS中进行手眼标定"><a href="#实操：在ROS中进行手眼标定" class="headerlink" title="实操：在ROS中进行手眼标定"></a>实操：在ROS中进行手眼标定</h2><p>使用7自由度的Kinova Jaco2，Intel Realsense D435i进行Eye-on-hand标定。</p>
-<p>标定工具包括：</p>
-<ol>
-<li>Ubuntu20.04</li>
-<li>ROS Noetic</li>
-<li>Kinova-ros</li>
-<li>easy-hand-eye</li>
-<li>realsense-ros</li>
-<li>acuro-ros</li>
-</ol>
-<h3 id="程序流"><a href="#程序流" class="headerlink" title="程序流"></a>程序流</h3><ol>
-<li>运行Realsense和Kinova，此时Kinova-driver提供机械臂末端相对于基底的坐标，Frame为end_effector；Realsense提供一个未知的相机坐标，Frame为&#x2F;camera_link。</li>
-<li>运行aruco-ros，适用Realsense的彩色摄像头捕捉aruco标志，得到&#x2F;camera_link到&#x2F;camera_marker的transform</li>
-<li>运行easy-hand-eye，负责基于多次标定的结果（15次左右）计算出X，得到最终结果。</li>
-</ol>
-<h3 id="运行文件"><a href="#运行文件" class="headerlink" title="运行文件"></a>运行文件</h3><h3 id="提示，以及可能遇到的错误"><a href="#提示，以及可能遇到的错误" class="headerlink" title="提示，以及可能遇到的错误"></a>提示，以及可能遇到的错误</h3><ol>
-<li>在标定过程中，让机械臂的末端执行器尽可能大范围地转动，在其三个轴上都转90°以上。末端执行器的平移运动倒不必要的，不过也没有关系。</li>
-<li><a target="_blank" rel="noopener" href="https://chev.me/arucogen/">https://chev.me/arucogen/</a>默认生成4x4字典的Aruco，但是aruco-ros用的是Original的。建议使用582号marker，据说这个检测率最高。</li>
-</ol>
-<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/09/%E5%9B%BE%E7%89%87.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/09/%E5%9B%BE%E7%89%87.png"></a></p>
-<p>582号Marker</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/09/17/%E4%B8%8D%E8%A6%81%E7%9B%B4%E6%8E%A5%E5%AD%A6ros2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/17/%E4%B8%8D%E8%A6%81%E7%9B%B4%E6%8E%A5%E5%AD%A6ros2/" class="post-title-link" itemprop="url">不要直接学ROS2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-17 12:04:11" itemprop="dateCreated datePublished" datetime="2022-09-17T12:04:11+08:00">2022-09-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/" itemprop="url" rel="index"><span itemprop="name">robotics</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/robotics/ROS/" itemprop="url" rel="index"><span itemprop="name">ROS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>不要直接学ROS2！我的一些肺腑之言。学ROS1，现有的材料可以在一年内让你踏入ROS门槛，然后再花几个月时间迁移到ROS2上。直接学ROS2，你得花半年时间自己摸索，等到用到实际项目上，已经猴年马月了。</p>
-<p>电子产品买新不买旧，但是学习，除非是新的比旧的要好的太多，不然就还是什么资料多学什么，一般都是旧的资料多。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/09/16/wp-global-styles-pacify/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/16/wp-global-styles-pacify/" class="post-title-link" itemprop="url">Custom Styles</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-16 17:16:02" itemprop="dateCreated datePublished" datetime="2022-09-16T17:16:02+08:00">2022-09-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/uncategorized/" itemprop="url" rel="index"><span itemprop="name">uncategorized</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>{“version”: 2, “isGlobalStylesUserThemeJSON”: true }</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://wonderful-sea-04900b000.6.azurestaticapps.net/2022/09/09/wp-global-styles-twentysixteen/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Xiao Lin">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shawn Lin's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/09/09/wp-global-styles-twentysixteen/" class="post-title-link" itemprop="url">Custom Styles</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-09-09 22:07:37" itemprop="dateCreated datePublished" datetime="2022-09-09T22:07:37+08:00">2022-09-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-03-27 15:52:33" itemprop="dateModified" datetime="2025-03-27T15:52:33+08:00">2025-03-27</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/uncategorized/" itemprop="url" rel="index"><span itemprop="name">uncategorized</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>{“version”: 2, “isGlobalStylesUserThemeJSON”: true }</p>
+          <p>moveit2还没有完成对MSA的迁移，最近的信息是2021年8月份，我看到moveit团队还在讨论msa的迁移问题，预计是要对msa进行一次重构。</p>
+<p>在此之前，要在moveit2下使用msa还得花些功夫，需要我们通过msa导出机器人信息后再对launch文件进行修改。因为moveit2的教程用的是pandas机械臂，因此我们可以对比一下moveit2 tutorial里的moveit config和msa直接导出的moveit config有什么区别。</p>
+<h2 id="MSA使用"><a href="#MSA使用" class="headerlink" title="MSA使用"></a>MSA使用</h2><p>使用moveit就需要moveit config，msa可以自动生成moveit config。此外msa还可以生成许多用于调试的launch文件。MSA目前只支持ROS1，所以我们在noetic下演示这个过程。</p>
+<p>roslaunch moveit_setup_assistant setup_assistant.launch</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-1.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-1-1024x604.png"></a></p>
+<p>我们首先要准备自己的urdf文件，不支持xacro。这里我们使用和moveit2 toturial中一样的pandas arm。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-2.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-2-1024x604.png"></a></p>
+<h3 id="自碰撞矩阵"><a href="#自碰撞矩阵" class="headerlink" title="自碰撞矩阵"></a>自碰撞矩阵</h3><p>碰撞矩阵用来表示哪些关节在运行中是不可能碰撞的，这样就不用在逆运动学结算中去考虑它们了，可以节省计算资源。实现的方法是拖动上面的滑条，拖到最大时，会随机采样10000个位姿，在这些位姿中都不曾碰撞的关节就被认为是不可能相撞的（非常的暴力）</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-3.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-3-1024x604.png"></a></p>
+<h3 id="Virtual-Joints虚拟关节"><a href="#Virtual-Joints虚拟关节" class="headerlink" title="Virtual Joints虚拟关节"></a>Virtual Joints虚拟关节</h3><p>虚拟关节用于创造机器人与世界中其他坐标系之间的链接。虚拟关节只支持三种类型，fixed，planar，float，实际上就对应机器人固定、机器人可以在平面上移动和机器人可以在空间中6个自由度上运动，比如无人机。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-4.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-4-1024x604.png"></a></p>
+<h3 id="Planning-Groups"><a href="#Planning-Groups" class="headerlink" title="Planning Groups"></a>Planning Groups</h3><p>在这里我们可以设置控制组。举个例子，对于机械臂本体以及其末端执行器，他们的职责是不同的，机械臂负责把末端执行器送到指定位置，末端执行器负责执行其他操作。对于机械臂本体，当然是要进行逆运动学结算等操作的， 末端执行器执行的操作就花样百出了。我们先来设置panda_arm：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-5.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-5-1024x636.png"></a></p>
+<p>Kinematic Solver就是逆运动学求解器，kdl求解器相对来说属于是moveit2默认的求解方式。OMPL则是防碰撞算法，这里可以先不设置，其他的保留原设置即可。完成后点击add_joints，将此控制组涉及到的关节都选中。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-6.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-6-1024x636.png"></a></p>
+<p>对于hand部分也进行类似的操作。注意到解释中说，如果选择的是link而不是joint，那么其parent joint也会被加入。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-7.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-7-1024x636.png"></a></p>
+<h3 id="Robot-Poses"><a href="#Robot-Poses" class="headerlink" title="Robot Poses"></a>Robot Poses</h3><p>这是最好理解的设置，也就是预先设计几个位姿，方便快速归位或者调试。这是一个检查你的URDF对关节限位设置是否正确的最好时机。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-9.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-9-1024x636.png"></a></p>
+<h3 id="End-Effectors"><a href="#End-Effectors" class="headerlink" title="End Effectors"></a>End Effectors</h3><p>这个页面用于设置末端执行器，我没有太明白这个设置的用处。设置也很简单。</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-10.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-10-1024x636.png"></a></p>
+<h3 id="Passive-Joints"><a href="#Passive-Joints" class="headerlink" title="Passive Joints"></a>Passive Joints</h3><p>在被动关节中被选中的任何关节都不会被moveit2再控制，哪怕它之前被归为一个控制组。被动关节指那些没有动力的关节。由于pandas么有被动关节，所以跳过。</p>
+<h3 id="Controllers"><a href="#Controllers" class="headerlink" title="Controllers"></a>Controllers</h3><p>这是moveit和ros_control交互的重要设置界面。点击Add controller之后，选择<strong>position_controllers&#x2F;JointPositionController</strong>作为控制器类型。然后选择Add Group， 把panda_arm加入。</p>
+<h3 id="3D-Perception"><a href="#3D-Perception" class="headerlink" title="3D Perception"></a>3D Perception</h3><p>这个设置页面用于设置3D感知相关的内容，先跳过；</p>
+<h3 id="Simulation"><a href="#Simulation" class="headerlink" title="Simulation"></a>Simulation</h3><p>这个页面不是用于设置的，不过可以快速生成一个可以用于gazebo模拟的SDF文件。</p>
+<h3 id="Author-Information"><a href="#Author-Information" class="headerlink" title="Author Information"></a>Author Information</h3><p>作者信息设置，不多说。</p>
+<h3 id="Configuration-File"><a href="#Configuration-File" class="headerlink" title="Configuration File"></a>Configuration File</h3><p>这里我们可以看到MSA都生成了哪些文件，他们都有什么用。msa是这样组织launch文件的：许多launch文件只负责启动一个功能，用户可以根据自己的需要进行选择。demo.launch则是最主要的launch文件。我们catkin build之后launch这个文件就可以使用它了。最后我们要将其导出为一个包，根据ROS的命名规范，将包命名为项目名_moveit_config。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>导出完成后，使用catkin build建立项目，然后roslaunch panda_moveit_config demo.launch，不需要做其他任何改动：</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-12.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-12-1024x705.png"></a></p>
+<p>出现以上界面，并且可以正常plan-execute，则说明导出正确。</p>
+<h2 id="MSA导出文件适配moveit2"><a href="#MSA导出文件适配moveit2" class="headerlink" title="MSA导出文件适配moveit2"></a>MSA导出文件适配moveit2</h2><h3 id="moveit和moveit2中的panda-arm对比"><a href="#moveit和moveit2中的panda-arm对比" class="headerlink" title="moveit和moveit2中的panda_arm对比"></a>moveit和moveit2中的panda_arm对比</h3><p>从moveit2的教程中我们可以启动一样的panda_arm：</p>
+<p>ros2 launch moveit2_tutorials demo.launch.py</p>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-13.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-13-1024x572.png"></a></p>
+<p>下面我们来查看moveit2中，一样的导出的demo.launch.py文件都涉及到哪些文件。以下文件被导入:</p>
+<ul>
+<li><strong>robot_description_config</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;panda.urdf.xacro</li>
+<li><strong>robot_description_semantic_config</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;panda.srdf</li>
+<li><strong>kinematics_yaml</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;kinematics.yaml</li>
+<li><strong>ompl_planning_yaml</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;ompl_planning.yaml</li>
+<li><strong>moveit_simple_controllers_yaml</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;panda_controllers.yaml</li>
+<li><strong>ros2_controllers_path</strong>: moveit_resources_panda_moveit_config&#x2F;config&#x2F;panda_ros_controllers.yaml</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://www.lxshaw.com/wp-content/uploads/2022/02/image-14.png"><img src="http://www.lxshaw.com/wp-content/uploads/2022/02/image-14-1024x613.png"></a></p>
+<p>在我们之前导出的config中间，除了xacro以外，都有对应的文件。其中，kinematcis_yaml、srdf文件是不需要修改的；<strong>ompl_planning_yaml</strong>需要修改为以下形式：</p>
+<p>planner_configs:<br>  AnytimePathShortening:<br>    type: geometric::AnytimePathShortening<br>    shortcut: true  # Attempt to shortcut all new solution paths<br>    hybridize: true  # Compute hybrid solution trajectories<br>    max_hybrid_paths: 24  # Number of hybrid paths generated per iteration<br>    num_planners: 4  # The number of default planners to use for planning<br>    planners: “”  # A comma-separated list of planner types (e.g., “PRM,EST,RRTConnect”Optionally, planner parameters can be passed to change the default:”PRM[max_nearest_neighbors&#x3D;5],EST[goal_bias&#x3D;.5],RRT[range&#x3D;10. goal_bias&#x3D;.1]“<br>  SBL:<br>    type: geometric::SBL<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>  EST:<br>    type: geometric::EST<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0 setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05<br>  LBKPIECE:<br>    type: geometric::LBKPIECE<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    border_fraction: 0.9  # Fraction of time focused on boarder default: 0.9<br>    min_valid_path_fraction: 0.5  # Accept partially valid moves above fraction. default: 0.5<br>  BKPIECE:<br>    type: geometric::BKPIECE<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    border_fraction: 0.9  # Fraction of time focused on boarder default: 0.9<br>    failed_expansion_score_factor: 0.5  # When extending motion fails, scale score by factor. default: 0.5<br>    min_valid_path_fraction: 0.5  # Accept partially valid moves above fraction. default: 0.5<br>  KPIECE:<br>    type: geometric::KPIECE<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05<br>    border_fraction: 0.9  # Fraction of time focused on boarder default: 0.9 (0.0,1.]<br>    failed_expansion_score_factor: 0.5  # When extending motion fails, scale score by factor. default: 0.5<br>    min_valid_path_fraction: 0.5  # Accept partially valid moves above fraction. default: 0.5<br>  RRT:<br>    type: geometric::RRT<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability? default: 0.05<br>  RRTConnect:<br>    type: geometric::RRTConnect<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>  RRTstar:<br>    type: geometric::RRTstar<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability? default: 0.05<br>    delay_collision_checking: 1  # Stop collision checking as soon as C-free parent found. default 1<br>  TRRT:<br>    type: geometric::TRRT<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability? default: 0.05<br>    max_states_failed: 10  # when to start increasing temp. default: 10<br>    temp_change_factor: 2.0  # how much to increase or decrease temp. default: 2.0<br>    min_temperature: 10e-10  # lower limit of temp change. default: 10e-10<br>    init_temperature: 10e-6  # initial temperature. default: 10e-6<br>    frountier_threshold: 0.0  # dist new state to nearest neighbor to disqualify as frontier. default: 0.0 set in setup()<br>    frountierNodeRatio: 0.1  # 1&#x2F;10, or 1 nonfrontier for every 10 frontier. default: 0.1<br>    k_constant: 0.0  # value used to normalize expresssion. default: 0.0 set in setup()<br>  PRM:<br>    type: geometric::PRM<br>    max_nearest_neighbors: 10  # use k nearest neighbors. default: 10<br>  PRMstar:<br>    type: geometric::PRMstar<br>  FMT:<br>    type: geometric::FMT<br>    num_samples: 1000  # number of states that the planner should sample. default: 1000<br>    radius_multiplier: 1.1  # multiplier used for the nearest neighbors search radius. default: 1.1<br>    nearest_k: 1  # use Knearest strategy. default: 1<br>    cache_cc: 1  # use collision checking cache. default: 1<br>    heuristics: 0  # activate cost to go heuristics. default: 0<br>    extended_fmt: 1  # activate the extended FMT*: adding new samples if planner does not finish successfully. default: 1<br>  BFMT:<br>    type: geometric::BFMT<br>    num_samples: 1000  # number of states that the planner should sample. default: 1000<br>    radius_multiplier: 1.0  # multiplier used for the nearest neighbors search radius. default: 1.0<br>    nearest_k: 1  # use the Knearest strategy. default: 1<br>    balanced: 0  # exploration strategy: balanced true expands one tree every iteration. False will select the tree with lowest maximum cost to go. default: 1<br>    optimality: 1  # termination strategy: optimality true finishes when the best possible path is found. Otherwise, the algorithm will finish when the first feasible path is found. default: 1<br>    heuristics: 1  # activates cost to go heuristics. default: 1<br>    cache_cc: 1  # use the collision checking cache. default: 1<br>    extended_fmt: 1  # Activates the extended FMT*: adding new samples if planner does not finish successfully. default: 1<br>  PDST:<br>    type: geometric::PDST<br>  STRIDE:<br>    type: geometric::STRIDE<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05<br>    use_projected_distance: 0  # whether nearest neighbors are computed based on distances in a projection of the state rather distances in the state space itself. default: 0<br>    degree: 16  # desired degree of a node in the Geometric Near-neightbor Access Tree (GNAT). default: 16<br>    max_degree: 18  # max degree of a node in the GNAT. default: 12<br>    min_degree: 12  # min degree of a node in the GNAT. default: 12<br>    max_pts_per_leaf: 6  # max points per leaf in the GNAT. default: 6<br>    estimated_dimension: 0.0  # estimated dimension of the free space. default: 0.0<br>    min_valid_path_fraction: 0.2  # Accept partially valid moves above fraction. default: 0.2<br>  BiTRRT:<br>    type: geometric::BiTRRT<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    temp_change_factor: 0.1  # how much to increase or decrease temp. default: 0.1<br>    init_temperature: 100  # initial temperature. default: 100<br>    frountier_threshold: 0.0  # dist new state to nearest neighbor to disqualify as frontier. default: 0.0 set in setup()<br>    frountier_node_ratio: 0.1  # 1&#x2F;10, or 1 nonfrontier for every 10 frontier. default: 0.1<br>    cost_threshold: 1e300  # the cost threshold. Any motion cost that is not better will not be expanded. default: inf<br>  LBTRRT:<br>    type: geometric::LBTRRT<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05<br>    epsilon: 0.4  # optimality approximation factor. default: 0.4<br>  BiEST:<br>    type: geometric::BiEST<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>  ProjEST:<br>    type: geometric::ProjEST<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>    goal_bias: 0.05  # When close to goal select goal, with this probability. default: 0.05<br>  LazyPRM:<br>    type: geometric::LazyPRM<br>    range: 0.0  # Max motion added to tree. &#x3D;&#x3D;&gt; maxDistance_ default: 0.0, if 0.0, set on setup()<br>  LazyPRMstar:<br>    type: geometric::LazyPRMstar<br>  SPARS:<br>    type: geometric::SPARS<br>    stretch_factor: 3.0  # roadmap spanner stretch factor. multiplicative upper bound on path quality. It does not make sense to make this parameter more than 3. default: 3.0<br>    sparse_delta_fraction: 0.25  # delta fraction for connection distance. This value represents the visibility range of sparse samples. default: 0.25<br>    dense_delta_fraction: 0.001  # delta fraction for interface detection. default: 0.001<br>    max_failures: 1000  # maximum consecutive failure limit. default: 1000<br>  SPARStwo:<br>    type: geometric::SPARStwo<br>    stretch_factor: 3.0  # roadmap spanner stretch factor. multiplicative upper bound on path quality. It does not make sense to make this parameter more than 3. default: 3.0<br>    sparse_delta_fraction: 0.25  # delta fraction for connection distance. This value represents the visibility range of sparse samples. default: 0.25<br>    dense_delta_fraction: 0.001  # delta fraction for interface detection. default: 0.001<br>    max_failures: 5000  # maximum consecutive failure limit. default: 5000<br>arm:<br>  planner_configs:<br>    - AnytimePathShortening<br>    - SBL<br>    - EST<br>    - LBKPIECE<br>    - BKPIECE<br>    - KPIECE<br>    - RRT<br>    - RRTConnect<br>    - RRTstar<br>    - TRRT<br>    - PRM<br>    - PRMstar<br>    - FMT<br>    - BFMT<br>    - PDST<br>    - STRIDE<br>    - BiTRRT<br>    - LBTRRT<br>    - BiEST<br>    - ProjEST<br>    - LazyPRM<br>    - LazyPRMstar<br>    - SPARS<br>    - SPARStwo</p>
+<p>ros_controllers和simple_moveit_controllers.yaml里的controller_names要对应起来，其中simple_moveit_controllers.yaml最简单的情况下只包括一个position_trajectory_controller。</p>
 
       
     </div>
@@ -1279,7 +1383,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1345,12 +1449,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">162</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">分类</span>
       </div>
   </nav>
